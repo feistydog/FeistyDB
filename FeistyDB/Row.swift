@@ -8,14 +8,7 @@ import Foundation
 /// A class representing a single row in a result set
 public struct Row {
 	/// The owning `Statement`
-	var statement: Statement
-
-	/// Initialize a new row with a compiled SQL statement
-	///
-	/// - parameter statement: The owning `Statement` object
-	init(_ statement: Statement) {
-		self.statement = statement
-	}
+	public let statement: Statement
 
 	/// The number of columns in the row
 	public var columnCount: Int {
