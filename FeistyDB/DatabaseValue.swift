@@ -112,7 +112,7 @@ extension Statement {
 
 /// `DatabaseValue` value retrieval
 extension Row {
-	/// Retrieve a single column's value from the row
+	/// Retrieve a column's value
 	///
 	/// - parameter index: The 0-based index of the desired column
 	/// - returns: The column's value
@@ -129,15 +129,7 @@ extension Row {
 			return DatabaseValue.float(sqlite3_column_double(stmt, idx))
 
 		case SQLITE_TEXT:
-			let byteCount = Int(sqlite3_column_bytes(stmt, idx))
-			let data = Data(bytes: sqlite3_column_blob(stmt, idx).assumingMemoryBound(to: UInt8.self), count: byteCount)
-			guard let string = String(data: data, encoding: .utf8) else {
-				#if DEBUG
-					print("Error converting data to UTF-8")
-				#endif
-				return DatabaseValue.null
-			}
-			return DatabaseValue.text(string)
+			return DatabaseValue.text(String(cString: sqlite3_column_text(stmt, idx)))
 
 		case SQLITE_BLOB:
 			let byteCount = Int(sqlite3_column_bytes(stmt, idx))
