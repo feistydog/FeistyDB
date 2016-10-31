@@ -22,7 +22,7 @@ public struct Row {
 		return Int(sqlite3_column_count(stmt))
 	}
 
-	/// Retrieve a single column from the row
+	/// Retrieve a column from the row
 	///
 	/// - parameter index: The 0-based index of the desired column
 	/// - returns: A column for the specified index
