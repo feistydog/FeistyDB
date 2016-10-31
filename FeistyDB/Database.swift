@@ -12,9 +12,9 @@ let SQLITE_TRANSIENT = unsafeBitCast(-1, to: sqlite3_destructor_type.self)
 /// A class encapsulating access to an [SQLite](http://sqlite.org) database
 final public class Database {
 	/// The underlying `sqlite3 *` database
-	private var db: OpaquePointer
+	var db: OpaquePointer
 	/// Prepared statements
-	private var preparedStatements = [String: Statement]()
+	var preparedStatements = [String: Statement]()
 
 	/// Create an in-memory database
 	///
