@@ -17,7 +17,7 @@ public protocol ColumnConvertible {
 }
 
 extension Row {
-	/// Retrieve a single column's value from the row
+	/// Retrieve a column's value
 	///
 	/// - parameter index: The 0-based index of the desired column
 	/// - returns: The column's value
@@ -31,7 +31,7 @@ extension Row {
 		}
 	}
 
-	/// Retrieve a single column's value from the row
+	/// Retrieve a column's value
 	///
 	/// - parameter index: The 0-based index of the desired column
 	/// - returns: The column's value
