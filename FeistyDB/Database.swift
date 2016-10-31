@@ -19,7 +19,7 @@ final public class Database {
 	/// Create an in-memory database
 	///
 	/// - throws: `DatabaseError`
-	public convenience init() throws {
+	public init() throws {
 		var db: OpaquePointer?
 		guard sqlite3_open_v2(":memory:", &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, nil) == SQLITE_OK else {
 			#if DEBUG
@@ -28,7 +28,7 @@ final public class Database {
 			throw DatabaseError.sqliteError(String(cString: sqlite3_errmsg(db)))
 		}
 
-		self.init(rawSQLiteDatabase: db!)
+		self.db =  db!
 	}
 
 	/// Open a database
@@ -37,7 +37,7 @@ final public class Database {
 	/// - parameter readOnly: Whether to open the database in read-only mode
 	/// - parameter create: Whether to create the database if it doesn't exist
 	/// - throws: `DatabaseError`
-	public convenience init(url: URL, readOnly: Bool = false, create: Bool = true) throws {
+	public init(url: URL, readOnly: Bool = false, create: Bool = true) throws {
 		var db: OpaquePointer?
 		try url.withUnsafeFileSystemRepresentation { path in
 			var flags = (readOnly ? SQLITE_OPEN_READONLY : SQLITE_OPEN_READWRITE)
@@ -53,7 +53,7 @@ final public class Database {
 			}
 		}
 
-		self.init(rawSQLiteDatabase: db!)
+		self.db = db!
 	}
 
 	/// Initialize a database from an existing `sqlite3 *` database handle
@@ -194,16 +194,7 @@ final public class Database {
 	/// - returns: A `Statement`
 	/// - throws: `DatabaseError`
 	public func prepare(sql: String) throws -> Statement {
-		var stmt: OpaquePointer? = nil
-		guard sqlite3_prepare_v2(db, sql, -1, &stmt, nil) == SQLITE_OK else {
-			#if DEBUG
-				print("Error preparing SQL \"\(sql)\"")
-				print("Error message: \(String(cString: sqlite3_errmsg(db)))")
-			#endif
-			throw DatabaseError.sqliteError(String(cString: sqlite3_errmsg(db)))
-		}
-
-		return Statement(stmt!)
+		return try Statement(database: self, sql: sql)
 	}
 
 	/// Prepare and store an SQL statement for later use

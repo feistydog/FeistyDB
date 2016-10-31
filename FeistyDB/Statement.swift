@@ -7,14 +7,30 @@ import Foundation
 
 /// A class representing an SQL statement with support for binding SQL parameters and retrieving results.
 final public class Statement {
+	/// The owning `Database`
+	public let database: Database
+
 	/// The underlying `sqlite3_stmt *` object
 	var stmt: OpaquePointer
 
-	/// Initialize a new statement with a compiled SQL statement
+	/// Compile an SQL statement
 	///
-	/// - parameter statement: An `sqlite3_stmt *` object
-	init(_ statement: OpaquePointer) {
-		stmt = statement
+	/// - parameter database: The owning database
+	/// - parameter sql: The SQL statement to compile
+	/// - throws: `DatabaseError`
+	init(database: Database, sql: String) throws {
+		self.database = database
+
+		var stmt: OpaquePointer? = nil
+		guard sqlite3_prepare_v2(database.db, sql, -1, &stmt, nil) == SQLITE_OK else {
+			#if DEBUG
+				print("Error preparing SQL \"\(sql)\"")
+				print("Error message: \(String(cString: sqlite3_errmsg(database.db)))")
+			#endif
+			throw DatabaseError.sqliteError(String(cString: sqlite3_errmsg(database.db)))
+		}
+
+		self.stmt = stmt!
 	}
 
 	deinit {
@@ -49,12 +65,12 @@ final public class Statement {
 	}
 
 	/// The mapping of column names to indexes
-	var columnNamesAndIndexes: [String: Int32] {
+	var columnNamesAndIndexes: [String: Int] {
 		let columnCount = sqlite3_column_count(stmt)
-		var map = [String: Int32](minimumCapacity: Int(sqlite3_column_count(stmt)))
+		var map = [String: Int](minimumCapacity: Int(sqlite3_column_count(stmt)))
 		for i in 0..<columnCount {
 			let name = String(cString: sqlite3_column_name(stmt, i))
-			map[name] = i
+			map[name] = Int(i)
 		}
 		return map
 	}
@@ -74,7 +90,7 @@ final public class Statement {
 	public func results(row block: (_ row: Row) -> ()) throws {
 		var result = sqlite3_step(stmt)
 		while result == SQLITE_ROW {
-			block(Row(self))
+			block(Row(statement: self))
 			result = sqlite3_step(stmt)
 		}
 
@@ -137,7 +153,7 @@ extension Statement {
 				let stmt = self.stmt
 				switch sqlite3_step(stmt) {
 				case SQLITE_ROW:
-					return Row(self)
+					return Row(statement: self)
 				case SQLITE_DONE:
 					return nil
 				default:
