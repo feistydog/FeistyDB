@@ -23,6 +23,7 @@ extension Row {
 	/// - returns: The column's value
 	/// - throws: An error if the column contains an illegal value
 	public func column<T: ColumnConvertible>(_ index: Int) throws -> T? {
+		let stmt = statement.stmt
 		let idx = Int32(index)
 		switch sqlite3_column_type(stmt, idx) {
 		case SQLITE_NULL:
@@ -38,10 +39,29 @@ extension Row {
 	/// - returns: The column's value
 	/// - throws: An error if the column is null or contains an illegal value
 	public func column<T: ColumnConvertible>(_ index: Int) throws -> T {
+		let stmt = statement.stmt
 		let idx = Int32(index)
 		switch sqlite3_column_type(stmt, idx) {
 		case SQLITE_NULL:
 			throw DatabaseError.dataFormatError("Null encountered")
+		default:
+			return try T(withRawSQLiteStatement: stmt, parameter: idx)
+		}
+	}
+
+	/// Retrieve a column's value
+	///
+	/// - parameter name: name of the desired column
+	/// - returns: The column's value
+	/// - throws: An error if the column doesn't exist or contains an illegal value
+	public func column<T: ColumnConvertible>(_ name: String) throws -> T? {
+		let stmt = statement.stmt
+		guard let idx = statement.columnNamesAndIndexes[name] else {
+			throw DatabaseError.sqliteError("Unknown column")
+		}		
+		switch sqlite3_column_type(stmt, idx) {
+		case SQLITE_NULL:
+			return nil
 		default:
 			return try T(withRawSQLiteStatement: stmt, parameter: idx)
 		}

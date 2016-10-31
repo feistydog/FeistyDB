@@ -27,7 +27,7 @@ public struct Column {
 	///
 	/// The name is the value of the `AS` clause
 	public var name: String {
-		return String(cString: sqlite3_column_name(row.stmt, idx))
+		return String(cString: sqlite3_column_name(row.statement.stmt, idx))
 	}
 
 	// The following functions are omitted for performance reasons.
@@ -37,17 +37,17 @@ public struct Column {
 	#if false
 		/// The un-aliased name of the database that is the origin of this result column
 		public var databaseName: String {
-			return String(cString: sqlite3_column_database_name(row.stmt, idx))
+			return String(cString: sqlite3_column_database_name(row.statement.stmt, idx))
 		}
 
 		/// The un-aliased name of the table that is the origin of this result column
 		public var tableName: String {
-			return String(cString: sqlite3_column_table_name(row.stmt, idx))
+			return String(cString: sqlite3_column_table_name(row.statement.stmt, idx))
 		}
 
 		/// The un-aliased name of the column that is the origin of this result column
 		public var originName: String {
-			return String(cString: sqlite3_column_origin_name(row.stmt, idx))
+			return String(cString: sqlite3_column_origin_name(row.statement.stmt, idx))
 		}
 	#endif
 
@@ -61,6 +61,6 @@ public struct Column {
 	/// - throws: Any error thrown in `block`
 	/// - returns: The value returned by `block`
 	public func withUnsafeRawSQLiteStatement<T>(block: (_ statement: OpaquePointer, _ index: Int32) throws -> (T)) rethrows -> T {
-		return try block(row.stmt, idx)
+		return try block(row.statement.stmt, idx)
 	}
 }

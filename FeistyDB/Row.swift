@@ -7,19 +7,19 @@ import Foundation
 
 /// A class representing a single row in a result set
 public struct Row {
-	/// The underlying `sqlite3_stmt *`
-	var stmt: OpaquePointer
+	/// The owning `Statement`
+	var statement: Statement
 
 	/// Initialize a new row with a compiled SQL statement
 	///
-	/// - parameter statement: An `sqlite3_stmt *` object
-	init(_ statement: OpaquePointer) {
-		stmt = statement
+	/// - parameter statement: The owning `Statement` object
+	init(_ statement: Statement) {
+		self.statement = statement
 	}
 
 	/// The number of columns in the row
 	public var columnCount: Int {
-		return Int(sqlite3_column_count(stmt))
+		return Int(sqlite3_column_count(statement.stmt))
 	}
 
 	/// Retrieve a column from the row

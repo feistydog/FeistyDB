@@ -120,6 +120,7 @@ extension Row {
 //		precondition(index >= 0, "Column indexes are 0-based")
 //		precondition(index < self.columnCount, "Column index out of bounds")
 
+		let stmt = statement.stmt
 		let idx = Int32(index)
 		switch sqlite3_column_type(stmt, idx) {
 		case SQLITE_INTEGER:

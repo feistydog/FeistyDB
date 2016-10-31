@@ -43,6 +43,22 @@ final public class Statement {
 		return String(cString: sqlite3_expanded_sql(stmt))
 	}
 
+	/// The number of columns in the result set
+	public var columnCount: Int {
+		return Int(sqlite3_column_count(stmt))
+	}
+
+	/// The mapping of column names to indexes
+	var columnNamesAndIndexes: [String: Int32] {
+		let columnCount = sqlite3_column_count(stmt)
+		var map = [String: Int32](minimumCapacity: Int(sqlite3_column_count(stmt)))
+		for i in 0..<columnCount {
+			let name = String(cString: sqlite3_column_name(stmt, i))
+			map[name] = i
+		}
+		return map
+	}
+
 	/// Execute the statement without returning a result set
 	///
 	/// - throws: `DatabaseError`
@@ -58,7 +74,7 @@ final public class Statement {
 	public func results(row block: (_ row: Row) -> ()) throws {
 		var result = sqlite3_step(stmt)
 		while result == SQLITE_ROW {
-			block(Row(stmt))
+			block(Row(self))
 			result = sqlite3_step(stmt)
 		}
 
@@ -121,7 +137,7 @@ extension Statement {
 				let stmt = self.stmt
 				switch sqlite3_step(stmt) {
 				case SQLITE_ROW:
-					return Row(stmt)
+					return Row(self)
 				case SQLITE_DONE:
 					return nil
 				default:
