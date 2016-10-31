@@ -21,13 +21,14 @@ extension Row {
 	///
 	/// - parameter index: The 0-based index of the desired column
 	/// - returns: The column's value
-	public func column<T: ColumnConvertible>(_ index: Int) -> T? {
+	/// - throws: An error if the column contains an illegal value
+	public func column<T: ColumnConvertible>(_ index: Int) throws -> T? {
 		let idx = Int32(index)
 		switch sqlite3_column_type(stmt, idx) {
 		case SQLITE_NULL:
 			return nil
 		default:
-			return try? T(withRawSQLiteStatement: stmt, parameter: idx)
+			return try T(withRawSQLiteStatement: stmt, parameter: idx)
 		}
 	}
 
@@ -35,7 +36,7 @@ extension Row {
 	///
 	/// - parameter index: The 0-based index of the desired column
 	/// - returns: The column's value
-	/// - throws: An error if the column is null or contained an illegal value
+	/// - throws: An error if the column is null or contains an illegal value
 	public func column<T: ColumnConvertible>(_ index: Int) throws -> T {
 		let idx = Int32(index)
 		switch sqlite3_column_type(stmt, idx) {
@@ -51,19 +52,20 @@ extension Column {
 	/// Retrieve the value of the column
 	///
 	/// - returns: The column's value
-	public func value<T: ColumnConvertible>() -> T? {
+	/// - throws: An error if the column contains an illegal value
+	public func value<T: ColumnConvertible>() throws -> T? {
 		switch sqlite3_column_type(row.stmt, idx) {
 		case SQLITE_NULL:
 			return nil
 		default:
-			return try? T(withRawSQLiteStatement: row.stmt, parameter: idx)
+			return try T(withRawSQLiteStatement: row.stmt, parameter: idx)
 		}
 	}
 
 	/// Retrieve the value of the column
 	///
 	/// - returns: The column's value
-	/// - throws: An error if the column is null or contained an illegal value
+	/// - throws: An error if the column is null or contains an illegal value
 	public func value<T: ColumnConvertible>() throws -> T {
 		switch sqlite3_column_type(row.stmt, idx) {
 		case SQLITE_NULL:
