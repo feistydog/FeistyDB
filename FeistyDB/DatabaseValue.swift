@@ -149,6 +149,6 @@ extension Column {
 	///
 	/// - returns: The column's value
 	public func value() -> DatabaseValue {
-		return row.column(Int(idx))
+		return row.column(index)
 	}
 }

@@ -84,7 +84,7 @@ extension Column {
 	/// - returns: The column's value
 	/// - throws: An error if the value contains an illegal value
 	public func value<T: DatabaseValueConvertible>() throws -> T? {
-		return try row.column(Int(idx))
+		return try row.column(index)
 	}
 }
 

@@ -55,16 +55,22 @@ extension Row {
 	/// - returns: The column's value
 	/// - throws: An error if the column doesn't exist or contains an illegal value
 	public func column<T: ColumnConvertible>(_ name: String) throws -> T? {
-		let stmt = statement.stmt
-		guard let idx = statement.columnNamesAndIndexes[name] else {
-			throw DatabaseError.sqliteError("Unknown column")
-		}		
-		switch sqlite3_column_type(stmt, idx) {
-		case SQLITE_NULL:
-			return nil
-		default:
-			return try T(withRawSQLiteStatement: stmt, parameter: idx)
+		guard let index = statement.columnNamesAndIndexes[name] else {
+			throw DatabaseError.sqliteError("Unknown column \"\(name)\"")
 		}
+		return try column(index)
+	}
+
+	/// Retrieve a column's value
+	///
+	/// - parameter name: name of the desired column
+	/// - returns: The column's value
+	/// - throws: An error if the column is null or contains an illegal value
+	public func column<T: ColumnConvertible>(_ name: String) throws -> T {
+		guard let index = statement.columnNamesAndIndexes[name] else {
+			throw DatabaseError.sqliteError("Unknown column \"\(name)\"")
+		}
+		return try column(index)
 	}
 }
 
@@ -74,7 +80,7 @@ extension Column {
 	/// - returns: The column's value
 	/// - throws: An error if the column contains an illegal value
 	public func value<T: ColumnConvertible>() throws -> T? {
-		return try row.column(Int(idx))
+		return try row.column(index)
 	}
 
 	/// Retrieve the value of the column
@@ -82,7 +88,7 @@ extension Column {
 	/// - returns: The column's value
 	/// - throws: An error if the column is null or contains an illegal value
 	public func value<T: ColumnConvertible>() throws -> T {
-		return try row.column(Int(idx))
+		return try row.column(index)
 	}
 }
 
