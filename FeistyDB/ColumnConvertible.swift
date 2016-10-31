@@ -54,12 +54,7 @@ extension Column {
 	/// - returns: The column's value
 	/// - throws: An error if the column contains an illegal value
 	public func value<T: ColumnConvertible>() throws -> T? {
-		switch sqlite3_column_type(row.stmt, idx) {
-		case SQLITE_NULL:
-			return nil
-		default:
-			return try T(withRawSQLiteStatement: row.stmt, parameter: idx)
-		}
+		return try row.column(Int(idx))
 	}
 
 	/// Retrieve the value of the column
@@ -67,12 +62,7 @@ extension Column {
 	/// - returns: The column's value
 	/// - throws: An error if the column is null or contains an illegal value
 	public func value<T: ColumnConvertible>() throws -> T {
-		switch sqlite3_column_type(row.stmt, idx) {
-		case SQLITE_NULL:
-			throw DatabaseError.dataFormatError("Null encountered")
-		default:
-			return try T(withRawSQLiteStatement: row.stmt, parameter: idx)
-		}
+		return try row.column(Int(idx))
 	}
 }
 
