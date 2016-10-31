@@ -9,19 +9,20 @@ import Foundation
 public protocol DatabaseValueConvertible {
 	/// Convert `self` to a database value
 	///
-	/// - returns: A `DatabaseValue` representing `self`
+	/// - returns: A database value representing `self`
 	func toDatabaseValue() -> DatabaseValue
 
 	/// Convert a database value to the type of `Self`
 	///
 	/// - parameter value: The database value to convert
 	/// - returns: An instance of `Self` or `nil`
-	static func fromDatabaseValue(_ value: DatabaseValue) -> Self?
+	/// - throws: An error if the database value contains an illegal value
+	static func fromDatabaseValue(_ value: DatabaseValue) throws -> Self?
 }
 
 /// Parameter binding for convertible types
 extension Statement {
-	/// Bind a value to a statement parameter
+	/// Bind a value to an SQL parameter
 	///
 	/// Parameter indexes are 1-based.  The leftmost parameter in a statement has index 1.
 	/// - parameter value: The desired value of the parameter
@@ -31,7 +32,7 @@ extension Statement {
 		try bind(value: value.toDatabaseValue(), toParameter: index)
 	}
 
-	/// Bind a value to a statement parameter
+	/// Bind a value to a named SQL parameter
 	///
 	/// Parameter indexes are 1-based.  The leftmost parameter in a statement has index 1.
 	/// - parameter value: The desired value of the parameter
@@ -41,35 +42,25 @@ extension Statement {
 		try bind(value: value.toDatabaseValue(), toParameter: name)
 	}
 
-	/// Bind a sequence of values to statement parameters
+	/// Bind a sequence of values to SQL parameters
 	///
 	/// - parameter values: A sequence of `DatabaseValueConvertible` instances to bind
 	/// - throws: `DatabaseError`
-	public func bind<S: Sequence, T: DatabaseValueConvertible>(_ values: S) throws where S.Iterator.Element == Optional<T> {
+	public func bind<S: Sequence, T: DatabaseValueConvertible>(_ values: S) throws where S.Iterator.Element == T {
 		var index = 1
 		for value in values {
-			if let value = value {
-				try bind(value: value.toDatabaseValue(), toParameter: index)
-			}
-			else {
-				try bind(value: DatabaseValue.null, toParameter: index)
-			}
+			try bind(value: value.toDatabaseValue(), toParameter: index)
 			index += 1
 		}
 	}
 
-	/// Bind a sequence of values to statement parameters
+	/// Bind a sequence of key/value pairs to named SQL parameters
 	///
 	/// - parameter values: A sequence of `DatabaseValueConvertible` instances to bind
 	/// - throws: `DatabaseError`
-	public func bind<S: Sequence, T: DatabaseValueConvertible>(_ values: S) throws where S.Iterator.Element == (String, Optional<T>) {
+	public func bind<S: Sequence, T: DatabaseValueConvertible>(_ values: S) throws where S.Iterator.Element == (String, T) {
 		for (key, value) in values {
-			if let value = value {
-				try bind(value: value.toDatabaseValue(), toParameter: key)
-			}
-			else {
-				try bind(value: DatabaseValue.null, toParameter: key)
-			}
+			try bind(value: value.toDatabaseValue(), toParameter: key)
 		}
 	}
 
@@ -80,8 +71,9 @@ extension Row {
 	/// Retrieve the value of the column
 	///
 	/// - returns: The column's value
-	public func column<T: DatabaseValueConvertible>(_ index: Int) -> T? {
-		return T.fromDatabaseValue(column(index))
+	/// - throws: An error if the value contains an illegal value
+	public func column<T: DatabaseValueConvertible>(_ index: Int) throws -> T? {
+		return try T.fromDatabaseValue(column(index))
 	}
 }
 
@@ -90,8 +82,9 @@ extension Column {
 	/// Retrieve the value of the column
 	///
 	/// - returns: The column's value
-	public func value<T: DatabaseValueConvertible>() -> T? {
-		return row.column(Int(idx))
+	/// - throws: An error if the value contains an illegal value
+	public func value<T: DatabaseValueConvertible>() throws -> T? {
+		return try row.column(Int(idx))
 	}
 }
 
