@@ -21,7 +21,7 @@ public enum DatabaseValue {
 
 /// `DatabaseValue` parameter binding
 extension Statement {
-	/// Bind a value to a statement parameter
+	/// Bind a value to an SQL parameter
 	///
 	/// Parameter indexes are 1-based.  The leftmost parameter in a statement has index 1.
 	/// - parameter value: The desired value of the parameter
@@ -77,7 +77,7 @@ extension Statement {
 
 	}
 
-	/// Bind a value to a statement parameter
+	/// Bind a value to an SQL parameter
 	///
 	/// - parameter value: The desired value of the parameter
 	/// - parameter name: The name of the desired parameter
@@ -87,7 +87,7 @@ extension Statement {
 		try bind(value: value, toParameter: index)
 	}
 
-	/// Bind a sequence of values to statement parameters
+	/// Bind a sequence of values to SQL parameters
 	///
 	/// - parameter values: A sequence of `DatabaseValue` instances to bind
 	/// - throws: `DatabaseError`
@@ -99,7 +99,7 @@ extension Statement {
 		}
 	}
 
-	/// Bind a sequence of values to statement parameters
+	/// Bind a sequence of values to SQL parameters
 	///
 	/// - parameter values: A sequence of `DatabaseValue` instances to bind
 	/// - throws: `DatabaseError`
