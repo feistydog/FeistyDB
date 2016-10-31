@@ -8,7 +8,7 @@ import Foundation
 /// A class providing serialized access to a database
 public final class DatabaseQueue {
 	/// The underlying database
-	private var database: Database
+	private let database: Database
 	/// The dispatch queue used to serialize access
 	private let queue = DispatchQueue(label: "com.feisty-dog.FDDatabase.DatabaseQueue")
 

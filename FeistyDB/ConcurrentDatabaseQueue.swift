@@ -8,7 +8,7 @@ import Foundation
 /// A class providing concurrent access (multiple readers and one writer) to a database
 public final class ConcurrentDatabaseQueue {
 	/// The underlying database
-	private var database: Database
+	private let database: Database
 	/// The dispatch queue used for concurrent access
 	private let queue = DispatchQueue(label: "com.feisty-dog.FDDatabase.ConcurrentDatabaseQueue", attributes: .concurrent)
 
