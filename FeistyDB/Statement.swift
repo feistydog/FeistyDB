@@ -6,6 +6,8 @@
 import Foundation
 
 /// An `sqlite3_stmt *` object
+///
+/// - seealso: [SQLite Prepared Statement Object](http://sqlite.org/c3ref/stmt.html)
 public typealias SQLitePreparedStatement = OpaquePointer
 
 /// A class representing an SQL statement with support for binding SQL parameters and retrieving results.

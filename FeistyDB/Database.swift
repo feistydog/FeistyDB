@@ -10,6 +10,8 @@ let SQLITE_STATIC = unsafeBitCast(0, to: sqlite3_destructor_type.self)
 let SQLITE_TRANSIENT = unsafeBitCast(-1, to: sqlite3_destructor_type.self)
 
 /// An `sqlite3 *` object
+///
+/// - seealso: [SQLite Database Connection Handle](http://sqlite.org/c3ref/sqlite3.html)
 public typealias SQLiteDatabaseConnection = OpaquePointer
 
 /// A class encapsulating access to an [SQLite](http://sqlite.org) database
