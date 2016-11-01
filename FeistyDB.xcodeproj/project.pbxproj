@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		32135F111DC819CC004B0E93 /* feisty_db_register_sqlite_uuid_extension.c in Sources */ = {isa = PBXBuildFile; fileRef = 32135F101DC819CC004B0E93 /* feisty_db_register_sqlite_uuid_extension.c */; settings = {COMPILER_FLAGS = "-DSQLITE_CORE"; }; };
 		3236FD841DC6EDE50057703E /* FeistyDB.h in Headers */ = {isa = PBXBuildFile; fileRef = 3236FD831DC6EDE50057703E /* FeistyDB.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3236FD871DC6EF420057703E /* FeistyDBTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3236FD851DC6EDF90057703E /* FeistyDBTests.swift */; };
 		324CCF1E1DC61C0E0056935B /* FeistyDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 324CCF141DC61C0E0056935B /* FeistyDB.framework */; };
@@ -39,6 +40,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		32135F101DC819CC004B0E93 /* feisty_db_register_sqlite_uuid_extension.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = feisty_db_register_sqlite_uuid_extension.c; sourceTree = "<group>"; };
 		3236FD831DC6EDE50057703E /* FeistyDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeistyDB.h; sourceTree = "<group>"; };
 		3236FD851DC6EDF90057703E /* FeistyDBTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeistyDBTests.swift; sourceTree = "<group>"; };
 		324CCF141DC61C0E0056935B /* FeistyDB.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FeistyDB.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -138,6 +140,7 @@
 				324CCF471DC61F020056935B /* sqlite3.c */,
 				324CCF491DC61F020056935B /* sqlite3ext.h */,
 				324CCF4A1DC61F020056935B /* uuid.c */,
+				32135F101DC819CC004B0E93 /* feisty_db_register_sqlite_uuid_extension.c */,
 			);
 			path = sqlite;
 			sourceTree = "<group>";
@@ -268,6 +271,7 @@
 				324CCF541DC621F00056935B /* DatabaseError.swift in Sources */,
 				324CCF3F1DC61DE90056935B /* Statement.swift in Sources */,
 				324CCF5E1DC624950056935B /* DatabaseQueue.swift in Sources */,
+				32135F111DC819CC004B0E93 /* feisty_db_register_sqlite_uuid_extension.c in Sources */,
 				324CCF4C1DC61F020056935B /* sqlite3.c in Sources */,
 				324CCF4F1DC61F020056935B /* uuid.c in Sources */,
 			);
