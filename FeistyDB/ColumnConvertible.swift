@@ -10,6 +10,7 @@ public protocol ColumnConvertible {
 	/// Initialize `self` from an SQLite statement directly
 	///
 	/// Do not check for null database values
+	///
 	/// - parameter stmt: An `sqlite3_stmt *` object
 	/// - parameter index: The index of the desired parameter
 	/// - throws: An error if initialization failed
