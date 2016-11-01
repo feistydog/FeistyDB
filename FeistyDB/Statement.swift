@@ -5,13 +5,16 @@
 
 import Foundation
 
+/// An `sqlite3_stmt *` object
+public typealias SQLitePreparedStatement = OpaquePointer
+
 /// A class representing an SQL statement with support for binding SQL parameters and retrieving results.
 final public class Statement {
 	/// The owning `Database`
 	public let database: Database
 
 	/// The underlying `sqlite3_stmt *` object
-	var stmt: OpaquePointer
+	var stmt: SQLitePreparedStatement
 
 	/// Compile an SQL statement
 	///
@@ -21,7 +24,7 @@ final public class Statement {
 	init(database: Database, sql: String) throws {
 		self.database = database
 
-		var stmt: OpaquePointer? = nil
+		var stmt: SQLitePreparedStatement? = nil
 		guard sqlite3_prepare_v2(database.db, sql, -1, &stmt, nil) == SQLITE_OK else {
 			#if DEBUG
 				print("Error preparing SQL \"\(sql)\"")
@@ -134,7 +137,7 @@ final public class Statement {
 	/// - parameter statement: The raw `sqlite3_stmt *` statement object
 	/// - throws: Any error thrown in `block`
 	/// - returns: The value returned by `block`
-	public func withUnsafeRawSQLiteStatement<T>(block: (_ statement: OpaquePointer) throws -> (T)) rethrows -> T {
+	public func withUnsafeRawSQLiteStatement<T>(block: (_ statement: SQLitePreparedStatement) throws -> (T)) rethrows -> T {
 		return try block(stmt)
 	}
 }

@@ -50,7 +50,7 @@ public struct Column {
 	/// - parameter index: The index of this column in the result set
 	/// - throws: Any error thrown in `block`
 	/// - returns: The value returned by `block`
-	public func withUnsafeRawSQLiteStatement<T>(block: (_ statement: OpaquePointer, _ index: Int) throws -> (T)) rethrows -> T {
+	public func withUnsafeRawSQLiteStatement<T>(block: (_ statement: SQLitePreparedStatement, _ index: Int) throws -> (T)) rethrows -> T {
 		return try block(row.statement.stmt, index)
 	}
 }

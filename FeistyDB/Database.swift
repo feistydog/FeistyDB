@@ -9,10 +9,14 @@ import Foundation
 let SQLITE_STATIC = unsafeBitCast(0, to: sqlite3_destructor_type.self)
 let SQLITE_TRANSIENT = unsafeBitCast(-1, to: sqlite3_destructor_type.self)
 
+/// An `sqlite3 *` object
+public typealias SQLiteDatabaseConnection = OpaquePointer
+
 /// A class encapsulating access to an [SQLite](http://sqlite.org) database
 final public class Database {
 	/// The underlying `sqlite3 *` database
-	var db: OpaquePointer
+	var db: SQLiteDatabaseConnection
+
 	/// Prepared statements
 	var preparedStatements = [String: Statement]()
 
@@ -20,7 +24,7 @@ final public class Database {
 	///
 	/// - throws: `DatabaseError`
 	public init() throws {
-		var db: OpaquePointer?
+		var db: SQLiteDatabaseConnection?
 		guard sqlite3_open_v2(":memory:", &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, nil) == SQLITE_OK else {
 			#if DEBUG
 				print("Error creating in-memory database: \(String(cString: sqlite3_errmsg(db)))")
@@ -38,7 +42,7 @@ final public class Database {
 	/// - parameter create: Whether to create the database if it doesn't exist
 	/// - throws: `DatabaseError`
 	public init(url: URL, readOnly: Bool = false, create: Bool = true) throws {
-		var db: OpaquePointer?
+		var db: SQLiteDatabaseConnection?
 		try url.withUnsafeFileSystemRepresentation { path in
 			var flags = (readOnly ? SQLITE_OPEN_READONLY : SQLITE_OPEN_READWRITE)
 			if create {
@@ -56,12 +60,12 @@ final public class Database {
 		self.db = db!
 	}
 
-	/// Initialize a database from an existing `sqlite3 *` database handle
+	/// Initialize a database from an existing `sqlite3 *` database
 	///
-	/// **The database takes ownership of the passed-in database handle**
+	/// **The database takes ownership of the passed-in database**
 	///
-	/// - parameter db: An `sqlite3 *` database handle
-	public init(rawSQLiteDatabase db: OpaquePointer) {
+	/// - parameter db: An `sqlite3 *` database
+	public init(rawSQLiteDatabase db: SQLiteDatabaseConnection) {
 		self.db = db
 
 		#if false
@@ -70,7 +74,7 @@ final public class Database {
 					// P = sqlite3_stmt
 					// X = int64_t*
 
-					let stmt = OpaquePointer(P)
+					let stmt = SQLitePreparedStatement(P)
 					let sql = String(cString: sqlite3_sql(stmt))
 
 					if let nanos = X?.assumingMemoryBound(to: Int64.self).pointee {
@@ -98,7 +102,7 @@ final public class Database {
 	/// - parameter db: The raw `sqlite3 *` database object
 	/// - throws: Any error thrown in `block`
 	/// - returns: The value returned by `block`
-	public func withUnsafeRawSQLiteDatabase<T>(block: (_ db: OpaquePointer) throws -> (T)) rethrows -> T {
+	public func withUnsafeRawSQLiteDatabase<T>(block: (_ db: SQLiteDatabaseConnection) throws -> (T)) rethrows -> T {
 		return try block(self.db)
 	}
 

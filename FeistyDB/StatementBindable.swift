@@ -12,7 +12,7 @@ public protocol StatementBindable {
 	/// - parameter stmt: An `sqlite3_stmt *` object
 	/// - parameter idx: The index of the parameter to bind
 	/// - throws: `DatabaseError`
-	func bind(toRawSQLiteStatement stmt: OpaquePointer, parameter idx: Int32) throws
+	func bind(toRawSQLiteStatement stmt: SQLitePreparedStatement, parameter idx: Int32) throws
 }
 
 /// Convenience methods to execute SQL statements
@@ -197,7 +197,7 @@ extension Statement {
 }
 
 extension String: StatementBindable {
-	public func bind(toRawSQLiteStatement stmt: OpaquePointer, parameter idx: Int32) throws {
+	public func bind(toRawSQLiteStatement stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
 		guard sqlite3_bind_text(stmt, idx, self, -1, SQLITE_TRANSIENT) == SQLITE_OK else {
 			#if DEBUG
 				print("Error binding String \"\(self)\" to parameter \(idx): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
@@ -208,7 +208,7 @@ extension String: StatementBindable {
 }
 
 extension Data: StatementBindable {
-	public func bind(toRawSQLiteStatement stmt: OpaquePointer, parameter idx: Int32) throws {
+	public func bind(toRawSQLiteStatement stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
 		try self.withUnsafeBytes { (bytes: UnsafePointer<UInt8>) throws in
 			guard sqlite3_bind_blob(stmt, idx, bytes, Int32(self.count), SQLITE_TRANSIENT) == SQLITE_OK else {
 				#if DEBUG
@@ -221,7 +221,7 @@ extension Data: StatementBindable {
 }
 
 extension Int: StatementBindable {
-	public func bind(toRawSQLiteStatement stmt: OpaquePointer, parameter idx: Int32) throws {
+	public func bind(toRawSQLiteStatement stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
 		guard sqlite3_bind_int64(stmt, idx, Int64(self)) == SQLITE_OK else {
 			#if DEBUG
 				print("Error binding Int \(self) to parameter \(idx): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
@@ -232,7 +232,7 @@ extension Int: StatementBindable {
 }
 
 extension UInt: StatementBindable {
-	public func bind(toRawSQLiteStatement stmt: OpaquePointer, parameter idx: Int32) throws {
+	public func bind(toRawSQLiteStatement stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
 		guard sqlite3_bind_int64(stmt, idx, Int64(Int(bitPattern: self))) == SQLITE_OK else {
 			#if DEBUG
 				print("Error binding UInt \(self) to parameter \(idx): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
@@ -243,7 +243,7 @@ extension UInt: StatementBindable {
 }
 
 extension Int8: StatementBindable {
-	public func bind(toRawSQLiteStatement stmt: OpaquePointer, parameter idx: Int32) throws {
+	public func bind(toRawSQLiteStatement stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
 		guard sqlite3_bind_int64(stmt, idx, Int64(self)) == SQLITE_OK else {
 			#if DEBUG
 				print("Error binding Int8 \(self) to parameter \(idx): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
@@ -254,7 +254,7 @@ extension Int8: StatementBindable {
 }
 
 extension UInt8: StatementBindable {
-	public func bind(toRawSQLiteStatement stmt: OpaquePointer, parameter idx: Int32) throws {
+	public func bind(toRawSQLiteStatement stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
 		guard sqlite3_bind_int64(stmt, idx, Int64(self)) == SQLITE_OK else {
 			#if DEBUG
 				print("Error binding UInt8 \(self) to parameter \(idx): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
@@ -265,7 +265,7 @@ extension UInt8: StatementBindable {
 }
 
 extension Int16: StatementBindable {
-	public func bind(toRawSQLiteStatement stmt: OpaquePointer, parameter idx: Int32) throws {
+	public func bind(toRawSQLiteStatement stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
 		guard sqlite3_bind_int64(stmt, idx, Int64(self)) == SQLITE_OK else {
 			#if DEBUG
 				print("Error binding Int16 \(self) to parameter \(idx): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
@@ -276,7 +276,7 @@ extension Int16: StatementBindable {
 }
 
 extension UInt16: StatementBindable {
-	public func bind(toRawSQLiteStatement stmt: OpaquePointer, parameter idx: Int32) throws {
+	public func bind(toRawSQLiteStatement stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
 		guard sqlite3_bind_int64(stmt, idx, Int64(self)) == SQLITE_OK else {
 			#if DEBUG
 				print("Error binding UInt16 \(self) to parameter \(idx): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
@@ -287,7 +287,7 @@ extension UInt16: StatementBindable {
 }
 
 extension Int32: StatementBindable {
-	public func bind(toRawSQLiteStatement stmt: OpaquePointer, parameter idx: Int32) throws {
+	public func bind(toRawSQLiteStatement stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
 		guard sqlite3_bind_int64(stmt, idx, Int64(self)) == SQLITE_OK else {
 			#if DEBUG
 				print("Error binding Int32 \(self) to parameter \(idx): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
@@ -298,7 +298,7 @@ extension Int32: StatementBindable {
 }
 
 extension UInt32: StatementBindable {
-	public func bind(toRawSQLiteStatement stmt: OpaquePointer, parameter idx: Int32) throws {
+	public func bind(toRawSQLiteStatement stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
 		guard sqlite3_bind_int64(stmt, idx, Int64(self)) == SQLITE_OK else {
 			#if DEBUG
 				print("Error binding UInt32 \(self) to parameter \(idx): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
@@ -309,7 +309,7 @@ extension UInt32: StatementBindable {
 }
 
 extension Int64: StatementBindable {
-	public func bind(toRawSQLiteStatement stmt: OpaquePointer, parameter idx: Int32) throws {
+	public func bind(toRawSQLiteStatement stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
 		guard sqlite3_bind_int64(stmt, idx, self) == SQLITE_OK else {
 			#if DEBUG
 				print("Error binding Int64 \(self) to parameter \(idx): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
@@ -320,7 +320,7 @@ extension Int64: StatementBindable {
 }
 
 extension UInt64: StatementBindable {
-	public func bind(toRawSQLiteStatement stmt: OpaquePointer, parameter idx: Int32) throws {
+	public func bind(toRawSQLiteStatement stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
 		guard sqlite3_bind_int64(stmt, idx, Int64(bitPattern: self)) == SQLITE_OK else {
 			#if DEBUG
 				print("Error binding UInt64 \(self) to parameter \(idx): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
@@ -331,7 +331,7 @@ extension UInt64: StatementBindable {
 }
 
 extension Float: StatementBindable {
-	public func bind(toRawSQLiteStatement stmt: OpaquePointer, parameter idx: Int32) throws {
+	public func bind(toRawSQLiteStatement stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
 		guard sqlite3_bind_double(stmt, idx, Double(self)) == SQLITE_OK else {
 			#if DEBUG
 				print("Error binding Float \(self) to parameter \(idx): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
@@ -342,7 +342,7 @@ extension Float: StatementBindable {
 }
 
 extension Double: StatementBindable {
-	public func bind(toRawSQLiteStatement stmt: OpaquePointer, parameter idx: Int32) throws {
+	public func bind(toRawSQLiteStatement stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
 		guard sqlite3_bind_double(stmt, idx, self) == SQLITE_OK else {
 			#if DEBUG
 				print("Error binding Double \(self) to parameter \(idx): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
@@ -353,7 +353,7 @@ extension Double: StatementBindable {
 }
 
 extension Bool: StatementBindable {
-	public func bind(toRawSQLiteStatement stmt: OpaquePointer, parameter idx: Int32) throws {
+	public func bind(toRawSQLiteStatement stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
 		guard sqlite3_bind_int64(stmt, idx, self ? 1 : 0) == SQLITE_OK else {
 			#if DEBUG
 				print("Error binding Bool \(self) to parameter \(idx): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
@@ -364,7 +364,7 @@ extension Bool: StatementBindable {
 }
 
 extension UUID: StatementBindable {
-	public func bind(toRawSQLiteStatement stmt: OpaquePointer, parameter idx: Int32) throws {
+	public func bind(toRawSQLiteStatement stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
 		guard sqlite3_bind_text(stmt, idx, self.uuidString, -1, SQLITE_TRANSIENT) == SQLITE_OK else {
 			#if DEBUG
 				print("Error binding UUID \"\(self)\" to parameter \(idx): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
@@ -375,7 +375,7 @@ extension UUID: StatementBindable {
 }
 
 extension URL: StatementBindable {
-	public func bind(toRawSQLiteStatement stmt: OpaquePointer, parameter idx: Int32) throws {
+	public func bind(toRawSQLiteStatement stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
 		guard sqlite3_bind_text(stmt, idx, self.absoluteString, -1, SQLITE_TRANSIENT) == SQLITE_OK else {
 			#if DEBUG
 				print("Error binding URL \"\(self)\" to parameter \(idx): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
@@ -393,7 +393,7 @@ let iso8601DateFormatter: ISO8601DateFormatter = {
 }()
 
 extension Date: StatementBindable {
-	public func bind(toRawSQLiteStatement stmt: OpaquePointer, parameter idx: Int32) throws {
+	public func bind(toRawSQLiteStatement stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
 		guard sqlite3_bind_text(stmt, idx, iso8601DateFormatter.string(from: self), -1, SQLITE_TRANSIENT) == SQLITE_OK else {
 			#if DEBUG
 				print("Error binding Date \"\(self)\" to parameter \(idx): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
