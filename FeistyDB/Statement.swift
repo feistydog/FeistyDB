@@ -87,10 +87,10 @@ final public class Statement {
 	/// - parameter block: A block called for each row
 	/// - parameter row: A `Row` object representing a row of returned data
 	/// - throws: `DatabaseError`
-	public func results(row block: (_ row: Row) -> ()) throws {
+	public func results(row block: (_ row: Row) throws -> ()) throws {
 		var result = sqlite3_step(stmt)
 		while result == SQLITE_ROW {
-			block(Row(statement: self))
+			try block(Row(statement: self))
 			result = sqlite3_step(stmt)
 		}
 
