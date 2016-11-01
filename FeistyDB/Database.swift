@@ -228,3 +228,45 @@ final public class Database {
 		return preparedStatements.removeValue(forKey: key)
 	}
 }
+
+/// A comparator for String objects
+public typealias StringComparator = (String, String) -> ComparisonResult
+
+/// Custom collation support
+extension Database {
+
+	/// Add a custom collation function
+	///
+	/// - parameter name: The name of the custom collation sequence
+	/// - parameter block: A string comparison function
+	/// - throws: `DatabaseError`
+	public func add(collation name: String, _ block: @escaping StringComparator) throws {
+		let storage = UnsafeMutablePointer<StringComparator>.allocate(capacity: 1)
+		storage.initialize(to: block)
+		guard sqlite3_create_collation_v2(db, name, SQLITE_UTF8, storage, { (context, lhs_len, lhs_data, rhs_len, rhs_data) -> Int32 in
+			// Have total faith that SQLite will pass valid parameters and use unsafelyUnwrapped
+			let lhs = String(bytesNoCopy: UnsafeMutableRawPointer(mutating: lhs_data.unsafelyUnwrapped), length: Int(lhs_len), encoding: .utf8, freeWhenDone: false).unsafelyUnwrapped
+			let rhs = String(bytesNoCopy: UnsafeMutableRawPointer(mutating: rhs_data.unsafelyUnwrapped), length: Int(rhs_len), encoding: .utf8, freeWhenDone: false).unsafelyUnwrapped
+
+			// Cast context to the appropriate type and call the comparator
+			let result = context.unsafelyUnwrapped.assumingMemoryBound(to: StringComparator.self).pointee(lhs, rhs)
+			return Int32(result.rawValue)
+		}, { context in
+			let storage = context.unsafelyUnwrapped.assumingMemoryBound(to: StringComparator.self)
+			storage.deinitialize()
+			storage.deallocate(capacity: 1)
+		}) == SQLITE_OK else {
+			throw DatabaseError.sqliteError(String(cString: sqlite3_errmsg(db)))
+		}
+	}
+
+	/// Remove a custom collation function
+	///
+	/// - parameter name: The name of the custom collation sequence
+	/// - throws: `DatabaseError`
+	public func remove(collation name: String) throws {
+		guard sqlite3_create_collation_v2(db, name, SQLITE_UTF8, nil, nil, nil) == SQLITE_OK else {
+			throw DatabaseError.sqliteError(String(cString: sqlite3_errmsg(db)))
+		}
+	}
+}
