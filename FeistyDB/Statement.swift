@@ -146,10 +146,10 @@ final public class Statement {
 	/// **Use of this function should be avoided whenever possible**
 	///
 	/// - parameter block: The block performing the operation
-	/// - parameter statement: The raw `sqlite3_stmt *` statement object
+	/// - parameter stmt: The raw `sqlite3_stmt *` statement object
 	/// - throws: Any error thrown in `block`
 	/// - returns: The value returned by `block`
-	public func withUnsafeRawSQLiteStatement<T>(block: (_ statement: SQLitePreparedStatement) throws -> (T)) rethrows -> T {
+	public func withUnsafeRawSQLiteStatement<T>(block: (_ stmt: SQLitePreparedStatement) throws -> (T)) rethrows -> T {
 		return try block(stmt)
 	}
 }

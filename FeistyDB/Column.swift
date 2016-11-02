@@ -46,11 +46,11 @@ public struct Column {
 	/// **Use of this function should be avoided whenever possible**
 	///
 	/// - parameter block: The block performing the operation
-	/// - parameter statement: The raw `sqlite3_stmt *` statement object
+	/// - parameter stmt: The raw `sqlite3_stmt *` statement object
 	/// - parameter index: The index of this column in the result set
 	/// - throws: Any error thrown in `block`
 	/// - returns: The value returned by `block`
-	public func withUnsafeRawSQLiteStatement<T>(block: (_ statement: SQLitePreparedStatement, _ index: Int) throws -> (T)) rethrows -> T {
+	public func withUnsafeRawSQLiteStatement<T>(block: (_ stmt: SQLitePreparedStatement, _ index: Int) throws -> (T)) rethrows -> T {
 		return try block(row.statement.stmt, index)
 	}
 }
