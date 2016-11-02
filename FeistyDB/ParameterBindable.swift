@@ -5,7 +5,7 @@
 
 import Foundation
 
-/// A protocol allowing types to bind their value directly to an SQLite statement for efficiency
+/// A protocol allowing types to bind their value directly to an SQLite statement for efficiency.
 ///
 /// The implementation should use one of the `sqlite_bind_X()` functions documented at [Binding Values To Prepared Statements](https://sqlite.org/c3ref/bind_blob.html).
 ///
