@@ -5,16 +5,27 @@
 
 import Foundation
 
-/// A protocol allowing types to initialize directly from an SQLite statement for efficiency
+/// A protocol allowing types to initialize directly from a parameter in an SQLite statement for efficiency.
+///
+/// The implementation should use one of the `sqlite_column_X()` functions documented at [Result Values From A Query](https://sqlite.org/c3ref/column_blob.html).
+///
+/// For example, the implementation for `Int64` is:
+///
+/// ```swift
+/// extension Int64: ColumnConvertible {
+///     public init(with stmt: SQLitePreparedStatement, parameter idx: Int32) {
+///        self = sqlite3_column_int64(stmt, idx)
+///     }
+/// }
+///  ```
 public protocol ColumnConvertible {
-	/// Initialize `self` from an SQLite statement directly
+	/// Initialize `self` from an SQLite statement parameter
 	///
-	/// Do not check for null database values
-	///
+	/// - precondition: `sqlite3_column_type(stmt, idx) != SQLITE_NULL`
 	/// - parameter stmt: An `sqlite3_stmt *` object
 	/// - parameter index: The index of the desired parameter
 	/// - throws: An error if initialization failed
-	init(withRawSQLiteStatement stmt: SQLitePreparedStatement, parameter idx: Int32) throws
+	init(with stmt: SQLitePreparedStatement, parameter idx: Int32) throws
 }
 
 extension Row {
@@ -30,7 +41,7 @@ extension Row {
 		case SQLITE_NULL:
 			return nil
 		default:
-			return try T(withRawSQLiteStatement: stmt, parameter: idx)
+			return try T(with: stmt, parameter: idx)
 		}
 	}
 
@@ -44,9 +55,9 @@ extension Row {
 		let idx = Int32(index)
 		switch sqlite3_column_type(stmt, idx) {
 		case SQLITE_NULL:
-			throw DatabaseError.dataFormatError("Null encountered")
+			throw DatabaseError.dataFormatError("Database null encountered at column \(index)")
 		default:
-			return try T(withRawSQLiteStatement: stmt, parameter: idx)
+			return try T(with: stmt, parameter: idx)
 		}
 	}
 
@@ -94,98 +105,98 @@ extension Column {
 }
 
 extension String: ColumnConvertible {
-	public init(withRawSQLiteStatement stmt: SQLitePreparedStatement, parameter idx: Int32) {
+	public init(with stmt: SQLitePreparedStatement, parameter idx: Int32) {
 		self.init(cString: sqlite3_column_text(stmt, idx))
 	}
 }
 
 extension Data: ColumnConvertible {
-	public init(withRawSQLiteStatement stmt: SQLitePreparedStatement, parameter idx: Int32) {
+	public init(with stmt: SQLitePreparedStatement, parameter idx: Int32) {
 		let byteCount = Int(sqlite3_column_bytes(stmt, idx))
 		self.init(bytes: sqlite3_column_blob(stmt, idx).assumingMemoryBound(to: UInt8.self), count: byteCount)
 	}
 }
 
 extension Int: ColumnConvertible {
-	public init(withRawSQLiteStatement stmt: SQLitePreparedStatement, parameter idx: Int32) {
+	public init(with stmt: SQLitePreparedStatement, parameter idx: Int32) {
 		self.init(sqlite3_column_int64(stmt, idx))
 	}
 }
 
 extension UInt: ColumnConvertible {
-	public init(withRawSQLiteStatement stmt: SQLitePreparedStatement, parameter idx: Int32) {
+	public init(with stmt: SQLitePreparedStatement, parameter idx: Int32) {
 		self.init(bitPattern: Int(sqlite3_column_int64(stmt, idx)))
 	}
 }
 
 extension Int8: ColumnConvertible {
-	public init(withRawSQLiteStatement stmt: SQLitePreparedStatement, parameter idx: Int32) {
+	public init(with stmt: SQLitePreparedStatement, parameter idx: Int32) {
 		self.init(sqlite3_column_int64(stmt, idx))
 	}
 }
 
 extension UInt8: ColumnConvertible {
-	public init(withRawSQLiteStatement stmt: SQLitePreparedStatement, parameter idx: Int32) {
+	public init(with stmt: SQLitePreparedStatement, parameter idx: Int32) {
 		self.init(sqlite3_column_int64(stmt, idx))
 	}
 }
 
 extension Int16: ColumnConvertible {
-	public init(withRawSQLiteStatement stmt: SQLitePreparedStatement, parameter idx: Int32) {
+	public init(with stmt: SQLitePreparedStatement, parameter idx: Int32) {
 		self.init(sqlite3_column_int64(stmt, idx))
 	}
 }
 
 extension UInt16: ColumnConvertible {
-	public init(withRawSQLiteStatement stmt: SQLitePreparedStatement, parameter idx: Int32) {
+	public init(with stmt: SQLitePreparedStatement, parameter idx: Int32) {
 		self.init(sqlite3_column_int64(stmt, idx))
 	}
 }
 
 extension Int32: ColumnConvertible {
-	public init(withRawSQLiteStatement stmt: SQLitePreparedStatement, parameter idx: Int32) {
+	public init(with stmt: SQLitePreparedStatement, parameter idx: Int32) {
 		self.init(sqlite3_column_int64(stmt, idx))
 	}
 }
 
 extension UInt32: ColumnConvertible {
-	public init(withRawSQLiteStatement stmt: SQLitePreparedStatement, parameter idx: Int32) {
+	public init(with stmt: SQLitePreparedStatement, parameter idx: Int32) {
 		self.init(sqlite3_column_int64(stmt, idx))
 	}
 }
 
 extension Int64: ColumnConvertible {
-	public init(withRawSQLiteStatement stmt: SQLitePreparedStatement, parameter idx: Int32) {
+	public init(with stmt: SQLitePreparedStatement, parameter idx: Int32) {
 		self = sqlite3_column_int64(stmt, idx)
 	}
 }
 
 extension UInt64: ColumnConvertible {
-	public init(withRawSQLiteStatement stmt: SQLitePreparedStatement, parameter idx: Int32) {
+	public init(with stmt: SQLitePreparedStatement, parameter idx: Int32) {
 		self.init(bitPattern: sqlite3_column_int64(stmt, idx))
 	}
 }
 
 extension Float: ColumnConvertible {
-	public init(withRawSQLiteStatement stmt: SQLitePreparedStatement, parameter idx: Int32) {
+	public init(with stmt: SQLitePreparedStatement, parameter idx: Int32) {
 		self.init(sqlite3_column_double(stmt, idx))
 	}
 }
 
 extension Double: ColumnConvertible {
-	public init(withRawSQLiteStatement stmt: SQLitePreparedStatement, parameter idx: Int32) {
+	public init(with stmt: SQLitePreparedStatement, parameter idx: Int32) {
 		self = sqlite3_column_double(stmt, idx)
 	}
 }
 
 extension Bool: ColumnConvertible {
-	public init(withRawSQLiteStatement stmt: SQLitePreparedStatement, parameter idx: Int32) {
+	public init(with stmt: SQLitePreparedStatement, parameter idx: Int32) {
 		self.init(sqlite3_column_int64(stmt, idx) != 0)
 	}
 }
 
 extension UUID: ColumnConvertible {
-	public init(withRawSQLiteStatement stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
+	public init(with stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
 		let s = String(cString: sqlite3_column_text(stmt, idx))
 		guard let u = UUID(uuidString: s) else {
 			#if DEBUG
@@ -198,7 +209,7 @@ extension UUID: ColumnConvertible {
 }
 
 extension URL: ColumnConvertible {
-	public init(withRawSQLiteStatement stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
+	public init(with stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
 		let s = String(cString: sqlite3_column_text(stmt, idx))
 		guard let u = URL(string: s) else {
 			#if DEBUG
@@ -212,7 +223,7 @@ extension URL: ColumnConvertible {
 }
 
 extension Date: ColumnConvertible {
-	public init(withRawSQLiteStatement stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
+	public init(with stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
 		let s = String(cString: sqlite3_column_text(stmt, idx))
 		guard let d = iso8601DateFormatter.date(from: s) else {
 			#if DEBUG
