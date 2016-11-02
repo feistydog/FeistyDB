@@ -19,6 +19,25 @@ public enum DatabaseValue {
 	case null
 }
 
+/// String conversion
+extension DatabaseValue: CustomStringConvertible {
+	/// A description of the type and value contained by this `DatabaseValue`
+	public var description: String {
+		switch self {
+		case .integer(let i):
+			return "DatabaseValue.integer(\(i))"
+		case .float(let f):
+			return "DatabaseValue.float(\(f))"
+		case .text(let t):
+			return "DatabaseValue.text(\(t))"
+		case .blob(let b):
+			return "DatabaseValue.blob(\(b))"
+		case .null:
+			return "DatabaseValue.null"
+		}
+	}
+}
+
 /// `DatabaseValue` parameter binding
 extension Statement {
 	/// Bind a value to an SQL parameter
