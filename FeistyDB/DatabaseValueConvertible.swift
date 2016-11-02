@@ -20,6 +20,40 @@ public protocol DatabaseValueConvertible {
 	static func fromDatabaseValue(_ value: DatabaseValue) throws -> Self?
 }
 
+/// Convenience methods to execute SQL statements
+extension Database {
+	/// Execute an SQL statement
+	///
+	/// - parameter sql: The SQL statement to execute
+	/// - parameter values: A series of values to bind to SQL parameters
+	/// - throws: `DatabaseError`
+	public func execute<T: DatabaseValueConvertible>(sql: String, parameters values: T...) throws {
+		try execute(sql: sql, parameters: values)
+	}
+
+	/// Execute an SQL statement
+	///
+	/// - parameter sql: The SQL statement to execute
+	/// - parameter values: A sequence of values to bind to SQL parameters
+	/// - throws: `DatabaseError`
+	public func execute<S: Sequence, T: DatabaseValueConvertible>(sql: String, parameters values: S) throws where S.Iterator.Element == T {
+		let statement = try prepare(sql: sql)
+		try statement.bind(parameters: values)
+		try statement.execute()
+	}
+
+	/// Execute an SQL statement
+	///
+	/// - parameter sql: The SQL statement to execute
+	/// - parameter values: A sequence of name/value pairs to bind to named SQL parameters
+	/// - throws: `DatabaseError`
+	public func execute<S: Sequence, T: DatabaseValueConvertible>(sql: String, parameters values: S) throws where S.Iterator.Element == (String, T) {
+		let statement = try prepare(sql: sql)
+		try statement.bind(parameters: values)
+		try statement.execute()
+	}
+}
+
 /// Parameter binding for convertible types
 extension Statement {
 	/// Bind a value to an SQL parameter
@@ -42,11 +76,19 @@ extension Statement {
 		try bind(value: value.toDatabaseValue(), toParameter: name)
 	}
 
+	/// Bind a series of values to SQL parameters
+	///
+	/// - parameter values: A series of `DatabaseValueConvertible` instances to bind
+	/// - throws: `DatabaseError`
+	public func bind<T: DatabaseValueConvertible>(parameters values: T...) throws {
+		try bind(parameters: values)
+	}
+
 	/// Bind a sequence of values to SQL parameters
 	///
 	/// - parameter values: A sequence of `DatabaseValueConvertible` instances to bind
 	/// - throws: `DatabaseError`
-	public func bind<S: Sequence, T: DatabaseValueConvertible>(_ values: S) throws where S.Iterator.Element == T {
+	public func bind<S: Sequence, T: DatabaseValueConvertible>(parameters values: S) throws where S.Iterator.Element == T {
 		var index = 1
 		for value in values {
 			try bind(value: value.toDatabaseValue(), toParameter: index)
@@ -54,16 +96,15 @@ extension Statement {
 		}
 	}
 
-	/// Bind a sequence of key/value pairs to named SQL parameters
+	/// Bind a sequence of name/value pairs to named SQL parameters
 	///
 	/// - parameter values: A sequence of `DatabaseValueConvertible` instances to bind
 	/// - throws: `DatabaseError`
-	public func bind<S: Sequence, T: DatabaseValueConvertible>(_ values: S) throws where S.Iterator.Element == (String, T) {
-		for (key, value) in values {
-			try bind(value: value.toDatabaseValue(), toParameter: key)
+	public func bind<S: Sequence, T: DatabaseValueConvertible>(parameters values: S) throws where S.Iterator.Element == (String, T) {
+		for (name, value) in values {
+			try bind(value: value.toDatabaseValue(), toParameter: name)
 		}
 	}
-
 }
 
 /// Column values for convertible types
@@ -108,6 +149,21 @@ extension NSNumber: DatabaseValueConvertible {
 			return self.init(value: f)
 		default:
 			return nil
+		}
+	}
+}
+
+extension NSNull: DatabaseValueConvertible {
+	public func toDatabaseValue() -> DatabaseValue {
+		return DatabaseValue.null
+	}
+
+	public static func fromDatabaseValue(_ value: DatabaseValue) throws -> Self? {
+		switch value {
+		case .null:
+			return self.init()
+		default:
+			throw DatabaseError.dataFormatError("DatabaseValue \"\(value)\" is not null")
 		}
 	}
 }
