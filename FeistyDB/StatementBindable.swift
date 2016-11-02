@@ -20,23 +20,19 @@ extension Database {
 	/// Execute an SQL statement
 	///
 	/// - parameter sql: The SQL statement to execute
-	/// - parameter value: A value to bind to the first SQL parameter
+	/// - parameter values: A series of values to bind to SQL parameters
 	/// - throws: `DatabaseError`
-	public func execute<T: StatementBindable>(sql: String, _ value: T) throws {
-		let statement = try prepare(sql: sql)
-		try statement.bind(value: value, toParameter: 1)
-		try statement.execute()
+	public func execute<T: StatementBindable>(sql: String, parameters values: T...) throws {
+		try execute(sql: sql, parameters: values)
 	}
 
 	/// Execute an SQL statement
 	///
 	/// - parameter sql: The SQL statement to execute
-	/// - parameter value: An optional value to bind to the first SQL parameter
+	/// - parameter values: A series of optional values to bind to SQL parameters
 	/// - throws: `DatabaseError`
-	public func execute<T: StatementBindable>(sql: String, _ value: T?) throws {
-		let statement = try prepare(sql: sql)
-		try statement.bind(value: value, toParameter: 1)
-		try statement.execute()
+	public func execute<T: StatementBindable>(sql: String, parameters values: T?...) throws {
+		try execute(sql: sql, parameters: values)
 	}
 
 	/// Execute an SQL statement
@@ -44,9 +40,9 @@ extension Database {
 	/// - parameter sql: The SQL statement to execute
 	/// - parameter values: A sequence of values to bind to SQL parameters
 	/// - throws: `DatabaseError`
-	public func execute<S: Sequence, T: StatementBindable>(sql: String, _ values: S) throws where S.Iterator.Element == T {
+	public func execute<S: Sequence, T: StatementBindable>(sql: String, parameters values: S) throws where S.Iterator.Element == T {
 		let statement = try prepare(sql: sql)
-		try statement.bind(values)
+		try statement.bind(parameters: values)
 		try statement.execute()
 	}
 
@@ -55,31 +51,31 @@ extension Database {
 	/// - parameter sql: The SQL statement to execute
 	/// - parameter values: A sequence of optional values to bind to SQL parameters
 	/// - throws: `DatabaseError`
-	public func execute<S: Sequence, T: StatementBindable>(sql: String, _ values: S) throws where S.Iterator.Element == T? {
+	public func execute<S: Sequence, T: StatementBindable>(sql: String, parameters values: S) throws where S.Iterator.Element == T? {
 		let statement = try prepare(sql: sql)
-		try statement.bind(values)
+		try statement.bind(parameters: values)
 		try statement.execute()
 	}
 
 	/// Execute an SQL statement
 	///
 	/// - parameter sql: The SQL statement to execute
-	/// - parameter values: A sequence of key/value pairs to bind to named SQL parameters
+	/// - parameter values: A sequence of name/value pairs to bind to named SQL parameters
 	/// - throws: `DatabaseError`
-	public func execute<S: Sequence, T: StatementBindable>(sql: String, _ values: S) throws where S.Iterator.Element == (String, T) {
+	public func execute<S: Sequence, T: StatementBindable>(sql: String, parameters values: S) throws where S.Iterator.Element == (String, T) {
 		let statement = try prepare(sql: sql)
-		try statement.bind(values)
+		try statement.bind(parameters: values)
 		try statement.execute()
 	}
 
 	/// Execute an SQL statement
 	///
 	/// - parameter sql: The SQL statement to execute
-	/// - parameter values: A sequence of key/value pairs to bind to named SQL parameters
+	/// - parameter values: A sequence of name/value pairs to bind to named SQL parameters
 	/// - throws: `DatabaseError`
-	public func execute<S: Sequence, T: StatementBindable>(sql: String, _ values: S) throws where S.Iterator.Element == (String, T?) {
+	public func execute<S: Sequence, T: StatementBindable>(sql: String, parameters values: S) throws where S.Iterator.Element == (String, T?) {
 		let statement = try prepare(sql: sql)
-		try statement.bind(values)
+		try statement.bind(parameters: values)
 		try statement.execute()
 	}
 }
@@ -139,11 +135,19 @@ extension Statement {
 		}
 	}
 
+	/// Bind a series of values to SQL parameters
+	///
+	/// - parameter values: A series of values to bind to SQL parameters
+	/// - throws: `DatabaseError`
+	public func bind<T: StatementBindable>(parameters values: T...) throws  {
+		try bind(parameters: values)
+	}
+
 	/// Bind a sequence of values to SQL parameters
 	///
 	/// - parameter values: A sequence of values to bind to SQL parameters
 	/// - throws: `DatabaseError`
-	public func bind<S: Sequence, T: StatementBindable>(_ values: S) throws where S.Iterator.Element == T {
+	public func bind<S: Sequence, T: StatementBindable>(parameters values: S) throws where S.Iterator.Element == T {
 		var index: Int32 = 1
 		for value in values {
 			try value.bind(toRawSQLiteStatement: stmt, parameter: index)
@@ -155,7 +159,7 @@ extension Statement {
 	///
 	/// - parameter values: A sequence optional values to bind to SQL parameters
 	/// - throws: `DatabaseError`
-	public func bind<S: Sequence, T: StatementBindable>(_ values: S) throws where S.Iterator.Element == T? {
+	public func bind<S: Sequence, T: StatementBindable>(parameters values: S) throws where S.Iterator.Element == T? {
 		var index: Int32 = 1
 		for value in values {
 			if let value = value {
@@ -170,22 +174,22 @@ extension Statement {
 
 	/// Bind a sequence of values to named SQL parameters
 	///
-	/// - parameter values: A sequence of key/value pairs to bind to SQL parameters
+	/// - parameter values: A sequence of name/value pairs to bind to SQL parameters
 	/// - throws: `DatabaseError`
-	public func bind<S: Sequence, T: StatementBindable>(_ values: S) throws where S.Iterator.Element == (String, T) {
-		for (key, value) in values {
-			let idx = sqlite3_bind_parameter_index(stmt, key)
+	public func bind<S: Sequence, T: StatementBindable>(parameters values: S) throws where S.Iterator.Element == (String, T) {
+		for (name, value) in values {
+			let idx = sqlite3_bind_parameter_index(stmt, name)
 			try value.bind(toRawSQLiteStatement: stmt, parameter: idx)
 		}
 	}
 
 	/// Bind a sequence of optional values to named SQL parameters
 	///
-	/// - parameter values: A sequence of key/value pairs to bind to named SQL parameters
+	/// - parameter values: A sequence of name/value pairs to bind to named SQL parameters
 	/// - throws: `DatabaseError`
-	public func bind<S: Sequence, T: StatementBindable>(_ values: S) throws where S.Iterator.Element == (String, T?) {
-		for (key, value) in values {
-			let idx = sqlite3_bind_parameter_index(stmt, key)
+	public func bind<S: Sequence, T: StatementBindable>(parameters values: S) throws where S.Iterator.Element == (String, T?) {
+		for (name, value) in values {
+			let idx = sqlite3_bind_parameter_index(stmt, name)
 			if let value = value {
 				try value.bind(toRawSQLiteStatement: stmt, parameter: idx)
 			}
