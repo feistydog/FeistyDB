@@ -84,7 +84,17 @@ final public class Statement {
 	///
 	/// - throws: `DatabaseError`
 	public func execute() throws {
-		try results { _ in }
+		var result = sqlite3_step(stmt)
+		while result == SQLITE_ROW {
+			result = sqlite3_step(stmt)
+		}
+
+		if result != SQLITE_DONE {
+			#if DEBUG
+				print("Error executing statement: \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
+			#endif
+			throw DatabaseError.sqliteError(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))
+		}
 	}
 
 	/// Iterate through the rows in the result set
@@ -122,7 +132,7 @@ final public class Statement {
 	/// Clear all statement bindings
 	///
 	/// - throws: `DatabaseError`
-	public func clear() throws {
+	public func clearBindings() throws {
 		if sqlite3_clear_bindings(stmt) != SQLITE_OK {
 			#if DEBUG
 				print("Error clearing bindings: \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
