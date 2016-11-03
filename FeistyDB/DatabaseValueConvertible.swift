@@ -39,7 +39,6 @@ public protocol DatabaseValueConvertible {
 	static func from(databaseValue value: DatabaseValue) throws -> Self?
 }
 
-/// Convenience methods to execute SQL statements
 extension Database {
 	/// Execute an SQL statement
 	///
@@ -73,7 +72,6 @@ extension Database {
 	}
 }
 
-/// Parameter binding for convertible types
 extension Statement {
 	/// Bind a value to an SQL parameter
 	///
@@ -126,7 +124,6 @@ extension Statement {
 	}
 }
 
-/// Column values for convertible types
 extension Row {
 	/// Retrieve the value of the column
 	///
@@ -137,7 +134,6 @@ extension Row {
 	}
 }
 
-/// Column values for convertible types
 extension Column {
 	/// Retrieve the value of the column
 	///

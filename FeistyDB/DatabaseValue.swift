@@ -26,7 +26,6 @@ public enum DatabaseValue {
 /// - seealso: [Obtaining SQL Values](https://sqlite.org/c3ref/value_blob.html)
 typealias SQLiteValue = OpaquePointer
 
-/// DatabaseValue initialization from SQLite values
 extension DatabaseValue {
 	/// Initialize `self` from an SQLite value
 	///
@@ -53,7 +52,6 @@ extension DatabaseValue {
 	}
 }
 
-/// String conversion
 extension DatabaseValue: CustomStringConvertible {
 	/// A description of the type and value contained by this `DatabaseValue`
 	public var description: String {
@@ -72,7 +70,6 @@ extension DatabaseValue: CustomStringConvertible {
 	}
 }
 
-/// `DatabaseValue` parameter binding
 extension Statement {
 	/// Bind a value to an SQL parameter
 	///
@@ -163,7 +160,6 @@ extension Statement {
 	}
 }
 
-/// `DatabaseValue` value retrieval
 extension Row {
 	/// Retrieve a column's value
 	///
@@ -204,7 +200,6 @@ extension Row {
 	}
 }
 
-/// `DatabaseValue` value retrieval
 extension Column {
 	/// Retrieve the value of the column
 	///

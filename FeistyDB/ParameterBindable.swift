@@ -29,7 +29,6 @@ public protocol ParameterBindable {
 	func bind(to stmt: SQLitePreparedStatement, parameter idx: Int32) throws
 }
 
-/// Convenience methods to execute SQL statements
 extension Database {
 	/// Execute an SQL statement
 	///
@@ -94,7 +93,6 @@ extension Database {
 	}
 }
 
-/// Parameter binding for bindable types
 extension Statement {
 	/// Bind a value to an SQL parameter
 	///

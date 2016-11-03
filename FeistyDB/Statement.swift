@@ -154,7 +154,6 @@ final public class Statement {
 	}
 }
 
-/// Access rows in a result set as a `Sequence`
 extension Statement {
 	/// Get a sequence for accessing the rows in the result set
 	///

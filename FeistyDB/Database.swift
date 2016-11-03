@@ -236,7 +236,6 @@ final public class Database {
 /// - returns: The result of comparing `lhs` to `rhs`
 public typealias StringComparator = (_ lhs: String, _ rhs: String) -> ComparisonResult
 
-/// Custom collation support
 extension Database {
 
 	/// Add a custom collation function
@@ -288,7 +287,6 @@ public typealias SQLFunction = (_ values: [DatabaseValue]) throws -> DatabaseVal
 // However, it isn't possible to convert an array into a variable number of arguments (yet)
 // https://bugs.swift.org/browse/SR-128
 
-/// Custom SQL function support
 extension Database {
 
 	/// Add a custom SQL function
