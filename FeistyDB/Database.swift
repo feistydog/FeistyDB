@@ -108,7 +108,19 @@ final public class Database {
 		return try block(self.db)
 	}
 
-	/// Perform a transaction on the database
+	/// Possible database transaction types.
+	///
+	/// - seealso: [Transactions in SQLite](https://sqlite.org/lang_transaction.html)
+	public enum TransactionType {
+		/// A deferred transaction
+		case deferred
+		/// An immediate transaction
+		case immediate
+		/// An exclusive transaction
+		case exclusive
+	}
+
+	/// Perform a transaction on the database.
 	///
 	/// - parameter type: The type of transaction to perform
 	/// - parameter block: The block performing the transaction
@@ -226,6 +238,17 @@ final public class Database {
 	/// - returns: The statement that was removed, or `nil` if the key was not present
 	public func removePreparedStatement(forKey key: String) -> Statement? {
 		return preparedStatements.removeValue(forKey: key)
+	}
+}
+
+extension Database.TransactionType: CustomStringConvertible {
+	/// A description of the transaction type suitable for use in an SQL statement.
+	public var description: String {
+		switch self {
+		case .deferred:		return "DEFERRED"
+		case .immediate:	return "IMMEDIATE"
+		case .exclusive:	return "EXCLUSIVE"
+		}
 	}
 }
 

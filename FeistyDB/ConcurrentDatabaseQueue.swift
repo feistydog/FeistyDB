@@ -92,7 +92,7 @@ public final class ConcurrentDatabaseQueue {
 	/// - parameter block: The block performing the read/write
 	/// - parameter database: The `Database` used for database access
 	/// - parameter rollback: Whether to rollback the transaction after `block` completes
-	public func transaction(type: TransactionType = .deferred, _ block: @escaping (_ database: Database, _ rollback: inout Bool) -> (Void)) {
+	public func transaction(type: Database.TransactionType = .deferred, _ block: @escaping (_ database: Database, _ rollback: inout Bool) -> (Void)) {
 		queue.async(flags: .barrier) {
 			try? self.database.transaction(type:type, block)
 		}
@@ -106,7 +106,7 @@ public final class ConcurrentDatabaseQueue {
 	/// - parameter rollback: If set to `true` by `block` the transaction will be rolled back
 	/// - throws: Any error thrown in `block`
 	/// - returns: The value returned by `block`
-	public func transaction_sync<T>(type: TransactionType = .deferred, _ block: (_ database: Database, _ rollback: inout Bool) throws -> (T)) rethrows -> T {
+	public func transaction_sync<T>(type: Database.TransactionType = .deferred, _ block: (_ database: Database, _ rollback: inout Bool) throws -> (T)) rethrows -> T {
 		return try queue.sync(flags: .barrier) {
 			try database.transaction(type: type, block)
 		}
