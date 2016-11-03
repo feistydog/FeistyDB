@@ -5,19 +5,38 @@
 
 import Foundation
 
-/// Protocol types may adopt for database storage
+/// A protocol types may adopt for serialization to and from a database.
+///
+/// For example, the implementation for `NSNull` is:
+///
+/// ```swift
+/// extension NSNull: DatabaseValueConvertible {
+///     public func databaseValue() -> DatabaseValue {
+///         return DatabaseValue.null
+///     }
+///
+///     public static func from(databaseValue value: DatabaseValue) throws -> Self? {
+///         switch value {
+///         case .null:
+///             return self.init()
+///         default:
+///             throw DatabaseError.dataFormatError("DatabaseValue \"\(value)\" is not null")
+///         }
+///     }
+/// }
+/// ```
 public protocol DatabaseValueConvertible {
 	/// Convert `self` to a database value
 	///
 	/// - returns: A database value representing `self`
-	func toDatabaseValue() -> DatabaseValue
+	func databaseValue() -> DatabaseValue
 
 	/// Convert a database value to the type of `Self`
 	///
 	/// - parameter value: The database value to convert
 	/// - returns: An instance of `Self` or `nil`
 	/// - throws: An error if the database value contains an illegal value
-	static func fromDatabaseValue(_ value: DatabaseValue) throws -> Self?
+	static func from(databaseValue value: DatabaseValue) throws -> Self?
 }
 
 /// Convenience methods to execute SQL statements
@@ -63,7 +82,7 @@ extension Statement {
 	/// - parameter index: The index of the desired parameter
 	/// - throws: `DatabaseError`
 	public func bind<T: DatabaseValueConvertible>(value: T, toParameter index: Int) throws {
-		try bind(value: value.toDatabaseValue(), toParameter: index)
+		try bind(value: value.databaseValue(), toParameter: index)
 	}
 
 	/// Bind a value to a named SQL parameter
@@ -73,7 +92,7 @@ extension Statement {
 	/// - parameter name: The name of the desired parameter
 	/// - throws: `DatabaseError`
 	public func bind<T: DatabaseValueConvertible>(value: T, toParameter name: String) throws {
-		try bind(value: value.toDatabaseValue(), toParameter: name)
+		try bind(value: value.databaseValue(), toParameter: name)
 	}
 
 	/// Bind a series of values to SQL parameters
@@ -91,7 +110,7 @@ extension Statement {
 	public func bind<S: Sequence, T: DatabaseValueConvertible>(parameters values: S) throws where S.Iterator.Element == T {
 		var index = 1
 		for value in values {
-			try bind(value: value.toDatabaseValue(), toParameter: index)
+			try bind(value: value.databaseValue(), toParameter: index)
 			index += 1
 		}
 	}
@@ -102,7 +121,7 @@ extension Statement {
 	/// - throws: `DatabaseError`
 	public func bind<S: Sequence, T: DatabaseValueConvertible>(parameters values: S) throws where S.Iterator.Element == (String, T) {
 		for (name, value) in values {
-			try bind(value: value.toDatabaseValue(), toParameter: name)
+			try bind(value: value.databaseValue(), toParameter: name)
 		}
 	}
 }
@@ -114,7 +133,7 @@ extension Row {
 	/// - returns: The column's value
 	/// - throws: An error if the value contains an illegal value
 	public func column<T: DatabaseValueConvertible>(_ index: Int) throws -> T? {
-		return try T.fromDatabaseValue(column(index))
+		return try T.from(databaseValue: column(index))
 	}
 }
 
@@ -130,7 +149,7 @@ extension Column {
 }
 
 extension NSNumber: DatabaseValueConvertible {
-	public func toDatabaseValue() -> DatabaseValue {
+	public func databaseValue() -> DatabaseValue {
 		switch CFNumberGetType(self as CFNumber) {
 		case .sInt8Type, .sInt16Type, .sInt32Type, .charType, .shortType, .intType,
 		     .sInt64Type, .longType, .longLongType, .cfIndexType, .nsIntegerType:
@@ -141,7 +160,7 @@ extension NSNumber: DatabaseValueConvertible {
 		}
 	}
 
-	public static func fromDatabaseValue(_ value: DatabaseValue) -> Self? {
+	public static func from(databaseValue value: DatabaseValue) -> Self? {
 		switch value {
 		case .integer(let i):
 			return self.init(value: i)
@@ -154,11 +173,11 @@ extension NSNumber: DatabaseValueConvertible {
 }
 
 extension NSNull: DatabaseValueConvertible {
-	public func toDatabaseValue() -> DatabaseValue {
+	public func databaseValue() -> DatabaseValue {
 		return DatabaseValue.null
 	}
 
-	public static func fromDatabaseValue(_ value: DatabaseValue) throws -> Self? {
+	public static func from(databaseValue value: DatabaseValue) throws -> Self? {
 		switch value {
 		case .null:
 			return self.init()
