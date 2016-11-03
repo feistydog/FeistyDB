@@ -229,8 +229,12 @@ final public class Database {
 	}
 }
 
-/// A comparator for String objects
-public typealias StringComparator = (String, String) -> ComparisonResult
+/// A comparator for `String` objects
+///
+/// - parameter lhs: The left-hand operand
+/// - parameter rhs: The right-hand operand
+/// - returns: The result of comparing `lhs` to `rhs`
+public typealias StringComparator = (_ lhs: String, _ rhs: String) -> ComparisonResult
 
 /// Custom collation support
 extension Database {
@@ -241,20 +245,21 @@ extension Database {
 	/// - parameter block: A string comparison function
 	/// - throws: `DatabaseError`
 	public func add(collation name: String, _ block: @escaping StringComparator) throws {
-		let storage = UnsafeMutablePointer<StringComparator>.allocate(capacity: 1)
-		storage.initialize(to: block)
-		guard sqlite3_create_collation_v2(db, name, SQLITE_UTF8, storage, { (context, lhs_len, lhs_data, rhs_len, rhs_data) -> Int32 in
+		let function_ptr = UnsafeMutablePointer<StringComparator>.allocate(capacity: 1)
+		function_ptr.initialize(to: block)
+		guard sqlite3_create_collation_v2(db, name, SQLITE_UTF8, function_ptr, { (context, lhs_len, lhs_data, rhs_len, rhs_data) -> Int32 in
 			// Have total faith that SQLite will pass valid parameters and use unsafelyUnwrapped
 			let lhs = String(bytesNoCopy: UnsafeMutableRawPointer(mutating: lhs_data.unsafelyUnwrapped), length: Int(lhs_len), encoding: .utf8, freeWhenDone: false).unsafelyUnwrapped
 			let rhs = String(bytesNoCopy: UnsafeMutableRawPointer(mutating: rhs_data.unsafelyUnwrapped), length: Int(rhs_len), encoding: .utf8, freeWhenDone: false).unsafelyUnwrapped
 
 			// Cast context to the appropriate type and call the comparator
-			let result = context.unsafelyUnwrapped.assumingMemoryBound(to: StringComparator.self).pointee(lhs, rhs)
+			let function_ptr = context.unsafelyUnwrapped.assumingMemoryBound(to: StringComparator.self)
+			let result = function_ptr.pointee(lhs, rhs)
 			return Int32(result.rawValue)
 		}, { context in
-			let storage = context.unsafelyUnwrapped.assumingMemoryBound(to: StringComparator.self)
-			storage.deinitialize()
-			storage.deallocate(capacity: 1)
+			let function_ptr = context.unsafelyUnwrapped.assumingMemoryBound(to: StringComparator.self)
+			function_ptr.deinitialize()
+			function_ptr.deallocate(capacity: 1)
 		}) == SQLITE_OK else {
 			throw DatabaseError.sqliteError(String(cString: sqlite3_errmsg(db)))
 		}
@@ -266,6 +271,80 @@ extension Database {
 	/// - throws: `DatabaseError`
 	public func remove(collation name: String) throws {
 		guard sqlite3_create_collation_v2(db, name, SQLITE_UTF8, nil, nil, nil) == SQLITE_OK else {
+			throw DatabaseError.sqliteError(String(cString: sqlite3_errmsg(db)))
+		}
+	}
+}
+
+/// A custom SQL function
+///
+/// - parameter values: The SQL function parameters
+/// - returns: The result of applying the function to `values`
+/// - throws: `DatabaseError`
+public typealias SQLFunction = (_ values: [DatabaseValue]) throws -> DatabaseValue
+
+// Ideally I'd like the typealias to have the following signature:
+//     public typealias SQLFunction = (DatabaseValue...) throws -> DatabaseValue
+// However, it isn't possible to convert an array into a variable number of arguments (yet)
+// https://bugs.swift.org/browse/SR-128
+
+/// Custom SQL function support
+extension Database {
+
+	/// Add a custom SQL function
+	///
+	/// - parameter name: The name of the custom SQL function
+	/// - parameter argumentCount: The number of arguments
+	/// - parameter block: The SQL function
+	/// - throws: `DatabaseError`
+	/// - seealso: [Create Or Redefine SQL Functions](https://sqlite.org/c3ref/create_function.html)
+	public func add(function name: String, argumentCount: Int = -1, _ block: @escaping SQLFunction) throws {
+		let function_ptr = UnsafeMutablePointer<SQLFunction>.allocate(capacity: 1)
+		function_ptr.initialize(to: block)
+		guard sqlite3_create_function_v2(db, name, Int32(argumentCount), SQLITE_UTF8 | SQLITE_DETERMINISTIC, function_ptr, { sqlite_context, argc, argv in
+			let context = sqlite3_user_data(sqlite_context)
+			let function_ptr = context.unsafelyUnwrapped.assumingMemoryBound(to: SQLFunction.self)
+
+			let args = UnsafeBufferPointer(start: argv, count: Int(argc))
+			let arguments = args.map { DatabaseValue(from: $0.unsafelyUnwrapped) }
+
+			do {
+				// Call the function and pass the result to sqlite
+				switch try function_ptr.pointee(arguments) {
+				case .integer(let i):
+					sqlite3_result_int64(sqlite_context, i)
+				case .float(let f):
+					sqlite3_result_double(sqlite_context, f)
+				case .text(let t):
+					sqlite3_result_text(sqlite_context, t, -1, SQLITE_TRANSIENT)
+				case .blob(let b):
+					b.withUnsafeBytes { bytes in
+						sqlite3_result_blob(sqlite_context, bytes, Int32(b.count), SQLITE_TRANSIENT)
+					}
+				case .null:
+					sqlite3_result_null(sqlite_context)
+				}
+			}
+
+			catch let error {
+				sqlite3_result_error(sqlite_context, "\(error)", -1)
+			}
+		}, nil, nil, { context in
+			let function_ptr = context.unsafelyUnwrapped.assumingMemoryBound(to: SQLFunction.self)
+			function_ptr.deinitialize()
+			function_ptr.deallocate(capacity: 1)
+		}) == SQLITE_OK else {
+			throw DatabaseError.sqliteError(String(cString: sqlite3_errmsg(db)))
+		}
+	}
+
+	/// Remove a custom SQL function
+	///
+	/// - parameter name: The name of the custom SQL function
+	/// - parameter argumentCount: The number of arguments
+	/// - throws: `DatabaseError`
+	public func remove(function name: String, argumentCount: Int = -1) throws {
+		guard sqlite3_create_function_v2(db, name, Int32(argumentCount), SQLITE_UTF8 | SQLITE_DETERMINISTIC, nil, nil, nil, nil, nil) == SQLITE_OK else {
 			throw DatabaseError.sqliteError(String(cString: sqlite3_errmsg(db)))
 		}
 	}
