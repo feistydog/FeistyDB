@@ -7,7 +7,7 @@ import Foundation
 
 /// An `sqlite3_stmt *` object
 ///
-/// - seealso: [SQLite Prepared Statement Object](http://sqlite.org/c3ref/stmt.html)
+/// - seealso: [SQLite Prepared Statement Object](https://sqlite.org/c3ref/stmt.html)
 public typealias SQLitePreparedStatement = OpaquePointer
 
 /// A class representing an SQL statement with support for binding SQL parameters and retrieving results.
@@ -44,7 +44,7 @@ final public class Statement {
 
 	/// `true` if this statement makes no direct changes to the database, `false` otherwise.
 	///
-	/// - seealso: [Read-only statements in SQLite](http://sqlite.org/c3ref/stmt_readonly.html)
+	/// - seealso: [Read-only statements in SQLite](https://sqlite.org/c3ref/stmt_readonly.html)
 	public var readOnly: Bool {
 		return sqlite3_stmt_readonly(stmt) != 0
 	}

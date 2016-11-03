@@ -7,7 +7,7 @@ import Foundation
 
 /// Possible transaction types
 ///
-/// - seealso: [Transactions in SQLite](http://sqlite.org/lang_transaction.html)
+/// - seealso: [Transactions in SQLite](https://sqlite.org/lang_transaction.html)
 public enum TransactionType: CustomStringConvertible {
 	/// A deferred transaction
 	case deferred

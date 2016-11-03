@@ -11,10 +11,10 @@ let SQLITE_TRANSIENT = unsafeBitCast(-1, to: sqlite3_destructor_type.self)
 
 /// An `sqlite3 *` object
 ///
-/// - seealso: [SQLite Database Connection Handle](http://sqlite.org/c3ref/sqlite3.html)
+/// - seealso: [SQLite Database Connection Handle](https://sqlite.org/c3ref/sqlite3.html)
 public typealias SQLiteDatabaseConnection = OpaquePointer
 
-/// A class encapsulating access to an [SQLite](http://sqlite.org) database
+/// A class encapsulating access to an [SQLite](https://sqlite.org) database
 final public class Database {
 	/// The underlying `sqlite3 *` database
 	var db: SQLiteDatabaseConnection
