@@ -5,7 +5,9 @@
 
 import Foundation
 
-/// The native SQLite data types that may be stored in a database
+/// The native data types that may be stored in a database
+///
+/// - seealso: [Datatypes In SQLite Version 3](https://sqlite.org/datatype3.html)
 public enum DatabaseValue {
 	/// An integer value
 	case integer(Int64)
