@@ -19,6 +19,38 @@ public enum DatabaseValue {
 	case null
 }
 
+/// An `sqlite3_value *` object
+///
+/// - seealso: [Obtaining SQL Values](https://sqlite.org/c3ref/value_blob.html)
+typealias SQLiteValue = OpaquePointer
+
+/// DatabaseValue initialization from SQLite values
+extension DatabaseValue {
+	/// Initialize `self` from an SQLite value
+	///
+	/// - parameter value: The desired value
+	init(from value: SQLiteValue) {
+		let type = sqlite3_value_type(value)
+		switch type {
+		case SQLITE_INTEGER:
+			self = .integer(sqlite3_value_int64(value))
+		case SQLITE_FLOAT:
+			self = .float(sqlite3_value_double(value))
+		case SQLITE_TEXT:
+			self = .text(String(cString: sqlite3_value_text(value)))
+		case SQLITE_BLOB:
+			self = .blob(Data(bytes: sqlite3_value_blob(value), count: Int(sqlite3_value_bytes(value))))
+		case SQLITE_NULL:
+			self = .null
+		default:
+			#if DEBUG
+				print("Unknown value type \(type) encountered")
+			#endif
+			self = .null
+		}
+	}
+}
+
 /// String conversion
 extension DatabaseValue: CustomStringConvertible {
 	/// A description of the type and value contained by this `DatabaseValue`
@@ -141,7 +173,9 @@ extension Row {
 
 		let stmt = statement.stmt
 		let idx = Int32(index)
-		switch sqlite3_column_type(stmt, idx) {
+		
+		let type = sqlite3_column_type(stmt, idx)
+		switch type {
 		case SQLITE_INTEGER:
 			return DatabaseValue.integer(sqlite3_column_int64(stmt, idx))
 
@@ -156,7 +190,13 @@ extension Row {
 			let data = Data(bytes: sqlite3_column_blob(stmt, idx).assumingMemoryBound(to: UInt8.self), count: byteCount)
 			return DatabaseValue.blob(data)
 
+		case SQLITE_NULL:
+			return DatabaseValue.null
+
 		default:
+			#if DEBUG
+				print("Unknown column type \(type) encountered")
+			#endif
 			return DatabaseValue.null
 		}
 	}
