@@ -5,7 +5,7 @@
 
 import Foundation
 
-/// A protocol allowing types to initialize directly from a parameter in an SQLite statement for efficiency.
+/// A type that can be initialized directly from a column in an SQLite result row.
 ///
 /// The implementation should use one of the `sqlite_column_X()` functions documented at [Result Values From A Query](https://sqlite.org/c3ref/column_blob.html).
 ///
@@ -19,22 +19,34 @@ import Foundation
 /// }
 ///  ```
 public protocol ColumnConvertible {
-	/// Initialize `self` from an SQLite statement parameter
+	/// Creates an instance containing the value of column `idx` in `stmt`.
 	///
-	/// - precondition: `sqlite3_column_type(stmt, idx) != SQLITE_NULL`
+	/// - note: Column indexes are 0-based.  The leftmost column in a row has index 0.
+	/// - precondition: The column's value is not null (`sqlite3_column_type(stmt, idx) != SQLITE_NULL`)
+	///
 	/// - parameter stmt: An `sqlite3_stmt *` object
-	/// - parameter index: The index of the desired parameter
-	/// - throws: An error if initialization failed
+	/// - parameter index: The index of the desired column
+	///
+	/// - throws: An error if initialization fails
 	init(with stmt: SQLitePreparedStatement, parameter idx: Int32) throws
 }
 
 extension Row {
-	/// Retrieve a column's value
+	/// Returns the value of the column at `index`.
 	///
-	/// - parameter index: The 0-based index of the desired column
-	/// - returns: The column's value
-	/// - throws: An error if the column contains an illegal value
+	/// - note: Column indexes are 0-based.  The leftmost column in a row has index 0.
+	/// - precondition: `index >= 0`
+	/// - precondition: `index < self.columnCount`
+	///
+	/// - parameter index: The index of the desired column
+	///
+	/// - returns: The column's value or `nil` if null
+	///
+	/// - throws: An error if `index` is out of bounds or the column contains an illegal value
 	public func column<T: ColumnConvertible>(_ index: Int) throws -> T? {
+//		precondition(index >= 0, "Column indexes are 0-based")
+//		precondition(index < self.columnCount, "Column index out of bounds")
+
 		let stmt = statement.stmt
 		let idx = Int32(index)
 		switch sqlite3_column_type(stmt, idx) {
@@ -45,12 +57,21 @@ extension Row {
 		}
 	}
 
-	/// Retrieve a column's value
+	/// Returns the value of the column at `index`.
 	///
-	/// - parameter index: The 0-based index of the desired column
+	/// - note: Column indexes are 0-based.  The leftmost column in a row has index 0.
+	/// - precondition: `index >= 0`
+	/// - precondition: `index < self.columnCount`
+	///
+	/// - parameter index: The index of the desired column
+	///
 	/// - returns: The column's value
-	/// - throws: An error if the column is null or contains an illegal value
+	///
+	/// - throws: An error if `index` is out of bounds or the column contains a null or illegal value
 	public func column<T: ColumnConvertible>(_ index: Int) throws -> T {
+//		precondition(index >= 0, "Column indexes are 0-based")
+//		precondition(index < self.columnCount, "Column index out of bounds")
+
 		let stmt = statement.stmt
 		let idx = Int32(index)
 		switch sqlite3_column_type(stmt, idx) {
@@ -61,10 +82,12 @@ extension Row {
 		}
 	}
 
-	/// Retrieve a column's value
+	/// Returns the value of the column with name `name`.
 	///
-	/// - parameter name: name of the desired column
-	/// - returns: The column's value
+	/// - parameter name: The name of the desired column
+	///
+	/// - returns: The column's value or `nil` if null
+	///
 	/// - throws: An error if the column doesn't exist or contains an illegal value
 	public func column<T: ColumnConvertible>(_ name: String) throws -> T? {
 		guard let index = statement.columnNamesAndIndexes[name] else {
@@ -73,11 +96,13 @@ extension Row {
 		return try column(index)
 	}
 
-	/// Retrieve a column's value
+	/// Returns the value of the column with name `name`.
 	///
-	/// - parameter name: name of the desired column
+	/// - parameter name: The name of the desired column
+	///
 	/// - returns: The column's value
-	/// - throws: An error if the column is null or contains an illegal value
+	///
+	/// - throws: An error if the column doesn't exist or contains a null or illegal value
 	public func column<T: ColumnConvertible>(_ name: String) throws -> T {
 		guard let index = statement.columnNamesAndIndexes[name] else {
 			throw DatabaseError.sqliteError("Unknown column \"\(name)\"")
@@ -87,18 +112,20 @@ extension Row {
 }
 
 extension Column {
-	/// Retrieve the value of the column
+	/// Returns the value of the column.
 	///
-	/// - returns: The column's value
+	/// - returns: The column's value or `nil` if null
+	///
 	/// - throws: An error if the column contains an illegal value
 	public func value<T: ColumnConvertible>() throws -> T? {
 		return try row.column(index)
 	}
 
-	/// Retrieve the value of the column
+	/// Returns the value of the column.
 	///
 	/// - returns: The column's value
-	/// - throws: An error if the column is null or contains an illegal value
+	///
+	/// - throws: An error if the column contains a null or illegal value
 	public func value<T: ColumnConvertible>() throws -> T {
 		return try row.column(index)
 	}
@@ -199,9 +226,6 @@ extension UUID: ColumnConvertible {
 	public init(with stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
 		let s = String(cString: sqlite3_column_text(stmt, idx))
 		guard let u = UUID(uuidString: s) else {
-			#if DEBUG
-				print("String \"\(s)\" isn't a valid UUID")
-			#endif
 			throw DatabaseError.dataFormatError("String \"\(s)\" isn't a valid UUID")
 		}
 		self = u
@@ -212,9 +236,6 @@ extension URL: ColumnConvertible {
 	public init(with stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
 		let s = String(cString: sqlite3_column_text(stmt, idx))
 		guard let u = URL(string: s) else {
-			#if DEBUG
-				print("String \"\(s)\" isn't a valid URL")
-			#endif
 			throw DatabaseError.dataFormatError("String \"\(s)\" isn't a valid URL")
 		}
 
@@ -226,9 +247,6 @@ extension Date: ColumnConvertible {
 	public init(with stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
 		let s = String(cString: sqlite3_column_text(stmt, idx))
 		guard let d = iso8601DateFormatter.date(from: s) else {
-			#if DEBUG
-				print("String \"\(s)\" isn't a valid ISO 8601 date")
-			#endif
 			throw DatabaseError.dataFormatError("String \"\(s)\" isn't a valid ISO 8601 date")
 		}
 
