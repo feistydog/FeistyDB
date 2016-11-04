@@ -82,7 +82,7 @@ extension Row {
 		}
 	}
 
-	/// Returns the value of the column with name `name`.
+	/// Returns the value of column `name`.
 	///
 	/// - parameter name: The name of the desired column
 	///
@@ -96,7 +96,7 @@ extension Row {
 		return try column(index)
 	}
 
-	/// Returns the value of the column with name `name`.
+	/// Returns the value of column `name`.
 	///
 	/// - parameter name: The name of the desired column
 	///
