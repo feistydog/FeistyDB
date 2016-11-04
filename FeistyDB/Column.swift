@@ -5,15 +5,15 @@
 
 import Foundation
 
-/// A struct representing a single column in a row
+/// A single column in a result row.
 public struct Column {
-	/// The owning `Row`
+	/// The result row containing this column.
 	public let row: Row
 
-	/// The column index
+	/// The index of the column in `self.row`.
 	public let index: Int
 
-	/// The name of the result set column
+	/// The name of the result row column.
 	///
 	/// The name is the value of the `AS` clause
 	public var name: String {
@@ -25,32 +25,19 @@ public struct Column {
 	// is incompatible with SQLITE_ENABLE_COLUMN_METADATA which these
 	// functions require.
 	#if false
-		/// The un-aliased name of the database that is the origin of this result column
+		/// The un-aliased name of the database that is the origin of this result row column
 		public var databaseName: String {
 			return String(cString: sqlite3_column_database_name(row.statement.stmt, Int32(index)))
 		}
 
-		/// The un-aliased name of the table that is the origin of this result column
+		/// The un-aliased name of the table that is the origin of this result row column
 		public var tableName: String {
 			return String(cString: sqlite3_column_table_name(row.statement.stmt, Int32(index)))
 		}
 
-		/// The un-aliased name of the column that is the origin of this result column
+		/// The un-aliased name of the column that is the origin of this result row column
 		public var originName: String {
 			return String(cString: sqlite3_column_origin_name(row.statement.stmt, Int32(index)))
 		}
 	#endif
-
-	/// Perform a low-level statement operation
-	///
-	/// **Use of this function should be avoided whenever possible**
-	///
-	/// - parameter block: The block performing the operation
-	/// - parameter stmt: The raw `sqlite3_stmt *` statement object
-	/// - parameter index: The index of this column in the result set
-	/// - throws: Any error thrown in `block`
-	/// - returns: The value returned by `block`
-	public func withUnsafeRawSQLiteStatement<T>(block: (_ stmt: SQLitePreparedStatement, _ index: Int) throws -> (T)) rethrows -> T {
-		return try block(row.statement.stmt, index)
-	}
 }
