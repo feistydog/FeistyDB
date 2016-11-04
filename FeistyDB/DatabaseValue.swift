@@ -5,29 +5,29 @@
 
 import Foundation
 
-/// The native data types that may be stored in a database
+/// A native data type that may be stored in an SQLite database.
 ///
 /// - seealso: [Datatypes In SQLite Version 3](https://sqlite.org/datatype3.html)
 public enum DatabaseValue {
-	/// An integer value
+	/// An integer value.
 	case integer(Int64)
-	/// A floating-point value
+	/// A floating-point value.
 	case float(Double)
-	/// A text value
+	/// A text value.
 	case text(String)
-	/// A blob (untyped bytes) value
+	/// A blob (untyped bytes) value.
 	case blob(Data)
-	/// A null value
+	/// A null value.
 	case null
 }
 
-/// An `sqlite3_value *` object
+/// An `sqlite3_value *` object.
 ///
 /// - seealso: [Obtaining SQL Values](https://sqlite.org/c3ref/value_blob.html)
 typealias SQLiteValue = OpaquePointer
 
 extension DatabaseValue {
-	/// Initialize `self` from an SQLite value
+	/// Creates an instance containing the value of `value`.
 	///
 	/// - parameter value: The desired value
 	init(from value: SQLiteValue) {
@@ -45,7 +45,7 @@ extension DatabaseValue {
 			self = .null
 		default:
 			#if DEBUG
-				print("Unknown value type \(type) encountered")
+				print("Unknown SQLite value type \(type) encountered")
 			#endif
 			self = .null
 		}
@@ -53,7 +53,7 @@ extension DatabaseValue {
 }
 
 extension DatabaseValue: CustomStringConvertible {
-	/// A description of the type and value contained by this `DatabaseValue`
+	/// A description of the type and value of `self`.
 	public var description: String {
 		switch self {
 		case .integer(let i):
@@ -70,102 +70,18 @@ extension DatabaseValue: CustomStringConvertible {
 	}
 }
 
-extension Statement {
-	/// Bind a value to an SQL parameter
-	///
-	/// Parameter indexes are 1-based.  The leftmost parameter in a statement has index 1.
-	/// - parameter value: The desired value of the parameter
-	/// - parameter index: The index of the desired parameter
-	/// - throws: `DatabaseError`
-	public func bind(value: DatabaseValue, toParameter index: Int) throws {
-//		precondition(index > 0, "Parameter indexes are 1-based")
-//		precondition(index < self.parameterCount, "Parameter index out of bounds")
-
-		switch value {
-		case .integer(let i):
-			if sqlite3_bind_int64(stmt, Int32(index), i) != SQLITE_OK {
-				#if DEBUG
-					print("Error binding Int64 \(i) to parameter \(index): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
-				#endif
-				throw DatabaseError.sqliteError(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))
-			}
-
-		case .float(let f):
-			if sqlite3_bind_double(stmt, Int32(index), f) != SQLITE_OK {
-				#if DEBUG
-					print("Error binding Double \(f) to parameter \(index): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
-				#endif
-				throw DatabaseError.sqliteError(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))
-			}
-
-		case .text(let t):
-			if sqlite3_bind_text(stmt, Int32(index), t, -1, SQLITE_TRANSIENT) != SQLITE_OK {
-				#if DEBUG
-					print("Error binding string \"\(t)\" to parameter \(index): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
-				#endif
-				throw DatabaseError.sqliteError(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))
-			}
-
-		case .blob(let b):
-			try b.withUnsafeBytes { (bytes: UnsafePointer<UInt8>) throws in
-				guard sqlite3_bind_blob(stmt, Int32(index), bytes, Int32(b.count), SQLITE_TRANSIENT) == SQLITE_OK else {
-					#if DEBUG
-						print("Error binding Data to parameter \(index): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
-					#endif
-					throw DatabaseError.sqliteError(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))
-				}
-			}
-
-		case .null:
-			if sqlite3_bind_null(stmt, Int32(index)) != SQLITE_OK {
-				#if DEBUG
-					print("Error binding null to parameter \(index): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
-				#endif
-				throw DatabaseError.sqliteError(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))
-			}
-		}
-
-	}
-
-	/// Bind a value to an SQL parameter
-	///
-	/// - parameter value: The desired value of the parameter
-	/// - parameter name: The name of the desired parameter
-	/// - throws: `DatabaseError`
-	public func bind(value: DatabaseValue, toParameter name: String) throws {
-		let index = Int(sqlite3_bind_parameter_index(stmt, name))
-		try bind(value: value, toParameter: index)
-	}
-
-	/// Bind a sequence of values to SQL parameters
-	///
-	/// - parameter values: A sequence of `DatabaseValue` instances to bind
-	/// - throws: `DatabaseError`
-	public func bind<S: Sequence>(_ values: S) throws where S.Iterator.Element == DatabaseValue {
-		var index = 1
-		for value in values {
-			try bind(value: value, toParameter: index)
-			index += 1
-		}
-	}
-
-	/// Bind a sequence of values to SQL parameters
-	///
-	/// - parameter values: A sequence of `DatabaseValue` instances to bind
-	/// - throws: `DatabaseError`
-	public func bind<S: Sequence>(_ values: S) throws where S.Iterator.Element == (String, DatabaseValue) {
-		for (key, value) in values {
-			try bind(value: value, toParameter: key)
-		}
-	}
-}
-
 extension Row {
-	/// Retrieve a column's value
+	/// Returns the value of the column at `index`.
 	///
-	/// - parameter index: The 0-based index of the desired column
+	/// - note: Column indexes are 0-based.  The leftmost column in a row has index 0.
+	/// - precondition: `index >= 0`
+	/// - precondition: `index < self.columnCount`
+	///
+	/// - parameter index: The index of the desired column
+	///
 	/// - returns: The column's value
-	public func column(_ index: Int) -> DatabaseValue {
+	/// - throws: An error if the column doesn't exist
+	public func column(_ index: Int) throws -> DatabaseValue {
 //		precondition(index >= 0, "Column indexes are 0-based")
 //		precondition(index < self.columnCount, "Column index out of bounds")
 
@@ -175,36 +91,50 @@ extension Row {
 		let type = sqlite3_column_type(stmt, idx)
 		switch type {
 		case SQLITE_INTEGER:
-			return DatabaseValue.integer(sqlite3_column_int64(stmt, idx))
+			return .integer(sqlite3_column_int64(stmt, idx))
 
 		case SQLITE_FLOAT:
-			return DatabaseValue.float(sqlite3_column_double(stmt, idx))
+			return .float(sqlite3_column_double(stmt, idx))
 
 		case SQLITE_TEXT:
-			return DatabaseValue.text(String(cString: sqlite3_column_text(stmt, idx)))
+			return .text(String(cString: sqlite3_column_text(stmt, idx)))
 
 		case SQLITE_BLOB:
 			let byteCount = Int(sqlite3_column_bytes(stmt, idx))
 			let data = Data(bytes: sqlite3_column_blob(stmt, idx).assumingMemoryBound(to: UInt8.self), count: byteCount)
-			return DatabaseValue.blob(data)
+			return .blob(data)
 
 		case SQLITE_NULL:
-			return DatabaseValue.null
+			return .null
 
 		default:
 			#if DEBUG
 				print("Unknown column type \(type) encountered")
 			#endif
-			return DatabaseValue.null
+			return .null
 		}
+	}
+
+	/// Returns the value of the column with name `name`.
+	///
+	/// - parameter name: The name of the desired column
+	///
+	/// - returns: The column's value
+	///
+	/// - throws: An error if the column doesn't exist
+	public func column(_ name: String) throws -> DatabaseValue {
+		guard let index = statement.columnNamesAndIndexes[name] else {
+			throw DatabaseError.sqliteError("Unknown column \"\(name)\"")
+		}
+		return try column(index)
 	}
 }
 
 extension Column {
-	/// Retrieve the value of the column
+	/// Returns the value of the column.
 	///
 	/// - returns: The column's value
-	public func value() -> DatabaseValue {
-		return row.column(index)
+	public func value() throws -> DatabaseValue {
+		return try row.column(index)
 	}
 }
