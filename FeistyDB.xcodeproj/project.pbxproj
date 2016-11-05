@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		32135F111DC819CC004B0E93 /* feisty_db_register_sqlite_uuid_extension.c in Sources */ = {isa = PBXBuildFile; fileRef = 32135F101DC819CC004B0E93 /* feisty_db_register_sqlite_uuid_extension.c */; settings = {COMPILER_FLAGS = "-DSQLITE_CORE"; }; };
 		321AC9141DCA9D6D00FD8ECA /* ParameterBindable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321AC9131DCA9D6D00FD8ECA /* ParameterBindable.swift */; };
-		321AC9161DCA9DC300FD8ECA /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 321AC9151DCA9DC300FD8ECA /* README.md */; };
 		3236FD841DC6EDE50057703E /* FeistyDB.h in Headers */ = {isa = PBXBuildFile; fileRef = 3236FD831DC6EDE50057703E /* FeistyDB.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3236FD871DC6EF420057703E /* FeistyDBTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3236FD851DC6EDF90057703E /* FeistyDBTests.swift */; };
 		324CCF1E1DC61C0E0056935B /* FeistyDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 324CCF141DC61C0E0056935B /* FeistyDB.framework */; };
@@ -24,10 +23,9 @@
 		324CCF541DC621F00056935B /* DatabaseError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324CCF531DC621F00056935B /* DatabaseError.swift */; };
 		324CCF581DC6233E0056935B /* ColumnConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324CCF571DC6233E0056935B /* ColumnConvertible.swift */; };
 		324CCF5A1DC623C20056935B /* DatabaseValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324CCF591DC623C20056935B /* DatabaseValue.swift */; };
-		324CCF5C1DC624260056935B /* DatabaseValueConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324CCF5B1DC624260056935B /* DatabaseValueConvertible.swift */; };
 		324CCF5E1DC624950056935B /* DatabaseQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324CCF5D1DC624950056935B /* DatabaseQueue.swift */; };
-		324CCF601DC658810056935B /* TransactionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324CCF5F1DC658810056935B /* TransactionType.swift */; };
 		324CCF711DC69CEF0056935B /* ConcurrentDatabaseQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324CCF701DC69CEF0056935B /* ConcurrentDatabaseQueue.swift */; };
+		32D3CF941DCD5A8B00BB53C6 /* DatabaseSerializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D3CF931DCD5A8B00BB53C6 /* DatabaseSerializable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,7 +41,6 @@
 /* Begin PBXFileReference section */
 		32135F101DC819CC004B0E93 /* feisty_db_register_sqlite_uuid_extension.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = feisty_db_register_sqlite_uuid_extension.c; sourceTree = "<group>"; };
 		321AC9131DCA9D6D00FD8ECA /* ParameterBindable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParameterBindable.swift; sourceTree = "<group>"; };
-		321AC9151DCA9DC300FD8ECA /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		3236FD831DC6EDE50057703E /* FeistyDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeistyDB.h; sourceTree = "<group>"; };
 		3236FD851DC6EDF90057703E /* FeistyDBTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeistyDBTests.swift; sourceTree = "<group>"; };
 		324CCF141DC61C0E0056935B /* FeistyDB.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FeistyDB.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -61,10 +58,9 @@
 		324CCF531DC621F00056935B /* DatabaseError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseError.swift; sourceTree = "<group>"; };
 		324CCF571DC6233E0056935B /* ColumnConvertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColumnConvertible.swift; sourceTree = "<group>"; };
 		324CCF591DC623C20056935B /* DatabaseValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseValue.swift; sourceTree = "<group>"; };
-		324CCF5B1DC624260056935B /* DatabaseValueConvertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseValueConvertible.swift; sourceTree = "<group>"; };
 		324CCF5D1DC624950056935B /* DatabaseQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseQueue.swift; sourceTree = "<group>"; };
-		324CCF5F1DC658810056935B /* TransactionType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionType.swift; sourceTree = "<group>"; };
 		324CCF701DC69CEF0056935B /* ConcurrentDatabaseQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConcurrentDatabaseQueue.swift; sourceTree = "<group>"; };
+		32D3CF931DCD5A8B00BB53C6 /* DatabaseSerializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseSerializable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,7 +85,6 @@
 		324CCF0A1DC61C0E0056935B = {
 			isa = PBXGroup;
 			children = (
-				321AC9151DCA9DC300FD8ECA /* README.md */,
 				324CCF451DC61F020056935B /* sqlite */,
 				324CCF161DC61C0E0056935B /* FeistyDB */,
 				324CCF211DC61C0E0056935B /* FeistyDBTests */,
@@ -109,18 +104,17 @@
 		324CCF161DC61C0E0056935B /* FeistyDB */ = {
 			isa = PBXGroup;
 			children = (
-				324CCF3C1DC61D730056935B /* Column.swift */,
-				324CCF571DC6233E0056935B /* ColumnConvertible.swift */,
-				324CCF701DC69CEF0056935B /* ConcurrentDatabaseQueue.swift */,
 				324CCF331DC61D1F0056935B /* Database.swift */,
-				324CCF531DC621F00056935B /* DatabaseError.swift */,
-				324CCF5D1DC624950056935B /* DatabaseQueue.swift */,
-				324CCF591DC623C20056935B /* DatabaseValue.swift */,
-				324CCF5B1DC624260056935B /* DatabaseValueConvertible.swift */,
-				321AC9131DCA9D6D00FD8ECA /* ParameterBindable.swift */,
-				324CCF3A1DC61D640056935B /* Row.swift */,
 				324CCF3E1DC61DE90056935B /* Statement.swift */,
-				324CCF5F1DC658810056935B /* TransactionType.swift */,
+				324CCF3A1DC61D640056935B /* Row.swift */,
+				324CCF3C1DC61D730056935B /* Column.swift */,
+				324CCF531DC621F00056935B /* DatabaseError.swift */,
+				321AC9131DCA9D6D00FD8ECA /* ParameterBindable.swift */,
+				324CCF571DC6233E0056935B /* ColumnConvertible.swift */,
+				324CCF591DC623C20056935B /* DatabaseValue.swift */,
+				32D3CF931DCD5A8B00BB53C6 /* DatabaseSerializable.swift */,
+				324CCF5D1DC624950056935B /* DatabaseQueue.swift */,
+				324CCF701DC69CEF0056935B /* ConcurrentDatabaseQueue.swift */,
 				3236FD831DC6EDE50057703E /* FeistyDB.h */,
 				324CCF181DC61C0E0056935B /* Info.plist */,
 			);
@@ -264,18 +258,16 @@
 			files = (
 				324CCF3B1DC61D640056935B /* Row.swift in Sources */,
 				324CCF341DC61D1F0056935B /* Database.swift in Sources */,
-				324CCF5C1DC624260056935B /* DatabaseValueConvertible.swift in Sources */,
 				321AC9141DCA9D6D00FD8ECA /* ParameterBindable.swift in Sources */,
 				324CCF5A1DC623C20056935B /* DatabaseValue.swift in Sources */,
 				324CCF3D1DC61D730056935B /* Column.swift in Sources */,
-				321AC9161DCA9DC300FD8ECA /* README.md in Sources */,
-				324CCF601DC658810056935B /* TransactionType.swift in Sources */,
 				324CCF711DC69CEF0056935B /* ConcurrentDatabaseQueue.swift in Sources */,
 				324CCF581DC6233E0056935B /* ColumnConvertible.swift in Sources */,
 				324CCF541DC621F00056935B /* DatabaseError.swift in Sources */,
 				324CCF3F1DC61DE90056935B /* Statement.swift in Sources */,
 				324CCF5E1DC624950056935B /* DatabaseQueue.swift in Sources */,
 				32135F111DC819CC004B0E93 /* feisty_db_register_sqlite_uuid_extension.c in Sources */,
+				32D3CF941DCD5A8B00BB53C6 /* DatabaseSerializable.swift in Sources */,
 				324CCF4C1DC61F020056935B /* sqlite3.c in Sources */,
 				324CCF4F1DC61F020056935B /* uuid.c in Sources */,
 			);
