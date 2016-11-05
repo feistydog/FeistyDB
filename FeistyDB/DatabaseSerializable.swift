@@ -49,24 +49,6 @@ extension DatabaseSerializable {
 	}
 }
 
-extension DatabaseSerializable where Self: NSCoding {
-	public func serialized() -> DatabaseValue {
-		return .blob(NSKeyedArchiver.archivedData(withRootObject: self))
-	}
-
-	public static func deserialize(from value: DatabaseValue) throws -> Self {
-		switch value {
-		case .blob(let b):
-			guard let result = NSKeyedUnarchiver.unarchiveObject(with: b) as? Self else {
-				throw DatabaseError.dataFormatError("\(value) is not a valid type")
-			}
-			return result
-		default:
-			throw DatabaseError.dataFormatError("\(value) is not a blob")
-		}
-	}
-}
-
 extension Row {
 	/// Returns the value of the column at `index`.
 	///
@@ -103,6 +85,24 @@ extension Column {
 	/// - throws: An error if the column contains an illegal value
 	public func value<T: DatabaseSerializable>() throws -> T {
 		return try row.column(index)
+	}
+}
+
+extension DatabaseSerializable where Self: NSCoding {
+	public func serialized() -> DatabaseValue {
+		return .blob(NSKeyedArchiver.archivedData(withRootObject: self))
+	}
+
+	public static func deserialize(from value: DatabaseValue) throws -> Self {
+		switch value {
+		case .blob(let b):
+			guard let result = NSKeyedUnarchiver.unarchiveObject(with: b) as? Self else {
+				throw DatabaseError.dataFormatError("\(value) is not a valid type")
+			}
+			return result
+		default:
+			throw DatabaseError.dataFormatError("\(value) is not a blob")
+		}
 	}
 }
 
