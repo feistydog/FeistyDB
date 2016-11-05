@@ -5,44 +5,65 @@
 
 import Foundation
 
-/// A type that may be serialized to and from a database.
+/// A type that may be serialized to and deserialized from a database.
+///
+/// This is a more generic method for database storage than `ParameterBindable` and `ColumnConvertible`
+/// because it allows types to customize behavior based on the database data type.
 ///
 /// For example, the implementation for `NSNull` is:
 ///
 /// ```swift
-/// extension NSNull: DatabaseValueConvertible {
-///     public func databaseValue() -> DatabaseValue {
-///         return DatabaseValue.null
+/// extension NSNull: DatabaseSerializable {
+///     public func serialized() -> DatabaseValue {
+///         return .null
 ///     }
 ///
-///     public static func from(databaseValue value: DatabaseValue) throws -> Self {
+///     public static func deserialize(from value: DatabaseValue) throws -> Self {
 ///         switch value {
 ///         case .null:
 ///             return self.init()
 ///         default:
-///             throw DatabaseError.dataFormatError("DatabaseValue \"\(value)\" is not null")
+///             throw DatabaseError.dataFormatError("\(value) is not null")
 ///         }
 ///     }
 /// }
 /// ```
-public protocol DatabaseValueConvertible: ParameterBindable {
-	/// Returns the value of `self` as a serializable value.
+public protocol DatabaseSerializable: ParameterBindable {
+	/// Returns a serialized value of `self`.
 	///
-	/// - returns: A serializable instance representing `self`
-	func databaseValue() -> DatabaseValue
+	/// - returns: A serialized value representing `self`
+	func serialized() -> DatabaseValue
 
-	/// Returns the value of `value` as the type of `Self`.
+	/// Deserializes and returns `value` as `Self`.
 	///
-	/// - parameter value: The serializable value to convert
+	/// - parameter value: A serialized value of `Self`
 	/// - returns: An instance of `Self`
 	///
 	/// - throws: An error if `value` contains an illegal value for `Self`
-	static func from(databaseValue value: DatabaseValue) throws -> Self
+	static func deserialize(from value: DatabaseValue) throws -> Self
 }
 
-extension DatabaseValueConvertible {
+extension DatabaseSerializable {
 	public func bind(to stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
-		try databaseValue().bind(to: stmt, parameter: idx)
+		try serialized().bind(to: stmt, parameter: idx)
+	}
+}
+
+extension DatabaseSerializable where Self: NSCoding {
+	public func serialized() -> DatabaseValue {
+		return .blob(NSKeyedArchiver.archivedData(withRootObject: self))
+	}
+
+	public static func deserialize(from value: DatabaseValue) throws -> Self {
+		switch value {
+		case .blob(let b):
+			guard let result = NSKeyedUnarchiver.unarchiveObject(with: b) as? Self else {
+				throw DatabaseError.dataFormatError("\(value) is not a valid type")
+			}
+			return result
+		default:
+			throw DatabaseError.dataFormatError("\(value) is not a blob")
+		}
 	}
 }
 
@@ -58,19 +79,19 @@ extension Row {
 	/// - returns: The column's value
 	///
 	/// - throws: An error if the column contains an illegal value
-	public func column<T: DatabaseValueConvertible>(_ index: Int) throws -> T {
-		return try T.from(databaseValue: column(index))
+	public func column<T: DatabaseSerializable>(_ index: Int) throws -> T {
+		return try T.deserialize(from: column(index))
 	}
 
-	/// Returns the value of the column with name `name`.
+	/// Returns the value of column `name`.
 	///
 	/// - parameter name: The name of the desired column
 	///
 	/// - returns: The column's value
 	///
 	/// - throws: An error if the column wasn't found or contains an illegal value
-	public func column<T: DatabaseValueConvertible>(_ name: String) throws -> T {
-		return try T.from(databaseValue: column(name))
+	public func column<T: DatabaseSerializable>(_ name: String) throws -> T {
+		return try T.deserialize(from: column(name))
 	}
 }
 
@@ -80,13 +101,13 @@ extension Column {
 	/// - returns: The column's value
 	///
 	/// - throws: An error if the column contains an illegal value
-	public func value<T: DatabaseValueConvertible>() throws -> T {
+	public func value<T: DatabaseSerializable>() throws -> T {
 		return try row.column(index)
 	}
 }
 
-extension NSNumber: DatabaseValueConvertible {
-	public func databaseValue() -> DatabaseValue {
+extension NSNumber: DatabaseSerializable {
+	public func serialized() -> DatabaseValue {
 		switch CFNumberGetType(self as CFNumber) {
 		case .sInt8Type, .sInt16Type, .sInt32Type, .charType, .shortType, .intType,
 		     .sInt64Type, .longType, .longLongType, .cfIndexType, .nsIntegerType:
@@ -97,7 +118,7 @@ extension NSNumber: DatabaseValueConvertible {
 		}
 	}
 
-	public static func from(databaseValue value: DatabaseValue) throws -> Self {
+	public static func deserialize(from value: DatabaseValue) throws -> Self {
 		switch value {
 		case .integer(let i):
 			return self.init(value: i)
@@ -109,12 +130,12 @@ extension NSNumber: DatabaseValueConvertible {
 	}
 }
 
-extension NSNull: DatabaseValueConvertible {
-	public func databaseValue() -> DatabaseValue {
-		return DatabaseValue.null
+extension NSNull: DatabaseSerializable {
+	public func serialized() -> DatabaseValue {
+		return .null
 	}
 
-	public static func from(databaseValue value: DatabaseValue) throws -> Self {
+	public static func deserialize(from value: DatabaseValue) throws -> Self {
 		switch value {
 		case .null:
 			return self.init()
