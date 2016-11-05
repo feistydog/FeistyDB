@@ -5,23 +5,31 @@
 
 import Foundation
 
-/// A class representing a single row in a result set
+/// A result row.
 public struct Row {
-	/// The owning `Statement`
+	/// The statement owning this row.
 	public let statement: Statement
 
-	/// The number of columns in the row
+	/// The number of columns in the row.
 	public var columnCount: Int {
 		return Int(sqlite3_column_count(statement.stmt))
 	}
 
-	/// Retrieve a column from the row
+	/// Returns the column at `index`.
 	///
-	/// - parameter index: The 0-based index of the desired column
+	/// - note: Column indexes are 0-based.  The leftmost column in a result row has index 0.
+	/// - precondition: `index >= 0`
+	/// - precondition: `index < self.columnCount`
+	///
+	/// - parameter index: The index of the desired column
+	///
 	/// - returns: A column for the specified index
-	public func column(_ index: Int) -> Column {
-//		precondition(index >= 0, "Column indexes are 0-based")
-//		precondition(index < self.columnCount, "Column index out of bounds")
+	///
+	/// - throws: An error if `index` is out of bounds
+	public func column(_ index: Int) throws -> Column {
+		guard index >= 0, index < self.columnCount else {
+			throw DatabaseError.sqliteError("Column index \(index) out of bounds")
+		}
 		return Column(row: self, index: index)
 	}
 }
