@@ -7,23 +7,38 @@ import Foundation
 
 /// A type that may be serialized to and deserialized from a database.
 ///
-/// This is a more generic method for database storage than `ParameterBindable` and `ColumnConvertible`
-/// because it allows types to customize behavior based on the database data type.
+/// This is a more general method for database storage than `ParameterBindable` and `ColumnConvertible`
+/// because it allows types to customize their behavior based on the database value's data type. 
+/// A database value's data type is the value returned by the `sqlite3_column_type()` before any
+/// type conversions have taken place.
 ///
-/// For example, the implementation for `NSNull` is:
+/// - note: Columns in SQLite have a type affinity (declared type) while stored values have an 
+/// individual storage class/data type.  There are rules for conversion which are documented
+/// at [Datatypes In SQLite Version 3](https://sqlite.org/datatype3.html).
+///
+/// For example, `NSNumber` can choose what to store in the database based on the boxed value:
 ///
 /// ```swift
-/// extension NSNull: DatabaseSerializable {
+/// extension NSNumber: DatabaseSerializable {
 ///     public func serialized() -> DatabaseValue {
-///         return .null
+///         switch CFNumberGetType(self as CFNumber) {
+///         case .sInt8Type, .sInt16Type, .sInt32Type, .charType, .shortType, .intType,
+///              .sInt64Type, .longType, .longLongType, .cfIndexType, .nsIntegerType:
+///             return DatabaseValue.integer(self.int64Value)
+///
+///         case .float32Type, .float64Type, .floatType, .doubleType, .cgFloatType:
+///             return DatabaseValue.float(self.doubleValue)
+///         }
 ///     }
 ///
 ///     public static func deserialize(from value: DatabaseValue) throws -> Self {
 ///         switch value {
-///         case .null:
-///             return self.init()
+///         case .integer(let i):
+///             return self.init(value: i)
+///         case .float(let f):
+///             return self.init(value: f)
 ///         default:
-///             throw DatabaseError.dataFormatError("\(value) is not null")
+///             throw DatabaseError.dataFormatError("\(value) is not a number")
 ///         }
 ///     }
 /// }
@@ -53,16 +68,16 @@ extension Row {
 	/// Returns the value of the column at `index`.
 	///
 	/// - note: Column indexes are 0-based.  The leftmost column in a row has index 0.
-	/// - precondition: `index >= 0`
-	/// - precondition: `index < self.columnCount`
+	/// - requires: `index >= 0`
+	/// - requires: `index < self.columnCount`
 	///
 	/// - parameter index: The index of the desired column
 	///
 	/// - returns: The column's value
 	///
 	/// - throws: An error if the column contains an illegal value
-	public func column<T: DatabaseSerializable>(_ index: Int) throws -> T {
-		return try T.deserialize(from: column(index))
+	public func value<T: DatabaseSerializable>(at index: Int) throws -> T {
+		return try T.deserialize(from: value(at: index))
 	}
 
 	/// Returns the value of column `name`.
@@ -72,19 +87,8 @@ extension Row {
 	/// - returns: The column's value
 	///
 	/// - throws: An error if the column wasn't found or contains an illegal value
-	public func column<T: DatabaseSerializable>(_ name: String) throws -> T {
-		return try T.deserialize(from: column(name))
-	}
-}
-
-extension Column {
-	/// Returns the value of the column.
-	///
-	/// - returns: The column's value
-	///
-	/// - throws: An error if the column contains an illegal value
-	public func value<T: DatabaseSerializable>() throws -> T {
-		return try row.column(index)
+	public func value<T: DatabaseSerializable>(named name: String) throws -> T {
+		return try T.deserialize(from: value(named: name))
 	}
 }
 
@@ -97,7 +101,7 @@ extension DatabaseSerializable where Self: NSCoding {
 		switch value {
 		case .blob(let b):
 			guard let result = NSKeyedUnarchiver.unarchiveObject(with: b) as? Self else {
-				throw DatabaseError.dataFormatError("\(value) is not a valid type")
+				throw DatabaseError.dataFormatError("\(value) is not a valid instance of \(Self.self)")
 			}
 			return result
 		default:
