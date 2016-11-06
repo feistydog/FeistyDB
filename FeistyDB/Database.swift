@@ -356,7 +356,7 @@ extension Database {
 			let function_ptr = context.unsafelyUnwrapped.assumingMemoryBound(to: SQLFunction.self)
 
 			let args = UnsafeBufferPointer(start: argv, count: Int(argc))
-			let arguments = args.map { DatabaseValue(from: $0.unsafelyUnwrapped) }
+			let arguments = args.map { DatabaseValue($0.unsafelyUnwrapped) }
 
 			do {
 				// Call the function and pass the result to sqlite
