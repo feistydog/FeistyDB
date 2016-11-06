@@ -27,10 +27,10 @@ public enum DatabaseValue {
 typealias SQLiteValue = OpaquePointer
 
 extension DatabaseValue {
-	/// Creates an instance containing the value of `value`.
+	/// Creates an instance containing `value`.
 	///
 	/// - parameter value: The desired value
-	init(from value: SQLiteValue) {
+	init(_ value: SQLiteValue) {
 		let type = sqlite3_value_type(value)
 		switch type {
 		case SQLITE_INTEGER:
@@ -74,16 +74,17 @@ extension Row {
 	/// Returns the value of the column at `index`.
 	///
 	/// - note: Column indexes are 0-based.  The leftmost column in a row has index 0.
-	/// - precondition: `index >= 0`
-	/// - precondition: `index < self.columnCount`
+	/// - requires: `index >= 0`
+	/// - requires: `index < self.columnCount`
 	///
 	/// - parameter index: The index of the desired column
 	///
 	/// - returns: The column's value
 	/// - throws: An error if the column doesn't exist
-	public func column(_ index: Int) throws -> DatabaseValue {
-//		precondition(index >= 0, "Column indexes are 0-based")
-//		precondition(index < self.columnCount, "Column index out of bounds")
+	public func value(at index: Int) throws -> DatabaseValue {
+//		guard index >= 0, index < self.columnCount else {
+//			throw DatabaseError.sqliteError("Column index \(index) out of bounds")
+//		}
 
 		let stmt = statement.stmt
 		let idx = Int32(index)
@@ -122,19 +123,49 @@ extension Row {
 	/// - returns: The column's value
 	///
 	/// - throws: An error if the column doesn't exist
-	public func column(_ name: String) throws -> DatabaseValue {
+	public func value(named name: String) throws -> DatabaseValue {
 		guard let index = statement.columnNamesAndIndexes[name] else {
 			throw DatabaseError.sqliteError("Unknown column \"\(name)\"")
 		}
-		return try column(index)
+		return try value(at: index)
 	}
 }
 
-extension Column {
-	/// Returns the value of the column.
+extension Row {
+	/// Returns the value of the column with name `name`.
 	///
-	/// - returns: The column's value
-	public func value() throws -> DatabaseValue {
-		return try row.column(index)
+	/// - parameter name: The name of the desired column
+	///
+	/// - returns: The column's value or `.null` if the column doesn't exist
+	public subscript(name: String) -> DatabaseValue {
+		do {
+			return try value(named: name)
+		}
+		catch {
+			return .null
+		}
+	}
+}
+
+extension Row: Collection {
+	public var startIndex: Int {
+		return 0
+	}
+
+	public var endIndex: Int {
+		return statement.columnCount
+	}
+
+	public subscript(position: Int) -> DatabaseValue {
+		do {
+			return try value(at: position)
+		}
+		catch {
+			return .null
+		}
+	}
+
+	public func index(after i: Int) -> Int {
+		return i + 1
 	}
 }
