@@ -6,30 +6,42 @@
 import Foundation
 
 /// A result row.
+///
+/// A `Row` is not created directly but is obtained from a `Statement`, either via `execute()` or iteration:
+///
+/// ```swift
+/// try statement.execute() { row in
+///     // Do something with `row`
+/// }
+/// ```
+///
+/// ```swift
+/// for row in statement {
+///     // Do something with `row`
+/// }
+/// ```
 public struct Row {
 	/// The statement owning this row.
 	public let statement: Statement
+}
 
+extension Row {
 	/// The number of columns in the row.
 	public var columnCount: Int {
-		return Int(sqlite3_column_count(statement.stmt))
+		return statement.columnCount
 	}
 
-	/// Returns the column at `index`.
+	/// Returns the name of the column at `index`.
 	///
 	/// - note: Column indexes are 0-based.  The leftmost column in a result row has index 0.
-	/// - precondition: `index >= 0`
-	/// - precondition: `index < self.columnCount`
+	/// - requires: `index >= 0`
+	/// - requires: `index < self.columnCount`
 	///
 	/// - parameter index: The index of the desired column
 	///
-	/// - returns: A column for the specified index
-	///
+	/// - returns: The name of the column for the specified index
 	/// - throws: An error if `index` is out of bounds
-	public func column(_ index: Int) throws -> Column {
-		guard index >= 0, index < self.columnCount else {
-			throw DatabaseError.sqliteError("Column index \(index) out of bounds")
-		}
-		return Column(row: self, index: index)
+	public func name(ofColumn index: Int) throws -> String {
+		return try statement.name(ofColumn: index)
 	}
 }
