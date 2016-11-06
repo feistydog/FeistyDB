@@ -47,7 +47,7 @@ final public class Database {
 
 	/// Creates a database from a file.
 	///
-	/// - parameter url: The location of the database
+	/// - parameter url: The location of the SQLite database
 	/// - parameter readOnly: Whether to open the database in read-only mode
 	/// - parameter create: Whether to create the database if it doesn't exist
 	///
@@ -70,7 +70,7 @@ final public class Database {
 
 	/// Creates a database from an existing `sqlite3 *` database connection handle.
 	///
-	/// **The database takes ownership of the passed-in database connection handle**
+	/// - attention: The database takes ownership of `db`.  The result of further use of `db` is undefined.
 	///
 	/// - parameter db: An `sqlite3 *` database connection handle
 	public init(rawSQLiteDatabase db: SQLiteDatabaseConnection) {
@@ -109,7 +109,7 @@ final public class Database {
 	/// - parameter block: The closure performing the database operation
 	/// - parameter db: The raw `sqlite3 *` database connection handle
 	///
-	/// - throws: Any error thrown by `block`
+	/// - throws: Any error thrown in `block`
 	///
 	/// - returns: The value returned by `block`
 	public func withUnsafeRawSQLiteDatabase<T>(block: (_ db: SQLiteDatabaseConnection) throws -> (T)) rethrows -> T {

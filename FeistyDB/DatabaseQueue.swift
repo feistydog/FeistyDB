@@ -5,42 +5,68 @@
 
 import Foundation
 
-/// A class providing serialized access to a database
+/// A queue providing serialized execution of work items on a database.
+///
+/// A database queue manages the execution of database operations to ensure they
+/// occur one at a time in FIFO order.  This provides thread-safe database access.
+///
+/// Database operations may be submitted for synchronous or asynchronous execution.
+///
+/// The interface is similar to `DispatchQueue` and a dispatch queue is used
+/// internally for work item management.
+///
+/// ```swift
+/// let dbQueue = DatabaseQueue()
+/// dbQueue.sync { db in
+///     // Do something with `db`
+/// }
+/// ```
+///
+/// A database queue also supports transactions and savepoints:
+///
+/// ```swift
+/// dbQueue.transaction { db in
+///     // All database operations here are contained within a transaction
+/// }
+/// ```
 public final class DatabaseQueue {
 	/// The underlying database
 	private let database: Database
 	/// The dispatch queue used to serialize access
-	private let queue = DispatchQueue(label: "com.feisty-dog.FDDatabase.DatabaseQueue")
+	private let queue = DispatchQueue(label: "com.feisty-dog.FeistyDB.DatabaseQueue")
 
-	/// Initialize the queue for serialized access to an in-memory database
+	/// Creates a database queue for serialized access to an in-memory database.
 	///
-	/// - throws: `DatabaseError`
+	/// - throws: An error if the database could not be created
 	public init() throws {
 		self.database = try Database()
 	}
 
-	/// Initialize the queue for serialized access to a database
+	/// Creates a database queue for serialized access to a database from a file.
 	///
-	/// - parameter url: The URL of the database to access
-	/// - throws: `DatabaseError`
+	/// - parameter url: The location of the SQLite database
+	///
+	/// - throws: An error if the database could not be opened
 	public init(url: URL) throws {
 		self.database = try Database(url: url)
 	}
 
-	/// Initialize the queue for serialized access to a database
+	/// Creates a database queue for serialized access to an existing database.
 	///
-	/// **The queue takes ownership of the passed-in database**
+	/// - attention: The database queue takes ownership of `database`.  The result of further use of `database` is undefined.
 	///
 	/// - parameter database: The database to be serialized
 	public init(database: Database) {
 		self.database = database
 	}
 
-	/// Perform a synchronous operation on the database
+	/// Performs a synchronous operation on the database.
 	///
-	/// - parameter block: The block performing the operation
-	/// - parameter database: The `Database` used for database access
+	/// - parameter block: A closure performing the database operation
+	/// - parameter database: A `Database` used for database access within `block`
+	///
 	/// - throws: Any error thrown in `block`
+	///
 	/// - returns: The value returned by `block`
 	public func sync<T>(block: (_ database: Database) throws -> (T)) rethrows -> T {
 		return try queue.sync {
@@ -48,62 +74,89 @@ public final class DatabaseQueue {
 		}
 	}
 
-	/// Perform an asynchronous operation on the database
+	/// Submits an asynchronous operation to the database queue.
 	///
-	/// - parameter block: The block performing the operation
-	/// - parameter database: The `Database` used for database access
+	/// - parameter block: A closure performing the database operation
+	/// - parameter database: A `Database` used for database access within `block`
 	public func async(block: @escaping (_ database: Database) -> (Void)) {
 		queue.async {
 			block(self.database)
 		}
 	}
 
-	/// Perform a synchronous read/write transaction on the database
+	/// Performs a synchronous transaction on the database.
 	///
 	/// - parameter type: The type of transaction to perform
-	/// - parameter block: The block performing the read/write
-	/// - parameter database: The `Database` used for database access
-	/// - parameter rollback: If set to `true` by `block` the transaction will be rolled back
-	/// - throws: Any error thrown in `block`
+	/// - parameter block: A closure performing the database operation
+	/// - parameter database: A `Database` used for database access within `block`
+	/// - parameter rollback: Whether to rollback the transaction after `block` completes
+	///
+	/// - throws: Any error thrown in `block` or an error if the transaction could not be started, rolled back, or committed
+	///
 	/// - returns: The value returned by `block`
 	public func transaction<T>(type: Database.TransactionType = .deferred, _ block: (_ database: Database, _ rollback: inout Bool) throws -> (T)) rethrows -> T {
 		return try queue.sync {
-			try database.transaction(type: type, block)
+			try database.begin(type: type)
+			var rollback = false
+			let result = try block(database, &rollback)
+			try rollback ? database.rollback() : database.commit()
+			return result
 		}
 	}
 
-	/// Perform an asynchronous read/write transaction on the database
+	/// Submits an asynchronous transaction to the database queue.
 	///
 	/// - parameter type: The type of transaction to perform
-	/// - parameter block: The block performing the read/write
-	/// - parameter database: The `Database` used for database access
+	/// - parameter block: A closure performing the database operation
+	/// - parameter database: A `Database` used for database access within `block`
 	/// - parameter rollback: Whether to rollback the transaction after `block` completes
 	public func transaction_async(type: Database.TransactionType = .deferred, _ block: @escaping (_ database: Database, _ rollback: inout Bool) -> (Void)) {
 		queue.async {
-			try? self.database.transaction(type:type, block)
+			do {
+				try self.database.begin(type: type)
+				var rollback = false
+				block(self.database, &rollback)
+				try rollback ? self.database.rollback() : self.database.commit()
+			}
+			catch {}
 		}
 	}
 
-	/// Perform a synchronous savepoint on the database
+	/// Performs a synchronous savepoint on the database.
 	///
-	/// - parameter block: The block performing the read/write
-	/// - parameter database: The `Database` used for database access
+	/// - parameter block: A closure performing the database operation
+	/// - parameter database: A `Database` used for database access within `block`
 	/// - parameter rollback: Whether to rollback the savepoint after `block` completes
+	///
+	/// - throws: Any error thrown in `block` or an error if the savepoint could not be started, rolled back, or released
+	///
 	/// - returns: The value returned by `block`
 	public func savepoint<T>(block: (_ database: Database, _ rollback: inout Bool) throws -> (T)) rethrows -> T {
 		return try queue.sync {
-			try self.database.savepoint(block)
+			let savepointUUID = UUID().uuidString
+			try database.begin(savepoint: savepointUUID)
+			var rollback = false
+			let result = try block(database, &rollback)
+			try rollback ? database.rollback(to: savepointUUID) : database.release(savepoint: savepointUUID)
+			return result
 		}
 	}
 
-	/// Perform an asynchronous savepoint on the database
+	/// Submits an asynchronous savepoint to the database queue.
 	///
-	/// - parameter block: The block performing the read/write
-	/// - parameter database: The `Database` used for database access
+	/// - parameter block: A closure performing the database operation
+	/// - parameter database: A `Database` used for database access within `block`
 	/// - parameter rollback: Whether to rollback the savepoint after `block` completes
 	public func savepoint_async(block: @escaping (_ database: Database, _ rollback: inout Bool) -> (Void)) {
 		queue.async {
-			try? self.database.savepoint(block)
+			do {
+				let savepointUUID = UUID().uuidString
+				try self.database.begin(savepoint: savepointUUID)
+				var rollback = false
+				block(self.database, &rollback)
+				try rollback ? self.database.rollback(to: savepointUUID) : self.database.release(savepoint: savepointUUID)
+			}
+			catch {}
 		}
 	}
 }
