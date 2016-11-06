@@ -22,6 +22,7 @@ public protocol ColumnConvertible {
 	/// Creates an instance containing the value of column `idx` in `stmt`.
 	///
 	/// - note: Column indexes are 0-based.  The leftmost column in a row has index 0.
+	///
 	/// - precondition: `sqlite3_column_type(stmt, idx) != SQLITE_NULL`
 	///
 	/// - parameter stmt: An `sqlite3_stmt *` object
@@ -35,14 +36,15 @@ extension Row {
 	/// Returns the value of the column at `index`.
 	///
 	/// - note: Column indexes are 0-based.  The leftmost column in a row has index 0.
+	///
 	/// - requires: `index >= 0`
 	/// - requires: `index < self.columnCount`
 	///
 	/// - parameter index: The index of the desired column
 	///
-	/// - returns: The column's value or `nil` if null
-	///
 	/// - throws: An error if `index` is out of bounds or the column contains an illegal value
+	///
+	/// - returns: The column's value or `nil` if null
 	public func value<T: ColumnConvertible>(at index: Int) throws -> T? {
 //		guard index >= 0, index < self.columnCount else {
 //			throw DatabaseError.sqliteError("Column index \(index) out of bounds")
@@ -61,14 +63,15 @@ extension Row {
 	/// Returns the value of the column at `index`.
 	///
 	/// - note: Column indexes are 0-based.  The leftmost column in a row has index 0.
+	///
 	/// - requires: `index >= 0`
 	/// - requires: `index < self.columnCount`
 	///
 	/// - parameter index: The index of the desired column
 	///
-	/// - returns: The column's value
-	///
 	/// - throws: An error if `index` is out of bounds or the column contains a null or illegal value
+	///
+	/// - returns: The column's value
 	public func value<T: ColumnConvertible>(at index: Int) throws -> T {
 //		guard index >= 0, index < self.columnCount else {
 //			throw DatabaseError.sqliteError("Column index \(index) out of bounds")
@@ -88,9 +91,9 @@ extension Row {
 	///
 	/// - parameter name: The name of the desired column
 	///
-	/// - returns: The column's value or `nil` if null
-	///
 	/// - throws: An error if the column doesn't exist or contains an illegal value
+	///
+	/// - returns: The column's value or `nil` if null
 	public func value<T: ColumnConvertible>(named name: String) throws -> T? {
 		guard let index = statement.columnNamesAndIndexes[name] else {
 			throw DatabaseError.sqliteError("Unknown column \"\(name)\"")
@@ -102,9 +105,9 @@ extension Row {
 	///
 	/// - parameter name: The name of the desired column
 	///
-	/// - returns: The column's value
-	///
 	/// - throws: An error if the column doesn't exist or contains a null or illegal value
+	///
+	/// - returns: The column's value
 	public func value<T: ColumnConvertible>(named name: String) throws -> T {
 		guard let index = statement.columnNamesAndIndexes[name] else {
 			throw DatabaseError.sqliteError("Unknown column \"\(name)\"")

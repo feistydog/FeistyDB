@@ -55,13 +55,15 @@ extension Row {
 	/// Returns the name of the column at `index`.
 	///
 	/// - note: Column indexes are 0-based.  The leftmost column in a result row has index 0.
+	///
 	/// - requires: `index >= 0`
 	/// - requires: `index < self.columnCount`
 	///
 	/// - parameter index: The index of the desired column
 	///
-	/// - returns: The name of the column for the specified index
 	/// - throws: An error if `index` is out of bounds
+	///
+	/// - returns: The name of the column for the specified index
 	public func name(ofColumn index: Int) throws -> String {
 		return try statement.name(ofColumn: index)
 	}

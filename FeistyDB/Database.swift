@@ -107,7 +107,7 @@ final public class Database {
 	/// **Use of this function should be avoided whenever possible**
 	///
 	/// - parameter block: The closure performing the database operation
-	/// - parameter db: The raw `sqlite3 *` database connection handle object
+	/// - parameter db: The raw `sqlite3 *` database connection handle
 	///
 	/// - throws: Any error thrown by `block`
 	///
@@ -121,14 +121,17 @@ extension Database {
 	/// Returns a compiled SQL statement.
 	///
 	/// - parameter sql: The SQL statement to compile
-	/// - returns: A compiled SQL statement
 	///
 	/// - throws: An error if `sql` could not be compiled
+	///
+	/// - returns: A compiled SQL statement
 	public func prepare(sql: String) throws -> Statement {
 		return try Statement(database: self, sql: sql)
 	}
 
 	/// Executes an SQL statement and applies `block` to each result row.
+	///
+	/// This is a shortcut to `try prepare(sql: sql).execute(block)`.
 	///
 	/// - parameter sql: The SQL statement to execute
 	/// - parameter block: A closure applied to each result row
@@ -154,11 +157,12 @@ extension Database {
 
 	/// Begins a database transaction.
 	///
-	/// - note: Transactions may not be nested.
+	/// - note: Database transactions may not be nested.
 	///
 	/// - parameter type: The type of transaction to initiate
 	///
 	/// - throws: An error if the transaction couldn't be started
+	///
 	/// - seealso: [BEGIN TRANSACTION](https://sqlite.org/lang_transaction.html)
 	public func begin(type: TransactionType = .deferred) throws {
 		let sql: String
@@ -200,6 +204,7 @@ extension Database {
 	/// - parameter name: The name of the savepoint transaction
 	///
 	/// - throws: An error if the savepoint transaction couldn't be started
+	///
 	/// - seealso: [SAVEPOINT](https://sqlite.org/lang_savepoint.html)
 	public func begin(savepoint name: String) throws {
 		guard sqlite3_exec(db, "SAVEPOINT \(name);", nil, nil, nil) == SQLITE_OK else {
@@ -255,6 +260,7 @@ extension Database {
 	/// Removes a compiled SQL statement.
 	///
 	/// - parameter key: The key used to identify the statement
+	///
 	/// - returns: The statement that was removed, or `nil` if the key was not present
 	public func removePreparedStatement(forKey key: String) -> Statement? {
 		return preparedStatements.removeValue(forKey: key)
@@ -265,6 +271,7 @@ extension Database {
 ///
 /// - parameter lhs: The left-hand operand
 /// - parameter rhs: The right-hand operand
+///
 /// - returns: The result of comparing `lhs` to `rhs`
 public typealias StringComparator = (_ lhs: String, _ rhs: String) -> ComparisonResult
 
@@ -318,8 +325,9 @@ extension Database {
 ///
 /// - parameter values: The SQL function parameters
 ///
-/// - returns: The result of applying the function to `values`
 /// - throws: `DatabaseError`
+///
+/// - returns: The result of applying the function to `values`
 public typealias SQLFunction = (_ values: [DatabaseValue]) throws -> DatabaseValue
 
 // Ideally I'd like the typealias to have the following signature:
@@ -347,6 +355,7 @@ extension Database {
 	/// - parameter block: A closure that returns the result of applying the function to the supplied arguments
 	///
 	/// - throws: An error if the SQL function couldn't be added
+	///
 	/// - seealso: [Create Or Redefine SQL Functions](https://sqlite.org/c3ref/create_function.html)
 	public func add(function name: String, arity: Int = -1, _ block: @escaping SQLFunction) throws {
 		let function_ptr = UnsafeMutablePointer<SQLFunction>.allocate(capacity: 1)

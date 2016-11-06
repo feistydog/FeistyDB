@@ -126,8 +126,9 @@ final public class Statement {
 	///
 	/// - parameter index: The index of the desired column
 	///
-	/// - returns: The name of the column for the specified index
 	/// - throws: An error if `index` is out of bounds
+	///	
+	/// - returns: The name of the column for the specified index
 	public func name(ofColumn index: Int) throws -> String {
 		guard index >= 0, index < self.columnCount else {
 			throw DatabaseError.sqliteError("Column index \(index) out of bounds")
@@ -140,7 +141,7 @@ final public class Statement {
 	/// - parameter block: A closure applied to each result row
 	/// - parameter row: A result row of returned data
 	///
-	/// - throws: `DatabaseError`
+	/// - throws: Any error thrown in `block` or an error if the statement did not successfully run to completion
 	public func execute(_ block: ((_ row: Row) throws -> ())? = nil) throws {
 		var result = sqlite3_step(stmt)
 		while result == SQLITE_ROW {

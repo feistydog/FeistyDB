@@ -74,13 +74,15 @@ extension Row {
 	/// Returns the value of the column at `index`.
 	///
 	/// - note: Column indexes are 0-based.  The leftmost column in a row has index 0.
+	///
 	/// - requires: `index >= 0`
 	/// - requires: `index < self.columnCount`
 	///
 	/// - parameter index: The index of the desired column
 	///
-	/// - returns: The column's value
 	/// - throws: An error if the column doesn't exist
+	///
+	/// - returns: The column's value
 	public func value(at index: Int) throws -> DatabaseValue {
 //		guard index >= 0, index < self.columnCount else {
 //			throw DatabaseError.sqliteError("Column index \(index) out of bounds")
@@ -120,9 +122,9 @@ extension Row {
 	///
 	/// - parameter name: The name of the desired column
 	///
-	/// - returns: The column's value
-	///
 	/// - throws: An error if the column doesn't exist
+	///
+	/// - returns: The column's value
 	public func value(named name: String) throws -> DatabaseValue {
 		guard let index = statement.columnNamesAndIndexes[name] else {
 			throw DatabaseError.sqliteError("Unknown column \"\(name)\"")

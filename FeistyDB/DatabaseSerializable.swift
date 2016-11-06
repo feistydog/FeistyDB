@@ -52,9 +52,10 @@ public protocol DatabaseSerializable: ParameterBindable {
 	/// Deserializes and returns `value` as `Self`.
 	///
 	/// - parameter value: A serialized value of `Self`
-	/// - returns: An instance of `Self`
 	///
 	/// - throws: An error if `value` contains an illegal value for `Self`
+	///
+	/// - returns: An instance of `Self`
 	static func deserialize(from value: DatabaseValue) throws -> Self
 }
 
@@ -68,14 +69,15 @@ extension Row {
 	/// Returns the value of the column at `index`.
 	///
 	/// - note: Column indexes are 0-based.  The leftmost column in a row has index 0.
+	///
 	/// - requires: `index >= 0`
 	/// - requires: `index < self.columnCount`
 	///
 	/// - parameter index: The index of the desired column
 	///
-	/// - returns: The column's value
-	///
 	/// - throws: An error if the column contains an illegal value
+	///
+	/// - returns: The column's value
 	public func value<T: DatabaseSerializable>(at index: Int) throws -> T {
 		return try T.deserialize(from: value(at: index))
 	}
@@ -84,9 +86,9 @@ extension Row {
 	///
 	/// - parameter name: The name of the desired column
 	///
-	/// - returns: The column's value
-	///
 	/// - throws: An error if the column wasn't found or contains an illegal value
+	///
+	/// - returns: The column's value
 	public func value<T: DatabaseSerializable>(named name: String) throws -> T {
 		return try T.deserialize(from: value(named: name))
 	}

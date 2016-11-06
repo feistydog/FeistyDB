@@ -24,6 +24,7 @@ public protocol ParameterBindable {
 	/// Binds the value of `self` to the SQL parameter at `idx` in `stmt`.
 	///
 	/// - note: Parameter indexes are 1-based.  The leftmost parameter in a statement has index 1.
+	///
 	/// - requires: `index > 0`
 	/// - requires: `index < parameterCount`
 	///
@@ -41,7 +42,7 @@ extension Database {
 	/// - parameter values: A series of values to bind to SQL parameters
 	/// - parameter block: A closure called for each result row
 	///
-	/// - throws: `DatabaseError`
+	/// - throws: Any error thrown in `block` or an error if `sql` couldn't be compiled, `values` couldn't be bound, or the statement couldn't be executed
 	public func execute<T: ParameterBindable>(sql: String, parameters values: T?..., _ block: ((_ row: Row) throws -> ())? = nil) throws {
 		try execute(sql: sql, parameters: values, block)
 	}
@@ -52,7 +53,7 @@ extension Database {
 	/// - parameter parameters: A dictionary of names and values to bind to SQL parameters
 	/// - parameter block: A closure called for each result row
 	///
-	/// - throws: `DatabaseError`
+	/// - throws: Any error thrown in `block` or an error if `sql` couldn't be compiled, `parameters` couldn't be bound, or the statement couldn't be executed
 	public func execute<T: ParameterBindable>(sql: String, parameters: [String: T?], _ block: ((_ row: Row) throws -> ())? = nil) throws {
 		let statement = try prepare(sql: sql)
 		try statement.bind(parameters: parameters)
@@ -65,7 +66,7 @@ extension Database {
 	/// - parameter values: A sequence of values to bind to SQL parameters
 	/// - parameter block: A closure called for each result row
 	///
-	/// - throws: `DatabaseError`
+	/// - throws: Any error thrown in `block` or an error if `sql` couldn't be compiled, `values` couldn't be bound, or the statement couldn't be executed
 	public func execute<S: Sequence, T: ParameterBindable>(sql: String, parameters values: S, _ block: ((_ row: Row) throws -> ())? = nil) throws where S.Iterator.Element == T? {
 		let statement = try prepare(sql: sql)
 		try statement.bind(parameters: values)
@@ -78,7 +79,7 @@ extension Database {
 	/// - parameter parameters: A sequence of name and value pairs to bind to SQL parameters
 	/// - parameter block: A closure called for each result row
 	///
-	/// - throws: `DatabaseError`
+	/// - throws: Any error thrown in `block` or an error if `sql` couldn't be compiled, `parameters` couldn't be bound, or the statement couldn't be executed
 	public func execute<S: Sequence, T: ParameterBindable>(sql: String, parameters: S, _ block: ((_ row: Row) throws -> ())? = nil) throws where S.Iterator.Element == (String, T?) {
 		let statement = try prepare(sql: sql)
 		try statement.bind(parameters: parameters)
@@ -90,13 +91,14 @@ extension Statement {
 	/// Binds `value` to the SQL parameter at `index`.
 	///
 	/// - note: Parameter indexes are 1-based.  The leftmost parameter in a statement has index 1.
+	///
 	/// - requires: `index > 0`
 	/// - requires: `index < parameterCount`
 	///
 	/// - parameter value: The desired value of the SQL parameter
 	/// - parameter index: The index of the SQL parameter to bind
 	///
-	/// - throws: `DatabaseError`
+	/// - throws: An error if `value` couldn't be bound
 	public func bind<T: ParameterBindable>(value: T?, toParameter index: Int) throws {
 		let idx = Int32(index)
 		if let value = value {
@@ -114,7 +116,7 @@ extension Statement {
 	/// - parameter value: The desired value of the SQL parameter
 	/// - parameter name: The name of the SQL parameter to bind
 	///
-	/// - throws: An error if the parameter doesn't exist or couldn't be bound
+	/// - throws: An error if the SQL parameter `name` doesn't exist or `value` couldn't be bound
 	public func bind<T: ParameterBindable>(value: T?, toParameter name: String) throws {
 		let idx = sqlite3_bind_parameter_index(stmt, name)
 		guard idx > 0 else {
@@ -135,7 +137,7 @@ extension Statement {
 	///
 	/// - parameter values: A series of values to bind to SQL parameters
 	///
-	/// - throws: `DatabaseError`
+	/// - throws: An error if one of `values` couldn't be bound
 	public func bind<T: ParameterBindable>(parameters values: T?...) throws  {
 		try bind(parameters: values)
 	}
@@ -144,7 +146,7 @@ extension Statement {
 	///
 	/// - parameter parameters: A sequence of name and value pairs to bind to SQL parameters
 	///
-	/// - throws: `DatabaseError`
+	/// - throws: An error if the SQL parameter *name* doesn't exist or *value* couldn't be bound
 	public func bind<T: ParameterBindable>(parameters: [String: T?]) throws  {
 		for (name, value) in parameters {
 			let idx = sqlite3_bind_parameter_index(stmt, name)
@@ -166,7 +168,7 @@ extension Statement {
 	///
 	/// - parameter values: A sequence of values to bind to SQL parameters
 	///
-	/// - throws: `DatabaseError`
+	/// - throws: An error if one of `values` couldn't be bound
 	public func bind<S: Sequence, T: ParameterBindable>(parameters values: S) throws where S.Iterator.Element == T? {
 		var index: Int32 = 1
 		for value in values {
@@ -186,7 +188,7 @@ extension Statement {
 	///
 	/// - parameter parameters: A sequence of name and value pairs to bind to SQL parameters
 	///
-	/// - throws: `DatabaseError`
+	/// - throws: An error if the SQL parameter *name* doesn't exist or *value* couldn't be bound
 	public func bind<S: Sequence, T: ParameterBindable>(parameters: S) throws where S.Iterator.Element == (String, T?) {
 		for (name, value) in parameters {
 			let index = sqlite3_bind_parameter_index(stmt, name)
