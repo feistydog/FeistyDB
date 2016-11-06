@@ -5,9 +5,11 @@
 
 import Foundation
 
-/// A result row.
+/// A result row containing one or more columns with type-safe value access.
 ///
-/// A `Row` is not created directly but is obtained from a `Statement`, either via `execute()` or iteration:
+/// **Creation**
+///
+/// A row is not created directly but is obtained from a `Statement`.
 ///
 /// ```swift
 /// try statement.execute() { row in
@@ -15,11 +17,30 @@ import Foundation
 /// }
 /// ```
 ///
+/// **Column Value Access**
+///
+/// The database-native column value is expressed by `DatabaseValue`, however custom type conversion is possible when
+/// a type implements either the `ColumnConvertible` or `DatabaseSerializable` protocol.
+///
+/// The value of columns is accessed by the `value(at:)` or `value(named:)` methods.
+///
+/// ```swift
+/// let value = try row.value(at: 0)
+/// let uuid: UUID = try row.value(named: "session_uuid")
+/// ```
+///
+/// It is also possible to iterate over column values:
+///
 /// ```swift
 /// for row in statement {
-///     // Do something with `row`
+///     for value in row {
+///         // Do something with `value`
+///     }
+///
 /// }
 /// ```
+///
+/// This allows for simple result row processing at the expense of error handling.
 public struct Row {
 	/// The statement owning this row.
 	public let statement: Statement

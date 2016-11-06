@@ -16,7 +16,7 @@ public typealias SQLiteDatabaseConnection = OpaquePointer
 
 /// An [SQLite](https://sqlite.org) database.
 ///
-/// A `Database` supports SQL statement execution, SQL transactions and savepoints, custom collation sequences, and custom SQL functions.
+/// A database supports SQL statement execution, transactions and savepoints, custom collation sequences, and custom SQL functions.
 ///
 /// ```swift
 /// let rowCount: Int
