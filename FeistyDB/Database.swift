@@ -9,12 +9,23 @@ import Foundation
 let SQLITE_STATIC = unsafeBitCast(0, to: sqlite3_destructor_type.self)
 let SQLITE_TRANSIENT = unsafeBitCast(-1, to: sqlite3_destructor_type.self)
 
-/// An `sqlite3 *` object
+/// An `sqlite3 *` object.
 ///
 /// - seealso: [SQLite Database Connection Handle](https://sqlite.org/c3ref/sqlite3.html)
 public typealias SQLiteDatabaseConnection = OpaquePointer
 
-/// A class encapsulating access to an [SQLite](https://sqlite.org) database
+/// An [SQLite](https://sqlite.org) database.
+///
+/// A `Database` supports SQL statement execution, SQL transactions and savepoints, custom collation sequences, and custom SQL functions.
+///
+/// ```swift
+/// let rowCount: Int
+/// let db = try Database()
+/// try db.execute(sql: "select count(*) from t1;") { row in
+///     rowCount = try row.value(at: 0)
+/// }
+/// print("t1 has \(rowCount) rows")
+/// ```
 final public class Database {
 	/// The underlying `sqlite3 *` database
 	var db: SQLiteDatabaseConnection
@@ -22,27 +33,25 @@ final public class Database {
 	/// Prepared statements
 	var preparedStatements = [String: Statement]()
 
-	/// Create an in-memory database
+	/// Creates an in-memory database.
 	///
-	/// - throws: `DatabaseError`
+	/// - throws: An error if the database could not be created
 	public init() throws {
 		var db: SQLiteDatabaseConnection?
 		guard sqlite3_open_v2(":memory:", &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, nil) == SQLITE_OK else {
-			#if DEBUG
-				print("Error creating in-memory database: \(String(cString: sqlite3_errmsg(db)))")
-			#endif
-			throw DatabaseError.sqliteError(String(cString: sqlite3_errmsg(db)))
+			throw DatabaseError.sqliteError("Error creating in-memory database: \(String(cString: sqlite3_errmsg(db)))")
 		}
 
 		self.db =  db!
 	}
 
-	/// Open a database
+	/// Creates a database from a file.
 	///
 	/// - parameter url: The location of the database
 	/// - parameter readOnly: Whether to open the database in read-only mode
 	/// - parameter create: Whether to create the database if it doesn't exist
-	/// - throws: `DatabaseError`
+	///
+	/// - throws: An error if the database could not be opened
 	public init(url: URL, readOnly: Bool = false, create: Bool = true) throws {
 		var db: SQLiteDatabaseConnection?
 		try url.withUnsafeFileSystemRepresentation { path in
@@ -52,21 +61,18 @@ final public class Database {
 			}
 
 			guard sqlite3_open_v2(path, &db, flags, nil) == SQLITE_OK else {
-				#if DEBUG
-					print("Error opening database at \(url): \(String(cString: sqlite3_errmsg(db)))")
-				#endif
-				throw DatabaseError.sqliteError(String(cString: sqlite3_errmsg(db)))
+				throw DatabaseError.sqliteError("Error opening database at \(url): \(String(cString: sqlite3_errmsg(db)))")
 			}
 		}
 
 		self.db = db!
 	}
 
-	/// Initialize a database from an existing `sqlite3 *` database
+	/// Creates a database from an existing `sqlite3 *` database connection handle.
 	///
-	/// **The database takes ownership of the passed-in database**
+	/// **The database takes ownership of the passed-in database connection handle**
 	///
-	/// - parameter db: An `sqlite3 *` database
+	/// - parameter db: An `sqlite3 *` database connection handle
 	public init(rawSQLiteDatabase db: SQLiteDatabaseConnection) {
 		self.db = db
 
@@ -96,18 +102,44 @@ final public class Database {
 		sqlite3_close(db)
 	}
 
-	/// Perform a low-level database operation
+	/// Performs a low-level SQLite database operation.
 	///
 	/// **Use of this function should be avoided whenever possible**
 	///
-	/// - parameter block: The block performing the operation
-	/// - parameter db: The raw `sqlite3 *` database object
-	/// - throws: Any error thrown in `block`
+	/// - parameter block: The closure performing the database operation
+	/// - parameter db: The raw `sqlite3 *` database connection handle object
+	///
+	/// - throws: Any error thrown by `block`
+	///
 	/// - returns: The value returned by `block`
 	public func withUnsafeRawSQLiteDatabase<T>(block: (_ db: SQLiteDatabaseConnection) throws -> (T)) rethrows -> T {
 		return try block(self.db)
 	}
+}
 
+extension Database {
+	/// Returns a compiled SQL statement.
+	///
+	/// - parameter sql: The SQL statement to compile
+	/// - returns: A compiled SQL statement
+	///
+	/// - throws: An error if `sql` could not be compiled
+	public func prepare(sql: String) throws -> Statement {
+		return try Statement(database: self, sql: sql)
+	}
+
+	/// Executes an SQL statement and applies `block` to each result row.
+	///
+	/// - parameter sql: The SQL statement to execute
+	/// - parameter block: A closure applied to each result row
+	///
+	/// - throws: An error if `sql` could not be compiled or executed
+	public func execute(sql: String, _ block: ((_ row: Row) throws -> ())? = nil) throws {
+		try prepare(sql: sql).execute(block)
+	}
+}
+
+extension Database {
 	/// Possible database transaction types.
 	///
 	/// - seealso: [Transactions in SQLite](https://sqlite.org/lang_transaction.html)
@@ -120,135 +152,112 @@ final public class Database {
 		case exclusive
 	}
 
-	/// Perform a transaction on the database.
+	/// Begins a database transaction.
 	///
-	/// - parameter type: The type of transaction to perform
-	/// - parameter block: The block performing the transaction
-	/// - parameter database: The `Database` used for database access
-	/// - parameter rollback: If set to `true` by `block` the transaction will be rolled back
-	/// - throws: Any error thrown in `block`
-	/// - returns: The value returned by `block`
-	public func transaction<T>(type: TransactionType = .deferred, _ block: (Database, inout Bool) throws -> (T)) throws -> T {
-		var rollback = false
-
-		guard sqlite3_exec(db, "BEGIN \(type) TRANSACTION;", nil, nil, nil) == SQLITE_OK else {
-			#if DEBUG
-				print("Error beginning transaction: \(String(cString: sqlite3_errmsg(db)))")
-			#endif
-			throw DatabaseError.sqliteError(String(cString: sqlite3_errmsg(db)))
+	/// - note: Transactions may not be nested.
+	///
+	/// - parameter type: The type of transaction to initiate
+	///
+	/// - throws: An error if the transaction couldn't be started
+	/// - seealso: [BEGIN TRANSACTION](https://sqlite.org/lang_transaction.html)
+	public func begin(type: TransactionType = .deferred) throws {
+		let sql: String
+		switch type {
+		case .deferred:		sql = "BEGIN DEFERRED TRANSACTION;"
+		case .immediate:	sql = "BEGIN IMMEDIATE TRANSACTION;"
+		case .exclusive:	sql = "BEGIN EXCLUSIVE TRANSACTION;"
 		}
 
-		let result = try block(self, &rollback)
-
-		if rollback {
-			guard sqlite3_exec(db, "ROLLBACK TRANSACTION;", nil, nil, nil) == SQLITE_OK else {
-				#if DEBUG
-					print("Error rolling back transaction: \(String(cString: sqlite3_errmsg(db)))")
-				#endif
-				throw DatabaseError.sqliteError(String(cString: sqlite3_errmsg(db)))
-			}
+		guard sqlite3_exec(db, sql, nil, nil, nil) == SQLITE_OK else {
+			throw DatabaseError.sqliteError("Error beginning transaction: \(String(cString: sqlite3_errmsg(db)))")
 		}
-		else {
-			guard sqlite3_exec(db, "COMMIT TRANSACTION;", nil, nil, nil) == SQLITE_OK else {
-				#if DEBUG
-					print("Error committing transaction: \(String(cString: sqlite3_errmsg(db)))")
-				#endif
-				throw DatabaseError.sqliteError(String(cString: sqlite3_errmsg(db)))
-			}
-		}
-
-		return result
 	}
 
-	/// Perform a savepoint on the database
+	/// Rolls back the active database transaction.
 	///
-	/// - parameter block: The block performing the read/write
-	/// - parameter database: The `Database` used for database access
-	/// - parameter rollback: Whether to rollback the savepoint after `block` completes
-	/// - returns: The value returned by `block`
-	public func savepoint<T>(_ block: (Database, inout Bool) throws -> (T)) throws -> T {
-		var rollback = false
-
-		let savepointUUID = UUID().uuidString
-		guard sqlite3_exec(db, "SAVEPOINT \(savepointUUID);", nil, nil, nil) == SQLITE_OK else {
-			#if DEBUG
-				print("Error creating savepoint: \(String(cString: sqlite3_errmsg(db)))")
-			#endif
-			throw DatabaseError.sqliteError(String(cString: sqlite3_errmsg(db)))
+	/// - throws: An error if the transaction couldn't be rolled back or there is no active transaction
+	public func rollback() throws {
+		guard sqlite3_exec(db, "ROLLBACK;", nil, nil, nil) == SQLITE_OK else {
+			throw DatabaseError.sqliteError("Error rolling back: \(String(cString: sqlite3_errmsg(db)))")
 		}
-
-		let result = try block(self, &rollback)
-
-		if rollback {
-			guard sqlite3_exec(db, "ROLLBACK TO \(savepointUUID);", nil, nil, nil) == SQLITE_OK else {
-				#if DEBUG
-					print("Error rolling back savepoint: \(String(cString: sqlite3_errmsg(db)))")
-				#endif
-				throw DatabaseError.sqliteError(String(cString: sqlite3_errmsg(db)))
-			}
-		}
-
-		guard sqlite3_exec(db, "RELEASE SAVEPOINT \(savepointUUID);", nil, nil, nil) == SQLITE_OK else {
-			#if DEBUG
-				print("Error releasing savepoint: \(String(cString: sqlite3_errmsg(db)))")
-			#endif
-			throw DatabaseError.sqliteError(String(cString: sqlite3_errmsg(db)))
-		}
-
-		return result
 	}
 
-	/// Execute an SQL statement
+	/// Commits the active database transaction.
 	///
-	/// - parameter sql: The SQL statement to execute
-	/// - throws: `DatabaseError`
-	public func execute(sql: String) throws {
-		try prepare(sql: sql).execute()
+	/// - throws: An error if the transaction couldn't be committed or there is no active transaction
+	public func commit() throws {
+		guard sqlite3_exec(db, "COMMIT;", nil, nil, nil) == SQLITE_OK else {
+			throw DatabaseError.sqliteError("Error committing: \(String(cString: sqlite3_errmsg(db)))")
+		}
+	}
+}
+
+extension Database {
+	/// Begins a database savepoint transaction.
+	///
+	/// - note: Savepoint transactions may be nested.
+	///
+	/// - parameter name: The name of the savepoint transaction
+	///
+	/// - throws: An error if the savepoint transaction couldn't be started
+	/// - seealso: [SAVEPOINT](https://sqlite.org/lang_savepoint.html)
+	public func begin(savepoint name: String) throws {
+		guard sqlite3_exec(db, "SAVEPOINT \(name);", nil, nil, nil) == SQLITE_OK else {
+			throw DatabaseError.sqliteError("Error creating savepoint: \(String(cString: sqlite3_errmsg(db)))")
+		}
 	}
 
-	/// Prepare an SQL statement
+	/// Rolls back a database savepoint transaction.
 	///
-	/// - parameter sql: The SQL statement to prepare
-	/// - returns: A `Statement`
-	/// - throws: `DatabaseError`
-	public func prepare(sql: String) throws -> Statement {
-		return try Statement(database: self, sql: sql)
+	/// - parameter name: The name of the savepoint transaction
+	///
+	/// - throws: An error if the savepoint transaction couldn't be rolled back or doesn't exist
+	public func rollback(to name: String) throws {
+		guard sqlite3_exec(db, "ROLLBACK TO \(name);", nil, nil, nil) == SQLITE_OK else {
+			throw DatabaseError.sqliteError("Error rolling back savepoint: \(String(cString: sqlite3_errmsg(db)))")
+		}
 	}
 
-	/// Prepare and store an SQL statement for later use
+	/// Releases (commits) a database savepoint transaction.
+	///
+	/// - note: Changes are not saved until the outermost transaction is released or committed.
+	///
+	/// - parameter name: The name of the savepoint transaction
+	///
+	/// - throws: An error if the savepoint transaction couldn't be committed or doesn't exist
+	public func release(savepoint name: String) throws {
+		guard sqlite3_exec(db, "RELEASE \(name);", nil, nil, nil) == SQLITE_OK else {
+			throw DatabaseError.sqliteError("Error releasing savepoint: \(String(cString: sqlite3_errmsg(db)))")
+		}
+	}
+}
+
+extension Database {
+	/// Compiles and stores an SQL statement for later use.
 	///
 	/// - parameter sql: The SQL statement to prepare
 	/// - parameter key: A key used to identify the statement
-	/// - throws: `DatabaseError`
+	///
+	/// - throws: An error if `sql` could not be compiled
 	public func prepareStatement(sql: String, forKey key: String) throws {
 		preparedStatements[key] = try prepare(sql: sql)
 	}
 
-	/// Retrieve a prepared statement
+	/// Returns the compiled SQL statement for `key`.
 	///
 	/// - parameter key: The key used to identify the statement
-	/// - returns: A prepared SQL statement or `nil` if no statement for the specified key was found
+	///
+	/// - returns: A compiled SQL statement or `nil` if no statement for the specified key was found
 	public func preparedStatement(forKey key: String) -> Statement? {
 		return preparedStatements[key]
 	}
 
-	/// Remove a prepared statement
+	/// Removes a compiled SQL statement.
 	///
 	/// - parameter key: The key used to identify the statement
 	/// - returns: The statement that was removed, or `nil` if the key was not present
 	public func removePreparedStatement(forKey key: String) -> Statement? {
 		return preparedStatements.removeValue(forKey: key)
-	}
-}
-
-extension Database.TransactionType: CustomStringConvertible {
-	/// A description of the transaction type suitable for use in an SQL statement.
-	public var description: String {
-		switch self {
-		case .deferred:		return "DEFERRED"
-		case .immediate:	return "IMMEDIATE"
-		case .exclusive:	return "EXCLUSIVE"
-		}
 	}
 }
 
@@ -260,12 +269,18 @@ extension Database.TransactionType: CustomStringConvertible {
 public typealias StringComparator = (_ lhs: String, _ rhs: String) -> ComparisonResult
 
 extension Database {
-
-	/// Add a custom collation function
+	/// Adds a custom collation function.
+	///
+	/// ```swift
+	/// try db.add(collation: "localizedCompare", { (lhs, rhs) -> ComparisonResult in
+	///     return lhs.localizedCompare(rhs)
+	/// })
+	/// ```
 	///
 	/// - parameter name: The name of the custom collation sequence
 	/// - parameter block: A string comparison function
-	/// - throws: `DatabaseError`
+	///
+	/// - throws: An error if the collation function couldn't be added
 	public func add(collation name: String, _ block: @escaping StringComparator) throws {
 		let function_ptr = UnsafeMutablePointer<StringComparator>.allocate(capacity: 1)
 		function_ptr.initialize(to: block)
@@ -287,10 +302,11 @@ extension Database {
 		}
 	}
 
-	/// Remove a custom collation function
+	/// Removes a custom collation function.
 	///
 	/// - parameter name: The name of the custom collation sequence
-	/// - throws: `DatabaseError`
+	///
+	/// - throws: An error if the collation function couldn't be removed
 	public func remove(collation name: String) throws {
 		guard sqlite3_create_collation_v2(db, name, SQLITE_UTF8, nil, nil, nil) == SQLITE_OK else {
 			throw DatabaseError.sqliteError(String(cString: sqlite3_errmsg(db)))
@@ -298,9 +314,10 @@ extension Database {
 	}
 }
 
-/// A custom SQL function
+/// A custom SQL function.
 ///
 /// - parameter values: The SQL function parameters
+///
 /// - returns: The result of applying the function to `values`
 /// - throws: `DatabaseError`
 public typealias SQLFunction = (_ values: [DatabaseValue]) throws -> DatabaseValue
@@ -311,18 +328,30 @@ public typealias SQLFunction = (_ values: [DatabaseValue]) throws -> DatabaseVal
 // https://bugs.swift.org/browse/SR-128
 
 extension Database {
-
-	/// Add a custom SQL function
+	/// Adds a custom SQL function.
 	///
-	/// - parameter name: The name of the custom SQL function
-	/// - parameter argumentCount: The number of arguments
-	/// - parameter block: The SQL function
-	/// - throws: `DatabaseError`
+	/// ```swift
+	/// try db.add(function: "localizedUppercase", arity: 1) { values in
+	///     let value = values.first.unsafelyUnwrapped
+	///     switch value {
+	///     case .text(let s):
+	///         return .text(s.localizedUppercase())
+	///     default:
+	///         return value
+	///     }
+	/// }
+	/// ```
+	///
+	/// - parameter name: The name of the function
+	/// - parameter arity: The number of arguments the function accepts
+	/// - parameter block: A closure that returns the result of applying the function to the supplied arguments
+	///
+	/// - throws: An error if the SQL function couldn't be added
 	/// - seealso: [Create Or Redefine SQL Functions](https://sqlite.org/c3ref/create_function.html)
-	public func add(function name: String, argumentCount: Int = -1, _ block: @escaping SQLFunction) throws {
+	public func add(function name: String, arity: Int = -1, _ block: @escaping SQLFunction) throws {
 		let function_ptr = UnsafeMutablePointer<SQLFunction>.allocate(capacity: 1)
 		function_ptr.initialize(to: block)
-		guard sqlite3_create_function_v2(db, name, Int32(argumentCount), SQLITE_UTF8 | SQLITE_DETERMINISTIC, function_ptr, { sqlite_context, argc, argv in
+		guard sqlite3_create_function_v2(db, name, Int32(arity), SQLITE_UTF8 | SQLITE_DETERMINISTIC, function_ptr, { sqlite_context, argc, argv in
 			let context = sqlite3_user_data(sqlite_context)
 			let function_ptr = context.unsafelyUnwrapped.assumingMemoryBound(to: SQLFunction.self)
 
@@ -359,13 +388,14 @@ extension Database {
 		}
 	}
 
-	/// Remove a custom SQL function
+	/// Removes a custom SQL function.
 	///
 	/// - parameter name: The name of the custom SQL function
-	/// - parameter argumentCount: The number of arguments
-	/// - throws: `DatabaseError`
-	public func remove(function name: String, argumentCount: Int = -1) throws {
-		guard sqlite3_create_function_v2(db, name, Int32(argumentCount), SQLITE_UTF8 | SQLITE_DETERMINISTIC, nil, nil, nil, nil, nil) == SQLITE_OK else {
+	/// - parameter arity: The number of arguments the custom SQL functions accepts
+	///
+	/// - throws: An error if the SQL function couldn't be removed
+	public func remove(function name: String, arity: Int = -1) throws {
+		guard sqlite3_create_function_v2(db, name, Int32(arity), SQLITE_UTF8 | SQLITE_DETERMINISTIC, nil, nil, nil, nil, nil) == SQLITE_OK else {
 			throw DatabaseError.sqliteError(String(cString: sqlite3_errmsg(db)))
 		}
 	}
