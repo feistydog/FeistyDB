@@ -19,7 +19,7 @@ extension DatabaseError {
 	///
 	/// - parameter message: A brief message describing the error
 	/// - parameter description: A more detailed description of the error's cause
-	init(_ message: String) {
+	public init(_ message: String) {
 		self.message = message
 		self.description = nil
 	}
@@ -30,7 +30,7 @@ extension DatabaseError {
 	///
 	/// - parameter message: A brief message describing the error
 	/// - parameter db: An `sqlite3 *` database connection handle
-	init(message: String, takingDescriptionFromDatabase db: SQLiteDatabaseConnection) {
+	public init(message: String, takingDescriptionFromDatabase db: SQLiteDatabaseConnection) {
 		self.message = message
 		self.description = String(cString: sqlite3_errmsg(db))
 	}
@@ -41,7 +41,7 @@ extension DatabaseError {
 	///
 	/// - parameter message: A brief message describing the error
 	/// - parameter stmt: An `sqlite3_stmt *` object
-	init(message: String, takingDescriptionFromStatement stmt: SQLitePreparedStatement) {
+	public init(message: String, takingDescriptionFromStatement stmt: SQLitePreparedStatement) {
 		self.message = message
 		self.description = String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt)))
 	}
