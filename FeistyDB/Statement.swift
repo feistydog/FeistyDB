@@ -70,7 +70,7 @@ final public class Statement {
 
 		var stmt: SQLitePreparedStatement? = nil
 		guard sqlite3_prepare_v2(database.db, sql, -1, &stmt, nil) == SQLITE_OK else {
-			throw DatabaseError.sqliteError("Error preparing SQL \"\(sql)\": \(String(cString: sqlite3_errmsg(database.db)))")
+			throw DatabaseError(message: "Error preparing SQL \"\(sql)\"", takingDescriptionFromDatabase: database.db)
 		}
 
 		self.stmt = stmt!
@@ -131,7 +131,7 @@ final public class Statement {
 	/// - returns: The name of the column for the specified index
 	public func name(ofColumn index: Int) throws -> String {
 		guard index >= 0, index < self.columnCount else {
-			throw DatabaseError.sqliteError("Column index \(index) out of bounds")
+			throw DatabaseError("Column index \(index) out of bounds")
 		}
 		return String(cString: sqlite3_column_name(stmt, Int32(index)))
 	}
@@ -150,7 +150,7 @@ final public class Statement {
 		}
 
 		if result != SQLITE_DONE {
-			throw DatabaseError.sqliteError("Error executing statement: \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
+			throw DatabaseError(message: "Error executing statement", takingDescriptionFromStatement: stmt)
 		}
 	}
 
@@ -161,7 +161,7 @@ final public class Statement {
 	/// - throws: An error if the statement could not be reset
 	public func reset() throws {
 		if sqlite3_reset(stmt) != SQLITE_OK {
-			throw DatabaseError.sqliteError("Error resetting statement: \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
+			throw DatabaseError(message: "Error resetting statement", takingDescriptionFromStatement: stmt)
 		}
 	}
 
@@ -170,7 +170,7 @@ final public class Statement {
 	/// - throws: An error if the bindings could not be cleared
 	public func clearBindings() throws {
 		if sqlite3_clear_bindings(stmt) != SQLITE_OK {
-			throw DatabaseError.sqliteError("Error clearing bindings: \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
+			throw DatabaseError(message: "Error clearing bindings", takingDescriptionFromStatement: stmt)
 		}
 	}
 

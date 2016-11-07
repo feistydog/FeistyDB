@@ -35,7 +35,7 @@ public final class ConcurrentDatabaseQueue {
 		// Set WAL mode
 		let statement = try database.prepare(sql: "PRAGMA journal_mode = WAL;")
 		guard let result: String = try statement.makeIterator().next()?.value(at: 0), result == "wal" else {
-			throw DatabaseError.sqliteError("Could not set journaling mode to WAL")
+			throw DatabaseError("Could not set journaling mode to WAL")
 		}
 	}
 
@@ -52,7 +52,7 @@ public final class ConcurrentDatabaseQueue {
 		// Set WAL mode
 		let statement = try database.prepare(sql: "PRAGMA journal_mode = WAL;")
 		guard let result: String = try statement.makeIterator().next()?.value(at: 0), result == "wal" else {
-			throw DatabaseError.sqliteError("Could not set journaling mode to WAL")
+			throw DatabaseError("Could not set journaling mode to WAL")
 		}
 	}
 

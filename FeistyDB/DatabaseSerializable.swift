@@ -103,11 +103,11 @@ extension DatabaseSerializable where Self: NSCoding {
 		switch value {
 		case .blob(let b):
 			guard let result = NSKeyedUnarchiver.unarchiveObject(with: b) as? Self else {
-				throw DatabaseError.dataFormatError("\(value) is not a valid instance of \(Self.self)")
+				throw DatabaseError("\(value) is not a valid instance of \(Self.self)")
 			}
 			return result
 		default:
-			throw DatabaseError.dataFormatError("\(value) is not a blob")
+			throw DatabaseError("\(value) is not a blob")
 		}
 	}
 }
@@ -131,7 +131,7 @@ extension NSNumber: DatabaseSerializable {
 		case .float(let f):
 			return self.init(value: f)
 		default:
-			throw DatabaseError.dataFormatError("\(value) is not a number")
+			throw DatabaseError("\(value) is not a number")
 		}
 	}
 }
@@ -146,7 +146,7 @@ extension NSNull: DatabaseSerializable {
 		case .null:
 			return self.init()
 		default:
-			throw DatabaseError.dataFormatError("\(value) is not null")
+			throw DatabaseError("\(value) is not null")
 		}
 	}
 }

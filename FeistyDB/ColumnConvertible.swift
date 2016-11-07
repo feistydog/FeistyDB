@@ -81,7 +81,7 @@ extension Row {
 		let idx = Int32(index)
 		switch sqlite3_column_type(stmt, idx) {
 		case SQLITE_NULL:
-			throw DatabaseError.dataFormatError("Database null encountered at column \(index)")
+			throw DatabaseError("Database null encountered at column \(index)")
 		default:
 			return try T(with: stmt, parameter: idx)
 		}
@@ -96,7 +96,7 @@ extension Row {
 	/// - returns: The column's value or `nil` if null
 	public func value<T: ColumnConvertible>(named name: String) throws -> T? {
 		guard let index = statement.columnNamesAndIndexes[name] else {
-			throw DatabaseError.sqliteError("Unknown column \"\(name)\"")
+			throw DatabaseError("Unknown column \"\(name)\"")
 		}
 		return try value(at: index)
 	}
@@ -110,7 +110,7 @@ extension Row {
 	/// - returns: The column's value
 	public func value<T: ColumnConvertible>(named name: String) throws -> T {
 		guard let index = statement.columnNamesAndIndexes[name] else {
-			throw DatabaseError.sqliteError("Unknown column \"\(name)\"")
+			throw DatabaseError("Unknown column \"\(name)\"")
 		}
 		return try value(at: index)
 	}
@@ -211,7 +211,7 @@ extension UUID: ColumnConvertible {
 	public init(with stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
 		let s = String(cString: sqlite3_column_text(stmt, idx))
 		guard let u = UUID(uuidString: s) else {
-			throw DatabaseError.dataFormatError("String \"\(s)\" isn't a valid UUID")
+			throw DatabaseError("String \"\(s)\" isn't a valid UUID")
 		}
 		self = u
 	}
@@ -221,7 +221,7 @@ extension URL: ColumnConvertible {
 	public init(with stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
 		let s = String(cString: sqlite3_column_text(stmt, idx))
 		guard let u = URL(string: s) else {
-			throw DatabaseError.dataFormatError("String \"\(s)\" isn't a valid URL")
+			throw DatabaseError("String \"\(s)\" isn't a valid URL")
 		}
 
 		self = u
@@ -232,7 +232,7 @@ extension Date: ColumnConvertible {
 	public init(with stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
 		let s = String(cString: sqlite3_column_text(stmt, idx))
 		guard let d = iso8601DateFormatter.date(from: s) else {
-			throw DatabaseError.dataFormatError("String \"\(s)\" isn't a valid ISO 8601 date")
+			throw DatabaseError("String \"\(s)\" isn't a valid ISO 8601 date")
 		}
 
 		self = d

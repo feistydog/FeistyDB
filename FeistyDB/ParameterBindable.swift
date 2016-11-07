@@ -15,7 +15,7 @@ import Foundation
 /// extension Int64: ParameterBindable {
 ///     public func bind(to stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
 ///         guard sqlite3_bind_int64(stmt, idx, self) == SQLITE_OK else {
-///            throw DatabaseError.sqliteError(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))
+///             throw DatabaseError(message: "Error binding Int64 \(self) to parameter \(idx)", takingDescriptionFromStatement: stmt)
 ///         }
 ///     }
 /// }
@@ -106,7 +106,7 @@ extension Statement {
 		}
 		else {
 			guard sqlite3_bind_null(stmt, idx) == SQLITE_OK else {
-				throw DatabaseError.sqliteError("Error binding null to parameter \(idx): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
+				throw DatabaseError(message: "Error binding null to parameter \(idx)", takingDescriptionFromStatement: stmt)
 			}
 		}
 	}
@@ -120,7 +120,7 @@ extension Statement {
 	public func bind<T: ParameterBindable>(value: T?, toParameter name: String) throws {
 		let idx = sqlite3_bind_parameter_index(stmt, name)
 		guard idx > 0 else {
-			throw DatabaseError.sqliteError("Unknown parameter \"\(name)\"")
+			throw DatabaseError("Unknown parameter \"\(name)\"")
 		}
 
 		if let value = value {
@@ -128,7 +128,7 @@ extension Statement {
 		}
 		else {
 			guard sqlite3_bind_null(stmt, idx) == SQLITE_OK else {
-				throw DatabaseError.sqliteError("Error binding null to parameter \(idx): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
+				throw DatabaseError(message: "Error binding null to parameter \(idx)", takingDescriptionFromStatement: stmt)
 			}
 		}
 	}
@@ -151,14 +151,14 @@ extension Statement {
 		for (name, value) in parameters {
 			let idx = sqlite3_bind_parameter_index(stmt, name)
 			guard idx > 0 else {
-				throw DatabaseError.sqliteError("Unknown parameter \"\(name)\"")
+				throw DatabaseError("Unknown parameter \"\(name)\"")
 			}
 			if let value = value {
 				try value.bind(to: stmt, parameter: idx)
 			}
 			else {
 				guard sqlite3_bind_null(stmt, idx) == SQLITE_OK else {
-					throw DatabaseError.sqliteError("Error binding null to parameter \(idx): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
+					throw DatabaseError(message: "Error binding null to parameter \(idx)", takingDescriptionFromStatement: stmt)
 				}
 			}
 		}
@@ -177,7 +177,7 @@ extension Statement {
 			}
 			else {
 				guard sqlite3_bind_null(stmt, index) == SQLITE_OK else {
-					throw DatabaseError.sqliteError("Error binding null to parameter \(index): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
+					throw DatabaseError(message: "Error binding null to parameter \(index)", takingDescriptionFromStatement: stmt)
 				}
 			}
 			index += 1
@@ -193,14 +193,14 @@ extension Statement {
 		for (name, value) in parameters {
 			let index = sqlite3_bind_parameter_index(stmt, name)
 			guard index > 0 else {
-				throw DatabaseError.sqliteError("Unknown parameter \"\(name)\"")
+				throw DatabaseError("Unknown parameter \"\(name)\"")
 			}
 			if let value = value {
 				try value.bind(to: stmt, parameter: index)
 			}
 			else {
 				guard sqlite3_bind_null(stmt, index) == SQLITE_OK else {
-					throw DatabaseError.sqliteError("Error binding null to parameter \(index): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
+					throw DatabaseError(message: "Error binding null to parameter \(index)", takingDescriptionFromStatement: stmt)
 				}
 			}
 		}
@@ -212,29 +212,29 @@ extension DatabaseValue: ParameterBindable {
 		switch self {
 		case .integer(let i):
 			if sqlite3_bind_int64(stmt, idx, i) != SQLITE_OK {
-				throw DatabaseError.sqliteError("Error binding Int64 \(i) to parameter \(idx): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
+				throw DatabaseError(message: "Error binding Int64 \(i) to parameter \(idx)", takingDescriptionFromStatement: stmt)
 			}
 
 		case .float(let f):
 			if sqlite3_bind_double(stmt, idx, f) != SQLITE_OK {
-				throw DatabaseError.sqliteError("Error binding Double \(f) to parameter \(idx): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
+				throw DatabaseError(message: "Error binding Double \(f) to parameter \(idx)", takingDescriptionFromStatement: stmt)
 			}
 
 		case .text(let t):
 			if sqlite3_bind_text(stmt, idx, t, -1, SQLITE_TRANSIENT) != SQLITE_OK {
-				throw DatabaseError.sqliteError("Error binding string \"\(t)\" to parameter \(idx): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
+				throw DatabaseError(message: "Error binding string \"\(t)\" to parameter \(idx)", takingDescriptionFromStatement: stmt)
 			}
 
 		case .blob(let b):
 			try b.withUnsafeBytes { (bytes: UnsafePointer<UInt8>) throws in
 				guard sqlite3_bind_blob(stmt, idx, bytes, Int32(b.count), SQLITE_TRANSIENT) == SQLITE_OK else {
-					throw DatabaseError.sqliteError("Error binding Data to parameter \(idx): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
+					throw DatabaseError(message: "Error binding Data to parameter \(idx)", takingDescriptionFromStatement: stmt)
 				}
 			}
 
 		case .null:
 			if sqlite3_bind_null(stmt, idx) != SQLITE_OK {
-				throw DatabaseError.sqliteError("Error binding null to parameter \(idx): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
+				throw DatabaseError(message: "Error binding null to parameter \(idx)", takingDescriptionFromStatement: stmt)
 			}
 		}
 		
@@ -244,7 +244,7 @@ extension DatabaseValue: ParameterBindable {
 extension String: ParameterBindable {
 	public func bind(to stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
 		guard sqlite3_bind_text(stmt, idx, self, -1, SQLITE_TRANSIENT) == SQLITE_OK else {
-			throw DatabaseError.sqliteError("Error binding String \"\(self)\" to parameter \(idx): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
+			throw DatabaseError(message: "Error binding String \"\(self)\" to parameter \(idx)", takingDescriptionFromStatement: stmt)
 		}
 	}
 }
@@ -253,7 +253,7 @@ extension Data: ParameterBindable {
 	public func bind(to stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
 		try self.withUnsafeBytes { (bytes: UnsafePointer<UInt8>) throws in
 			guard sqlite3_bind_blob(stmt, idx, bytes, Int32(self.count), SQLITE_TRANSIENT) == SQLITE_OK else {
-				throw DatabaseError.sqliteError("Error binding Data to parameter \(idx): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
+				throw DatabaseError(message: "Error binding Data to parameter \(idx)", takingDescriptionFromStatement: stmt)
 			}
 		}
 	}
@@ -262,7 +262,7 @@ extension Data: ParameterBindable {
 extension Int: ParameterBindable {
 	public func bind(to stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
 		guard sqlite3_bind_int64(stmt, idx, Int64(self)) == SQLITE_OK else {
-			throw DatabaseError.sqliteError("Error binding Int \(self) to parameter \(idx): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
+			throw DatabaseError(message: "Error binding Int \(self) to parameter \(idx)", takingDescriptionFromStatement: stmt)
 		}
 	}
 }
@@ -270,7 +270,7 @@ extension Int: ParameterBindable {
 extension UInt: ParameterBindable {
 	public func bind(to stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
 		guard sqlite3_bind_int64(stmt, idx, Int64(Int(bitPattern: self))) == SQLITE_OK else {
-			throw DatabaseError.sqliteError("Error binding UInt \(self) to parameter \(idx): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
+			throw DatabaseError(message: "Error binding UInt \(self) to parameter \(idx)", takingDescriptionFromStatement: stmt)
 		}
 	}
 }
@@ -278,7 +278,7 @@ extension UInt: ParameterBindable {
 extension Int8: ParameterBindable {
 	public func bind(to stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
 		guard sqlite3_bind_int64(stmt, idx, Int64(self)) == SQLITE_OK else {
-			throw DatabaseError.sqliteError("Error binding Int8 \(self) to parameter \(idx): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
+			throw DatabaseError(message: "Error binding Int8 \(self) to parameter \(idx)", takingDescriptionFromStatement: stmt)
 		}
 	}
 }
@@ -286,7 +286,7 @@ extension Int8: ParameterBindable {
 extension UInt8: ParameterBindable {
 	public func bind(to stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
 		guard sqlite3_bind_int64(stmt, idx, Int64(self)) == SQLITE_OK else {
-			throw DatabaseError.sqliteError("Error binding UInt8 \(self) to parameter \(idx): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
+			throw DatabaseError(message: "Error binding UInt8 \(self) to parameter \(idx)", takingDescriptionFromStatement: stmt)
 		}
 	}
 }
@@ -294,7 +294,7 @@ extension UInt8: ParameterBindable {
 extension Int16: ParameterBindable {
 	public func bind(to stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
 		guard sqlite3_bind_int64(stmt, idx, Int64(self)) == SQLITE_OK else {
-			throw DatabaseError.sqliteError("Error binding Int16 \(self) to parameter \(idx): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
+			throw DatabaseError(message: "Error binding Int16 \(self) to parameter \(idx)", takingDescriptionFromStatement: stmt)
 		}
 	}
 }
@@ -302,7 +302,7 @@ extension Int16: ParameterBindable {
 extension UInt16: ParameterBindable {
 	public func bind(to stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
 		guard sqlite3_bind_int64(stmt, idx, Int64(self)) == SQLITE_OK else {
-			throw DatabaseError.sqliteError("Error binding UInt16 \(self) to parameter \(idx): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
+			throw DatabaseError(message: "Error binding UInt16 \(self) to parameter \(idx)", takingDescriptionFromStatement: stmt)
 		}
 	}
 }
@@ -310,7 +310,7 @@ extension UInt16: ParameterBindable {
 extension Int32: ParameterBindable {
 	public func bind(to stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
 		guard sqlite3_bind_int64(stmt, idx, Int64(self)) == SQLITE_OK else {
-			throw DatabaseError.sqliteError("Error binding Int32 \(self) to parameter \(idx): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
+			throw DatabaseError(message: "Error binding Int32 \(self) to parameter \(idx)", takingDescriptionFromStatement: stmt)
 		}
 	}
 }
@@ -318,7 +318,7 @@ extension Int32: ParameterBindable {
 extension UInt32: ParameterBindable {
 	public func bind(to stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
 		guard sqlite3_bind_int64(stmt, idx, Int64(self)) == SQLITE_OK else {
-			throw DatabaseError.sqliteError("Error binding UInt32 \(self) to parameter \(idx): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
+			throw DatabaseError(message: "Error binding UInt32 \(self) to parameter \(idx)", takingDescriptionFromStatement: stmt)
 		}
 	}
 }
@@ -326,7 +326,7 @@ extension UInt32: ParameterBindable {
 extension Int64: ParameterBindable {
 	public func bind(to stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
 		guard sqlite3_bind_int64(stmt, idx, self) == SQLITE_OK else {
-			throw DatabaseError.sqliteError("Error binding Int64 \(self) to parameter \(idx): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
+			throw DatabaseError(message: "Error binding Int64 \(self) to parameter \(idx)", takingDescriptionFromStatement: stmt)
 		}
 	}
 }
@@ -334,7 +334,7 @@ extension Int64: ParameterBindable {
 extension UInt64: ParameterBindable {
 	public func bind(to stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
 		guard sqlite3_bind_int64(stmt, idx, Int64(bitPattern: self)) == SQLITE_OK else {
-			throw DatabaseError.sqliteError("Error binding UInt64 \(self) to parameter \(idx): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
+			throw DatabaseError(message: "Error binding UInt64 \(self) to parameter \(idx)", takingDescriptionFromStatement: stmt)
 		}
 	}
 }
@@ -342,7 +342,7 @@ extension UInt64: ParameterBindable {
 extension Float: ParameterBindable {
 	public func bind(to stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
 		guard sqlite3_bind_double(stmt, idx, Double(self)) == SQLITE_OK else {
-			throw DatabaseError.sqliteError("Error binding Float \(self) to parameter \(idx): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
+			throw DatabaseError(message: "Error binding Float \(self) to parameter \(idx)", takingDescriptionFromStatement: stmt)
 		}
 	}
 }
@@ -350,7 +350,7 @@ extension Float: ParameterBindable {
 extension Double: ParameterBindable {
 	public func bind(to stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
 		guard sqlite3_bind_double(stmt, idx, self) == SQLITE_OK else {
-			throw DatabaseError.sqliteError("Error binding Double \(self) to parameter \(idx): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
+			throw DatabaseError(message: "Error binding Double \(self) to parameter \(idx)", takingDescriptionFromStatement: stmt)
 		}
 	}
 }
@@ -358,7 +358,7 @@ extension Double: ParameterBindable {
 extension Bool: ParameterBindable {
 	public func bind(to stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
 		guard sqlite3_bind_int64(stmt, idx, self ? 1 : 0) == SQLITE_OK else {
-			throw DatabaseError.sqliteError("Error binding Bool \(self) to parameter \(idx): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
+			throw DatabaseError(message: "Error binding Bool \(self) to parameter \(idx)", takingDescriptionFromStatement: stmt)
 		}
 	}
 }
@@ -366,7 +366,7 @@ extension Bool: ParameterBindable {
 extension UUID: ParameterBindable {
 	public func bind(to stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
 		guard sqlite3_bind_text(stmt, idx, self.uuidString, -1, SQLITE_TRANSIENT) == SQLITE_OK else {
-			throw DatabaseError.sqliteError("Error binding UUID \"\(self)\" to parameter \(idx): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
+			throw DatabaseError(message: "Error binding UUID \"\(self)\" to parameter \(idx)", takingDescriptionFromStatement: stmt)
 		}
 	}
 }
@@ -374,7 +374,7 @@ extension UUID: ParameterBindable {
 extension URL: ParameterBindable {
 	public func bind(to stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
 		guard sqlite3_bind_text(stmt, idx, self.absoluteString, -1, SQLITE_TRANSIENT) == SQLITE_OK else {
-			throw DatabaseError.sqliteError("Error binding URL \"\(self)\" to parameter \(idx): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
+			throw DatabaseError(message: "Error binding URL \"\(self)\" to parameter \(idx)", takingDescriptionFromStatement: stmt)
 		}
 	}
 }
@@ -389,7 +389,7 @@ let iso8601DateFormatter: ISO8601DateFormatter = {
 extension Date: ParameterBindable {
 	public func bind(to stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
 		guard sqlite3_bind_text(stmt, idx, iso8601DateFormatter.string(from: self), -1, SQLITE_TRANSIENT) == SQLITE_OK else {
-			throw DatabaseError.sqliteError("Error binding Date \"\(self)\" to parameter \(idx): \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
+			throw DatabaseError(message: "Error binding Date \"\(self)\" to parameter \(idx)", takingDescriptionFromStatement: stmt)
 		}
 	}
 }
