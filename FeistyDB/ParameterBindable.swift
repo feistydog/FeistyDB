@@ -44,8 +44,81 @@ extension Database {
 	/// - parameter row: A result row of returned data
 	///
 	/// - throws: Any error thrown in `block` or an error if `sql` couldn't be compiled, `values` couldn't be bound, or the statement couldn't be executed
+	public func execute(sql: String, parameterValues values: ParameterBindable..., _ block: ((_ row: Row) throws -> ())? = nil) throws {
+		try execute(sql: sql, parameterValues: values, block)
+	}
+
+	/// Executes `stmt` with the *n* parameters in `values` bound to the first *n* SQL parameters of `stmt` and applies `block` to each result row.
+	///
+	/// - parameter sql: The SQL statement to execute
+	/// - parameter values: A series of values to bind to SQL parameters
+	/// - parameter block: A closure called for each result row
+	/// - parameter row: A result row of returned data
+	///
+	/// - throws: Any error thrown in `block` or an error if `sql` couldn't be compiled, `values` couldn't be bound, or the statement couldn't be executed
 	public func execute(sql: String, parameterValues values: ParameterBindable?..., _ block: ((_ row: Row) throws -> ())? = nil) throws {
 		try execute(sql: sql, parameterValues: values, block)
+	}
+}
+
+extension Database {
+	// The first two functions cause a compiler crash 😞
+
+//	/// Executes `stmt` with the *n* parameters in `values` bound to the first *n* SQL parameters of `stmt` and applies `block` to each result row.
+//	///
+//	/// - parameter sql: The SQL statement to execute
+//	/// - parameter values: A series of values to bind to SQL parameters
+//	/// - parameter block: A closure called for each result row
+//	/// - parameter row: A result row of returned data
+//	///
+//	/// - throws: Any error thrown in `block` or an error if `sql` couldn't be compiled, `values` couldn't be bound, or the statement couldn't be executed
+//	public func execute(sql: String, parameterValues values: [ParameterBindable], _ block: ((_ row: Row) throws -> ())? = nil) throws {
+//		let statement = try prepare(sql: sql)
+//		try statement.bind(parameterValues: values)
+//		if let block = block {
+//			try statement.execute(block)
+//		}
+//		else {
+//			try statement.execute()
+//		}
+//	}
+//
+//	/// Executes `stmt` with the *n* parameters in `values` bound to the first *n* SQL parameters of `stmt` and applies `block` to each result row.
+//	///
+//	/// - parameter sql: The SQL statement to execute
+//	/// - parameter values: A series of values to bind to SQL parameters
+//	/// - parameter block: A closure called for each result row
+//	/// - parameter row: A result row of returned data
+//	///
+//	/// - throws: Any error thrown in `block` or an error if `sql` couldn't be compiled, `values` couldn't be bound, or the statement couldn't be executed
+//	public func execute(sql: String, parameterValues values: [ParameterBindable?], _ block: ((_ row: Row) throws -> ())? = nil) throws {
+//		let statement = try prepare(sql: sql)
+//		try statement.bind(parameterValues: values)
+//		if let block = block {
+//			try statement.execute(block)
+//		}
+//		else {
+//			try statement.execute()
+//		}
+//	}
+
+	/// Executes `stmt` with *value* bound to SQL parameter *name* for each (*name*, *value*) in `parameters` and applies `block` to each result row.
+	///
+	/// - parameter sql: The SQL statement to execute
+	/// - parameter parameters: A dictionary of names and values to bind to SQL parameters
+	/// - parameter block: A closure called for each result row
+	/// - parameter row: A result row of returned data
+	///
+	/// - throws: Any error thrown in `block` or an error if `sql` couldn't be compiled, `parameters` couldn't be bound, or the statement couldn't be executed
+	public func execute(sql: String, parameters: [String: ParameterBindable], _ block: ((_ row: Row) throws -> ())? = nil) throws {
+		let statement = try prepare(sql: sql)
+		try statement.bind(parameters: parameters)
+		if let block = block {
+			try statement.execute(block)
+		}
+		else {
+			try statement.execute()
+		}
 	}
 
 	/// Executes `stmt` with *value* bound to SQL parameter *name* for each (*name*, *value*) in `parameters` and applies `block` to each result row.
@@ -66,6 +139,27 @@ extension Database {
 			try statement.execute()
 		}
 	}
+}
+
+extension Database {
+	/// Executes `stmt` with the *n* parameters in `values` bound to the first *n* SQL parameters of `stmt` and applies `block` to each result row.
+	///
+	/// - parameter sql: The SQL statement to execute
+	/// - parameter values: A sequence of values to bind to SQL parameters
+	/// - parameter block: A closure called for each result row
+	/// - parameter row: A result row of returned data
+	///
+	/// - throws: Any error thrown in `block` or an error if `sql` couldn't be compiled, `values` couldn't be bound, or the statement couldn't be executed
+	public func execute<S: Sequence>(sql: String, parameterValues values: S, _ block: ((_ row: Row) throws -> ())? = nil) throws where S.Iterator.Element == ParameterBindable {
+		let statement = try prepare(sql: sql)
+		try statement.bind(parameterValues: values)
+		if let block = block {
+			try statement.execute(block)
+		}
+		else {
+			try statement.execute()
+		}
+	}
 
 	/// Executes `stmt` with the *n* parameters in `values` bound to the first *n* SQL parameters of `stmt` and applies `block` to each result row.
 	///
@@ -78,6 +172,25 @@ extension Database {
 	public func execute<S: Sequence>(sql: String, parameterValues values: S, _ block: ((_ row: Row) throws -> ())? = nil) throws where S.Iterator.Element == ParameterBindable? {
 		let statement = try prepare(sql: sql)
 		try statement.bind(parameterValues: values)
+		if let block = block {
+			try statement.execute(block)
+		}
+		else {
+			try statement.execute()
+		}
+	}
+
+	/// Executes `stmt` with *value* bound to SQL parameter *name* for each (*name*, *value*) in `parameters` and applies `block` to each result row.
+	///
+	/// - parameter sql: The SQL statement to execute
+	/// - parameter parameters: A sequence of name and value pairs to bind to SQL parameters
+	/// - parameter block: A closure called for each result row
+	/// - parameter row: A result row of returned data
+	///
+	/// - throws: Any error thrown in `block` or an error if `sql` couldn't be compiled, `parameters` couldn't be bound, or the statement couldn't be executed
+	public func execute<S: Sequence>(sql: String, parameters: S, _ block: ((_ row: Row) throws -> ())? = nil) throws where S.Iterator.Element == (String, ParameterBindable) {
+		let statement = try prepare(sql: sql)
+		try statement.bind(parameters: parameters)
 		if let block = block {
 			try statement.execute(block)
 		}
@@ -190,8 +303,67 @@ extension Statement {
 	/// - parameter values: A series of values to bind to SQL parameters
 	///
 	/// - throws: An error if one of `values` couldn't be bound
+	public func bind(parameterValues values: ParameterBindable...) throws  {
+		try bind(parameterValues: values)
+	}
+
+	/// Binds the *n* parameters in `values` to the first *n* SQL parameters of `self`.
+	///
+	/// - parameter values: A series of values to bind to SQL parameters
+	///
+	/// - throws: An error if one of `values` couldn't be bound
 	public func bind(parameterValues values: ParameterBindable?...) throws  {
 		try bind(parameterValues: values)
+	}
+}
+
+extension Statement {
+	/// Binds the *n* parameters in `values` to the first *n* SQL parameters of `self`.
+	///
+	/// - parameter values: A series of values to bind to SQL parameters
+	///
+	/// - throws: An error if one of `values` couldn't be bound
+	public func bind(parameterValues values: [ParameterBindable]) throws  {
+		var index: Int32 = 1
+		for value in values {
+			try value.bind(to: stmt, parameter: index)
+			index += 1
+		}
+	}
+
+	/// Binds the *n* parameters in `values` to the first *n* SQL parameters of `self`.
+	///
+	/// - parameter values: A series of values to bind to SQL parameters
+	///
+	/// - throws: An error if one of `values` couldn't be bound
+	public func bind(parameterValues values: [ParameterBindable?]) throws  {
+		var index: Int32 = 1
+		for value in values {
+			if let value = value {
+				try value.bind(to: stmt, parameter: index)
+			}
+			else {
+				guard sqlite3_bind_null(stmt, index) == SQLITE_OK else {
+					throw DatabaseError(message: "Error binding null to parameter \(index)", takingDescriptionFromStatement: stmt)
+				}
+			}
+			index += 1
+		}
+	}
+
+	/// Binds *value* to SQL parameter *name* for each (*name*, *value*) in `parameters`.
+	///
+	/// - parameter parameters: A sequence of name and value pairs to bind to SQL parameters
+	///
+	/// - throws: An error if the SQL parameter *name* doesn't exist or *value* couldn't be bound
+	public func bind(parameters: [String: ParameterBindable]) throws  {
+		for (name, value) in parameters {
+			let index = sqlite3_bind_parameter_index(stmt, name)
+			guard index > 0 else {
+				throw DatabaseError("Unknown parameter \"\(name)\"")
+			}
+			try value.bind(to: stmt, parameter: index)
+		}
 	}
 
 	/// Binds *value* to SQL parameter *name* for each (*name*, *value*) in `parameters`.
@@ -201,16 +373,16 @@ extension Statement {
 	/// - throws: An error if the SQL parameter *name* doesn't exist or *value* couldn't be bound
 	public func bind(parameters: [String: ParameterBindable?]) throws  {
 		for (name, value) in parameters {
-			let idx = sqlite3_bind_parameter_index(stmt, name)
-			guard idx > 0 else {
+			let index = sqlite3_bind_parameter_index(stmt, name)
+			guard index > 0 else {
 				throw DatabaseError("Unknown parameter \"\(name)\"")
 			}
 			if let value = value {
-				try value.bind(to: stmt, parameter: idx)
+				try value.bind(to: stmt, parameter: index)
 			}
 			else {
-				guard sqlite3_bind_null(stmt, idx) == SQLITE_OK else {
-					throw DatabaseError(message: "Error binding null to parameter \(idx)", takingDescriptionFromStatement: stmt)
+				guard sqlite3_bind_null(stmt, index) == SQLITE_OK else {
+					throw DatabaseError(message: "Error binding null to parameter \(index)", takingDescriptionFromStatement: stmt)
 				}
 			}
 		}
@@ -218,6 +390,19 @@ extension Statement {
 }
 
 extension Statement {
+	/// Binds the *n* parameters in `values` to the first *n* SQL parameters of `self`.
+	///
+	/// - parameter values: A sequence of values to bind to SQL parameters
+	///
+	/// - throws: An error if one of `values` couldn't be bound
+	public func bind<S: Sequence>(parameterValues values: S) throws where S.Iterator.Element == ParameterBindable {
+		var index: Int32 = 1
+		for value in values {
+			try value.bind(to: stmt, parameter: index)
+			index += 1
+		}
+	}
+
 	/// Binds the *n* parameters in `values` to the first *n* SQL parameters of `self`.
 	///
 	/// - parameter values: A sequence of values to bind to SQL parameters
@@ -235,6 +420,21 @@ extension Statement {
 				}
 			}
 			index += 1
+		}
+	}
+
+	/// Binds *value* to SQL parameter *name* for each (*name*, *value*) in `parameters`.
+	///
+	/// - parameter parameters: A sequence of name and value pairs to bind to SQL parameters
+	///
+	/// - throws: An error if the SQL parameter *name* doesn't exist or *value* couldn't be bound
+	public func bind<S: Sequence>(parameters: S) throws where S.Iterator.Element == (String, ParameterBindable) {
+		for (name, value) in parameters {
+			let index = sqlite3_bind_parameter_index(stmt, name)
+			guard index > 0 else {
+				throw DatabaseError("Unknown parameter \"\(name)\"")
+			}
+			try value.bind(to: stmt, parameter: index)
 		}
 	}
 
