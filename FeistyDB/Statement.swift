@@ -136,16 +136,30 @@ final public class Statement {
 		return String(cString: sqlite3_column_name(stmt, Int32(index)))
 	}
 
+	/// Executes the statement and discards any result rows.
+	///
+	/// - throws: An error if the statement did not successfully run to completion
+	public func execute() throws {
+		var result = sqlite3_step(stmt)
+		while result == SQLITE_ROW {
+			result = sqlite3_step(stmt)
+		}
+
+		if result != SQLITE_DONE {
+			throw DatabaseError(message: "Error executing statement", takingDescriptionFromStatement: stmt)
+		}
+	}
+
 	/// Executes the statement and applies `block` to each result row.
 	///
 	/// - parameter block: A closure applied to each result row
 	/// - parameter row: A result row of returned data
 	///
 	/// - throws: Any error thrown in `block` or an error if the statement did not successfully run to completion
-	public func execute(_ block: ((_ row: Row) throws -> ())? = nil) throws {
+	public func execute(_ block: ((_ row: Row) throws -> ())) throws {
 		var result = sqlite3_step(stmt)
 		while result == SQLITE_ROW {
-			try block?(Row(statement: self))
+			try block(Row(statement: self))
 			result = sqlite3_step(stmt)
 		}
 
