@@ -116,7 +116,11 @@ public final class ConcurrentDatabaseQueue {
 				block(self.database, &rollback)
 				try rollback ? self.database.rollback() : self.database.commit()
 			}
-			catch {}
+			catch let error {
+				#if DEBUG
+					print(error)
+				#endif
+			}
 		}
 	}
 
@@ -154,7 +158,11 @@ public final class ConcurrentDatabaseQueue {
 				block(self.database, &rollback)
 				try rollback ? self.database.rollback(to: savepointUUID) : self.database.release(savepoint: savepointUUID)
 			}
-			catch {}
+			catch let error {
+				#if DEBUG
+					print(error)
+				#endif
+			}
 		}
 	}
 
