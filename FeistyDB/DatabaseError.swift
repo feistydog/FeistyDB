@@ -11,7 +11,7 @@ public struct DatabaseError: Error {
 	public let message: String
 
 	/// A more detailed description of the error's cause
-	public let description: String?
+	public let details: String?
 }
 
 extension DatabaseError {
@@ -21,7 +21,7 @@ extension DatabaseError {
 	/// - parameter description: A more detailed description of the error's cause
 	public init(_ message: String) {
 		self.message = message
-		self.description = nil
+		self.details = nil
 	}
 
 	/// Creates an error with the given message and description obtained from `db`.
@@ -32,7 +32,7 @@ extension DatabaseError {
 	/// - parameter db: An `sqlite3 *` database connection handle
 	public init(message: String, takingDescriptionFromDatabase db: SQLiteDatabaseConnection) {
 		self.message = message
-		self.description = String(cString: sqlite3_errmsg(db))
+		self.details = String(cString: sqlite3_errmsg(db))
 	}
 
 	/// Creates an error with the given message and description obtained from `stmt`.
@@ -43,6 +43,17 @@ extension DatabaseError {
 	/// - parameter stmt: An `sqlite3_stmt *` object
 	public init(message: String, takingDescriptionFromStatement stmt: SQLitePreparedStatement) {
 		self.message = message
-		self.description = String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt)))
+		self.details = String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt)))
+	}
+}
+
+extension DatabaseError: CustomStringConvertible {
+	public var description: String {
+		if let details = details {
+			return "\(message): \(details)"
+		}
+		else {
+			return message
+		}
 	}
 }
