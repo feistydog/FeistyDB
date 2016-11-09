@@ -320,6 +320,8 @@ extension Statement {
 extension Statement {
 	/// Binds the *n* parameters in `values` to the first *n* SQL parameters of `self`.
 	///
+	/// - requires: `values.count <= self.parameterCount`
+	///
 	/// - parameter values: A series of values to bind to SQL parameters
 	///
 	/// - throws: An error if one of `values` couldn't be bound
@@ -332,6 +334,8 @@ extension Statement {
 	}
 
 	/// Binds the *n* parameters in `values` to the first *n* SQL parameters of `self`.
+	///
+	/// - requires: `values.count <= self.parameterCount`
 	///
 	/// - parameter values: A series of values to bind to SQL parameters
 	///
