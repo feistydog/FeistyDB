@@ -465,17 +465,17 @@ extension DatabaseValue: ParameterBindable {
 	public func bind(to stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
 		switch self {
 		case .integer(let i):
-			if sqlite3_bind_int64(stmt, idx, i) != SQLITE_OK {
+			guard sqlite3_bind_int64(stmt, idx, i) == SQLITE_OK else {
 				throw DatabaseError(message: "Error binding Int64 \(i) to parameter \(idx)", takingDescriptionFromStatement: stmt)
 			}
 
 		case .float(let f):
-			if sqlite3_bind_double(stmt, idx, f) != SQLITE_OK {
+			guard sqlite3_bind_double(stmt, idx, f) == SQLITE_OK else {
 				throw DatabaseError(message: "Error binding Double \(f) to parameter \(idx)", takingDescriptionFromStatement: stmt)
 			}
 
 		case .text(let t):
-			if sqlite3_bind_text(stmt, idx, t, -1, SQLITE_TRANSIENT) != SQLITE_OK {
+			guard sqlite3_bind_text(stmt, idx, t, -1, SQLITE_TRANSIENT) == SQLITE_OK else {
 				throw DatabaseError(message: "Error binding string \"\(t)\" to parameter \(idx)", takingDescriptionFromStatement: stmt)
 			}
 
@@ -487,7 +487,7 @@ extension DatabaseValue: ParameterBindable {
 			}
 
 		case .null:
-			if sqlite3_bind_null(stmt, idx) != SQLITE_OK {
+			guard sqlite3_bind_null(stmt, idx) == SQLITE_OK else {
 				throw DatabaseError(message: "Error binding null to parameter \(idx)", takingDescriptionFromStatement: stmt)
 			}
 		}

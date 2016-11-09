@@ -121,6 +121,7 @@ final public class Statement {
 	/// Returns the name of the column at `index`.
 	///
 	/// - note: Column indexes are 0-based.  The leftmost column in a result row has index 0.
+	///
 	/// - requires: `index >= 0`
 	/// - requires: `index < self.columnCount`
 	///
@@ -145,7 +146,7 @@ final public class Statement {
 			result = sqlite3_step(stmt)
 		}
 
-		if result != SQLITE_DONE {
+		guard result == SQLITE_DONE else {
 			throw DatabaseError(message: "Error executing statement", takingDescriptionFromStatement: stmt)
 		}
 	}
@@ -163,7 +164,7 @@ final public class Statement {
 			result = sqlite3_step(stmt)
 		}
 
-		if result != SQLITE_DONE {
+		guard result == SQLITE_DONE else {
 			throw DatabaseError(message: "Error executing statement", takingDescriptionFromStatement: stmt)
 		}
 	}
@@ -174,7 +175,7 @@ final public class Statement {
 	///
 	/// - throws: An error if the statement could not be reset
 	public func reset() throws {
-		if sqlite3_reset(stmt) != SQLITE_OK {
+		guard sqlite3_reset(stmt) == SQLITE_OK else {
 			throw DatabaseError(message: "Error resetting statement", takingDescriptionFromStatement: stmt)
 		}
 	}
@@ -183,7 +184,7 @@ final public class Statement {
 	///
 	/// - throws: An error if the bindings could not be cleared
 	public func clearBindings() throws {
-		if sqlite3_clear_bindings(stmt) != SQLITE_OK {
+		guard sqlite3_clear_bindings(stmt) == SQLITE_OK else {
 			throw DatabaseError(message: "Error clearing bindings", takingDescriptionFromStatement: stmt)
 		}
 	}
