@@ -132,10 +132,10 @@ final public class Statement {
 	///	
 	/// - returns: The name of the column for the specified index
 	public func name(ofColumn index: Int) throws -> String {
-		guard index >= 0, index < self.columnCount else {
+		guard let name = sqlite3_column_name(stmt, Int32(index)) else {
 			throw DatabaseError("Column index \(index) out of bounds")
 		}
-		return String(cString: sqlite3_column_name(stmt, Int32(index)))
+		return String(cString: name)
 	}
 
 	/// Executes the statement and discards any result rows.
@@ -226,6 +226,25 @@ extension Statement: Sequence {
 				#endif
 				return nil
 			}
+		}
+	}
+}
+
+extension Statement {
+	/// Returns the first result row.
+	///
+	/// - throws: An error if the statement returned no rows or encountered an execution error
+	///
+	/// - returns: The first result row
+	public func firstRow() throws -> Row {
+		let stmt = self.stmt
+		switch sqlite3_step(stmt) {
+		case SQLITE_ROW:
+			return Row(statement: self)
+		case SQLITE_DONE:
+			throw DatabaseError("Statement returned no rows")
+		default:
+			throw DatabaseError(message: "Error executing statement", takingDescriptionFromStatement: stmt)
 		}
 	}
 }
