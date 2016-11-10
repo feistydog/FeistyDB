@@ -132,7 +132,7 @@ extension Database {
 
 	/// Executes an SQL statement and discards any result rows.
 	///
-	/// This is a shortcut for `try prepare(sql: sql).execute()`.
+	/// This is a shortcut for `prepare(sql: sql).execute()`.
 	///
 	/// - parameter sql: The SQL statement to execute
 	///
@@ -143,7 +143,7 @@ extension Database {
 
 	/// Executes an SQL statement and applies `block` to each result row.
 	///
-	/// This is a shortcut for `try prepare(sql: sql).execute(block)`.
+	/// This is a shortcut for `prepare(sql: sql).execute(block)`.
 	///
 	/// - parameter sql: The SQL statement to execute
 	/// - parameter block: A closure applied to each result row
