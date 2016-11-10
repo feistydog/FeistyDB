@@ -39,7 +39,7 @@ import Foundation
 ///         case .float(let f):
 ///             return self.init(value: f)
 ///         default:
-///             throw DatabaseError.dataFormatError("\(value) is not a number")
+///             throw DatabaseError("\(value) is not a number")
 ///         }
 ///     }
 /// }
@@ -92,6 +92,32 @@ extension Row {
 	/// - returns: The column's value
 	public func value<T: DatabaseSerializable>(named name: String) throws -> T {
 		return try T.deserialize(from: value(named: name))
+	}
+}
+
+extension Row {
+	/// Returns the value of the leftmost column.
+	///
+	/// This is a shortcut for `value(at: 0)`.
+	///
+	/// - throws: An error if there are no columns or the column contains an illegal value
+	///
+	/// - returns: The first column's value or `nil` if null
+	public func leftmostValue<T: DatabaseSerializable>() throws -> T {
+		return try value(at: 0)
+	}
+}
+
+extension Statement {
+	/// Returns the value of the leftmost column in the first row.
+	///
+	/// This is a shortcut for `firstRow().leftmostValue()`.
+	///
+	/// - throws: An error if there are no rows, no columns, or the column contains an illegal value
+	///
+	/// - returns: The value of the leftmost column in the first row
+	public func front<T: DatabaseSerializable>() throws -> T {
+		return try firstRow().leftmostValue()
 	}
 }
 

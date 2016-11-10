@@ -85,9 +85,9 @@ extension Row {
 	///
 	/// - returns: The column's value
 	public func value(at index: Int) throws -> DatabaseValue {
-//		guard index >= 0, index < self.columnCount else {
-//			throw DatabaseError.sqliteError("Column index \(index) out of bounds")
-//		}
+		guard index >= 0, index < self.columnCount else {
+			throw DatabaseError("Column index \(index) out of bounds")
+		}
 
 		let stmt = statement.stmt
 		let idx = Int32(index)
@@ -134,6 +134,31 @@ extension Row {
 	}
 }
 
+extension Row {
+	/// Returns the value of the leftmost column.
+	///
+	/// This is a shortcut for `value(at: 0)`.
+	///
+	/// - throws: An error if there are no columns
+	///
+	/// - returns: The column's value
+	public func leftmostValue() throws -> DatabaseValue {
+		return try value(at: 0)
+	}
+}
+
+extension Statement {
+	/// Returns the value of the leftmost column in the first row.
+	///
+	/// This is a shortcut for `firstRow().leftmostValue()`.
+	///
+	/// - throws: An error if there are no rows or columns
+	///
+	/// - returns: The value of the leftmost column in the first row
+	public func front() throws -> DatabaseValue {
+		return try firstRow().leftmostValue()
+	}
+}
 extension Row {
 	/// Returns the value of the column with name `name`.
 	///

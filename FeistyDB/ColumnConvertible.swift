@@ -47,9 +47,9 @@ extension Row {
 	///
 	/// - returns: The column's value or `nil` if null
 	public func value<T: ColumnConvertible>(at index: Int) throws -> T? {
-//		guard index >= 0, index < self.columnCount else {
-//			throw DatabaseError.sqliteError("Column index \(index) out of bounds")
-//		}
+		guard index >= 0, index < self.columnCount else {
+			throw DatabaseError("Column index \(index) out of bounds")
+		}
 
 		let stmt = statement.stmt
 		let idx = Int32(index)
@@ -74,9 +74,9 @@ extension Row {
 	///
 	/// - returns: The column's value
 	public func value<T: ColumnConvertible>(at index: Int) throws -> T {
-//		guard index >= 0, index < self.columnCount else {
-//			throw DatabaseError.sqliteError("Column index \(index) out of bounds")
-//		}
+		guard index >= 0, index < self.columnCount else {
+			throw DatabaseError("Column index \(index) out of bounds")
+		}
 
 		let stmt = statement.stmt
 		let idx = Int32(index)
@@ -114,6 +114,54 @@ extension Row {
 			throw DatabaseError("Unknown column \"\(name)\"")
 		}
 		return try value(at: index)
+	}
+}
+
+extension Row {
+	/// Returns the value of the leftmost column.
+	///
+	/// This is a shortcut for `value(at: 0)`.
+	///
+	/// - throws: An error if there are no columns or the column contains an illegal value
+	///
+	/// - returns: The column's value or `nil` if null
+	public func leftmostValue<T: ColumnConvertible>() throws -> T? {
+		return try value(at: 0)
+	}
+
+	/// Returns the value of the leftmost column.
+	///
+	/// This is a shortcut for `value(at: 0)`.
+	///
+	/// - throws: An error if there are no columns or the column contains a null or illegal value
+	///
+	/// - returns: The column's value
+	public func leftmostValue<T: ColumnConvertible>() throws -> T {
+		return try value(at: 0)
+	}
+}
+
+extension Statement {
+	/// Returns the value of the leftmost column in the first row.
+	///
+	/// This is a shortcut for `firstRow().leftmostValue()`.
+	///
+	/// - throws: An error if there are no rows, no columns, or the column contains an illegal value
+	///
+	/// - returns: The value of the leftmost column in the first row
+	public func front<T: ColumnConvertible>() throws -> T? {
+		return try firstRow().leftmostValue()
+	}
+
+	/// Returns the value of the leftmost column in the first row.
+	///
+	/// This is a shortcut for `firstRow().leftmostValue()`.
+	///
+	/// - throws: An error if there are no rows, no columns, or the column contains a null or illegal value
+	///
+	/// - returns: The value of the leftmost column in the first row
+	public func front<T: ColumnConvertible>() throws -> T {
+		return try firstRow().leftmostValue()
 	}
 }
 
