@@ -50,7 +50,7 @@ public struct Row {
 extension Row {
 	/// The number of columns in the row.
 	public var columnCount: Int {
-		return statement.columnCount
+		return Int(sqlite3_data_count(statement.stmt))
 	}
 
 	/// Returns the name of the column at `index`.
