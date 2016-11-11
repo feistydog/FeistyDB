@@ -14,7 +14,6 @@
 		324CCF1E1DC61C0E0056935B /* FeistyDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 324CCF141DC61C0E0056935B /* FeistyDB.framework */; };
 		324CCF341DC61D1F0056935B /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324CCF331DC61D1F0056935B /* Database.swift */; };
 		324CCF3B1DC61D640056935B /* Row.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324CCF3A1DC61D640056935B /* Row.swift */; };
-		324CCF3D1DC61D730056935B /* Column.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324CCF3C1DC61D730056935B /* Column.swift */; };
 		324CCF3F1DC61DE90056935B /* Statement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324CCF3E1DC61DE90056935B /* Statement.swift */; };
 		324CCF4C1DC61F020056935B /* sqlite3.c in Sources */ = {isa = PBXBuildFile; fileRef = 324CCF471DC61F020056935B /* sqlite3.c */; settings = {COMPILER_FLAGS = "-DSQLITE_THREADSAFE=0 -DSQLITE_DEFAULT_MEMSTATUS=0 -DSQLITE_DEFAULT_WAL_SYNCHRONOUS=1 -DSQLITE_LIKE_DOESNT_MATCH_BLOBS -DSQLITE_MAX_EXPR_DEPTH=0 -DSQLITE_OMIT_DECLTYPE -DSQLITE_OMIT_DEPRECATED -DSQLITE_OMIT_PROGRESS_CALLBACK -DSQLITE_OMIT_SHARED_CACHE -DSQLITE_ENABLE_FTS5"; }; };
 		324CCF4D1DC61F020056935B /* sqlite3.h in Headers */ = {isa = PBXBuildFile; fileRef = 324CCF481DC61F020056935B /* sqlite3.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -49,7 +48,6 @@
 		324CCF241DC61C0E0056935B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		324CCF331DC61D1F0056935B /* Database.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		324CCF3A1DC61D640056935B /* Row.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Row.swift; sourceTree = "<group>"; };
-		324CCF3C1DC61D730056935B /* Column.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Column.swift; sourceTree = "<group>"; };
 		324CCF3E1DC61DE90056935B /* Statement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Statement.swift; sourceTree = "<group>"; };
 		324CCF471DC61F020056935B /* sqlite3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sqlite3.c; sourceTree = "<group>"; };
 		324CCF481DC61F020056935B /* sqlite3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sqlite3.h; sourceTree = "<group>"; };
@@ -60,7 +58,9 @@
 		324CCF591DC623C20056935B /* DatabaseValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseValue.swift; sourceTree = "<group>"; };
 		324CCF5D1DC624950056935B /* DatabaseQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseQueue.swift; sourceTree = "<group>"; };
 		324CCF701DC69CEF0056935B /* ConcurrentDatabaseQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConcurrentDatabaseQueue.swift; sourceTree = "<group>"; };
+		32CF82E41DD038B800A0E2FB /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		32D3CF931DCD5A8B00BB53C6 /* DatabaseSerializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseSerializable.swift; sourceTree = "<group>"; };
+		32D3CF951DCE2F4100BB53C6 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,9 +85,11 @@
 		324CCF0A1DC61C0E0056935B = {
 			isa = PBXGroup;
 			children = (
-				324CCF451DC61F020056935B /* sqlite */,
+				32D3CF951DCE2F4100BB53C6 /* README.md */,
+				32CF82E41DD038B800A0E2FB /* LICENSE.txt */,
 				324CCF161DC61C0E0056935B /* FeistyDB */,
 				324CCF211DC61C0E0056935B /* FeistyDBTests */,
+				324CCF451DC61F020056935B /* sqlite */,
 				324CCF151DC61C0E0056935B /* Products */,
 			);
 			sourceTree = "<group>";
@@ -107,14 +109,13 @@
 				324CCF331DC61D1F0056935B /* Database.swift */,
 				324CCF3E1DC61DE90056935B /* Statement.swift */,
 				324CCF3A1DC61D640056935B /* Row.swift */,
-				324CCF3C1DC61D730056935B /* Column.swift */,
-				324CCF531DC621F00056935B /* DatabaseError.swift */,
-				321AC9131DCA9D6D00FD8ECA /* ParameterBindable.swift */,
-				324CCF571DC6233E0056935B /* ColumnConvertible.swift */,
 				324CCF591DC623C20056935B /* DatabaseValue.swift */,
-				32D3CF931DCD5A8B00BB53C6 /* DatabaseSerializable.swift */,
+				324CCF531DC621F00056935B /* DatabaseError.swift */,
 				324CCF5D1DC624950056935B /* DatabaseQueue.swift */,
 				324CCF701DC69CEF0056935B /* ConcurrentDatabaseQueue.swift */,
+				324CCF571DC6233E0056935B /* ColumnConvertible.swift */,
+				321AC9131DCA9D6D00FD8ECA /* ParameterBindable.swift */,
+				32D3CF931DCD5A8B00BB53C6 /* DatabaseSerializable.swift */,
 				3236FD831DC6EDE50057703E /* FeistyDB.h */,
 				324CCF181DC61C0E0056935B /* Info.plist */,
 			);
@@ -260,7 +261,6 @@
 				324CCF341DC61D1F0056935B /* Database.swift in Sources */,
 				321AC9141DCA9D6D00FD8ECA /* ParameterBindable.swift in Sources */,
 				324CCF5A1DC623C20056935B /* DatabaseValue.swift in Sources */,
-				324CCF3D1DC61D730056935B /* Column.swift in Sources */,
 				324CCF711DC69CEF0056935B /* ConcurrentDatabaseQueue.swift in Sources */,
 				324CCF581DC6233E0056935B /* ColumnConvertible.swift in Sources */,
 				324CCF541DC621F00056935B /* DatabaseError.swift in Sources */,
