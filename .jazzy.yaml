@@ -1,0 +1,25 @@
+module: FeistyDB
+author: Feisty Dog, LLC
+author_url: https://www.feisty-dog.com
+github_url: https://github.com/feistydog/FeistyDB
+
+copyright: '© 2015 - 2016 [Feisty Dog, LLC](https://www.feisty-dog.com) under [open source license](https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt).'
+
+custom_categories:
+ - name: Core
+   children:
+   - Database
+   - Statement
+   - Row
+
+ - name: Values
+   children:
+   - DatabaseValue
+   - ColumnConvertible
+   - ParameterBindable
+   - DatabaseSerializable
+
+ - name: Queues
+   children:
+   - DatabaseQueue
+   - ConcurrentDatabaseQueue
