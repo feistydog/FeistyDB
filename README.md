@@ -1,0 +1,185 @@
+# FeistyDB
+
+A powerful and performant Swift interface to [SQLite](https://sqlite.org) featuring:
+
+- Type-safe and type-agnostic database values.
+- Thread-safe wrappers for serialized and concurrent database access.
+-  Full support for transactions and savepoints, custom collation sequences, and custom SQL functions.
+
+
+FeistyDB allows fast, easy database access with robust error handling.  It is not a general-purpose object-relational mapper.
+
+## Installation
+
+1. Clone the [FeistyDB](https://github.com/feistydog/FeistyDB) repository.
+2. Download the latest [SQLite amalgamation](https://sqlite.org/amalgamation.html) source code from the [SQLite Download Page](https://sqlite.org/download.html).
+3. Unpack the archive contents to the `sqlite/` folder.
+4. Open the workspace, build, and get started in the playground!
+
+## Quick Start
+
+```swift
+// Create an in-memory database
+let db = try Database()
+
+// Create a table
+try db.execute(sql: "create table t1(a, b);")
+
+// Insert a row
+try db.execute(sql: "insert into t1(a, b) values (?, ?);", 
+               parameterValues: 33, "lulu")
+
+// Retrieve the values
+try db.execute(sql: "select a, b from t1;") { row in
+    let a: Int = try row.value(at: 0)
+    let b: String = try row.value(at: 1)
+}
+```
+
+Most applications should not create a `Database` directly but instead should use the thread-safe `DatabaseQueue` wrapper.
+
+```swift
+// Create a queue serializing access to an in-memory database
+let dbQ = try DatabaseQueue()
+
+// Perform a synchronous database operation
+try dbQ.sync { db in
+    // Do something with `db`
+}
+```
+
+## Design
+
+The core of FeistyDB is the types `Database`, `Statement`, and `Row`.
+
+- `Database` is an SQLite database.
+
+- `Statement` is a compiled SQL statement.
+
+- `Row` is a single result row.
+
+The fundamental type for native database values is `DatabaseValue`.
+
+- `DatabaseValue` contains an integer, floating-point, textual, or blob value.
+
+Type-safe access to database values is provided by classes implementing the `ColumnConvertible` protocol.
+
+- `ColumnConvertible` is a type that can be initialized from a column in a result row.
+
+SQL parameter binding is provided by classes implementing the `ParameterBindable` protocol.
+
+- `ParameterBindable ` is a type that can bind its value to an SQL parameter.
+
+General object storage is provided by classes implementing the `DatabaseSerializable` protocol.
+
+- `DatabaseSerializable ` is a type that can be serialized to and deserialized from a database.
+
+## Examples
+
+### Create an in-memory database
+
+```swift
+let db = try Database()
+```
+
+This creates a database for use on a single thread or queue.
+
+### Create a table
+
+```swift
+try db.execute(sql: "create table t1(a, b);")
+```
+
+The created table `t1` has two columns, `a` and `b`.
+
+### Insert data
+
+```swift
+for i in 0..<5 {
+    try db.execute(sql: "insert into t1(a, b) values (?, ?);",
+                   parameterValues: 2*i, 2*i+1)
+}
+```
+SQL parameters are passed as a sequence or series of values.  Named parameters are also supported.
+
+```swift
+try db.execute(sql: "insert into t1(a, b) values (:a, :b);",
+               parameters: [":a": 100, ":b": 404])
+```
+
+### Insert data efficiently
+
+Rather than parsing SQL each time a statement is executed, it is more efficient to prepare a statement and reuse it.
+
+```swift
+let s = try db.prepare(sql: "insert into t1(a, b) values (?, ?);")
+for i in 0..<5 {
+    try s.bind(parameterValues: 2*i, 2*i+1)
+    try s.execute()
+    try s.reset()
+    try s.clearBindings()
+}
+```
+
+### Fetch data
+
+The closure passed to `execute()` will be called with each result row.
+
+```swift
+try db.execute(sql: "select * from t1;") { row in
+    let x: Int = try row.value(at: 0)
+    let y: Int? = try row.value(at: 1)
+}
+```
+
+`row` is a `Row` instance.
+
+### Custom SQL Functions
+
+```swift
+let rot13Mapping: [Character: Character] = [
+    "A": "N", "B": "O", "C": "P", "D": "Q", "E": "R", "F": "S", "G": "T", "H": "U", "I": "V", "J": "W", "K": "X", "L": "Y", "M": "Z",
+    "N": "A", "O": "B", "P": "C", "Q": "D", "R": "E", "S": "F", "T": "G", "U": "H", "V": "I", "W": "J", "X": "K", "Y": "L", "Z": "M",
+    "a": "n", "b": "o", "c": "p", "d": "q", "e": "r", "f": "s", "g": "t", "h": "u", "i": "v", "j": "w", "k": "x", "l": "y", "m": "z",
+    "n": "a", "o": "b", "p": "c", "q": "d", "r": "e", "s": "f", "t": "g", "u": "h", "v": "i", "w": "j", "x": "k", "y": "l", "z": "m"]
+
+try db.add(function: "rot13", arity: 1) { values in
+    let value = values.first.unsafelyUnwrapped
+    switch value {
+        case .text(let s):
+            return .text(String(s.characters.map { rot13Mapping[$0] ?? $0 }))
+        default:
+            return value
+    }
+}
+```
+
+`rot13()` can now be used just like any other [SQL function](https://www.sqlite.org/lang_corefunc.html).
+
+```swift
+let s = try db.prepare(sql: "insert into t1(a) values (rot13(?));")
+```
+
+### Create a queue for serialized database access
+
+```swift
+let dbQ = try DatabaseQueue()
+```
+
+This creates a queue which may be used from multiple threads safely.  The queue serializes access to the database ensuring only a single operation occurs at a time.
+
+### Execute a synchronous database operation
+
+The closure passed to `sync()` will be executed synchronously.
+
+```swift
+try dbQ.sync { db in
+    // Do something with db
+}
+```
+
+`db` is a `Database` instance.
+
+## License
+
+FeistyDB is released under the [MIT License](https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt).
