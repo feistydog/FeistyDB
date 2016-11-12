@@ -16,10 +16,9 @@ public struct DatabaseError: Error {
 }
 
 extension DatabaseError {
-	/// Creates an error with the given message and description.
+	/// Creates an error with the given message.
 	///
 	/// - parameter message: A brief message describing the error
-	/// - parameter description: A more detailed description of the error's cause
 	public init(_ message: String) {
 		self.message = message
 		self.details = nil
