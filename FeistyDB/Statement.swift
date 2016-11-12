@@ -31,7 +31,7 @@ public typealias SQLitePreparedStatement = OpaquePointer
 /// let statement = try db.prepare(sql: "insert into t1(a, b, c, d, e, f) values (?, ?, ?, :d, :e, :f);")
 /// try statement.bind(value: 30, toParameter: 3)
 /// try statement.bind(value: 40, toParameter: ":d")
-/// try statement.bind(parameters: 10, 20)
+/// try statement.bind(parameterValues: 10, 20)
 /// try statement.bind(parameters: [":f": 60, ":e": 50])
 /// ```
 ///
