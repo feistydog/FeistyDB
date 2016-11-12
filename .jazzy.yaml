@@ -1,3 +1,5 @@
+clean: true
+
 module: FeistyDB
 author: Feisty Dog, LLC
 author_url: https://www.feisty-dog.com
