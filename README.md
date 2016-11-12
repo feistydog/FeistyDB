@@ -75,6 +75,12 @@ General object storage is provided by classes implementing the `DatabaseSerializ
 
 - `DatabaseSerializable ` is a type that can be serialized to and deserialized from a database column.
 
+Thread-safe access to a database is provided by `DatabaseQueue` and `ConcurrentDatabaseQueue`.
+
+- `DatabaseQueue` serializes work items on a database.
+
+- `ConcurrentDatabaseQueue` serializes write access to a database but allows concurrent readers.
+
 ## Examples
 
 ### Create an in-memory database
