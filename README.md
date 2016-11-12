@@ -15,7 +15,7 @@ FeistyDB allows fast, easy database access with robust error handling.  It is no
 
 1. Clone the [FeistyDB](https://github.com/feistydog/FeistyDB) repository.
 2. Run `./get-sqlite.sh` to get the latest [SQLite amalgamation](https://sqlite.org/amalgamation.html) source code.
-4. Open the workspace, build, and get started in the playground!
+3. Open the workspace, build, and get started in the playground!
 
 ## Quick Start
 
@@ -73,7 +73,7 @@ SQL parameter binding is provided by classes implementing the `ParameterBindable
 
 General object storage is provided by classes implementing the `DatabaseSerializable` protocol.
 
-- `DatabaseSerializable ` is a type that can be serialized to and deserialized from a database.
+- `DatabaseSerializable ` is a type that can be serialized to and deserialized from a database column.
 
 ## Examples
 
