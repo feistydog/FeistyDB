@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Values  Reference</title>
+    <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="js/jquery.min.js" defer></script>
+    <script src="js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a title="Values  Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="index.html">FeistyDB Docs</a> (100% documented)</p>
+        <p class="header-right"><a href="https://github.com/feistydog/FeistyDB"><img src="img/gh.png"/>View on GitHub</a></p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="index.html">FeistyDB Reference</a>
+        <img id="carat" src="img/carat.png" />
+        Values  Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="Core.html">Core</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Classes/Database.html">Database</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/Database/TransactionType.html">– TransactionType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/Statement.html">Statement</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Row.html">Row</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Values.html">Values</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Enums/DatabaseValue.html">DatabaseValue</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/ColumnConvertible.html">ColumnConvertible</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/ParameterBindable.html">ParameterBindable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/DatabaseSerializable.html">DatabaseSerializable</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Queues.html">Queues</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Classes/DatabaseQueue.html">DatabaseQueue</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/ConcurrentDatabaseQueue.html">ConcurrentDatabaseQueue</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Other Extensions.html">Other Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Extensions/Bool.html">Bool</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/Data.html">Data</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/Date.html">Date</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/Double.html">Double</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/Float.html">Float</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/Int.html">Int</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/Int16.html">Int16</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/Int32.html">Int32</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/Int64.html">Int64</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/Int8.html">Int8</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/NSNull.html">NSNull</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/NSNumber.html">NSNumber</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/String.html">String</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/UInt.html">UInt</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/UInt16.html">UInt16</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/UInt32.html">UInt32</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/UInt64.html">UInt64</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/UInt8.html">UInt8</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/URL.html">URL</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/UUID.html">UUID</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Other Structs.html">Other Structs</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Structs/DatabaseError.html">DatabaseError</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Other Subscripts.html">Other Subscripts</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Other Subscripts.html#/s:iV8FeistyDB3Row9subscriptFSSOS_13DatabaseValue">subscript(_:)</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Other Typealiases.html">Other Typealiases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Other Typealiases.html#/s:8FeistyDB11SQLFunction">SQLFunction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Other Typealiases.html#/s:8FeistyDB24SQLiteDatabaseConnection">SQLiteDatabaseConnection</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Other Typealiases.html#/s:8FeistyDB23SQLitePreparedStatement">SQLitePreparedStatement</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Other Typealiases.html#/s:8FeistyDB11SQLiteValue">SQLiteValue</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Other Typealiases.html#/s:8FeistyDB16StringComparator">StringComparator</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>Values</h1>
+            
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:O8FeistyDB13DatabaseValue"></a>
+                    <a name="//apple_ref/swift/Enum/DatabaseValue" class="dashAnchor"></a>
+                    <a class="token" href="#/s:O8FeistyDB13DatabaseValue">DatabaseValue</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A native data type that may be stored in an SQLite database.</p>
+
+<div class="aside aside-seealso">
+    <p class="aside-title">Seealso</p>
+    <a href="https://sqlite.org/datatype3.html">Datatypes In SQLite Version 3</a>
+
+</div>
+
+                        <a href="Enums/DatabaseValue.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">DatabaseValue</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:P8FeistyDB17ColumnConvertible"></a>
+                    <a name="//apple_ref/swift/Protocol/ColumnConvertible" class="dashAnchor"></a>
+                    <a class="token" href="#/s:P8FeistyDB17ColumnConvertible">ColumnConvertible</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A type that can be initialized directly from a column in an SQLite result row.</p>
+
+<p>The implementation should use one of the <code>sqlite_column_X()</code> functions documented at <a href="https://sqlite.org/c3ref/column_blob.html">Result Values From A Query</a>.</p>
+
+<p>For example, the implementation for <code>Int64</code> is:</p>
+
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Int64</span><span class="p">:</span> <span class="kt">ColumnConvertible</span> <span class="p">{</span>
+    <span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="n">with</span> <span class="nv">stmt</span><span class="p">:</span> <span class="kt">SQLitePreparedStatement</span><span class="p">,</span> <span class="n">parameter</span> <span class="nv">idx</span><span class="p">:</span> <span class="kt">Int32</span><span class="p">)</span> <span class="p">{</span>
+       <span class="k">self</span> <span class="o">=</span> <span class="nf">sqlite3_column_int64</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+
+                        <a href="Protocols/ColumnConvertible.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ColumnConvertible</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:P8FeistyDB17ParameterBindable"></a>
+                    <a name="//apple_ref/swift/Protocol/ParameterBindable" class="dashAnchor"></a>
+                    <a class="token" href="#/s:P8FeistyDB17ParameterBindable">ParameterBindable</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A type that can bind its value directly to a parameter in an SQLite statement.</p>
+
+<p>The implementation should use one of the <code>sqlite_bind_X()</code> functions documented at <a href="https://sqlite.org/c3ref/bind_blob.html">Binding Values To Prepared Statements</a>.</p>
+
+<p>For example, the implementation for <code>Int64</code> is:</p>
+
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Int64</span><span class="p">:</span> <span class="kt">ParameterBindable</span> <span class="p">{</span>
+    <span class="kd">public</span> <span class="kd">func</span> <span class="nf">bind</span><span class="p">(</span><span class="n">to</span> <span class="nv">stmt</span><span class="p">:</span> <span class="kt">SQLitePreparedStatement</span><span class="p">,</span> <span class="n">parameter</span> <span class="nv">idx</span><span class="p">:</span> <span class="kt">Int32</span><span class="p">)</span> <span class="k">throws</span> <span class="p">{</span>
+        <span class="k">guard</span> <span class="nf">sqlite3_bind_int64</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="k">self</span><span class="p">)</span> <span class="o">==</span> <span class="kt">SQLITE_OK</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="kt">DatabaseError</span><span class="p">(</span><span class="nv">message</span><span class="p">:</span> <span class="s">"Error binding Int64 </span><span class="se">\(</span><span class="k">self</span><span class="se">)</span><span class="s"> to parameter </span><span class="se">\(</span><span class="n">idx</span><span class="se">)</span><span class="s">"</span><span class="p">,</span> <span class="nv">takingDescriptionFromStatement</span><span class="p">:</span> <span class="n">stmt</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+
+                        <a href="Protocols/ParameterBindable.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ParameterBindable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:P8FeistyDB20DatabaseSerializable"></a>
+                    <a name="//apple_ref/swift/Protocol/DatabaseSerializable" class="dashAnchor"></a>
+                    <a class="token" href="#/s:P8FeistyDB20DatabaseSerializable">DatabaseSerializable</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A type that may be serialized to and deserialized from a database.</p>
+
+<p>This is a more general method for database storage than <code><a href="Protocols/ParameterBindable.html">ParameterBindable</a></code> and <code><a href="Protocols/ColumnConvertible.html">ColumnConvertible</a></code>
+because it allows types to customize their behavior based on the database value&rsquo;s data type. 
+A database value&rsquo;s data type is the value returned by the <code>sqlite3_column_type()</code> before any
+type conversions have taken place.</p>
+
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    Columns in SQLite have a type affinity (declared type) while stored values have an 
+individual storage class/data type.  There are rules for conversion which are documented
+at <a href="https://sqlite.org/datatype3.html">Datatypes In SQLite Version 3</a>.
+
+</div>
+
+<p>For example, <code>NSNumber</code> can choose what to store in the database based on the boxed value:</p>
+
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">NSNumber</span><span class="p">:</span> <span class="kt">DatabaseSerializable</span> <span class="p">{</span>
+    <span class="kd">public</span> <span class="kd">func</span> <span class="nf">serialized</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">DatabaseValue</span> <span class="p">{</span>
+        <span class="k">switch</span> <span class="kt">CFNumberGetType</span><span class="p">(</span><span class="k">self</span> <span class="k">as</span> <span class="kt">CFNumber</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="o">.</span><span class="n">sInt8Type</span><span class="p">,</span> <span class="o">.</span><span class="n">sInt16Type</span><span class="p">,</span> <span class="o">.</span><span class="n">sInt32Type</span><span class="p">,</span> <span class="o">.</span><span class="n">charType</span><span class="p">,</span> <span class="o">.</span><span class="n">shortType</span><span class="p">,</span> <span class="o">.</span><span class="n">intType</span><span class="p">,</span>
+             <span class="o">.</span><span class="n">sInt64Type</span><span class="p">,</span> <span class="o">.</span><span class="n">longType</span><span class="p">,</span> <span class="o">.</span><span class="n">longLongType</span><span class="p">,</span> <span class="o">.</span><span class="n">cfIndexType</span><span class="p">,</span> <span class="o">.</span><span class="nv">nsIntegerType</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kt">DatabaseValue</span><span class="o">.</span><span class="nf">integer</span><span class="p">(</span><span class="k">self</span><span class="o">.</span><span class="n">int64Value</span><span class="p">)</span>
+
+        <span class="k">case</span> <span class="o">.</span><span class="n">float32Type</span><span class="p">,</span> <span class="o">.</span><span class="n">float64Type</span><span class="p">,</span> <span class="o">.</span><span class="n">floatType</span><span class="p">,</span> <span class="o">.</span><span class="n">doubleType</span><span class="p">,</span> <span class="o">.</span><span class="nv">cgFloatType</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kt">DatabaseValue</span><span class="o">.</span><span class="nf">float</span><span class="p">(</span><span class="k">self</span><span class="o">.</span><span class="n">doubleValue</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">deserialize</span><span class="p">(</span><span class="n">from</span> <span class="nv">value</span><span class="p">:</span> <span class="kt">DatabaseValue</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="k">Self</span> <span class="p">{</span>
+        <span class="k">switch</span> <span class="n">value</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="o">.</span><span class="nf">integer</span><span class="p">(</span><span class="k">let</span> <span class="nv">i</span><span class="p">):</span>
+            <span class="k">return</span> <span class="k">self</span><span class="o">.</span><span class="nf">init</span><span class="p">(</span><span class="nv">value</span><span class="p">:</span> <span class="n">i</span><span class="p">)</span>
+        <span class="k">case</span> <span class="o">.</span><span class="nf">float</span><span class="p">(</span><span class="k">let</span> <span class="nv">f</span><span class="p">):</span>
+            <span class="k">return</span> <span class="k">self</span><span class="o">.</span><span class="nf">init</span><span class="p">(</span><span class="nv">value</span><span class="p">:</span> <span class="n">f</span><span class="p">)</span>
+        <span class="k">default</span><span class="p">:</span>
+            <span class="k">throw</span> <span class="kt">DatabaseError</span><span class="p">(</span><span class="s">"</span><span class="se">\(</span><span class="n">value</span><span class="se">)</span><span class="s"> is not a number"</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+
+                        <a href="Protocols/DatabaseSerializable.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">DatabaseSerializable</span><span class="p">:</span> <span class="kt"><a href="Protocols/ParameterBindable.html">ParameterBindable</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>© 2015 - 2016 <a class="link" href="https://www.feisty-dog.com" target="_blank" rel="external">Feisty Dog, LLC</a> under the <a class="link" href="https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt" target="_blank" rel="external">MIT License</a>.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.7.2</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>
