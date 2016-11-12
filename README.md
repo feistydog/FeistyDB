@@ -1,5 +1,7 @@
 # FeistyDB
 
+[![Build Status](https://travis-ci.org/feistydog/FeistyDB.svg?branch=master)](https://travis-ci.org/feistydog/FeistyDB)
+
 A powerful and performant Swift interface to [SQLite](https://sqlite.org) featuring:
 
 - Type-safe and type-agnostic database values.
@@ -12,8 +14,7 @@ FeistyDB allows fast, easy database access with robust error handling.  It is no
 ## Installation
 
 1. Clone the [FeistyDB](https://github.com/feistydog/FeistyDB) repository.
-2. Download the latest [SQLite amalgamation](https://sqlite.org/amalgamation.html) source code from the [SQLite Download Page](https://sqlite.org/download.html).
-3. Unpack the archive contents to the `sqlite/` folder.
+2. Run `./get-sqlite.sh` to get the latest [SQLite amalgamation](https://sqlite.org/amalgamation.html) source code.
 4. Open the workspace, build, and get started in the playground!
 
 ## Quick Start
