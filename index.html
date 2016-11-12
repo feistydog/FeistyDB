@@ -259,6 +259,13 @@
 <ul>
 <li><code>DatabaseSerializable</code> is a type that can be serialized to and deserialized from a database column.</li>
 </ul>
+
+<p>Thread-safe access to a database is provided by <code>DatabaseQueue</code> and <code>ConcurrentDatabaseQueue</code>.</p>
+
+<ul>
+<li><p><code>DatabaseQueue</code> serializes work items on a database.</p></li>
+<li><p><code>ConcurrentDatabaseQueue</code> serializes write access to a database but allows concurrent readers.</p></li>
+</ul>
 <a href='#examples' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='examples'>Examples</h2>
 <a href='#create-an-in-memory-database' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='create-an-in-memory-database'>Create an in-memory database</h3>
 <pre class="highlight swift"><code><span class="k">let</span> <span class="nv">db</span> <span class="o">=</span> <span class="k">try</span> <span class="kt">Database</span><span class="p">()</span>
