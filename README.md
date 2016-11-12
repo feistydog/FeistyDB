@@ -79,7 +79,7 @@ Thread-safe access to a database is provided by `DatabaseQueue` and `ConcurrentD
 
 - `DatabaseQueue` serializes work items on a database.
 
-- `ConcurrentDatabaseQueue` serializes write access to a database but allows concurrent readers.
+- `ConcurrentDatabaseQueue` serializes write access to a database but allows concurrent reads.
 
 ## Examples
 
