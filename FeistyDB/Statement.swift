@@ -100,7 +100,16 @@ final public class Statement {
 
 	/// The SQL text of the statement with bound parameters expanded
 	public var expandedSQL: String {
-		return String(cString: sqlite3_expanded_sql(stmt))
+		guard let s = sqlite3_expanded_sql(stmt) else {
+			#if DEBUG
+				print("sqlite3_expanded_sql() returned NULL")
+			#endif
+			return ""
+		}
+		defer {
+			sqlite3_free(s)
+		}
+		return String(cString: s)
 	}
 
 	/// The number of columns in the result set
