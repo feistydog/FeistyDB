@@ -71,12 +71,12 @@ public final class Row {
 	///
 	/// - throws: An error if `index` is out of bounds
 	///
-	/// - returns: The name of the column for the specified index
+	/// - returns: The name of the column
 	public func name(ofColumn index: Int) throws -> String {
 		return try statement.name(ofColumn: index)
 	}
 
-	/// Returns the index of the column `name`.
+	/// Returns the index of the column with name `name`.
 	///
 	/// This is a shortcut for `index(ofColumn: name)`.
 	///
@@ -84,7 +84,7 @@ public final class Row {
 	///
 	/// - throws: An error if the column doesn't exist
 	///
-	/// - returns: The index of the column with the specified name
+	/// - returns: The index of the column
 	public func index(ofColumn name: String) throws -> Int {
 		return try statement.index(ofColumn: name)
 	}

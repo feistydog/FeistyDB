@@ -83,7 +83,7 @@ extension Row {
 		return try T.deserialize(from: value(at: index))
 	}
 
-	/// Returns the value of column `name`.
+	/// Returns the value of the column with name `name`.
 	///
 	/// - parameter name: The name of the desired column
 	///
