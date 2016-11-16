@@ -84,19 +84,19 @@ final public class Statement {
 	/// `true` if this statement makes no direct changes to the database, `false` otherwise.
 	///
 	/// - seealso: [Read-only statements in SQLite](https://sqlite.org/c3ref/stmt_readonly.html)
-	public var readOnly: Bool {
-		return sqlite3_stmt_readonly(stmt) != 0
-	}
+	public lazy var readOnly: Bool = {
+		return sqlite3_stmt_readonly(self.stmt) != 0
+	}()
 
 	/// The number of SQL parameters in this statement
-	public var parameterCount: Int {
-		return Int(sqlite3_bind_parameter_count(stmt))
-	}
+	public lazy var parameterCount: Int = {
+		return Int(sqlite3_bind_parameter_count(self.stmt))
+	}()
 
 	/// The original SQL text of the statement
-	public var sql: String {
-		return String(cString: sqlite3_sql(stmt))
-	}
+	public lazy var sql: String = {
+		return String(cString: sqlite3_sql(self.stmt))
+	}()
 
 	/// The SQL text of the statement with bound parameters expanded
 	public var expandedSQL: String {
@@ -113,20 +113,20 @@ final public class Statement {
 	}
 
 	/// The number of columns in the result set
-	public var columnCount: Int {
-		return Int(sqlite3_column_count(stmt))
-	}
+	public lazy var columnCount: Int = {
+		return Int(sqlite3_column_count(self.stmt))
+	}()
 
 	/// The mapping of column names to indexes
-	var columnNamesAndIndexes: [String: Int] {
-		let columnCount = sqlite3_column_count(stmt)
+	lazy var columnNamesAndIndexes: [String: Int] = {
+		let columnCount = sqlite3_column_count(self.stmt)
 		var map = [String: Int](minimumCapacity: Int(columnCount))
 		for i in 0..<columnCount {
-			let name = String(cString: sqlite3_column_name(stmt, i))
+			let name = String(cString: sqlite3_column_name(self.stmt, i))
 			map[name] = Int(i)
 		}
 		return map
-	}
+	}()
 
 	/// Returns the name of the column at `index`.
 	///
@@ -145,6 +145,20 @@ final public class Statement {
 			throw DatabaseError("Column index \(index) out of bounds")
 		}
 		return String(cString: name)
+	}
+
+	/// Returns the index of the column `name`.
+	///
+	/// - parameter name: The name of the desired column
+	///
+	/// - throws: An error if the column doesn't exist
+	///
+	/// - returns: The index of the column with the specified name
+	public func index(ofColumn name: String) throws -> Int {
+		guard let index = columnNamesAndIndexes[name] else {
+			throw DatabaseError("Unknown column \"\(name)\"")
+		}
+		return index
 	}
 
 	/// Executes the statement and discards any result rows.

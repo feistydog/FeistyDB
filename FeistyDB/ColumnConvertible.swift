@@ -88,7 +88,7 @@ extension Row {
 		}
 	}
 
-	/// Returns the value of column `name`.
+	/// Returns the value of the column with name `name`.
 	///
 	/// - parameter name: The name of the desired column
 	///
@@ -96,13 +96,10 @@ extension Row {
 	///
 	/// - returns: The column's value or `nil` if null
 	public func value<T: ColumnConvertible>(named name: String) throws -> T? {
-		guard let index = statement.columnNamesAndIndexes[name] else {
-			throw DatabaseError("Unknown column \"\(name)\"")
-		}
-		return try value(at: index)
+		return try value(at: statement.index(ofColumn: name))
 	}
 
-	/// Returns the value of column `name`.
+	/// Returns the value of the column with name `name`.
 	///
 	/// - parameter name: The name of the desired column
 	///
@@ -110,10 +107,7 @@ extension Row {
 	///
 	/// - returns: The column's value
 	public func value<T: ColumnConvertible>(named name: String) throws -> T {
-		guard let index = statement.columnNamesAndIndexes[name] else {
-			throw DatabaseError("Unknown column \"\(name)\"")
-		}
-		return try value(at: index)
+		return try value(at: statement.index(ofColumn: name))
 	}
 }
 

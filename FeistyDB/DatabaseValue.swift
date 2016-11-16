@@ -127,10 +127,7 @@ extension Row {
 	///
 	/// - returns: The column's value
 	public func value(named name: String) throws -> DatabaseValue {
-		guard let index = statement.columnNamesAndIndexes[name] else {
-			throw DatabaseError("Unknown column \"\(name)\"")
-		}
-		return try value(at: index)
+		return try value(at: statement.index(ofColumn: name))
 	}
 }
 
