@@ -181,7 +181,7 @@ extension Row: Collection {
 	}
 
 	public var endIndex: Int {
-		return statement.columnCount
+		return columnCount
 	}
 
 	public subscript(position: Int) -> DatabaseValue {
