@@ -42,18 +42,25 @@ import Foundation
 /// ```
 ///
 /// This allows for simple result row processing at the expense of error handling.
-public struct Row {
+public final class Row {
 	/// The statement owning this row.
 	public let statement: Statement
-}
 
-extension Row {
-	/// The number of columns in the row.
-	public var columnCount: Int {
-		return Int(sqlite3_data_count(statement.stmt))
+	/// Creates a result row.
+	///
+	/// - parameter statement: The owning statement
+	init(statement: Statement) {
+		self.statement = statement
 	}
 
+	/// The number of columns in the row.
+	public lazy var columnCount: Int = {
+		return Int(sqlite3_data_count(self.statement.stmt))
+	}()
+
 	/// Returns the name of the column at `index`.
+	///
+	/// This is a shortcut for `statement.name(ofColumn: index)`.
 	///
 	/// - note: Column indexes are 0-based.  The leftmost column in a result row has index 0.
 	///
@@ -67,5 +74,18 @@ extension Row {
 	/// - returns: The name of the column for the specified index
 	public func name(ofColumn index: Int) throws -> String {
 		return try statement.name(ofColumn: index)
+	}
+
+	/// Returns the index of the column `name`.
+	///
+	/// This is a shortcut for `index(ofColumn: name)`.
+	///
+	/// - parameter name: The name of the desired column
+	///
+	/// - throws: An error if the column doesn't exist
+	///
+	/// - returns: The index of the column with the specified name
+	public func index(ofColumn name: String) throws -> Int {
+		return try statement.index(ofColumn: name)
 	}
 }
