@@ -41,7 +41,7 @@
                 <a href="../Classes/Statement.html">Statement</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Structs/Row.html">Row</a>
+                <a href="../Classes/Row.html">Row</a>
               </li>
             </ul>
           </li>
@@ -150,7 +150,7 @@
             <a href="../Other Subscripts.html">Other Subscripts</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="../Other Subscripts.html#/s:iV8FeistyDB3Row9subscriptFSSOS_13DatabaseValue">subscript(_:)</a>
+                <a href="../Other Subscripts.html#/s:iC8FeistyDB3Row9subscriptFSSOS_13DatabaseValue">subscript(_:)</a>
               </li>
             </ul>
           </li>
@@ -286,7 +286,7 @@ silently discarded.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">readOnly</span><span class="p">:</span> <span class="kt">Bool</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">lazy</span> <span class="k">var</span> <span class="nv">readOnly</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span></code></pre>
 
                         </div>
                       </div>
@@ -313,7 +313,7 @@ silently discarded.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">parameterCount</span><span class="p">:</span> <span class="kt">Int</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">lazy</span> <span class="k">var</span> <span class="nv">parameterCount</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span></code></pre>
 
                         </div>
                       </div>
@@ -340,7 +340,7 @@ silently discarded.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">sql</span><span class="p">:</span> <span class="kt">String</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">lazy</span> <span class="k">var</span> <span class="nv">sql</span><span class="p">:</span> <span class="kt">String</span> <span class="o">=</span></code></pre>
 
                         </div>
                       </div>
@@ -394,7 +394,7 @@ silently discarded.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">columnCount</span><span class="p">:</span> <span class="kt">Int</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">lazy</span> <span class="k">var</span> <span class="nv">columnCount</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span></code></pre>
 
                         </div>
                       </div>
@@ -480,6 +480,64 @@ silently discarded.</p>
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/s:FC8FeistyDB9Statement5indexFzT8ofColumnSS_Si"></a>
+                    <a name="//apple_ref/swift/Method/index(ofColumn:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC8FeistyDB9Statement5indexFzT8ofColumnSS_Si">index(ofColumn:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns the index of the column <code>name</code>.</p>
+
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <p>An error if the column doesn&rsquo;t exist</p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">index</span><span class="p">(</span><span class="n">ofColumn</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">Int</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>name</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The name of the desired column</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The index of the column with the specified name</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/s:FC8FeistyDB9Statement7executeFzT_T_"></a>
                     <a name="//apple_ref/swift/Method/execute()" class="dashAnchor"></a>
                     <a class="token" href="#/s:FC8FeistyDB9Statement7executeFzT_T_">execute()</a>
@@ -513,9 +571,9 @@ silently discarded.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC8FeistyDB9Statement7executeFzFzVS_3RowT_T_"></a>
+                    <a name="/s:FC8FeistyDB9Statement7executeFzFzCS_3RowT_T_"></a>
                     <a name="//apple_ref/swift/Method/execute(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC8FeistyDB9Statement7executeFzFzVS_3RowT_T_">execute(_:)</a>
+                    <a class="token" href="#/s:FC8FeistyDB9Statement7executeFzFzCS_3RowT_T_">execute(_:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -536,7 +594,7 @@ silently discarded.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">execute</span><span class="p">(</span><span class="n">_</span> <span class="nv">block</span><span class="p">:</span> <span class="p">((</span><span class="n">_</span> <span class="nv">row</span><span class="p">:</span> <span class="kt"><a href="../Structs/Row.html">Row</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="p">()))</span> <span class="k">throws</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">execute</span><span class="p">(</span><span class="n">_</span> <span class="nv">block</span><span class="p">:</span> <span class="p">((</span><span class="n">_</span> <span class="nv">row</span><span class="p">:</span> <span class="kt"><a href="../Classes/Row.html">Row</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="p">()))</span> <span class="k">throws</span></code></pre>
 
                         </div>
                       </div>
@@ -1714,9 +1772,9 @@ silently discarded.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC8FeistyDB9Statement12makeIteratorFT_GVs11AnyIteratorVS_3Row_"></a>
+                    <a name="/s:FC8FeistyDB9Statement12makeIteratorFT_GVs11AnyIteratorCS_3Row_"></a>
                     <a name="//apple_ref/swift/Method/makeIterator()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC8FeistyDB9Statement12makeIteratorFT_GVs11AnyIteratorVS_3Row_">makeIterator()</a>
+                    <a class="token" href="#/s:FC8FeistyDB9Statement12makeIteratorFT_GVs11AnyIteratorCS_3Row_">makeIterator()</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1727,14 +1785,14 @@ silently discarded.</p>
                         <p>Returns an iterator for accessing the result rows.</p>
 
 <p>Because the iterator discards errors, the preferred way of accessing result rows
-is via the block-based <code><a href="../Classes/Statement.html#/s:FC8FeistyDB9Statement7executeFzFzVS_3RowT_T_">execute(_:)</a></code> function</p>
+is via the block-based <code><a href="../Classes/Statement.html#/s:FC8FeistyDB9Statement7executeFzFzCS_3RowT_T_">execute(_:)</a></code> function</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">makeIterator</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">AnyIterator</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/Row.html">Row</a></span><span class="o">&gt;</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">makeIterator</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">AnyIterator</span><span class="o">&lt;</span><span class="kt"><a href="../Classes/Row.html">Row</a></span><span class="o">&gt;</span></code></pre>
 
                         </div>
                       </div>
@@ -1753,9 +1811,9 @@ is via the block-based <code><a href="../Classes/Statement.html#/s:FC8FeistyDB9S
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC8FeistyDB9Statement8firstRowFzT_VS_3Row"></a>
+                    <a name="/s:FC8FeistyDB9Statement8firstRowFzT_CS_3Row"></a>
                     <a name="//apple_ref/swift/Method/firstRow()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC8FeistyDB9Statement8firstRowFzT_VS_3Row">firstRow()</a>
+                    <a class="token" href="#/s:FC8FeistyDB9Statement8firstRowFzT_CS_3Row">firstRow()</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1776,7 +1834,7 @@ is via the block-based <code><a href="../Classes/Statement.html#/s:FC8FeistyDB9S
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">firstRow</span><span class="p">()</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Structs/Row.html">Row</a></span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">firstRow</span><span class="p">()</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/Row.html">Row</a></span></code></pre>
 
                         </div>
                       </div>

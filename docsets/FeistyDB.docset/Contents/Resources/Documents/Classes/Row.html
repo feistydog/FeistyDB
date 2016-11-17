@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Row Struct Reference</title>
+    <title>Row Class Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset='utf-8'>
@@ -10,8 +10,8 @@
     
   </head>
   <body>
-    <a name="//apple_ref/swift/Struct/Row" class="dashAnchor"></a>
-    <a title="Row Struct Reference"></a>
+    <a name="//apple_ref/swift/Class/Row" class="dashAnchor"></a>
+    <a title="Row Class Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="../index.html">FeistyDB Docs</a> (100% documented)</p>
@@ -22,7 +22,7 @@
       <p id="breadcrumbs">
         <a href="../index.html">FeistyDB Reference</a>
         <img id="carat" src="../img/carat.png" />
-        Row Struct Reference
+        Row Class Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -41,7 +41,7 @@
                 <a href="../Classes/Statement.html">Statement</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Structs/Row.html">Row</a>
+                <a href="../Classes/Row.html">Row</a>
               </li>
             </ul>
           </li>
@@ -150,7 +150,7 @@
             <a href="../Other Subscripts.html">Other Subscripts</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="../Other Subscripts.html#/s:iV8FeistyDB3Row9subscriptFSSOS_13DatabaseValue">subscript(_:)</a>
+                <a href="../Other Subscripts.html#/s:iC8FeistyDB3Row9subscriptFSSOS_13DatabaseValue">subscript(_:)</a>
               </li>
             </ul>
           </li>
@@ -182,7 +182,7 @@
             <h1>Row</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Row</span></code></pre>
+                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">Row</span></code></pre>
 
                 </div>
               </div>
@@ -227,9 +227,9 @@ a type implements either the <code><a href="../Protocols/ColumnConvertible.html"
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:vV8FeistyDB3Row9statementCS_9Statement"></a>
+                    <a name="/s:vC8FeistyDB3Row9statementCS_9Statement"></a>
                     <a name="//apple_ref/swift/Property/statement" class="dashAnchor"></a>
-                    <a class="token" href="#/s:vV8FeistyDB3Row9statementCS_9Statement">statement</a>
+                    <a class="token" href="#/s:vC8FeistyDB3Row9statementCS_9Statement">statement</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -251,16 +251,12 @@ a type implements either the <code><a href="../Protocols/ColumnConvertible.html"
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:vV8FeistyDB3Row11columnCountSi"></a>
+                    <a name="/s:vC8FeistyDB3Row11columnCountSi"></a>
                     <a name="//apple_ref/swift/Property/columnCount" class="dashAnchor"></a>
-                    <a class="token" href="#/s:vV8FeistyDB3Row11columnCountSi">columnCount</a>
+                    <a class="token" href="#/s:vC8FeistyDB3Row11columnCountSi">columnCount</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -275,7 +271,7 @@ a type implements either the <code><a href="../Protocols/ColumnConvertible.html"
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">columnCount</span><span class="p">:</span> <span class="kt">Int</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">lazy</span> <span class="k">var</span> <span class="nv">columnCount</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span></code></pre>
 
                         </div>
                       </div>
@@ -285,9 +281,9 @@ a type implements either the <code><a href="../Protocols/ColumnConvertible.html"
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FV8FeistyDB3Row4nameFzT8ofColumnSi_SS"></a>
+                    <a name="/s:FC8FeistyDB3Row4nameFzT8ofColumnSi_SS"></a>
                     <a name="//apple_ref/swift/Method/name(ofColumn:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FV8FeistyDB3Row4nameFzT8ofColumnSi_SS">name(ofColumn:)</a>
+                    <a class="token" href="#/s:FC8FeistyDB3Row4nameFzT8ofColumnSi_SS">name(ofColumn:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -296,6 +292,8 @@ a type implements either the <code><a href="../Protocols/ColumnConvertible.html"
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Returns the name of the column at <code>index</code>.</p>
+
+<p>This is a shortcut for <code>statement.name(ofColumn: index)</code>.</p>
 
 <div class="aside aside-note">
     <p class="aside-title">Note</p>
@@ -352,7 +350,67 @@ a type implements either the <code><a href="../Protocols/ColumnConvertible.html"
                       </div>
                       <div>
                         <h4>Return Value</h4>
-                        <p>The name of the column for the specified index</p>
+                        <p>The name of the column</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC8FeistyDB3Row5indexFzT8ofColumnSS_Si"></a>
+                    <a name="//apple_ref/swift/Method/index(ofColumn:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC8FeistyDB3Row5indexFzT8ofColumnSS_Si">index(ofColumn:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns the index of the column with name <code>name</code>.</p>
+
+<p>This is a shortcut for <code>statement.index(ofColumn: name)</code>.</p>
+
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <p>An error if the column doesn&rsquo;t exist</p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">index</span><span class="p">(</span><span class="n">ofColumn</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">Int</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>name</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The name of the desired column</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The index of the column</p>
 
                       </div>
                     </section>
@@ -365,9 +423,9 @@ a type implements either the <code><a href="../Protocols/ColumnConvertible.html"
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FV8FeistyDB3Row5valueFzT2atSi_OS_13DatabaseValue"></a>
+                    <a name="/s:FC8FeistyDB3Row5valueFzT2atSi_OS_13DatabaseValue"></a>
                     <a name="//apple_ref/swift/Method/value(at:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FV8FeistyDB3Row5valueFzT2atSi_OS_13DatabaseValue">value(at:)</a>
+                    <a class="token" href="#/s:FC8FeistyDB3Row5valueFzT2atSi_OS_13DatabaseValue">value(at:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -441,9 +499,9 @@ a type implements either the <code><a href="../Protocols/ColumnConvertible.html"
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FV8FeistyDB3Row5valueFzT5namedSS_OS_13DatabaseValue"></a>
+                    <a name="/s:FC8FeistyDB3Row5valueFzT5namedSS_OS_13DatabaseValue"></a>
                     <a name="//apple_ref/swift/Method/value(named:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FV8FeistyDB3Row5valueFzT5namedSS_OS_13DatabaseValue">value(named:)</a>
+                    <a class="token" href="#/s:FC8FeistyDB3Row5valueFzT5namedSS_OS_13DatabaseValue">value(named:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -503,9 +561,9 @@ a type implements either the <code><a href="../Protocols/ColumnConvertible.html"
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FV8FeistyDB3Row13leftmostValueFzT_OS_13DatabaseValue"></a>
+                    <a name="/s:FC8FeistyDB3Row13leftmostValueFzT_OS_13DatabaseValue"></a>
                     <a name="//apple_ref/swift/Method/leftmostValue()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FV8FeistyDB3Row13leftmostValueFzT_OS_13DatabaseValue">leftmostValue()</a>
+                    <a class="token" href="#/s:FC8FeistyDB3Row13leftmostValueFzT_OS_13DatabaseValue">leftmostValue()</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -657,9 +715,9 @@ a type implements either the <code><a href="../Protocols/ColumnConvertible.html"
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FV8FeistyDB3Row5valueuRxS_17ColumnConvertiblerFzT2atSi_GSqx_"></a>
+                    <a name="/s:FC8FeistyDB3Row5valueuRxS_17ColumnConvertiblerFzT2atSi_GSqx_"></a>
                     <a name="//apple_ref/swift/Method/value(at:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FV8FeistyDB3Row5valueuRxS_17ColumnConvertiblerFzT2atSi_GSqx_">value(at:)</a>
+                    <a class="token" href="#/s:FC8FeistyDB3Row5valueuRxS_17ColumnConvertiblerFzT2atSi_GSqx_">value(at:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -733,9 +791,9 @@ a type implements either the <code><a href="../Protocols/ColumnConvertible.html"
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FV8FeistyDB3Row5valueuRxS_17ColumnConvertiblerFzT2atSi_x"></a>
+                    <a name="/s:FC8FeistyDB3Row5valueuRxS_17ColumnConvertiblerFzT2atSi_x"></a>
                     <a name="//apple_ref/swift/Method/value(at:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FV8FeistyDB3Row5valueuRxS_17ColumnConvertiblerFzT2atSi_x">value(at:)</a>
+                    <a class="token" href="#/s:FC8FeistyDB3Row5valueuRxS_17ColumnConvertiblerFzT2atSi_x">value(at:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -809,9 +867,9 @@ a type implements either the <code><a href="../Protocols/ColumnConvertible.html"
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FV8FeistyDB3Row5valueuRxS_17ColumnConvertiblerFzT5namedSS_GSqx_"></a>
+                    <a name="/s:FC8FeistyDB3Row5valueuRxS_17ColumnConvertiblerFzT5namedSS_GSqx_"></a>
                     <a name="//apple_ref/swift/Method/value(named:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FV8FeistyDB3Row5valueuRxS_17ColumnConvertiblerFzT5namedSS_GSqx_">value(named:)</a>
+                    <a class="token" href="#/s:FC8FeistyDB3Row5valueuRxS_17ColumnConvertiblerFzT5namedSS_GSqx_">value(named:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -819,7 +877,7 @@ a type implements either the <code><a href="../Protocols/ColumnConvertible.html"
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Returns the value of column <code>name</code>.</p>
+                        <p>Returns the value of the column with name <code>name</code>.</p>
 
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
@@ -867,9 +925,9 @@ a type implements either the <code><a href="../Protocols/ColumnConvertible.html"
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FV8FeistyDB3Row5valueuRxS_17ColumnConvertiblerFzT5namedSS_x"></a>
+                    <a name="/s:FC8FeistyDB3Row5valueuRxS_17ColumnConvertiblerFzT5namedSS_x"></a>
                     <a name="//apple_ref/swift/Method/value(named:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FV8FeistyDB3Row5valueuRxS_17ColumnConvertiblerFzT5namedSS_x">value(named:)</a>
+                    <a class="token" href="#/s:FC8FeistyDB3Row5valueuRxS_17ColumnConvertiblerFzT5namedSS_x">value(named:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -877,7 +935,7 @@ a type implements either the <code><a href="../Protocols/ColumnConvertible.html"
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Returns the value of column <code>name</code>.</p>
+                        <p>Returns the value of the column with name <code>name</code>.</p>
 
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
@@ -929,9 +987,9 @@ a type implements either the <code><a href="../Protocols/ColumnConvertible.html"
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FV8FeistyDB3Row13leftmostValueuRxS_17ColumnConvertiblerFzT_GSqx_"></a>
+                    <a name="/s:FC8FeistyDB3Row13leftmostValueuRxS_17ColumnConvertiblerFzT_GSqx_"></a>
                     <a name="//apple_ref/swift/Method/leftmostValue()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FV8FeistyDB3Row13leftmostValueuRxS_17ColumnConvertiblerFzT_GSqx_">leftmostValue()</a>
+                    <a class="token" href="#/s:FC8FeistyDB3Row13leftmostValueuRxS_17ColumnConvertiblerFzT_GSqx_">leftmostValue()</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -969,9 +1027,9 @@ a type implements either the <code><a href="../Protocols/ColumnConvertible.html"
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FV8FeistyDB3Row13leftmostValueuRxS_17ColumnConvertiblerFzT_x"></a>
+                    <a name="/s:FC8FeistyDB3Row13leftmostValueuRxS_17ColumnConvertiblerFzT_x"></a>
                     <a name="//apple_ref/swift/Method/leftmostValue()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FV8FeistyDB3Row13leftmostValueuRxS_17ColumnConvertiblerFzT_x">leftmostValue()</a>
+                    <a class="token" href="#/s:FC8FeistyDB3Row13leftmostValueuRxS_17ColumnConvertiblerFzT_x">leftmostValue()</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1013,9 +1071,9 @@ a type implements either the <code><a href="../Protocols/ColumnConvertible.html"
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FV8FeistyDB3Row5valueuRxS_20DatabaseSerializablerFzT2atSi_x"></a>
+                    <a name="/s:FC8FeistyDB3Row5valueuRxS_20DatabaseSerializablerFzT2atSi_x"></a>
                     <a name="//apple_ref/swift/Method/value(at:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FV8FeistyDB3Row5valueuRxS_20DatabaseSerializablerFzT2atSi_x">value(at:)</a>
+                    <a class="token" href="#/s:FC8FeistyDB3Row5valueuRxS_20DatabaseSerializablerFzT2atSi_x">value(at:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1089,9 +1147,9 @@ a type implements either the <code><a href="../Protocols/ColumnConvertible.html"
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FV8FeistyDB3Row5valueuRxS_20DatabaseSerializablerFzT5namedSS_x"></a>
+                    <a name="/s:FC8FeistyDB3Row5valueuRxS_20DatabaseSerializablerFzT5namedSS_x"></a>
                     <a name="//apple_ref/swift/Method/value(named:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FV8FeistyDB3Row5valueuRxS_20DatabaseSerializablerFzT5namedSS_x">value(named:)</a>
+                    <a class="token" href="#/s:FC8FeistyDB3Row5valueuRxS_20DatabaseSerializablerFzT5namedSS_x">value(named:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1099,7 +1157,7 @@ a type implements either the <code><a href="../Protocols/ColumnConvertible.html"
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Returns the value of column <code>name</code>.</p>
+                        <p>Returns the value of the column with name <code>name</code>.</p>
 
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
@@ -1151,9 +1209,9 @@ a type implements either the <code><a href="../Protocols/ColumnConvertible.html"
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FV8FeistyDB3Row13leftmostValueuRxS_20DatabaseSerializablerFzT_x"></a>
+                    <a name="/s:FC8FeistyDB3Row13leftmostValueuRxS_20DatabaseSerializablerFzT_x"></a>
                     <a name="//apple_ref/swift/Method/leftmostValue()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FV8FeistyDB3Row13leftmostValueuRxS_20DatabaseSerializablerFzT_x">leftmostValue()</a>
+                    <a class="token" href="#/s:FC8FeistyDB3Row13leftmostValueuRxS_20DatabaseSerializablerFzT_x">leftmostValue()</a>
                     </code>
                   </div>
                   <div class="height-container">
