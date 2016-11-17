@@ -78,7 +78,7 @@ public final class Row {
 
 	/// Returns the index of the column with name `name`.
 	///
-	/// This is a shortcut for `index(ofColumn: name)`.
+	/// This is a shortcut for `statement.index(ofColumn: name)`.
 	///
 	/// - parameter name: The name of the desired column
 	///
