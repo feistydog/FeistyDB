@@ -481,7 +481,7 @@ extension DatabaseValue: ParameterBindable {
 
 		case .text(let t):
 			guard sqlite3_bind_text(stmt, idx, t, -1, SQLITE_TRANSIENT) == SQLITE_OK else {
-				throw DatabaseError(message: "Error binding string \"\(t)\" to parameter \(idx)", takingDescriptionFromStatement: stmt)
+				throw DatabaseError(message: "Error binding String \"\(t)\" to parameter \(idx)", takingDescriptionFromStatement: stmt)
 			}
 
 		case .blob(let b):
