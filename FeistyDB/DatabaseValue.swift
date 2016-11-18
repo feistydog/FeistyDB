@@ -22,6 +22,42 @@ public enum DatabaseValue {
 	case null
 }
 
+extension DatabaseValue {
+	/// Creates an instance containing the value of column `idx` in `stmt`.
+	///
+	/// - note: No bounds checking is performed on `idx`
+	///
+	/// - parameter stmt: An `sqlite3_stmt *` object
+	/// - parameter idx: The index of the desired column
+	init(_ stmt: SQLitePreparedStatement, column idx: Int32) {
+		let type = sqlite3_column_type(stmt, idx)
+		switch type {
+		case SQLITE_INTEGER:
+			self = .integer(sqlite3_column_int64(stmt, idx))
+
+		case SQLITE_FLOAT:
+			self = .float(sqlite3_column_double(stmt, idx))
+
+		case SQLITE_TEXT:
+			self = .text(String(cString: sqlite3_column_text(stmt, idx)))
+
+		case SQLITE_BLOB:
+			let byteCount = Int(sqlite3_column_bytes(stmt, idx))
+			let data = Data(bytes: sqlite3_column_blob(stmt, idx).assumingMemoryBound(to: UInt8.self), count: byteCount)
+			self = .blob(data)
+
+		case SQLITE_NULL:
+			self = .null
+
+		default:
+			#if DEBUG
+				print("Unknown SQLite column type \(type) encountered")
+			#endif
+			self = .null
+		}
+	}
+}
+
 /// An `sqlite3_value *` object.
 ///
 /// - seealso: [Obtaining SQL Values](https://sqlite.org/c3ref/value_blob.html)
@@ -30,7 +66,7 @@ typealias SQLiteValue = OpaquePointer
 extension DatabaseValue {
 	/// Creates an instance containing `value`.
 	///
-	/// - parameter value: The desired value
+	/// - parameter value: An `sqlite3_value *` object
 	init(_ value: SQLiteValue) {
 		let type = sqlite3_value_type(value)
 		switch type {
@@ -81,42 +117,14 @@ extension Row {
 	///
 	/// - parameter index: The index of the desired column
 	///
-	/// - throws: An error if the column doesn't exist
+	/// - throws: An error if `index` is out of bounds
 	///
 	/// - returns: The column's value
 	public func value(at index: Int) throws -> DatabaseValue {
 		guard index >= 0, index < self.columnCount else {
 			throw DatabaseError("Column index \(index) out of bounds")
 		}
-
-		let stmt = statement.stmt
-		let idx = Int32(index)
-		
-		let type = sqlite3_column_type(stmt, idx)
-		switch type {
-		case SQLITE_INTEGER:
-			return .integer(sqlite3_column_int64(stmt, idx))
-
-		case SQLITE_FLOAT:
-			return .float(sqlite3_column_double(stmt, idx))
-
-		case SQLITE_TEXT:
-			return .text(String(cString: sqlite3_column_text(stmt, idx)))
-
-		case SQLITE_BLOB:
-			let byteCount = Int(sqlite3_column_bytes(stmt, idx))
-			let data = Data(bytes: sqlite3_column_blob(stmt, idx).assumingMemoryBound(to: UInt8.self), count: byteCount)
-			return .blob(data)
-
-		case SQLITE_NULL:
-			return .null
-
-		default:
-			#if DEBUG
-				print("Unknown column type \(type) encountered")
-			#endif
-			return .null
-		}
+		return DatabaseValue(statement.stmt, column: Int32(index))
 	}
 
 	/// Returns the value of the column with name `name`.
@@ -144,6 +152,20 @@ extension Row {
 	}
 }
 
+extension Row {
+	/// Returns a dictionary of the row's values keyed by column name.
+	///
+	/// - returns: A dictionary of the row's values
+	public func values() -> [String: DatabaseValue] {
+		var values = [String: DatabaseValue]()
+		let stmt = statement.stmt
+		statement.columnNamesAndIndexes.forEach { name, index in
+			values[name] = DatabaseValue(stmt, column: Int32(index))
+		}
+		return values
+	}
+}
+
 extension Statement {
 	/// Returns the value of the leftmost column in the first row.
 	///
@@ -156,6 +178,7 @@ extension Statement {
 		return try firstRow().leftmostValue()
 	}
 }
+
 extension Row {
 	/// Returns the value of the column with name `name`.
 	///
