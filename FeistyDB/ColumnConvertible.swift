@@ -14,7 +14,7 @@ import Foundation
 ///
 /// ```swift
 /// extension Int64: ColumnConvertible {
-///     public init(with stmt: SQLitePreparedStatement, parameter idx: Int32) {
+///     public init(_ stmt: SQLitePreparedStatement, column idx: Int32) {
 ///        self = sqlite3_column_int64(stmt, idx)
 ///     }
 /// }
@@ -30,7 +30,7 @@ public protocol ColumnConvertible {
 	/// - parameter idx: The index of the desired column
 	///
 	/// - throws: An error if initialization fails
-	init(with stmt: SQLitePreparedStatement, parameter idx: Int32) throws
+	init(_ stmt: SQLitePreparedStatement, column idx: Int32) throws
 }
 
 extension Row {
@@ -57,7 +57,7 @@ extension Row {
 		case SQLITE_NULL:
 			return nil
 		default:
-			return try T(with: stmt, parameter: idx)
+			return try T(stmt, column: idx)
 		}
 	}
 
@@ -84,7 +84,7 @@ extension Row {
 		case SQLITE_NULL:
 			throw DatabaseError("Database null encountered at column \(index)")
 		default:
-			return try T(with: stmt, parameter: idx)
+			return try T(stmt, column: idx)
 		}
 	}
 
@@ -160,98 +160,98 @@ extension Statement {
 }
 
 extension String: ColumnConvertible {
-	public init(with stmt: SQLitePreparedStatement, parameter idx: Int32) {
+	public init(_ stmt: SQLitePreparedStatement, column idx: Int32) {
 		self.init(cString: sqlite3_column_text(stmt, idx))
 	}
 }
 
 extension Data: ColumnConvertible {
-	public init(with stmt: SQLitePreparedStatement, parameter idx: Int32) {
+	public init(_ stmt: SQLitePreparedStatement, column idx: Int32) {
 		let byteCount = Int(sqlite3_column_bytes(stmt, idx))
 		self.init(bytes: sqlite3_column_blob(stmt, idx).assumingMemoryBound(to: UInt8.self), count: byteCount)
 	}
 }
 
 extension Int: ColumnConvertible {
-	public init(with stmt: SQLitePreparedStatement, parameter idx: Int32) {
+	public init(_ stmt: SQLitePreparedStatement, column idx: Int32) {
 		self.init(sqlite3_column_int64(stmt, idx))
 	}
 }
 
 extension UInt: ColumnConvertible {
-	public init(with stmt: SQLitePreparedStatement, parameter idx: Int32) {
+	public init(_ stmt: SQLitePreparedStatement, column idx: Int32) {
 		self.init(bitPattern: Int(sqlite3_column_int64(stmt, idx)))
 	}
 }
 
 extension Int8: ColumnConvertible {
-	public init(with stmt: SQLitePreparedStatement, parameter idx: Int32) {
+	public init(_ stmt: SQLitePreparedStatement, column idx: Int32) {
 		self.init(sqlite3_column_int64(stmt, idx))
 	}
 }
 
 extension UInt8: ColumnConvertible {
-	public init(with stmt: SQLitePreparedStatement, parameter idx: Int32) {
+	public init(_ stmt: SQLitePreparedStatement, column idx: Int32) {
 		self.init(sqlite3_column_int64(stmt, idx))
 	}
 }
 
 extension Int16: ColumnConvertible {
-	public init(with stmt: SQLitePreparedStatement, parameter idx: Int32) {
+	public init(_ stmt: SQLitePreparedStatement, column idx: Int32) {
 		self.init(sqlite3_column_int64(stmt, idx))
 	}
 }
 
 extension UInt16: ColumnConvertible {
-	public init(with stmt: SQLitePreparedStatement, parameter idx: Int32) {
+	public init(_ stmt: SQLitePreparedStatement, column idx: Int32) {
 		self.init(sqlite3_column_int64(stmt, idx))
 	}
 }
 
 extension Int32: ColumnConvertible {
-	public init(with stmt: SQLitePreparedStatement, parameter idx: Int32) {
+	public init(_ stmt: SQLitePreparedStatement, column idx: Int32) {
 		self.init(sqlite3_column_int64(stmt, idx))
 	}
 }
 
 extension UInt32: ColumnConvertible {
-	public init(with stmt: SQLitePreparedStatement, parameter idx: Int32) {
+	public init(_ stmt: SQLitePreparedStatement, column idx: Int32) {
 		self.init(sqlite3_column_int64(stmt, idx))
 	}
 }
 
 extension Int64: ColumnConvertible {
-	public init(with stmt: SQLitePreparedStatement, parameter idx: Int32) {
+	public init(_ stmt: SQLitePreparedStatement, column idx: Int32) {
 		self = sqlite3_column_int64(stmt, idx)
 	}
 }
 
 extension UInt64: ColumnConvertible {
-	public init(with stmt: SQLitePreparedStatement, parameter idx: Int32) {
+	public init(_ stmt: SQLitePreparedStatement, column idx: Int32) {
 		self.init(bitPattern: sqlite3_column_int64(stmt, idx))
 	}
 }
 
 extension Float: ColumnConvertible {
-	public init(with stmt: SQLitePreparedStatement, parameter idx: Int32) {
+	public init(_ stmt: SQLitePreparedStatement, column idx: Int32) {
 		self.init(sqlite3_column_double(stmt, idx))
 	}
 }
 
 extension Double: ColumnConvertible {
-	public init(with stmt: SQLitePreparedStatement, parameter idx: Int32) {
+	public init(_ stmt: SQLitePreparedStatement, column idx: Int32) {
 		self = sqlite3_column_double(stmt, idx)
 	}
 }
 
 extension Bool: ColumnConvertible {
-	public init(with stmt: SQLitePreparedStatement, parameter idx: Int32) {
+	public init(_ stmt: SQLitePreparedStatement, column idx: Int32) {
 		self.init(sqlite3_column_int64(stmt, idx) != 0)
 	}
 }
 
 extension UUID: ColumnConvertible {
-	public init(with stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
+	public init(_ stmt: SQLitePreparedStatement, column idx: Int32) throws {
 		let s = String(cString: sqlite3_column_text(stmt, idx))
 		guard let u = UUID(uuidString: s) else {
 			throw DatabaseError("String \"\(s)\" isn't a valid UUID")
@@ -261,7 +261,7 @@ extension UUID: ColumnConvertible {
 }
 
 extension URL: ColumnConvertible {
-	public init(with stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
+	public init(_ stmt: SQLitePreparedStatement, column idx: Int32) throws {
 		let s = String(cString: sqlite3_column_text(stmt, idx))
 		guard let u = URL(string: s) else {
 			throw DatabaseError("String \"\(s)\" isn't a valid URL")
@@ -272,7 +272,7 @@ extension URL: ColumnConvertible {
 }
 
 extension Date: ColumnConvertible {
-	public init(with stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
+	public init(_ stmt: SQLitePreparedStatement, column idx: Int32) throws {
 		let s = String(cString: sqlite3_column_text(stmt, idx))
 		guard let d = iso8601DateFormatter.date(from: s) else {
 			throw DatabaseError("String \"\(s)\" isn't a valid ISO 8601 date")
