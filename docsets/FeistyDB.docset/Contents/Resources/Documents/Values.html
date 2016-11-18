@@ -242,7 +242,7 @@
 <p>For example, the implementation for <code>Int64</code> is:</p>
 
 <pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Int64</span><span class="p">:</span> <span class="kt">ColumnConvertible</span> <span class="p">{</span>
-    <span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="n">with</span> <span class="nv">stmt</span><span class="p">:</span> <span class="kt">SQLitePreparedStatement</span><span class="p">,</span> <span class="n">parameter</span> <span class="nv">idx</span><span class="p">:</span> <span class="kt">Int32</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="n">_</span> <span class="nv">stmt</span><span class="p">:</span> <span class="kt">SQLitePreparedStatement</span><span class="p">,</span> <span class="n">column</span> <span class="nv">idx</span><span class="p">:</span> <span class="kt">Int32</span><span class="p">)</span> <span class="p">{</span>
        <span class="k">self</span> <span class="o">=</span> <span class="nf">sqlite3_column_int64</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
     <span class="p">}</span>
 <span class="p">}</span>

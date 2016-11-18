@@ -455,7 +455,7 @@ a type implements either the <code><a href="../Protocols/ColumnConvertible.html"
 
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
-    <p>An error if the column doesn&rsquo;t exist</p>
+    <p>An error if <code>index</code> is out of bounds</p>
 
 </div>
 
@@ -593,6 +593,42 @@ a type implements either the <code><a href="../Protocols/ColumnConvertible.html"
                       <div>
                         <h4>Return Value</h4>
                         <p>The column’s value</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC8FeistyDB3Row6valuesFT_GVs10DictionarySSOS_13DatabaseValue_"></a>
+                    <a name="//apple_ref/swift/Method/values()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC8FeistyDB3Row6valuesFT_GVs10DictionarySSOS_13DatabaseValue_">values()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns a dictionary of the row&rsquo;s values keyed by column name.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">values</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="kt">String</span><span class="p">:</span> <span class="kt"><a href="../Enums/DatabaseValue.html">DatabaseValue</a></span><span class="p">]</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A dictionary of the row’s values</p>
 
                       </div>
                     </section>
