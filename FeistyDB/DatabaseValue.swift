@@ -94,15 +94,15 @@ extension DatabaseValue: CustomStringConvertible {
 	public var description: String {
 		switch self {
 		case .integer(let i):
-			return "DatabaseValue.integer(\(i))"
+			return ".integer(\(i))"
 		case .float(let f):
-			return "DatabaseValue.float(\(f))"
+			return ".float(\(f))"
 		case .text(let t):
-			return "DatabaseValue.text(\(t))"
+			return ".text(\"\(t)\")"
 		case .blob(let b):
-			return "DatabaseValue.blob(\(b))"
+			return ".blob(\(b))"
 		case .null:
-			return "DatabaseValue.null"
+			return ".null"
 		}
 	}
 }
@@ -163,6 +163,13 @@ extension Row {
 			values[name] = DatabaseValue(stmt, column: Int32(index))
 		}
 		return values
+	}
+}
+
+extension Row: CustomStringConvertible {
+	/// A description of the type and value of `self`.
+	public var description: String {
+		return values().description
 	}
 }
 
