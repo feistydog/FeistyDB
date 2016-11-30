@@ -193,6 +193,22 @@ final public class Statement {
 		}
 	}
 
+	/// Returns the next result row or `nil` if none.
+	///
+	/// - returns: The next result row of returned data
+	///
+	/// - throws: An error if the statement encountered an execution error
+	public func nextRow() throws -> Row? {
+		switch sqlite3_step(stmt) {
+		case SQLITE_ROW:
+			return Row(statement: self)
+		case SQLITE_DONE:
+			return nil
+		default:
+			throw DatabaseError(message: "Error executing statement", takingDescriptionFromStatement: stmt)
+		}
+	}
+
 	/// Resets the statement to its initial state, ready to be re-executed.
 	///
 	/// - note: This function does not change the value of  any bound SQL parameters.
@@ -260,14 +276,9 @@ extension Statement {
 	///
 	/// - returns: The first result row
 	public func firstRow() throws -> Row {
-		let stmt = self.stmt
-		switch sqlite3_step(stmt) {
-		case SQLITE_ROW:
-			return Row(statement: self)
-		case SQLITE_DONE:
+		guard let row = try nextRow() else {
 			throw DatabaseError("Statement returned no rows")
-		default:
-			throw DatabaseError(message: "Error executing statement", takingDescriptionFromStatement: stmt)
 		}
+		return row
 	}
 }
