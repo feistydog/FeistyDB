@@ -103,6 +103,32 @@ final public class Database {
 		sqlite3_close(db)
 	}
 
+	/// `true` if this database is read only, `false` otherwise
+	public lazy var readOnly: Bool = {
+		return sqlite3_db_readonly(self.db, nil) == 1
+	}()
+
+	/// The rowid of the most recent successful `INSERT` into a rowid table or virtual table
+	public var lastInsertRowid: Int64? {
+		let rowid = sqlite3_last_insert_rowid(db)
+		return rowid != 0 ? rowid : nil
+	}
+
+	/// The number of rows modified, inserted or deleted by the most recently completed `INSERT`, `UPDATE` or `DELETE` statement
+	public var changes: Int {
+		return Int(sqlite3_changes(db))
+	}
+
+	/// The total number of rows inserted, modified or deleted by all `INSERT`, `UPDATE` or `DELETE` statements
+	public var totalChanges: Int {
+		return Int(sqlite3_total_changes(db))
+	}
+
+	/// Interrupts a long-running query.
+	public func interrupt() {
+		sqlite3_interrupt(db)
+	}
+
 	/// Performs a low-level SQLite database operation.
 	///
 	/// **Use of this function should be avoided whenever possible**
