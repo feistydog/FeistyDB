@@ -244,31 +244,6 @@ final public class Statement {
 	}
 }
 
-extension Statement: Sequence {
-	/// Returns an iterator for accessing the result rows.
-	///
-	/// Because the iterator discards errors, the preferred way of accessing result rows
-	/// is via the block-based `execute(_:)` function
-	///
-	/// - returns: An iterator over the result rows
-	public func makeIterator() -> AnyIterator<Row> {
-		return AnyIterator {
-			let stmt = self.stmt
-			switch sqlite3_step(stmt) {
-			case SQLITE_ROW:
-				return Row(statement: self)
-			case SQLITE_DONE:
-				return nil
-			default:
-				#if DEBUG
-					print("Error executing statement: \(String(cString: sqlite3_errmsg(sqlite3_db_handle(stmt))))")
-				#endif
-				return nil
-			}
-		}
-	}
-}
-
 extension Statement {
 	/// Returns the first result row.
 	///
@@ -278,6 +253,33 @@ extension Statement {
 	public func firstRow() throws -> Row {
 		guard let row = try nextRow() else {
 			throw DatabaseError("Statement returned no rows")
+		}
+		return row
+	}
+}
+
+extension Statement: Sequence {
+	/// Returns an iterator for accessing the result rows.
+	///
+	/// Because the iterator discards errors, the preferred way of accessing result rows
+	/// is via `nextRow()` or the block-based `execute(_:)` function
+	///
+	/// - returns: An iterator over the result rows
+	public func makeIterator() -> Statement {
+		return self
+	}
+}
+
+extension Statement: IteratorProtocol {
+	/// Returns the next result row or `nil` if none.
+	///
+	/// Because the iterator discards errors, the preferred way of accessing result rows
+	/// is via `nextRow()` or the block-based `execute(_:)` function
+	///
+	/// - returns: The next result row of returned data
+	public func next() -> Row? {
+		guard let row = try? nextRow() else {
+			return nil
 		}
 		return row
 	}
