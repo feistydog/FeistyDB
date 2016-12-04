@@ -37,7 +37,7 @@ public protocol ParameterBindable {
 }
 
 extension Database {
-	/// Executes `stmt` with the *n* parameters in `values` bound to the first *n* SQL parameters of `stmt` and applies `block` to each result row.
+	/// Executes `sql` with the *n* parameters in `values` bound to the first *n* SQL parameters of `sql` and applies `block` to each result row.
 	///
 	/// - parameter sql: The SQL statement to execute
 	/// - parameter values: A series of values to bind to SQL parameters
@@ -49,7 +49,7 @@ extension Database {
 		try execute(sql: sql, parameterValues: values, block)
 	}
 
-	/// Executes `stmt` with the *n* parameters in `values` bound to the first *n* SQL parameters of `stmt` and applies `block` to each result row.
+	/// Executes `sql` with the *n* parameters in `values` bound to the first *n* SQL parameters of `sql` and applies `block` to each result row.
 	///
 	/// - parameter sql: The SQL statement to execute
 	/// - parameter values: A series of values to bind to SQL parameters
@@ -65,7 +65,7 @@ extension Database {
 extension Database {
 	// The first two functions cause a compiler crash 😞
 
-//	/// Executes `stmt` with the *n* parameters in `values` bound to the first *n* SQL parameters of `stmt` and applies `block` to each result row.
+//	/// Executes `sql` with the *n* parameters in `values` bound to the first *n* SQL parameters of `sql` and applies `block` to each result row.
 //	///
 //	/// - parameter sql: The SQL statement to execute
 //	/// - parameter values: A series of values to bind to SQL parameters
@@ -84,7 +84,7 @@ extension Database {
 //		}
 //	}
 //
-//	/// Executes `stmt` with the *n* parameters in `values` bound to the first *n* SQL parameters of `stmt` and applies `block` to each result row.
+//	/// Executes `sql` with the *n* parameters in `values` bound to the first *n* SQL parameters of `sql` and applies `block` to each result row.
 //	///
 //	/// - parameter sql: The SQL statement to execute
 //	/// - parameter values: A series of values to bind to SQL parameters
@@ -103,7 +103,7 @@ extension Database {
 //		}
 //	}
 
-	/// Executes `stmt` with *value* bound to SQL parameter *name* for each (*name*, *value*) in `parameters` and applies `block` to each result row.
+	/// Executes `sql` with *value* bound to SQL parameter *name* for each (*name*, *value*) in `parameters` and applies `block` to each result row.
 	///
 	/// - parameter sql: The SQL statement to execute
 	/// - parameter parameters: A dictionary of names and values to bind to SQL parameters
@@ -122,7 +122,7 @@ extension Database {
 		}
 	}
 
-	/// Executes `stmt` with *value* bound to SQL parameter *name* for each (*name*, *value*) in `parameters` and applies `block` to each result row.
+	/// Executes `sql` with *value* bound to SQL parameter *name* for each (*name*, *value*) in `parameters` and applies `block` to each result row.
 	///
 	/// - parameter sql: The SQL statement to execute
 	/// - parameter parameters: A dictionary of names and values to bind to SQL parameters
@@ -143,7 +143,7 @@ extension Database {
 }
 
 extension Database {
-	/// Executes `stmt` with the *n* parameters in `values` bound to the first *n* SQL parameters of `stmt` and applies `block` to each result row.
+	/// Executes `sql` with the *n* parameters in `values` bound to the first *n* SQL parameters of `sql` and applies `block` to each result row.
 	///
 	/// - parameter sql: The SQL statement to execute
 	/// - parameter values: A sequence of values to bind to SQL parameters
@@ -162,7 +162,7 @@ extension Database {
 		}
 	}
 
-	/// Executes `stmt` with the *n* parameters in `values` bound to the first *n* SQL parameters of `stmt` and applies `block` to each result row.
+	/// Executes `sql` with the *n* parameters in `values` bound to the first *n* SQL parameters of `sql` and applies `block` to each result row.
 	///
 	/// - parameter sql: The SQL statement to execute
 	/// - parameter values: A sequence of values to bind to SQL parameters
@@ -181,7 +181,7 @@ extension Database {
 		}
 	}
 
-	/// Executes `stmt` with *value* bound to SQL parameter *name* for each (*name*, *value*) in `parameters` and applies `block` to each result row.
+	/// Executes `sql` with *value* bound to SQL parameter *name* for each (*name*, *value*) in `parameters` and applies `block` to each result row.
 	///
 	/// - parameter sql: The SQL statement to execute
 	/// - parameter parameters: A sequence of name and value pairs to bind to SQL parameters
@@ -200,7 +200,7 @@ extension Database {
 		}
 	}
 
-	/// Executes `stmt` with *value* bound to SQL parameter *name* for each (*name*, *value*) in `parameters` and applies `block` to each result row.
+	/// Executes `sql` with *value* bound to SQL parameter *name* for each (*name*, *value*) in `parameters` and applies `block` to each result row.
 	///
 	/// - parameter sql: The SQL statement to execute
 	/// - parameter parameters: A sequence of name and value pairs to bind to SQL parameters
