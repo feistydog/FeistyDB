@@ -304,7 +304,7 @@ extension Statement {
 	/// - parameter values: A series of values to bind to SQL parameters
 	///
 	/// - throws: An error if one of `values` couldn't be bound
-	public func bind(parameterValues values: ParameterBindable...) throws  {
+	public func bind(parameterValues values: ParameterBindable...) throws {
 		try bind(parameterValues: values)
 	}
 
@@ -313,7 +313,7 @@ extension Statement {
 	/// - parameter values: A series of values to bind to SQL parameters
 	///
 	/// - throws: An error if one of `values` couldn't be bound
-	public func bind(parameterValues values: ParameterBindable?...) throws  {
+	public func bind(parameterValues values: ParameterBindable?...) throws {
 		try bind(parameterValues: values)
 	}
 }
@@ -326,7 +326,7 @@ extension Statement {
 	/// - parameter values: A series of values to bind to SQL parameters
 	///
 	/// - throws: An error if one of `values` couldn't be bound
-	public func bind(parameterValues values: [ParameterBindable]) throws  {
+	public func bind(parameterValues values: [ParameterBindable]) throws {
 		var index: Int32 = 1
 		for value in values {
 			try value.bind(to: stmt, parameter: index)
@@ -341,7 +341,7 @@ extension Statement {
 	/// - parameter values: A series of values to bind to SQL parameters
 	///
 	/// - throws: An error if one of `values` couldn't be bound
-	public func bind(parameterValues values: [ParameterBindable?]) throws  {
+	public func bind(parameterValues values: [ParameterBindable?]) throws {
 		var index: Int32 = 1
 		for value in values {
 			if let value = value {
@@ -361,7 +361,7 @@ extension Statement {
 	/// - parameter parameters: A sequence of name and value pairs to bind to SQL parameters
 	///
 	/// - throws: An error if the SQL parameter *name* doesn't exist or *value* couldn't be bound
-	public func bind(parameters: [String: ParameterBindable]) throws  {
+	public func bind(parameters: [String: ParameterBindable]) throws {
 		for (name, value) in parameters {
 			let index = sqlite3_bind_parameter_index(stmt, name)
 			guard index > 0 else {
@@ -376,7 +376,7 @@ extension Statement {
 	/// - parameter parameters: A sequence of name and value pairs to bind to SQL parameters
 	///
 	/// - throws: An error if the SQL parameter *name* doesn't exist or *value* couldn't be bound
-	public func bind(parameters: [String: ParameterBindable?]) throws  {
+	public func bind(parameters: [String: ParameterBindable?]) throws {
 		for (name, value) in parameters {
 			let index = sqlite3_bind_parameter_index(stmt, name)
 			guard index > 0 else {
