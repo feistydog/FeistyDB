@@ -111,13 +111,26 @@ extension Row {
 extension Statement {
 	/// Returns the value of the leftmost column in the first row.
 	///
-	/// This is a shortcut for `firstRow().leftmostValue()`.
+	/// - throws: An error if there are no columns or the column contains an illegal value
+	///
+	/// - returns: The value of the leftmost column in the first row
+	public func front<T: DatabaseSerializable>() throws -> T? {
+		guard let row = try firstRow() else {
+			return nil
+		}
+		return try row.value(at: 0) as T
+	}
+
+	/// Returns the value of the leftmost column in the first row.
 	///
 	/// - throws: An error if there are no rows, no columns, or the column contains an illegal value
 	///
 	/// - returns: The value of the leftmost column in the first row
 	public func front<T: DatabaseSerializable>() throws -> T {
-		return try firstRow().leftmostValue()
+		guard let row = try firstRow() else {
+			throw DatabaseError("Statement returned no rows")
+		}
+		return try row.value(at: 0)
 	}
 }
 

@@ -247,16 +247,13 @@ final public class Statement {
 }
 
 extension Statement {
-	/// Returns the first result row.
+	/// Returns the first result row or `nil` if none.
 	///
-	/// - throws: An error if the statement returned no rows or encountered an execution error
+	/// - throws: An error if the statement encountered an execution error
 	///
 	/// - returns: The first result row
-	public func firstRow() throws -> Row {
-		guard let row = try nextRow() else {
-			throw DatabaseError("Statement returned no rows")
-		}
-		return row
+	public func firstRow() throws -> Row? {
+		return try nextRow()
 	}
 }
 

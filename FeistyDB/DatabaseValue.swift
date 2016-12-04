@@ -174,15 +174,25 @@ extension Row: CustomStringConvertible {
 }
 
 extension Statement {
-	/// Returns the value of the leftmost column in the first row.
+	/// Returns the value of the leftmost column in the first result row.
 	///
-	/// This is a shortcut for `firstRow().leftmostValue()`.
+	/// - throws: An error if there are no columns
+	///
+	/// - returns: The value of the leftmost column in the first result row
+	public func front() throws -> DatabaseValue? {
+		return try firstRow()?.value(at: 0)
+	}
+
+	/// Returns the value of the leftmost column in the first result row.
 	///
 	/// - throws: An error if there are no rows or columns
 	///
-	/// - returns: The value of the leftmost column in the first row
+	/// - returns: The value of the leftmost column in the first result row
 	public func front() throws -> DatabaseValue {
-		return try firstRow().leftmostValue()
+		guard let row = try firstRow() else {
+			throw DatabaseError("Statement returned no rows")
+		}
+		return try row.value(at: 0)
 	}
 }
 

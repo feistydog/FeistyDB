@@ -116,17 +116,6 @@ extension Row {
 	///
 	/// This is a shortcut for `value(at: 0)`.
 	///
-	/// - throws: An error if there are no columns or the column contains an illegal value
-	///
-	/// - returns: The column's value or `nil` if null
-	public func leftmostValue<T: ColumnConvertible>() throws -> T? {
-		return try value(at: 0)
-	}
-
-	/// Returns the value of the leftmost column.
-	///
-	/// This is a shortcut for `value(at: 0)`.
-	///
 	/// - throws: An error if there are no columns or the column contains a null or illegal value
 	///
 	/// - returns: The column's value
@@ -138,24 +127,23 @@ extension Row {
 extension Statement {
 	/// Returns the value of the leftmost column in the first row.
 	///
-	/// This is a shortcut for `firstRow().leftmostValue()`.
-	///
-	/// - throws: An error if there are no rows, no columns, or the column contains an illegal value
+	/// - throws: An error if there are no columns or the column contains an illegal value
 	///
 	/// - returns: The value of the leftmost column in the first row
 	public func front<T: ColumnConvertible>() throws -> T? {
-		return try firstRow().leftmostValue()
+		return try firstRow()?.value(at: 0)
 	}
 
 	/// Returns the value of the leftmost column in the first row.
-	///
-	/// This is a shortcut for `firstRow().leftmostValue()`.
 	///
 	/// - throws: An error if there are no rows, no columns, or the column contains a null or illegal value
 	///
 	/// - returns: The value of the leftmost column in the first row
 	public func front<T: ColumnConvertible>() throws -> T {
-		return try firstRow().leftmostValue()
+		guard let row = try firstRow() else {
+			throw DatabaseError("Statement returned no rows")
+		}
+		return try row.value(at: 0)
 	}
 }
 
