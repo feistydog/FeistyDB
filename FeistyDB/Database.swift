@@ -303,6 +303,18 @@ extension Database {
 	public func removePreparedStatement(forKey key: String) -> Statement? {
 		return preparedStatements.removeValue(forKey: key)
 	}
+
+	/// Returns or stores the compiled SQL statement for `key`.
+	///
+	/// - parameter key: The key used to identify the statement
+	public subscript(key: String) -> Statement? {
+		get {
+			return preparedStatements[key]
+		}
+		set(newValue) {
+			preparedStatements[key] = newValue
+		}
+	}
 }
 
 /// A comparator for `String` objects
