@@ -188,97 +188,6 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB11SQLFunction"></a>
-                    <a name="//apple_ref/swift/Alias/SQLFunction" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB11SQLFunction">SQLFunction</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>A custom SQL function.</p>
-
-<div class="aside aside-throws">
-    <p class="aside-title">Throws</p>
-    <p><code><a href="Structs/DatabaseError.html">DatabaseError</a></code></p>
-
-</div>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">SQLFunction</span> <span class="o">=</span> <span class="p">(</span><span class="n">_</span> <span class="nv">values</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="Enums/DatabaseValue.html">DatabaseValue</a></span><span class="p">])</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="Enums/DatabaseValue.html">DatabaseValue</a></span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>values</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The SQL function parameters</p>
-
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <div>
-                        <h4>Return Value</h4>
-                        <p>The result of applying the function to <code>values</code></p>
-
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:8FeistyDB24SQLiteDatabaseConnection"></a>
-                    <a name="//apple_ref/swift/Alias/SQLiteDatabaseConnection" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB24SQLiteDatabaseConnection">SQLiteDatabaseConnection</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>An <code>sqlite3 *</code> object.</p>
-
-<div class="aside aside-seealso">
-    <p class="aside-title">Seealso</p>
-    <a href="https://sqlite.org/c3ref/sqlite3.html">SQLite Database Connection Handle</a>
-
-</div>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">SQLiteDatabaseConnection</span> <span class="o">=</span> <span class="kt">OpaquePointer</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
                     <a name="/s:8FeistyDB16StringComparator"></a>
                     <a name="//apple_ref/swift/Alias/StringComparator" class="dashAnchor"></a>
                     <a class="token" href="#/s:8FeistyDB16StringComparator">StringComparator</a>
@@ -336,6 +245,97 @@
                       <div>
                         <h4>Return Value</h4>
                         <p>The result of comparing <code>lhs</code> to <code>rhs</code></p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB24SQLiteDatabaseConnection"></a>
+                    <a name="//apple_ref/swift/Alias/SQLiteDatabaseConnection" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB24SQLiteDatabaseConnection">SQLiteDatabaseConnection</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>An <code>sqlite3 *</code> object.</p>
+
+<div class="aside aside-seealso">
+    <p class="aside-title">Seealso</p>
+    <a href="https://sqlite.org/c3ref/sqlite3.html">SQLite Database Connection Handle</a>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">SQLiteDatabaseConnection</span> <span class="o">=</span> <span class="kt">OpaquePointer</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB11SQLFunction"></a>
+                    <a name="//apple_ref/swift/Alias/SQLFunction" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB11SQLFunction">SQLFunction</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A custom SQL function.</p>
+
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <p><code><a href="Structs/DatabaseError.html">DatabaseError</a></code></p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">SQLFunction</span> <span class="o">=</span> <span class="p">(</span><span class="n">_</span> <span class="nv">values</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="Enums/DatabaseValue.html">DatabaseValue</a></span><span class="p">])</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="Enums/DatabaseValue.html">DatabaseValue</a></span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>values</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The SQL function parameters</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The result of applying the function to <code>values</code></p>
 
                       </div>
                     </section>

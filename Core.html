@@ -201,11 +201,10 @@
 
 <p>A database supports SQL statement execution, transactions and savepoints, custom collation sequences, and custom SQL functions.</p>
 
-<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">rowCount</span><span class="p">:</span> <span class="kt">Int</span>
-<span class="k">let</span> <span class="nv">db</span> <span class="o">=</span> <span class="k">try</span> <span class="kt">Database</span><span class="p">()</span>
-<span class="k">try</span> <span class="n">db</span><span class="o">.</span><span class="nf">execute</span><span class="p">(</span><span class="nv">sql</span><span class="p">:</span> <span class="s">"select count(*) from t1;"</span><span class="p">)</span> <span class="p">{</span> <span class="n">row</span> <span class="k">in</span>
-    <span class="n">rowCount</span> <span class="o">=</span> <span class="k">try</span> <span class="n">row</span><span class="o">.</span><span class="nf">value</span><span class="p">(</span><span class="nv">at</span><span class="p">:</span> <span class="mi">0</span><span class="p">)</span>
-<span class="p">}</span>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">db</span> <span class="o">=</span> <span class="k">try</span> <span class="kt">Database</span><span class="p">()</span>
+<span class="k">try</span> <span class="n">db</span><span class="o">.</span><span class="nf">execute</span><span class="p">(</span><span class="nv">sql</span><span class="p">:</span> <span class="s">"create table t1(a);"</span><span class="p">)</span>
+<span class="k">try</span> <span class="n">db</span><span class="o">.</span><span class="nf">execute</span><span class="p">(</span><span class="nv">sql</span><span class="p">:</span> <span class="s">"insert into t1 default values;"</span><span class="p">)</span>
+<span class="k">let</span> <span class="nv">rowCount</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="nf">prepare</span><span class="p">(</span><span class="nv">sql</span><span class="p">:</span> <span class="s">"select count(*) from t1;"</span><span class="p">)</span><span class="o">.</span><span class="nf">front</span><span class="p">()</span>
 <span class="nf">print</span><span class="p">(</span><span class="s">"t1 has </span><span class="se">\(</span><span class="n">rowCount</span><span class="se">)</span><span class="s"> rows"</span><span class="p">)</span>
 </code></pre>
 
@@ -269,7 +268,7 @@
 
 <p>When executed a statement provides zero or more result rows.</p>
 
-<pre class="highlight swift"><code><span class="k">try</span> <span class="n">statement</span><span class="o">.</span><span class="nf">execute</span><span class="p">()</span> <span class="p">{</span> <span class="n">row</span> <span class="k">in</span>
+<pre class="highlight swift"><code><span class="k">try</span> <span class="n">statement</span><span class="o">.</span><span class="n">results</span> <span class="p">{</span> <span class="n">row</span> <span class="k">in</span>
     <span class="c1">// Do something with `row`</span>
 <span class="p">}</span>
 </code></pre>

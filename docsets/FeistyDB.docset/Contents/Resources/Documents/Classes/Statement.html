@@ -216,7 +216,7 @@
 
 <p>When executed a statement provides zero or more result rows.</p>
 
-<pre class="highlight swift"><code><span class="k">try</span> <span class="n">statement</span><span class="o">.</span><span class="nf">execute</span><span class="p">()</span> <span class="p">{</span> <span class="n">row</span> <span class="k">in</span>
+<pre class="highlight swift"><code><span class="k">try</span> <span class="n">statement</span><span class="o">.</span><span class="n">results</span> <span class="p">{</span> <span class="n">row</span> <span class="k">in</span>
     <span class="c1">// Do something with `row`</span>
 <span class="p">}</span>
 </code></pre>
@@ -548,11 +548,17 @@ silently discarded.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Executes the statement and discards any result rows.</p>
+                        <p>Executes the statement.</p>
+
+<div class="aside aside-requires">
+    <p class="aside-title">Requires</p>
+    <p>The statement does not return any result rows</p>
+
+</div>
 
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
-    An error if the statement did not successfully run to completion
+    <p>An error if the statement returned any result rows or did not successfully run to completion</p>
 
 </div>
 
@@ -571,9 +577,9 @@ silently discarded.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC8FeistyDB9Statement7executeFzFzCS_3RowT_T_"></a>
-                    <a name="//apple_ref/swift/Method/execute(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC8FeistyDB9Statement7executeFzFzCS_3RowT_T_">execute(_:)</a>
+                    <a name="/s:FC8FeistyDB9Statement7resultsFzFzCS_3RowT_T_"></a>
+                    <a name="//apple_ref/swift/Method/results(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC8FeistyDB9Statement7resultsFzFzCS_3RowT_T_">results(_:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -594,7 +600,7 @@ silently discarded.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">execute</span><span class="p">(</span><span class="n">_</span> <span class="nv">block</span><span class="p">:</span> <span class="p">((</span><span class="n">_</span> <span class="nv">row</span><span class="p">:</span> <span class="kt"><a href="../Classes/Row.html">Row</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="p">()))</span> <span class="k">throws</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">results</span><span class="p">(</span><span class="n">_</span> <span class="nv">block</span><span class="p">:</span> <span class="p">((</span><span class="n">_</span> <span class="nv">row</span><span class="p">:</span> <span class="kt"><a href="../Classes/Row.html">Row</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="p">()))</span> <span class="k">throws</span></code></pre>
 
                         </div>
                       </div>
@@ -630,6 +636,44 @@ silently discarded.</p>
                             </tr>
                           </tbody>
                         </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC8FeistyDB9Statement7nextRowFzT_GSqCS_3Row_"></a>
+                    <a name="//apple_ref/swift/Method/nextRow()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC8FeistyDB9Statement7nextRowFzT_GSqCS_3Row_">nextRow()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns the next result row or <code>nil</code> if none.</p>
+
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <p>An error if the statement encountered an execution error</p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">nextRow</span><span class="p">()</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/Row.html">Row</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The next result row of returned data</p>
+
                       </div>
                     </section>
                   </div>
@@ -1644,6 +1688,44 @@ silently discarded.</p>
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/s:FC8FeistyDB9Statement5frontFzT_GSqOS_13DatabaseValue_"></a>
+                    <a name="//apple_ref/swift/Method/front()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC8FeistyDB9Statement5frontFzT_GSqOS_13DatabaseValue_">front()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns the value of the leftmost column in the first result row.</p>
+
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <p>An error if there are no columns</p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">front</span><span class="p">()</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Enums/DatabaseValue.html">DatabaseValue</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The value of the leftmost column in the first result row</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/s:FC8FeistyDB9Statement5frontFzT_OS_13DatabaseValue"></a>
                     <a name="//apple_ref/swift/Method/front()" class="dashAnchor"></a>
                     <a class="token" href="#/s:FC8FeistyDB9Statement5frontFzT_OS_13DatabaseValue">front()</a>
@@ -1654,9 +1736,7 @@ silently discarded.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Returns the value of the leftmost column in the first row.</p>
-
-<p>This is a shortcut for <code>firstRow().leftmostValue()</code>.</p>
+                        <p>Returns the value of the leftmost column in the first result row.</p>
 
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
@@ -1675,7 +1755,7 @@ silently discarded.</p>
                       </div>
                       <div>
                         <h4>Return Value</h4>
-                        <p>The value of the leftmost column in the first row</p>
+                        <p>The value of the leftmost column in the first result row</p>
 
                       </div>
                     </section>
@@ -1700,11 +1780,9 @@ silently discarded.</p>
                       <div class="abstract">
                         <p>Returns the value of the leftmost column in the first row.</p>
 
-<p>This is a shortcut for <code>firstRow().leftmostValue()</code>.</p>
-
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
-    <p>An error if there are no rows, no columns, or the column contains an illegal value</p>
+    <p>An error if there are no columns or the column contains an illegal value</p>
 
 </div>
 
@@ -1740,8 +1818,6 @@ silently discarded.</p>
                       <div class="abstract">
                         <p>Returns the value of the leftmost column in the first row.</p>
 
-<p>This is a shortcut for <code>firstRow().leftmostValue()</code>.</p>
-
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
     <p>An error if there are no rows, no columns, or the column contains a null or illegal value</p>
@@ -1772,48 +1848,9 @@ silently discarded.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC8FeistyDB9Statement12makeIteratorFT_GVs11AnyIteratorCS_3Row_"></a>
-                    <a name="//apple_ref/swift/Method/makeIterator()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC8FeistyDB9Statement12makeIteratorFT_GVs11AnyIteratorCS_3Row_">makeIterator()</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Returns an iterator for accessing the result rows.</p>
-
-<p>Because the iterator discards errors, the preferred way of accessing result rows
-is via the block-based <code><a href="../Classes/Statement.html#/s:FC8FeistyDB9Statement7executeFzFzCS_3RowT_T_">execute(_:)</a></code> function</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">makeIterator</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">AnyIterator</span><span class="o">&lt;</span><span class="kt"><a href="../Classes/Row.html">Row</a></span><span class="o">&gt;</span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Return Value</h4>
-                        <p>An iterator over the result rows</p>
-
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:FC8FeistyDB9Statement8firstRowFzT_CS_3Row"></a>
+                    <a name="/s:FC8FeistyDB9Statement8firstRowFzT_GSqCS_3Row_"></a>
                     <a name="//apple_ref/swift/Method/firstRow()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC8FeistyDB9Statement8firstRowFzT_CS_3Row">firstRow()</a>
+                    <a class="token" href="#/s:FC8FeistyDB9Statement8firstRowFzT_GSqCS_3Row_">firstRow()</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1821,11 +1858,11 @@ is via the block-based <code><a href="../Classes/Statement.html#/s:FC8FeistyDB9S
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Returns the first result row.</p>
+                        <p>Returns the first result row or <code>nil</code> if none.</p>
 
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
-    <p>An error if the statement returned no rows or encountered an execution error</p>
+    <p>An error if the statement encountered an execution error</p>
 
 </div>
 
@@ -1834,7 +1871,7 @@ is via the block-based <code><a href="../Classes/Statement.html#/s:FC8FeistyDB9S
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">firstRow</span><span class="p">()</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/Row.html">Row</a></span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">firstRow</span><span class="p">()</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/Row.html">Row</a></span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>
@@ -1853,6 +1890,122 @@ is via the block-based <code><a href="../Classes/Statement.html#/s:FC8FeistyDB9S
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/s:FC8FeistyDB9Statement12makeIteratorFT_S0_"></a>
+                    <a name="//apple_ref/swift/Method/makeIterator()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC8FeistyDB9Statement12makeIteratorFT_S0_">makeIterator()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns an iterator for accessing the result rows.</p>
+
+<p>Because the iterator discards errors, the preferred way of accessing result rows
+is via <code><a href="../Classes/Statement.html#/s:FC8FeistyDB9Statement7nextRowFzT_GSqCS_3Row_">nextRow()</a></code> or <code><a href="../Classes/Statement.html#/s:FC8FeistyDB9Statement7resultsFzFzCS_3RowT_T_">results(_:)</a></code></p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">makeIterator</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Statement</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>An iterator over the result rows</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC8FeistyDB9Statement4nextFT_GSqCS_3Row_"></a>
+                    <a name="//apple_ref/swift/Method/next()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC8FeistyDB9Statement4nextFT_GSqCS_3Row_">next()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns the next result row or <code>nil</code> if none.</p>
+
+<p>Because the iterator discards errors, the preferred way of accessing result rows
+is via <code><a href="../Classes/Statement.html#/s:FC8FeistyDB9Statement7nextRowFzT_GSqCS_3Row_">nextRow()</a></code> or <code><a href="../Classes/Statement.html#/s:FC8FeistyDB9Statement7resultsFzFzCS_3RowT_T_">results(_:)</a></code></p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">next</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/Row.html">Row</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The next result row of returned data</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC8FeistyDB9Statement5frontuRxS_20DatabaseSerializablerFzT_GSqx_"></a>
+                    <a name="//apple_ref/swift/Method/front()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC8FeistyDB9Statement5frontuRxS_20DatabaseSerializablerFzT_GSqx_">front()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns the value of the leftmost column in the first row.</p>
+
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <p>An error if there are no columns or the column contains an illegal value</p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">front</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">:</span> <span class="kt"><a href="../Protocols/DatabaseSerializable.html">DatabaseSerializable</a></span><span class="o">&gt;</span><span class="p">()</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">T</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The value of the leftmost column in the first row</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/s:FC8FeistyDB9Statement5frontuRxS_20DatabaseSerializablerFzT_x"></a>
                     <a name="//apple_ref/swift/Method/front()" class="dashAnchor"></a>
                     <a class="token" href="#/s:FC8FeistyDB9Statement5frontuRxS_20DatabaseSerializablerFzT_x">front()</a>
@@ -1864,8 +2017,6 @@ is via the block-based <code><a href="../Classes/Statement.html#/s:FC8FeistyDB9S
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Returns the value of the leftmost column in the first row.</p>
-
-<p>This is a shortcut for <code>firstRow().leftmostValue()</code>.</p>
 
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
