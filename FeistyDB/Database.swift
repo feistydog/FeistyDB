@@ -20,11 +20,10 @@ public typealias SQLiteDatabaseConnection = OpaquePointer
 /// A database supports SQL statement execution, transactions and savepoints, custom collation sequences, and custom SQL functions.
 ///
 /// ```swift
-/// let rowCount: Int
 /// let db = try Database()
-/// try db.execute(sql: "select count(*) from t1;") { row in
-///     rowCount = try row.value(at: 0)
-/// }
+/// try db.execute(sql: "create table t1(a);")
+/// try db.execute(sql: "insert into t1 default values;")
+/// let rowCount: Int = db.prepare(sql: "select count(*) from t1;").front()
 /// print("t1 has \(rowCount) rows")
 /// ```
 final public class Database {
@@ -169,7 +168,7 @@ extension Database {
 
 	/// Executes an SQL statement and applies `block` to each result row.
 	///
-	/// This is a shortcut for `prepare(sql: sql).execute(block)`.
+	/// This is a shortcut for `prepare(sql: sql).results(block)`.
 	///
 	/// - parameter sql: The SQL statement to execute
 	/// - parameter block: A closure applied to each result row
@@ -177,7 +176,7 @@ extension Database {
 	///
 	/// - throws: An error if `sql` could not be compiled or executed
 	public func execute(sql: String, _ block: ((_ row: Row) throws -> ())) throws {
-		try prepare(sql: sql).execute(block)
+		try prepare(sql: sql).results(block)
 	}
 }
 

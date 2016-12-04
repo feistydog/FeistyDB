@@ -40,7 +40,7 @@ public typealias SQLitePreparedStatement = OpaquePointer
 /// When executed a statement provides zero or more result rows.
 ///
 /// ```swift
-/// try statement.execute() { row in
+/// try statement.results { row in
 ///     // Do something with `row`
 /// }
 /// ```
@@ -161,16 +161,18 @@ final public class Statement {
 		return index
 	}
 
-	/// Executes the statement and discards any result rows.
+	/// Executes the statement.
 	///
-	/// - throws: An error if the statement did not successfully run to completion
+	/// - requires: The statement does not return any result rows
+	///
+	/// - throws: An error if the statement returned any result rows or did not successfully run to completion
 	public func execute() throws {
-		var result = sqlite3_step(stmt)
-		while result == SQLITE_ROW {
-			result = sqlite3_step(stmt)
-		}
-
-		guard result == SQLITE_DONE else {
+		switch sqlite3_step(stmt) {
+		case SQLITE_DONE:
+			break
+		case SQLITE_ROW:
+			throw DatabaseError("Result rows may not be discarded")
+		default:
 			throw DatabaseError(message: "Error executing statement", takingDescriptionFromStatement: stmt)
 		}
 	}
@@ -181,7 +183,7 @@ final public class Statement {
 	/// - parameter row: A result row of returned data
 	///
 	/// - throws: Any error thrown in `block` or an error if the statement did not successfully run to completion
-	public func execute(_ block: ((_ row: Row) throws -> ())) throws {
+	public func results(_ block: ((_ row: Row) throws -> ())) throws {
 		var result = sqlite3_step(stmt)
 		while result == SQLITE_ROW {
 			try block(Row(statement: self))
@@ -262,7 +264,7 @@ extension Statement: Sequence {
 	/// Returns an iterator for accessing the result rows.
 	///
 	/// Because the iterator discards errors, the preferred way of accessing result rows
-	/// is via `nextRow()` or the block-based `execute(_:)` function
+	/// is via `nextRow()` or `results(_:)`
 	///
 	/// - returns: An iterator over the result rows
 	public func makeIterator() -> Statement {
@@ -274,7 +276,7 @@ extension Statement: IteratorProtocol {
 	/// Returns the next result row or `nil` if none.
 	///
 	/// Because the iterator discards errors, the preferred way of accessing result rows
-	/// is via `nextRow()` or the block-based `execute(_:)` function
+	/// is via `nextRow()` or `results(_:)`
 	///
 	/// - returns: The next result row of returned data
 	public func next() -> Row? {

@@ -77,7 +77,7 @@ extension Database {
 //		let statement = try prepare(sql: sql)
 //		try statement.bind(parameterValues: values)
 //		if let block = block {
-//			try statement.execute(block)
+//			try statement.results(block)
 //		}
 //		else {
 //			try statement.execute()
@@ -96,7 +96,7 @@ extension Database {
 //		let statement = try prepare(sql: sql)
 //		try statement.bind(parameterValues: values)
 //		if let block = block {
-//			try statement.execute(block)
+//			try statement.results(block)
 //		}
 //		else {
 //			try statement.execute()
@@ -115,7 +115,7 @@ extension Database {
 		let statement = try prepare(sql: sql)
 		try statement.bind(parameters: parameters)
 		if let block = block {
-			try statement.execute(block)
+			try statement.results(block)
 		}
 		else {
 			try statement.execute()
@@ -134,7 +134,7 @@ extension Database {
 		let statement = try prepare(sql: sql)
 		try statement.bind(parameters: parameters)
 		if let block = block {
-			try statement.execute(block)
+			try statement.results(block)
 		}
 		else {
 			try statement.execute()
@@ -155,7 +155,7 @@ extension Database {
 		let statement = try prepare(sql: sql)
 		try statement.bind(parameterValues: values)
 		if let block = block {
-			try statement.execute(block)
+			try statement.results(block)
 		}
 		else {
 			try statement.execute()
@@ -174,7 +174,7 @@ extension Database {
 		let statement = try prepare(sql: sql)
 		try statement.bind(parameterValues: values)
 		if let block = block {
-			try statement.execute(block)
+			try statement.results(block)
 		}
 		else {
 			try statement.execute()
@@ -193,7 +193,7 @@ extension Database {
 		let statement = try prepare(sql: sql)
 		try statement.bind(parameters: parameters)
 		if let block = block {
-			try statement.execute(block)
+			try statement.results(block)
 		}
 		else {
 			try statement.execute()
@@ -212,7 +212,7 @@ extension Database {
 		let statement = try prepare(sql: sql)
 		try statement.bind(parameters: parameters)
 		if let block = block {
-			try statement.execute(block)
+			try statement.results(block)
 		}
 		else {
 			try statement.execute()
