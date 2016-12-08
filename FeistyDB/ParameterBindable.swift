@@ -304,8 +304,10 @@ extension Statement {
 	/// - parameter values: A series of values to bind to SQL parameters
 	///
 	/// - throws: An error if one of `values` couldn't be bound
-	public func bind(parameterValues values: ParameterBindable...) throws {
-		try bind(parameterValues: values)
+	///
+	/// - returns: `self`
+	@discardableResult public func bind(parameterValues values: ParameterBindable...) throws -> Statement {
+		return try bind(parameterValues: values)
 	}
 
 	/// Binds the *n* parameters in `values` to the first *n* SQL parameters of `self`.
@@ -313,8 +315,10 @@ extension Statement {
 	/// - parameter values: A series of values to bind to SQL parameters
 	///
 	/// - throws: An error if one of `values` couldn't be bound
-	public func bind(parameterValues values: ParameterBindable?...) throws {
-		try bind(parameterValues: values)
+	///
+	/// - returns: `self`
+	@discardableResult public func bind(parameterValues values: ParameterBindable?...) throws -> Statement {
+		return try bind(parameterValues: values)
 	}
 }
 
@@ -326,12 +330,15 @@ extension Statement {
 	/// - parameter values: A series of values to bind to SQL parameters
 	///
 	/// - throws: An error if one of `values` couldn't be bound
-	public func bind(parameterValues values: [ParameterBindable]) throws {
+	///
+	/// - returns: `self`
+	@discardableResult public func bind(parameterValues values: [ParameterBindable]) throws -> Statement {
 		var index: Int32 = 1
 		for value in values {
 			try value.bind(to: stmt, parameter: index)
 			index += 1
 		}
+		return self
 	}
 
 	/// Binds the *n* parameters in `values` to the first *n* SQL parameters of `self`.
@@ -341,7 +348,9 @@ extension Statement {
 	/// - parameter values: A series of values to bind to SQL parameters
 	///
 	/// - throws: An error if one of `values` couldn't be bound
-	public func bind(parameterValues values: [ParameterBindable?]) throws {
+	///
+	/// - returns: `self`
+	@discardableResult public func bind(parameterValues values: [ParameterBindable?]) throws -> Statement {
 		var index: Int32 = 1
 		for value in values {
 			if let value = value {
@@ -354,6 +363,7 @@ extension Statement {
 			}
 			index += 1
 		}
+		return self
 	}
 
 	/// Binds *value* to SQL parameter *name* for each (*name*, *value*) in `parameters`.
@@ -361,7 +371,9 @@ extension Statement {
 	/// - parameter parameters: A sequence of name and value pairs to bind to SQL parameters
 	///
 	/// - throws: An error if the SQL parameter *name* doesn't exist or *value* couldn't be bound
-	public func bind(parameters: [String: ParameterBindable]) throws {
+	///
+	/// - returns: `self`
+	@discardableResult public func bind(parameters: [String: ParameterBindable]) throws -> Statement {
 		for (name, value) in parameters {
 			let index = sqlite3_bind_parameter_index(stmt, name)
 			guard index > 0 else {
@@ -369,6 +381,7 @@ extension Statement {
 			}
 			try value.bind(to: stmt, parameter: index)
 		}
+		return self
 	}
 
 	/// Binds *value* to SQL parameter *name* for each (*name*, *value*) in `parameters`.
@@ -376,7 +389,9 @@ extension Statement {
 	/// - parameter parameters: A sequence of name and value pairs to bind to SQL parameters
 	///
 	/// - throws: An error if the SQL parameter *name* doesn't exist or *value* couldn't be bound
-	public func bind(parameters: [String: ParameterBindable?]) throws {
+	///
+	/// - returns: `self`
+	@discardableResult public func bind(parameters: [String: ParameterBindable?]) throws -> Statement {
 		for (name, value) in parameters {
 			let index = sqlite3_bind_parameter_index(stmt, name)
 			guard index > 0 else {
@@ -391,6 +406,7 @@ extension Statement {
 				}
 			}
 		}
+		return self
 	}
 }
 
@@ -400,12 +416,15 @@ extension Statement {
 	/// - parameter values: A sequence of values to bind to SQL parameters
 	///
 	/// - throws: An error if one of `values` couldn't be bound
-	public func bind<S: Sequence>(parameterValues values: S) throws where S.Iterator.Element == ParameterBindable {
+	///
+	/// - returns: `self`
+	@discardableResult public func bind<S: Sequence>(parameterValues values: S) throws -> Statement where S.Iterator.Element == ParameterBindable {
 		var index: Int32 = 1
 		for value in values {
 			try value.bind(to: stmt, parameter: index)
 			index += 1
 		}
+		return self
 	}
 
 	/// Binds the *n* parameters in `values` to the first *n* SQL parameters of `self`.
@@ -413,7 +432,9 @@ extension Statement {
 	/// - parameter values: A sequence of values to bind to SQL parameters
 	///
 	/// - throws: An error if one of `values` couldn't be bound
-	public func bind<S: Sequence>(parameterValues values: S) throws where S.Iterator.Element == ParameterBindable? {
+	///
+	/// - returns: `self`
+	@discardableResult public func bind<S: Sequence>(parameterValues values: S) throws -> Statement where S.Iterator.Element == ParameterBindable? {
 		var index: Int32 = 1
 		for value in values {
 			if let value = value {
@@ -426,6 +447,7 @@ extension Statement {
 			}
 			index += 1
 		}
+		return self
 	}
 
 	/// Binds *value* to SQL parameter *name* for each (*name*, *value*) in `parameters`.
@@ -433,7 +455,9 @@ extension Statement {
 	/// - parameter parameters: A sequence of name and value pairs to bind to SQL parameters
 	///
 	/// - throws: An error if the SQL parameter *name* doesn't exist or *value* couldn't be bound
-	public func bind<S: Sequence>(parameters: S) throws where S.Iterator.Element == (String, ParameterBindable) {
+	///
+	/// - returns: `self`
+	@discardableResult public func bind<S: Sequence>(parameters: S) throws -> Statement where S.Iterator.Element == (String, ParameterBindable) {
 		for (name, value) in parameters {
 			let index = sqlite3_bind_parameter_index(stmt, name)
 			guard index > 0 else {
@@ -441,6 +465,7 @@ extension Statement {
 			}
 			try value.bind(to: stmt, parameter: index)
 		}
+		return self
 	}
 
 	/// Binds *value* to SQL parameter *name* for each (*name*, *value*) in `parameters`.
@@ -448,7 +473,9 @@ extension Statement {
 	/// - parameter parameters: A sequence of name and value pairs to bind to SQL parameters
 	///
 	/// - throws: An error if the SQL parameter *name* doesn't exist or *value* couldn't be bound
-	public func bind<S: Sequence>(parameters: S) throws where S.Iterator.Element == (String, ParameterBindable?) {
+	///
+	/// - returns: `self`
+	@discardableResult public func bind<S: Sequence>(parameters: S) throws -> Statement where S.Iterator.Element == (String, ParameterBindable?) {
 		for (name, value) in parameters {
 			let index = sqlite3_bind_parameter_index(stmt, name)
 			guard index > 0 else {
@@ -463,6 +490,7 @@ extension Statement {
 				}
 			}
 		}
+		return self
 	}
 }
 
