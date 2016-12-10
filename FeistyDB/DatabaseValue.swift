@@ -201,14 +201,9 @@ extension Row {
 	///
 	/// - parameter name: The name of the desired column
 	///
-	/// - returns: The column's value or `.null` if the column doesn't exist
-	public subscript(name: String) -> DatabaseValue {
-		do {
-			return try value(named: name)
-		}
-		catch {
-			return .null
-		}
+	/// - returns: The column's value or `nil` if the column doesn't exist
+	public subscript(name: String) -> DatabaseValue? {
+		return try? value(named: name)
 	}
 }
 
