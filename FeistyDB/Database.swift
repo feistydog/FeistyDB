@@ -284,8 +284,12 @@ extension Database {
 	/// - parameter key: A key used to identify the statement
 	///
 	/// - throws: An error if `sql` could not be compiled
-	public func prepareStatement(sql: String, forKey key: String) throws {
-		preparedStatements[key] = try prepare(sql: sql)
+	///
+	/// - returns: A compiled SQL statement
+	public func prepareStatement(sql: String, forKey key: String) throws -> Statement {
+		let statement = try prepare(sql: sql)
+		preparedStatements[key] = statement
+		return statement
 	}
 
 	/// Returns the compiled SQL statement for `key`.
