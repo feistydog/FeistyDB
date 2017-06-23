@@ -155,13 +155,15 @@ extension Database {
 		return try Statement(database: self, sql: sql)
 	}
 
-	/// Executes an SQL statement and discards any result rows.
+	/// Executes an SQL statement.
 	///
 	/// This is a shortcut for `prepare(sql: sql).execute()`.
 	///
+	/// - requires: `sql` does not return any result rows
+	///
 	/// - parameter sql: The SQL statement to execute
 	///
-	/// - throws: An error if `sql` could not be compiled or executed
+	/// - throws: An error if `sql` returned any result rows or could not be compiled or executed
 	public func execute(sql: String) throws {
 		try prepare(sql: sql).execute()
 	}
@@ -175,7 +177,7 @@ extension Database {
 	/// - parameter row: A result row of returned data
 	///
 	/// - throws: An error if `sql` could not be compiled or executed
-	public func execute(sql: String, _ block: ((_ row: Row) throws -> ())) throws {
+	public func results(sql: String, _ block: ((_ row: Row) throws -> ())) throws {
 		try prepare(sql: sql).results(block)
 	}
 }
