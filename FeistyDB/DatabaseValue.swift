@@ -159,7 +159,7 @@ extension Row {
 	public func values() -> [String: DatabaseValue] {
 		var values = [String: DatabaseValue]()
 		let stmt = statement.stmt
-		statement.columnNamesAndIndexes.forEach { name, index in
+		for (name, index) in statement.columnNamesAndIndexes {
 			values[name] = DatabaseValue(stmt, column: Int32(index))
 		}
 		return values
