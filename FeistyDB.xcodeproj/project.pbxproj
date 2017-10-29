@@ -42,7 +42,7 @@
 		321AC9131DCA9D6D00FD8ECA /* ParameterBindable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParameterBindable.swift; sourceTree = "<group>"; };
 		3236FD831DC6EDE50057703E /* FeistyDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeistyDB.h; sourceTree = "<group>"; };
 		3236FD851DC6EDF90057703E /* FeistyDBTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeistyDBTests.swift; sourceTree = "<group>"; };
-		324819B21DD7C29E0023632D /* FeistyDB.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = FeistyDB.playground; sourceTree = SOURCE_ROOT; };
+		324819B21DD7C29E0023632D /* FeistyDB.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = FeistyDB.playground; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		324CCF141DC61C0E0056935B /* FeistyDB.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FeistyDB.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		324CCF181DC61C0E0056935B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		324CCF1D1DC61C0E0056935B /* FeistyDBTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FeistyDBTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
