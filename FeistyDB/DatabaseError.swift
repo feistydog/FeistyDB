@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015 - 2016 Feisty Dog, LLC
+// Copyright (c) 2015 - 2017 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
