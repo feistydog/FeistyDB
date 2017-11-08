@@ -28,7 +28,7 @@ try db.execute(sql: "create table t1(a, b);")
 
 // Insert a row
 try db.execute(sql: "insert into t1(a, b) values (?, ?);", 
-               parameterValues: 33, "lulu")
+               parameterValues: [33, "lulu"])
 
 // Retrieve the values
 try db.execute(sql: "select a, b from t1;") { row in
@@ -104,7 +104,7 @@ The created table `t1` has two columns, `a` and `b`.
 ```swift
 for i in 0..<5 {
     try db.execute(sql: "insert into t1(a, b) values (?, ?);",
-                   parameterValues: 2*i, 2*i+1)
+                   parameterValues: [2*i, 2*i+1])
 }
 ```
 SQL parameters are passed as a sequence or series of values.  Named parameters are also supported.
@@ -121,7 +121,7 @@ Rather than parsing SQL each time a statement is executed, it is more efficient 
 ```swift
 let s = try db.prepare(sql: "insert into t1(a, b) values (?, ?);")
 for i in 0..<5 {
-    try s.bind(parameterValues: 2*i, 2*i+1)
+    try s.bind(parameterValues: [2*i, 2*i+1])
     try s.execute()
     try s.reset()
     try s.clearBindings()
@@ -154,7 +154,7 @@ try db.add(function: "rot13", arity: 1) { values in
     let value = values.first.unsafelyUnwrapped
     switch value {
         case .text(let s):
-            return .text(String(s.characters.map { rot13Mapping[$0] ?? $0 }))
+            return .text(String(s.map { rot13Mapping[$0] ?? $0 }))
         default:
             return value
     }

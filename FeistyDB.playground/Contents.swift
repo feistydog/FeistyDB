@@ -6,9 +6,9 @@ let db = try Database()
 //: Create a table
 try db.execute(sql: "create table t1(a, b);")
 //: Insert a row
-try db.execute(sql: "insert into t1(a, b) values (?, ?);", parameterValues: 33, "lulu")
+try db.execute(sql: "insert into t1(a, b) values (?, ?);", parameterValues: [33, "lulu"])
 //: Retrieve the values
-try db.execute(sql: "select a, b from t1;") { row in
-	let a: Int = try row.value(at: 0)
-	let b: String = try row.value(at: 1)
+try db.results(sql: "select a, b from t1;") { row in
+	let _: Int = try row.value(at: 0)
+	let _: String = try row.value(at: 1)
 }
