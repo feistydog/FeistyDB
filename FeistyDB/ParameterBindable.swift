@@ -45,8 +45,15 @@ extension Database {
 	/// - parameter row: A result row of returned data
 	///
 	/// - throws: Any error thrown in `block` or an error if `sql` couldn't be compiled, `values` couldn't be bound, or the statement couldn't be executed
-	public func execute(sql: String, parameterValues values: ParameterBindable..., _ block: ((_ row: Row) throws -> ())? = nil) throws {
-		try execute(sql: sql, parameterValues: values, block)
+	public func execute(sql: String, parameterValues values: [ParameterBindable], _ block: ((_ row: Row) throws -> ())? = nil) throws {
+		let statement = try prepare(sql: sql)
+		try statement.bind(parameterValues: values)
+		if let block = block {
+			try statement.results(block)
+		}
+		else {
+			try statement.execute()
+		}
 	}
 
 	/// Executes `sql` with the *n* parameters in `values` bound to the first *n* SQL parameters of `sql` and applies `block` to each result row.
@@ -57,51 +64,16 @@ extension Database {
 	/// - parameter row: A result row of returned data
 	///
 	/// - throws: Any error thrown in `block` or an error if `sql` couldn't be compiled, `values` couldn't be bound, or the statement couldn't be executed
-	public func execute(sql: String, parameterValues values: ParameterBindable?..., _ block: ((_ row: Row) throws -> ())? = nil) throws {
-		try execute(sql: sql, parameterValues: values, block)
+	public func execute(sql: String, parameterValues values: [ParameterBindable?], _ block: ((_ row: Row) throws -> ())? = nil) throws {
+		let statement = try prepare(sql: sql)
+		try statement.bind(parameterValues: values)
+		if let block = block {
+			try statement.results(block)
+		}
+		else {
+			try statement.execute()
+		}
 	}
-}
-
-extension Database {
-	// The first two functions cause a compiler crash 😞
-
-//	/// Executes `sql` with the *n* parameters in `values` bound to the first *n* SQL parameters of `sql` and applies `block` to each result row.
-//	///
-//	/// - parameter sql: The SQL statement to execute
-//	/// - parameter values: A series of values to bind to SQL parameters
-//	/// - parameter block: A closure called for each result row
-//	/// - parameter row: A result row of returned data
-//	///
-//	/// - throws: Any error thrown in `block` or an error if `sql` couldn't be compiled, `values` couldn't be bound, or the statement couldn't be executed
-//	public func execute(sql: String, parameterValues values: [ParameterBindable], _ block: ((_ row: Row) throws -> ())? = nil) throws {
-//		let statement = try prepare(sql: sql)
-//		try statement.bind(parameterValues: values)
-//		if let block = block {
-//			try statement.results(block)
-//		}
-//		else {
-//			try statement.execute()
-//		}
-//	}
-//
-//	/// Executes `sql` with the *n* parameters in `values` bound to the first *n* SQL parameters of `sql` and applies `block` to each result row.
-//	///
-//	/// - parameter sql: The SQL statement to execute
-//	/// - parameter values: A series of values to bind to SQL parameters
-//	/// - parameter block: A closure called for each result row
-//	/// - parameter row: A result row of returned data
-//	///
-//	/// - throws: Any error thrown in `block` or an error if `sql` couldn't be compiled, `values` couldn't be bound, or the statement couldn't be executed
-//	public func execute(sql: String, parameterValues values: [ParameterBindable?], _ block: ((_ row: Row) throws -> ())? = nil) throws {
-//		let statement = try prepare(sql: sql)
-//		try statement.bind(parameterValues: values)
-//		if let block = block {
-//			try statement.results(block)
-//		}
-//		else {
-//			try statement.execute()
-//		}
-//	}
 
 	/// Executes `sql` with *value* bound to SQL parameter *name* for each (*name*, *value*) in `parameters` and applies `block` to each result row.
 	///
@@ -295,30 +267,6 @@ extension Statement {
 				throw DatabaseError(message: "Error binding null to parameter \(idx)", takingDescriptionFromStatement: stmt)
 			}
 		}
-	}
-}
-
-extension Statement {
-	/// Binds the *n* parameters in `values` to the first *n* SQL parameters of `self`.
-	///
-	/// - parameter values: A series of values to bind to SQL parameters
-	///
-	/// - throws: An error if one of `values` couldn't be bound
-	///
-	/// - returns: `self`
-	@discardableResult public func bind(parameterValues values: ParameterBindable...) throws -> Statement {
-		return try bind(parameterValues: values)
-	}
-
-	/// Binds the *n* parameters in `values` to the first *n* SQL parameters of `self`.
-	///
-	/// - parameter values: A series of values to bind to SQL parameters
-	///
-	/// - throws: An error if one of `values` couldn't be bound
-	///
-	/// - returns: `self`
-	@discardableResult public func bind(parameterValues values: ParameterBindable?...) throws -> Statement {
-		return try bind(parameterValues: values)
 	}
 }
 
