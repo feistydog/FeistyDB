@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015 - 2016 Feisty Dog, LLC
+// Copyright (c) 2015 - 2017 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
@@ -159,7 +159,7 @@ extension Row {
 	public func values() -> [String: DatabaseValue] {
 		var values = [String: DatabaseValue]()
 		let stmt = statement.stmt
-		statement.columnNamesAndIndexes.forEach { name, index in
+		for (name, index) in statement.columnNamesAndIndexes {
 			values[name] = DatabaseValue(stmt, column: Int32(index))
 		}
 		return values

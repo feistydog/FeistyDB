@@ -15,10 +15,10 @@
 		324CCF341DC61D1F0056935B /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324CCF331DC61D1F0056935B /* Database.swift */; };
 		324CCF3B1DC61D640056935B /* Row.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324CCF3A1DC61D640056935B /* Row.swift */; };
 		324CCF3F1DC61DE90056935B /* Statement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324CCF3E1DC61DE90056935B /* Statement.swift */; };
-		324CCF4C1DC61F020056935B /* sqlite3.c in Sources */ = {isa = PBXBuildFile; fileRef = 324CCF471DC61F020056935B /* sqlite3.c */; settings = {COMPILER_FLAGS = "-DSQLITE_THREADSAFE=0 -DSQLITE_DEFAULT_MEMSTATUS=0 -DSQLITE_DEFAULT_WAL_SYNCHRONOUS=1 -DSQLITE_LIKE_DOESNT_MATCH_BLOBS -DSQLITE_MAX_EXPR_DEPTH=0 -DSQLITE_OMIT_DECLTYPE -DSQLITE_OMIT_DEPRECATED -DSQLITE_OMIT_PROGRESS_CALLBACK -DSQLITE_OMIT_SHARED_CACHE -DSQLITE_ENABLE_FTS5"; }; };
+		324CCF4C1DC61F020056935B /* sqlite3.c in Sources */ = {isa = PBXBuildFile; fileRef = 324CCF471DC61F020056935B /* sqlite3.c */; settings = {COMPILER_FLAGS = "-w -DSQLITE_THREADSAFE=0 -DSQLITE_DEFAULT_MEMSTATUS=0 -DSQLITE_DEFAULT_WAL_SYNCHRONOUS=1 -DSQLITE_LIKE_DOESNT_MATCH_BLOBS -DSQLITE_MAX_EXPR_DEPTH=0 -DSQLITE_OMIT_DECLTYPE -DSQLITE_OMIT_DEPRECATED -DSQLITE_OMIT_PROGRESS_CALLBACK -DSQLITE_OMIT_SHARED_CACHE -DSQLITE_ENABLE_FTS5"; }; };
 		324CCF4D1DC61F020056935B /* sqlite3.h in Headers */ = {isa = PBXBuildFile; fileRef = 324CCF481DC61F020056935B /* sqlite3.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		324CCF4E1DC61F020056935B /* sqlite3ext.h in Headers */ = {isa = PBXBuildFile; fileRef = 324CCF491DC61F020056935B /* sqlite3ext.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		324CCF4F1DC61F020056935B /* uuid.c in Sources */ = {isa = PBXBuildFile; fileRef = 324CCF4A1DC61F020056935B /* uuid.c */; settings = {COMPILER_FLAGS = "-DSQLITE_CORE"; }; };
+		324CCF4F1DC61F020056935B /* uuid.c in Sources */ = {isa = PBXBuildFile; fileRef = 324CCF4A1DC61F020056935B /* uuid.c */; settings = {COMPILER_FLAGS = "-DSQLITE_CORE -DUSE_COMMONCRYPTO"; }; };
 		324CCF541DC621F00056935B /* DatabaseError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324CCF531DC621F00056935B /* DatabaseError.swift */; };
 		324CCF581DC6233E0056935B /* ColumnConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324CCF571DC6233E0056935B /* ColumnConvertible.swift */; };
 		324CCF5A1DC623C20056935B /* DatabaseValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324CCF591DC623C20056935B /* DatabaseValue.swift */; };
@@ -42,7 +42,7 @@
 		321AC9131DCA9D6D00FD8ECA /* ParameterBindable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParameterBindable.swift; sourceTree = "<group>"; };
 		3236FD831DC6EDE50057703E /* FeistyDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeistyDB.h; sourceTree = "<group>"; };
 		3236FD851DC6EDF90057703E /* FeistyDBTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeistyDBTests.swift; sourceTree = "<group>"; };
-		324819B21DD7C29E0023632D /* FeistyDB.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = FeistyDB.playground; sourceTree = SOURCE_ROOT; };
+		324819B21DD7C29E0023632D /* FeistyDB.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = FeistyDB.playground; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		324CCF141DC61C0E0056935B /* FeistyDB.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FeistyDB.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		324CCF181DC61C0E0056935B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		324CCF1D1DC61C0E0056935B /* FeistyDBTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FeistyDBTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -205,16 +205,17 @@
 			attributes = {
 				CLASSPREFIX = FD;
 				LastSwiftUpdateCheck = 0810;
-				LastUpgradeCheck = 0810;
+				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = "Feisty Dog, LLC";
 				TargetAttributes = {
 					324CCF131DC61C0E0056935B = {
 						CreatedOnToolsVersion = 8.1;
-						LastSwiftMigration = 0810;
+						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 					};
 					324CCF1C1DC61C0E0056935B = {
 						CreatedOnToolsVersion = 8.1;
+						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -303,7 +304,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -311,7 +314,12 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -355,7 +363,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -363,7 +373,12 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -409,7 +424,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -431,7 +446,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.feisty-dog.FeistyDB";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
@@ -445,7 +460,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.feisty-dog.FeistyDBTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -459,7 +474,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.feisty-dog.FeistyDBTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};

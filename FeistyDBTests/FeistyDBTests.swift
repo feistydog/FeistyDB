@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015 - 2016 Feisty Dog, LLC
+// Copyright (c) 2015 - 2017 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
@@ -38,16 +38,16 @@ class FeistyDBTests: XCTestCase {
 
 		try! db.execute(sql: "create table t1(a text);")
 
-		try! db.execute(sql: "insert into t1(a) values (?);", parameterValues: 1)
-		try! db.execute(sql: "insert into t1(a) values (?);", parameterValues: "feisty")
-		try! db.execute(sql: "insert into t1(a) values (?);", parameterValues: 2.5)
-		try! db.execute(sql: "insert into t1(a) values (?);", parameterValues: Data(count: 8))
+		try! db.execute(sql: "insert into t1(a) values (?);", parameterValues: [1])
+		try! db.execute(sql: "insert into t1(a) values (?);", parameterValues: ["feisty"])
+		try! db.execute(sql: "insert into t1(a) values (?);", parameterValues: [2.5])
+		try! db.execute(sql: "insert into t1(a) values (?);", parameterValues: [Data(count: 8)])
 
-		try! db.execute(sql: "insert into t1(a) values (?);", parameterValues: URL(fileURLWithPath: "/tmp"))
-		try! db.execute(sql: "insert into t1(a) values (?);", parameterValues: UUID())
-		try! db.execute(sql: "insert into t1(a) values (?);", parameterValues: Date())
+		try! db.execute(sql: "insert into t1(a) values (?);", parameterValues: [URL(fileURLWithPath: "/tmp")])
+		try! db.execute(sql: "insert into t1(a) values (?);", parameterValues: [UUID()])
+		try! db.execute(sql: "insert into t1(a) values (?);", parameterValues: [Date()])
 
-		try! db.execute(sql: "insert into t1(a) values (?);", parameterValues: NSNull())
+		try! db.execute(sql: "insert into t1(a) values (?);", parameterValues: [NSNull()])
 	}
 
 	func testIteration() {
@@ -58,7 +58,7 @@ class FeistyDBTests: XCTestCase {
 		let rowCount = 10
 
 		for i in 0..<rowCount {
-			try! db.execute(sql: "insert into t1(a) values (?);", parameterValues: i)
+			try! db.prepare(sql: "insert into t1(a) values (?);").bind(parameterValues: [i]).execute()
 		}
 
 		let s = try! db.prepare(sql: "select * from t1;")
@@ -94,14 +94,14 @@ class FeistyDBTests: XCTestCase {
 
 		try! db.execute(sql: "create table t1(a text);")
 
-		try! db.execute(sql: "insert into t1(a) values (?);", parameterValues: "a")
-		try! db.execute(sql: "insert into t1(a) values (?);", parameterValues: "c")
-		try! db.execute(sql: "insert into t1(a) values (?);", parameterValues: "z")
-		try! db.execute(sql: "insert into t1(a) values (?);", parameterValues: "e")
+		try! db.execute(sql: "insert into t1(a) values (?);", parameterValues: ["a"])
+		try! db.execute(sql: "insert into t1(a) values (?);", parameterValues: ["c"])
+		try! db.execute(sql: "insert into t1(a) values (?);", parameterValues: ["z"])
+		try! db.execute(sql: "insert into t1(a) values (?);", parameterValues: ["e"])
 
 		var str = ""
 		let s = try! db.prepare(sql: "select * from t1 order by a collate reversed;")
-		try! s.execute { row in
+		try! s.results { row in
 			let c: String = try row.value(at: 0)
 			str.append(c)
 		}
@@ -119,7 +119,7 @@ class FeistyDBTests: XCTestCase {
 			"n": "a", "o": "b", "p": "c", "q": "d", "r": "e", "s": "f", "t": "g", "u": "h", "v": "i", "w": "j", "x": "k", "y": "l", "z": "m"]
 
 		func rot13(_ s: String) -> String {
-			return String(s.characters.map { rot13key[$0] ?? $0 })
+			return String(s.map { rot13key[$0] ?? $0 })
 		}
 
 		try! db.add(function: "rot13", arity: 1) { values in
@@ -134,11 +134,11 @@ class FeistyDBTests: XCTestCase {
 
 		try! db.execute(sql: "create table t1(a);")
 
-		try! db.execute(sql: "insert into t1(a) values (?);", parameterValues: "this")
-		try! db.execute(sql: "insert into t1(a) values (?);", parameterValues: "is")
-		try! db.execute(sql: "insert into t1(a) values (?);", parameterValues: "only")
-		try! db.execute(sql: "insert into t1(a) values (?);", parameterValues: "a")
-		try! db.execute(sql: "insert into t1(a) values (?);", parameterValues: "test")
+		try! db.execute(sql: "insert into t1(a) values (?);", parameterValues: ["this"])
+		try! db.execute(sql: "insert into t1(a) values (?);", parameterValues: ["is"])
+		try! db.execute(sql: "insert into t1(a) values (?);", parameterValues: ["only"])
+		try! db.execute(sql: "insert into t1(a) values (?);", parameterValues: ["a"])
+		try! db.execute(sql: "insert into t1(a) values (?);", parameterValues: ["test"])
 
 		let s = try! db.prepare(sql: "select rot13(a) from t1;")
 		let results = s.map { try! $0.leftmostValue() as String }
@@ -155,13 +155,13 @@ class FeistyDBTests: XCTestCase {
 		try! db.execute(sql: "create table t1(a, b);")
 
 		for i in 0..<10 {
-			try! db.execute(sql: "insert into t1(a, b) values (?, ?);", parameterValues: i, nil)
+			try! db.prepare(sql: "insert into t1(a, b) values (?, ?);").bind(parameterValues: [i, nil]).execute()
 		}
 
 		let statement = try! db.prepare(sql: "select * from t1 where a = ?")
 		try! statement.bind(value: 5, toParameter: 1)
 
-		try! statement.execute { row in
+		try! statement.results { row in
 			let x: Int = try row.value(at: 0)
 			let y: Int? = try row.value(named: "b")
 
@@ -182,7 +182,7 @@ class FeistyDBTests: XCTestCase {
 		let statement = try! db.prepare(sql: "select * from t1 where a = :a")
 		try! statement.bind(value: 5, toParameter: ":a")
 
-		try! statement.execute { row in
+		try! statement.results { row in
 			let x: Int = try row.value(at: 0)
 			let y: Int? = try row.value(at: 1)
 
@@ -247,7 +247,7 @@ class FeistyDBTests: XCTestCase {
 
 			let s = try! db.prepare(sql: "select count(*) from t1;")
 			var count = 0
-			try! s.execute { row in
+			try! s.results { row in
 				count = try row.value(at: 0)
 			}
 
@@ -315,6 +315,60 @@ class FeistyDBTests: XCTestCase {
 		}
 	}
 
+	func testDatabaseInsertPerformance31() {
+		self.measure {
+			let db = try! Database()
+
+			try! db.execute(sql: "create table t1(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z);")
+
+			var s = try! db.prepare(sql: "insert into t1(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);")
+
+			let values: [Int?] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26]
+
+			let rowCount = 10_000
+			for _ in 0..<rowCount {
+				try! s.bind(parameterValues: values)
+
+				try! s.execute()
+
+				try! s.clearBindings()
+				try! s.reset()
+			}
+
+			s = try! db.prepare(sql: "select count(*) from t1;")
+			let count: Int = try! s.front()
+
+			XCTAssertEqual(count, rowCount)
+		}
+	}
+
+	func testDatabaseInsertPerformance32() {
+		self.measure {
+			let db = try! Database()
+
+			try! db.execute(sql: "create table t1(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z);")
+
+			var s = try! db.prepare(sql: "insert into t1(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);")
+
+			let values: [Int] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26]
+
+			let rowCount = 10_000
+			for _ in 0..<rowCount {
+				try! s.bind(parameterValues: values)
+
+				try! s.execute()
+
+				try! s.clearBindings()
+				try! s.reset()
+			}
+
+			s = try! db.prepare(sql: "select count(*) from t1;")
+			let count: Int = try! s.front()
+
+			XCTAssertEqual(count, rowCount)
+		}
+	}
+
 	func testSQLiteSelectPerformance() {
 		self.measure {
 			var db: OpaquePointer?
@@ -362,10 +416,11 @@ class FeistyDBTests: XCTestCase {
 			}
 
 			s = try! db.prepare(sql: "select a, b from t1;")
-			try! s.execute { row in
+			try! s.results { row in
 				let _: Int = try row.value(at: 0)
 				let _: Int = try row.value(at: 1)
 			}
 		}
 	}
+
 }
