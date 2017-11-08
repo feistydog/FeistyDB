@@ -1,7 +1,6 @@
 language: objective-c
 osx_image: xcode9.1
-xcode_project: FeistyDB.xcodeproj
-xcode_scheme: FeistyDB
+script: xcodebuild clean && xcodebuild build -project FeistyDB.xcodeproj -scheme FeistyDB
 
 before_install:
   - ./get-sqlite.sh
