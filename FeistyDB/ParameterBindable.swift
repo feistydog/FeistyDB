@@ -628,3 +628,14 @@ extension Date: ParameterBindable {
 		}
 	}
 }
+
+extension ParameterBindable where Self: Encodable {
+	public func bind(to stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
+		let data = try JSONEncoder().encode(self)
+		try data.withUnsafeBytes { (bytes: UnsafePointer<UInt8>) throws in
+			guard sqlite3_bind_blob(stmt, idx, bytes, Int32(data.count), SQLITE_TRANSIENT) == SQLITE_OK else {
+				throw DatabaseError(message: "Error binding \(Self.self) to parameter \(idx)", takingDescriptionFromStatement: stmt)
+			}
+		}
+	}
+}

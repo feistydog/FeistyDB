@@ -269,3 +269,11 @@ extension Date: ColumnConvertible {
 		self = d
 	}
 }
+
+extension ColumnConvertible where Self: Decodable {
+	public init(_ stmt: SQLitePreparedStatement, column idx: Int32) throws {
+		let byteCount = Int(sqlite3_column_bytes(stmt, idx))
+		let data = Data(bytes: sqlite3_column_blob(stmt, idx).assumingMemoryBound(to: UInt8.self), count: byteCount)
+		self = try JSONDecoder().decode(Self.self, from: data)
+	}
+}
