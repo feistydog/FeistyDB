@@ -109,6 +109,14 @@ extension Row {
 	public func value<T: ColumnConvertible>(named name: String) throws -> T {
 		return try value(at: statement.index(ofColumn: name))
 	}
+
+	public subscript<T: ColumnConvertible>(at index: Int) -> T? {
+		return try? value(at: index)
+	}
+
+	public subscript<T: ColumnConvertible>(named name: String) -> T? {
+		return try? value(named: name)
+	}
 }
 
 extension Row {
