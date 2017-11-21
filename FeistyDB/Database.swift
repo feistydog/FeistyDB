@@ -128,6 +128,18 @@ final public class Database {
 		sqlite3_interrupt(db)
 	}
 
+	/// The number of bytes of memory `malloc`ed but not yet `free`d by SQLite
+	public class var memoryUsed: Int64 {
+		return sqlite3_memory_used()
+	}
+
+	/// Returns the maximum amount of memory used by SQLite since the memory high-water mark was last reset.
+	///
+	/// - parameter reset: If `true` the memory high-water mark is reset to the value of `memoryUsed`
+	public class func memoryHighwater(reset: Bool = false) -> Int64 {
+		return sqlite3_memory_highwater(reset ? 1 : 0)
+	}
+
 	/// Performs a low-level SQLite database operation.
 	///
 	/// **Use of this function should be avoided whenever possible**
