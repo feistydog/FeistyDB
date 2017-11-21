@@ -30,6 +30,9 @@ final public class Database {
 	/// The underlying `sqlite3 *` database
 	var db: SQLiteDatabaseConnection
 
+	/// The database's custom busy handler
+	var busyHandler: UnsafeMutablePointer<BusyHandler>?
+
 	/// Prepared statements
 	var preparedStatements = [String: Statement]()
 
@@ -100,6 +103,8 @@ final public class Database {
 	deinit {
 		preparedStatements.removeAll()
 		sqlite3_close(db)
+		busyHandler?.deinitialize()
+		busyHandler?.deallocate(capacity: 1)
 	}
 
 	/// `true` if this database is read only, `false` otherwise
@@ -593,9 +598,9 @@ extension Database {
 		context.initialize(to: block)
 
 		if let old = sqlite3_wal_hook(db, { context, db, db_name, pageCount in
-			//			guard db == self.db else {
-			//				fatalError("Unexpected database connection handle from sqlite3_wal_hook")
-			//			}
+//			guard db == self.db else {
+//				fatalError("Unexpected database connection handle from sqlite3_wal_hook")
+//			}
 			let database = String(utf8String: db_name.unsafelyUnwrapped).unsafelyUnwrapped
 			return context.unsafelyUnwrapped.assumingMemoryBound(to: walCommitHook.self).pointee(database, Int(pageCount))
 		}, context) {
@@ -672,6 +677,76 @@ extension Database {
 			let oldContext = old.assumingMemoryBound(to: UpdateHook.self)
 			oldContext.deinitialize()
 			oldContext.deallocate(capacity: 1)
+		}
+	}
+}
+
+extension Database {
+	/// A hook that may be called when an attempt is made to access a locked database table.
+	///
+	/// - parameter attempts: The number of times the busy handler has been called for the same event
+	///
+	/// - returns: `true` if the attempts to access the database should stop, `false` to continue
+	///
+	/// - seealso: [Register A Callback To Handle SQLITE_BUSY Errors](http://www.sqlite.org/c3ref/busy_handler.html)
+	public typealias BusyHandler = (_ attempts: Int) -> Bool
+
+	/// Sets a callback that may be invoked when an attempt is made to access a locked database table.
+	///
+	/// - parameter busyHandler: A closure called when an attempt is made to access a locked database table
+	///
+	/// - throws: An error if the busy handler couldn't be set
+	public func set(busyHandler block: @escaping BusyHandler) throws {
+		if busyHandler == nil {
+			busyHandler = UnsafeMutablePointer<BusyHandler>.allocate(capacity: 1)
+		}
+		else {
+			busyHandler?.deinitialize()
+		}
+
+		busyHandler?.initialize(to: block)
+
+		guard sqlite3_busy_handler(db, { context, count in
+			return context.unsafelyUnwrapped.assumingMemoryBound(to: BusyHandler.self).pointee(Int(count)) ? 0 : 1
+		}, busyHandler) == SQLITE_OK else {
+			busyHandler?.deinitialize()
+			busyHandler?.deallocate(capacity: 1)
+			busyHandler = nil
+			throw DatabaseError("Error setting busy handler")
+		}
+	}
+
+	/// Removes the busy handler.
+	///
+	/// - throws: An error if the busy handler couldn't be removed
+	public func removeBusyHandler() throws {
+		defer {
+			busyHandler?.deinitialize()
+			busyHandler?.deallocate(capacity: 1)
+			busyHandler = nil
+		}
+
+		guard sqlite3_busy_handler(db, nil, nil) == SQLITE_OK else {
+			throw DatabaseError(message: "Error removing busy handler", takingDescriptionFromDatabase: db)
+		}
+	}
+
+	/// Sets a busy handler that sleeps when an attempt is made to access a locked database table.
+	///
+	/// - parameter ms: The minimum time in milliseconds to sleep
+	///
+	/// - throws: An error if the busy timeout couldn't be set
+	///
+	/// - seealso: [Set A Busy Timeout](http://www.sqlite.org/c3ref/busy_timeout.html)
+	public func set(busyTimeout ms: Int) throws {
+		defer {
+			busyHandler?.deinitialize()
+			busyHandler?.deallocate(capacity: 1)
+			busyHandler = nil
+		}
+
+		guard sqlite3_busy_timeout(db, Int32(ms)) == SQLITE_OK else {
+			throw DatabaseError("Error setting busy timeout")
 		}
 	}
 }
