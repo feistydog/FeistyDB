@@ -572,7 +572,50 @@ extension Database {
 			oldContext.deallocate(capacity: 1)
 		}
 	}
+}
 
+extension Database {
+	/// A hook called when a database transaction is committed in write-ahead log mode.
+	///
+	/// - parameter databaseName: The name of the database that was written to
+	/// - parameter pageCount: The number of pages in the write-ahead log file
+	///
+	/// - returns: Normally `SQLITE_OK`
+	///
+	/// - seealso: [Write-Ahead Log Commit Hook](http://www.sqlite.org/c3ref/wal_hook.html)
+	public typealias walCommitHook = (_ databaseName: String, _ pageCount: Int) -> Int32
+
+	/// Sets the hook called when a database transaction is committed in write-ahead log mode.
+	///
+	/// - parameter commitHook: A closure called when a transaction is committed
+	public func set(walCommitHook block: @escaping walCommitHook) {
+		let context = UnsafeMutablePointer<walCommitHook>.allocate(capacity: 1)
+		context.initialize(to: block)
+
+		if let old = sqlite3_wal_hook(db, { context, db, db_name, pageCount in
+			//			guard db == self.db else {
+			//				fatalError("Unexpected database connection handle from sqlite3_wal_hook")
+			//			}
+			let database = String(utf8String: db_name.unsafelyUnwrapped).unsafelyUnwrapped
+			return context.unsafelyUnwrapped.assumingMemoryBound(to: walCommitHook.self).pointee(database, Int(pageCount))
+		}, context) {
+			let oldContext = old.assumingMemoryBound(to: walCommitHook.self)
+			oldContext.deinitialize()
+			oldContext.deallocate(capacity: 1)
+		}
+	}
+
+	/// Removes the write-ahead log commit hook.
+	public func removeWALCommitHook() {
+		if let old = sqlite3_wal_hook(db, nil, nil) {
+			let oldContext = old.assumingMemoryBound(to: walCommitHook.self)
+			oldContext.deinitialize()
+			oldContext.deallocate(capacity: 1)
+		}
+	}
+}
+
+extension Database {
 	/// Possible types of database row changes.
 	public enum	RowChangeType {
 		/// A row was inserted
