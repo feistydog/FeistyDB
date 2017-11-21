@@ -323,15 +323,15 @@ extension Database {
 	}
 }
 
-/// A comparator for `String` objects
-///
-/// - parameter lhs: The left-hand operand
-/// - parameter rhs: The right-hand operand
-///
-/// - returns: The result of comparing `lhs` to `rhs`
-public typealias StringComparator = (_ lhs: String, _ rhs: String) -> ComparisonResult
-
 extension Database {
+	/// A comparator for `String` objects.
+	///
+	/// - parameter lhs: The left-hand operand
+	/// - parameter rhs: The right-hand operand
+	///
+	/// - returns: The result of comparing `lhs` to `rhs`
+	public typealias StringComparator = (_ lhs: String, _ rhs: String) -> ComparisonResult
+
 	/// Adds a custom collation function.
 	///
 	/// ```swift
@@ -376,22 +376,16 @@ extension Database {
 		}
 	}
 }
-
-/// A custom SQL function.
-///
-/// - parameter values: The SQL function parameters
-///
-/// - throws: `DatabaseError`
-///
-/// - returns: The result of applying the function to `values`
-public typealias SQLFunction = (_ values: [DatabaseValue]) throws -> DatabaseValue
-
-// Ideally I'd like the typealias to have the following signature:
-//     public typealias SQLFunction = (DatabaseValue...) throws -> DatabaseValue
-// However, it isn't possible to convert an array into a variable number of arguments (yet)
-// https://bugs.swift.org/browse/SR-128
-
 extension Database {
+	/// A custom SQL function.
+	///
+	/// - parameter values: The SQL function parameters
+	///
+	/// - throws: `DatabaseError`
+	///
+	/// - returns: The result of applying the function to `values`
+	public typealias SQLFunction = (_ values: [DatabaseValue]) throws -> DatabaseValue
+
 	/// Adds a custom SQL function.
 	///
 	/// ```swift
@@ -462,6 +456,129 @@ extension Database {
 	public func remove(function name: String, arity: Int = -1) throws {
 		guard sqlite3_create_function_v2(db, name, Int32(arity), SQLITE_UTF8 | SQLITE_DETERMINISTIC, nil, nil, nil, nil, nil) == SQLITE_OK else {
 			throw DatabaseError(message: "Error removing SQL function \"\(name)\"", takingDescriptionFromDatabase: db)
+		}
+	}
+}
+
+extension Database {
+	/// A hook called when a database transaction is committed.
+	///
+	/// - returns: `true` if the commit operation is allowed to proceed, `false` otherwise
+	///
+	/// - seealso: [Commit And Rollback Notification Callbacks](http://www.sqlite.org/c3ref/commit_hook.html)
+	public typealias CommitHook = () -> Bool
+
+	/// Sets the hook called when a database transaction is committed.
+	///
+	/// - parameter commitHook: A closure called when a transaction is committed
+	public func set(commitHook block: @escaping CommitHook) {
+		let context = UnsafeMutablePointer<CommitHook>.allocate(capacity: 1)
+		context.initialize(to: block)
+
+		if let old = sqlite3_commit_hook(db, { context in
+			return context.unsafelyUnwrapped.assumingMemoryBound(to: CommitHook.self).pointee() ? 0 : 1
+		}, context) {
+			let oldContext = old.assumingMemoryBound(to: CommitHook.self)
+			oldContext.deinitialize()
+			oldContext.deallocate(capacity: 1)
+		}
+	}
+
+	/// Removes the commit hook.
+	public func removeCommitHook() {
+		if let old = sqlite3_commit_hook(db, nil, nil) {
+			let oldContext = old.assumingMemoryBound(to: CommitHook.self)
+			oldContext.deinitialize()
+			oldContext.deallocate(capacity: 1)
+		}
+	}
+
+	/// A hook called when a database transaction is rolled back.
+	///
+	/// - seealso: [Commit And Rollback Notification Callbacks](http://www.sqlite.org/c3ref/commit_hook.html)
+	public typealias RollbackHook = () -> Void
+
+	/// Sets the hook called when a database transaction is rolled back.
+	///
+	/// - parameter rollbackHook: A closure called when a transaction is rolled back
+	public func set(rollbackHook block: @escaping RollbackHook) {
+		let context = UnsafeMutablePointer<RollbackHook>.allocate(capacity: 1)
+		context.initialize(to: block)
+
+		if let old = sqlite3_rollback_hook(db, { context in
+			context.unsafelyUnwrapped.assumingMemoryBound(to: RollbackHook.self).pointee()
+		}, context) {
+			let oldContext = old.assumingMemoryBound(to: RollbackHook.self)
+			oldContext.deinitialize()
+			oldContext.deallocate(capacity: 1)
+		}
+	}
+
+	/// Removes the rollback hook.
+	public func removeRollbackHook() {
+		if let old = sqlite3_rollback_hook(db, nil, nil) {
+			let oldContext = old.assumingMemoryBound(to: RollbackHook.self)
+			oldContext.deinitialize()
+			oldContext.deallocate(capacity: 1)
+		}
+	}
+
+	/// Possible types of database row changes.
+	public enum	RowChangeType {
+		/// A row was inserted
+		case insert
+		/// A row was deleted
+		case delete
+		/// A row was updated
+		case update
+	}
+
+	/// A hook called when a row is inserted, deleted, or updated in a rowid table.
+	///
+	/// - parameter change: The type of change triggering the hook
+	/// - parameter database: The name of the database containing the affected row
+	/// - parameter table: The name of the table containing the affected row
+	/// - parameter rowid: The `rowid` of the affected row
+	///
+	/// - seealso: [Commit And Rollback Notification Callbacks](http://www.sqlite.org/c3ref/commit_hook.html)
+	/// - seealso: [Rowid Tables](http://www.sqlite.org/rowidtable.html)
+	public typealias UpdateHook = (_ change: RowChangeType, _ database: String, _ table: String, _ rowid: Int64) -> Void
+
+	/// Sets the hook called when a row is inserted, deleted, or updated in a rowid table.
+	///
+	/// - parameter updateHook: A closure called when a row is inserted, deleted, or updated
+	public func set(updateHook block: @escaping UpdateHook) {
+		let context = UnsafeMutablePointer<UpdateHook>.allocate(capacity: 1)
+		context.initialize(to: block)
+
+		if let old = sqlite3_update_hook(db, { context, op, db_name, table_name, rowid in
+			let function_ptr = context.unsafelyUnwrapped.assumingMemoryBound(to: UpdateHook.self)
+
+			let changeType: RowChangeType
+			switch op {
+				case SQLITE_INSERT: 	changeType = .insert
+				case SQLITE_DELETE: 	changeType = .delete
+				case SQLITE_UPDATE: 	changeType = .update
+				default:				fatalError("Unexpected row change type")
+			}
+
+			let database = String(utf8String: db_name.unsafelyUnwrapped).unsafelyUnwrapped
+			let table = String(utf8String: table_name.unsafelyUnwrapped).unsafelyUnwrapped
+
+			function_ptr.pointee(changeType, database, table, rowid)
+		}, context) {
+			let oldContext = old.assumingMemoryBound(to: UpdateHook.self)
+			oldContext.deinitialize()
+			oldContext.deallocate(capacity: 1)
+		}
+	}
+
+	/// Removes the update hook.
+	public func removeUpdateHook() {
+		if let old = sqlite3_update_hook(db, nil, nil) {
+			let oldContext = old.assumingMemoryBound(to: UpdateHook.self)
+			oldContext.deinitialize()
+			oldContext.deallocate(capacity: 1)
 		}
 	}
 }
