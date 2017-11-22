@@ -654,10 +654,10 @@ extension Database {
 
 			let changeType: RowChangeType
 			switch op {
-				case SQLITE_INSERT: 	changeType = .insert
-				case SQLITE_DELETE: 	changeType = .delete
-				case SQLITE_UPDATE: 	changeType = .update
-				default:				fatalError("Unexpected row change type")
+			case SQLITE_INSERT: 	changeType = .insert
+			case SQLITE_DELETE: 	changeType = .delete
+			case SQLITE_UPDATE: 	changeType = .update
+			default:				fatalError("Unexpected row change type")
 			}
 
 			let database = String(utf8String: db_name.unsafelyUnwrapped).unsafelyUnwrapped
