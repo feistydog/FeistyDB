@@ -431,6 +431,7 @@ extension Database {
 		}
 	}
 }
+
 extension Database {
 	/// A custom SQL function.
 	///
