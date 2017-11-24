@@ -85,6 +85,29 @@ class FeistyDBTests: XCTestCase {
 		XCTAssertNotNil(u)
 	}
 
+	func testEncodable() {
+		let db = try! Database()
+
+		struct TestStruct : ColumnConvertible, ParameterBindable, Codable {
+			let a: Int
+			let b: Float
+			let c: Date
+			let d: String
+		}
+
+		try! db.execute(sql: "create table t1(a);")
+
+		let a = TestStruct(a: 1, b: 3.14, c: Date(), d: "Lu")
+
+		try! db.execute(sql: "insert into t1(a) values (?);", parameterValues: [a])
+
+		let b: TestStruct = try! db.prepare(sql: "select * from t1 limit 1;").front()
+
+		XCTAssertEqual(a.a, b.a)
+		XCTAssertEqual(a.c, b.c)
+		XCTAssertEqual(a.d, b.d)
+	}
+
 	func testCustomCollation() {
 		let db = try! Database()
 
@@ -149,6 +172,77 @@ class FeistyDBTests: XCTestCase {
 		XCTAssertThrowsError(try db.prepare(sql: "select rot13(a) from t1;"))
 	}
 
+	func testCustomTokenizer() {
+
+		/// A word tokenizer using CFStringTokenizer
+		class WordTokenizer: FTS5Tokenizer {
+			var tokenizer: CFStringTokenizer!
+			var text: CFString!
+
+			required init(arguments: [String]) {
+			}
+
+			func set(text: String, reason: Database.FTS5TokenizationReason) {
+				self.text = text as CFString
+				tokenizer = CFStringTokenizerCreate(kCFAllocatorDefault, self.text, CFRangeMake(0, CFStringGetLength(self.text)), kCFStringTokenizerUnitWord, nil)
+			}
+
+			func advance() -> Bool {
+				let nextToken = CFStringTokenizerAdvanceToNextToken(tokenizer)
+				guard nextToken != CFStringTokenizerTokenType(rawValue: 0) else {
+					return false
+				}
+				return true
+			}
+
+			func currentToken() -> String? {
+				let tokenRange = CFStringTokenizerGetCurrentTokenRange(tokenizer)
+				guard tokenRange.location != kCFNotFound /*|| tokenRange.length != 0*/ else {
+					return nil
+				}
+				return CFStringCreateWithSubstring(kCFAllocatorDefault, text, tokenRange) as String
+			}
+
+			func copyCurrentToken(to buffer: UnsafeMutablePointer<UInt8>, capacity: Int) throws -> Int {
+				let tokenRange = CFStringTokenizerGetCurrentTokenRange(tokenizer)
+				var bytesConverted = 0
+				let charsConverted = CFStringGetBytes(text, tokenRange, CFStringBuiltInEncodings.UTF8.rawValue, 0, false, buffer, capacity, &bytesConverted)
+				guard charsConverted > 0 else {
+					throw DatabaseError("Insufficient buffer size")
+				}
+				return bytesConverted
+			}
+		}
+
+		let db = try! Database()
+
+		try! db.add(tokenizer: "word", type: WordTokenizer.self)
+
+		try! db.execute(sql: "create virtual table t1 USING fts5(a, tokenize = 'word');")
+
+		try! db.prepare(sql: "insert into t1(a) values (?);").bind(parameterValues: ["quick brown"]).execute()
+		try! db.prepare(sql: "insert into t1(a) values (?);").bind(parameterValues: ["fox"]).execute()
+		try! db.prepare(sql: "insert into t1(a) values (?);").bind(parameterValues: ["jumps over"]).execute()
+		try! db.prepare(sql: "insert into t1(a) values (?);").bind(parameterValues: ["the lazy dog"]).execute()
+		try! db.prepare(sql: "insert into t1(a) values (?);").bind(parameterValues: ["🦊🐶"]).execute()
+		try! db.prepare(sql: "insert into t1(a) values (?);").bind(parameterValues: [""]).execute()
+		try! db.prepare(sql: "insert into t1(a) values (NULL);").execute()
+		try! db.prepare(sql: "insert into t1(a) values (?);").bind(parameterValues: ["quick"]).execute()
+		try! db.prepare(sql: "insert into t1(a) values (?);").bind(parameterValues: ["brown fox"]).execute()
+		try! db.prepare(sql: "insert into t1(a) values (?);").bind(parameterValues: ["jumps over the"]).execute()
+		try! db.prepare(sql: "insert into t1(a) values (?);").bind(parameterValues: ["lazy dog"]).execute()
+
+		let s = try! db.prepare(sql: "select count(*) from t1 where t1 match 'o*';")
+		let count: Int = try! s.front()
+		XCTAssertEqual(count, 2)
+
+		let statement = try! db.prepare(sql: "select * from t1 where t1 match 'o*';")
+		try! statement.results { row in
+			let s: String = try row.value(at: 0)
+			XCTAssert(s.starts(with: "jumps over"))
+		}
+	}
+	
 	func testDatabaseBindings() {
 		let db = try! Database()
 
