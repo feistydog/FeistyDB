@@ -31,7 +31,6 @@ import Foundation
 /// }
 /// ```
 public final class DatabaseQueue {
-
 	/// A completion handler for asynchronous operations
 	public typealias CompletionHandler = () -> Void
 
