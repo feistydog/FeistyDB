@@ -327,6 +327,26 @@ extension Database {
 		return preparedStatements.removeValue(forKey: key)
 	}
 
+	/// Executes the compiled SQL statement for `key` and after execution resets the statement.
+	///
+	/// This method does not clear bound host parameters.
+	///
+	/// - parameter key: The key used to identify the statement
+	/// - parameter block: A closure performing the statement operation
+	/// - parameter statement: A `Statement` used for statement access within `block`
+	///
+	/// - throws: An error if no statement for the specified key was found, any error thrown by `block`, or an error if the statement couldn't be reset
+	///
+	/// - returns: The value returned by `block`
+	public func withPreparedStatement<T>(forKey key: String, _ block: (_ statement: Statement) throws -> T) throws -> T {
+		guard let statement = preparedStatements[key] else {
+			throw DatabaseError("No prepared statement for key \"key\"")
+		}
+		let result = try block(statement)
+		try statement.reset()
+		return result
+	}
+
 	/// Returns or stores the compiled SQL statement for `key`.
 	///
 	/// - parameter key: The key used to identify the statement
