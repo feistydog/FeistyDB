@@ -340,7 +340,7 @@ extension Database {
 	/// - returns: The value returned by `block`
 	public func withPreparedStatement<T>(forKey key: String, _ block: (_ statement: Statement) throws -> T) throws -> T {
 		guard let statement = preparedStatements[key] else {
-			throw DatabaseError("No prepared statement for key \"key\"")
+			throw DatabaseError("No prepared statement for key \"\(key)\"")
 		}
 		let result = try block(statement)
 		try statement.reset()
