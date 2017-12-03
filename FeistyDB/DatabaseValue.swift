@@ -22,6 +22,43 @@ public enum DatabaseValue {
 	case null
 }
 
+extension DatabaseValue: Equatable {
+	public static func ==(lhs: DatabaseValue, rhs: DatabaseValue) -> Bool {
+		switch(lhs) {
+		case .integer(let i1):
+			switch(rhs) {
+			case .integer(let i2):
+				return i1 == i2
+			default:
+				return false
+			}
+		case .float(let f1):
+			switch(rhs) {
+			case .float(let f2):
+				return f1 == f2
+			default:
+				return false
+			}
+		case .text(let t1):
+			switch(rhs) {
+			case .text(let t2):
+				return t1 == t2
+			default:
+				return false
+			}
+		case .blob(let b1):
+			switch(rhs) {
+			case .blob(let b2):
+				return b1 == b2
+			default:
+				return false
+			}
+		case .null:
+			return false
+		}
+	}
+}
+
 extension DatabaseValue {
 	/// Creates an instance containing the value of column `idx` in `stmt`.
 	///
