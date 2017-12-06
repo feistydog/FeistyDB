@@ -46,7 +46,7 @@ static void uuid1func(
   uuid_t uuid;
   uuid_generate_time(uuid);
   uuid_string_t uuid_str;
-  uuid_unparse_lower(uuid, uuid_str);
+  uuid_unparse_upper(uuid, uuid_str);
   sqlite3_result_text(context, uuid_str, UUID_LENGTH, SQLITE_TRANSIENT);
 }
 
@@ -84,7 +84,7 @@ static void uuid3func(
 
   memcpy(uu, md_value, UUID_SIZE);
 
-  uuid_unparse_lower(uu, uuid_str);
+  uuid_unparse_upper(uu, uuid_str);
   sqlite3_result_text(context, uuid_str, UUID_LENGTH, SQLITE_TRANSIENT);
 }
 
@@ -100,7 +100,7 @@ static void uuid4func(
   uuid_t uuid;
   uuid_generate_random(uuid);
   uuid_string_t uuid_str;
-  uuid_unparse_lower(uuid, uuid_str);
+  uuid_unparse_upper(uuid, uuid_str);
   sqlite3_result_text(context, uuid_str, UUID_LENGTH, SQLITE_TRANSIENT);
 }
 
@@ -138,7 +138,7 @@ static void uuid5func(
 
   memcpy(uu, md_value, UUID_SIZE);
 
-  uuid_unparse_lower(uu, uuid_str);
+  uuid_unparse_upper(uu, uuid_str);
   sqlite3_result_text(context, uuid_str, UUID_LENGTH, SQLITE_TRANSIENT);
 }
 
@@ -157,7 +157,7 @@ static void uuid_namespace_dns(
   sqlite3_value **argv
 ){
   assert(argc==0);
-  sqlite3_result_text(context, "6ba7b810-9dad-11d1-80b4-00c04fd430c8", UUID_LENGTH, SQLITE_STATIC);
+  sqlite3_result_text(context, "6BA7B810-9DAD-11D1-80B4-00C04FD430C8", UUID_LENGTH, SQLITE_STATIC);
 }
 
 static void uuid_namespace_oid(
@@ -166,7 +166,7 @@ static void uuid_namespace_oid(
   sqlite3_value **argv
 ){
   assert(argc==0);
-  sqlite3_result_text(context, "6ba7b812-9dad-11d1-80b4-00c04fd430c8", UUID_LENGTH, SQLITE_STATIC);
+  sqlite3_result_text(context, "6BA7B812-9DAD-11D1-80B4-00C04FD430C8", UUID_LENGTH, SQLITE_STATIC);
 }
 
 static void uuid_namespace_url(
@@ -175,7 +175,7 @@ static void uuid_namespace_url(
   sqlite3_value **argv
 ){
   assert(argc==0);
-  sqlite3_result_text(context, "6ba7b811-9dad-11d1-80b4-00c04fd430c8", UUID_LENGTH, SQLITE_STATIC);
+  sqlite3_result_text(context, "6BA7B811-9DAD-11D1-80B4-00C04FD430C8", UUID_LENGTH, SQLITE_STATIC);
 }
 
 static void uuid_namespace_x500(
@@ -184,10 +184,10 @@ static void uuid_namespace_x500(
   sqlite3_value **argv
 ){
   assert(argc==0);
-  sqlite3_result_text(context, "6ba7b814-9dad-11d1-80b4-00c04fd430c8", UUID_LENGTH, SQLITE_STATIC);
+  sqlite3_result_text(context, "6BA7B814-9DAD-11D1-80B4-00C04FD430C8", UUID_LENGTH, SQLITE_STATIC);
 }
 
-static void uuid_to_string_func(
+static void uuid_to_text_func(
   sqlite3_context *context,
   int argc,
   sqlite3_value **argv
@@ -199,7 +199,7 @@ static void uuid_to_string_func(
     return;
   }
   uuid_string_t uuid_str;
-  uuid_unparse_lower(*(uuid_t *)uuid_bytes, uuid_str);
+  uuid_unparse_upper(*(uuid_t *)uuid_bytes, uuid_str);
   sqlite3_result_text(context, uuid_str, UUID_LENGTH, SQLITE_TRANSIENT);
 }
 
@@ -239,7 +239,7 @@ static int register_uuid_functions(sqlite3 *db) {
     {"uuid_namespace_oid",  0, SQLITE_UTF8, uuid_namespace_oid},
     {"uuid_namespace_url",  0, SQLITE_UTF8, uuid_namespace_url},
     {"uuid_namespace_x500", 0, SQLITE_UTF8, uuid_namespace_x500},
-    {"uuid_to_string",      1, SQLITE_UTF8, uuid_to_string_func},
+    {"uuid_to_text",        1, SQLITE_UTF8, uuid_to_text_func},
     {"uuid_to_blob",        1, SQLITE_UTF8, uuid_to_blob_func},
   };
 
