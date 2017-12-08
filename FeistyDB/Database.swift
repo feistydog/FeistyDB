@@ -410,7 +410,7 @@ extension Database {
 	/// Adds a custom collation function.
 	///
 	/// ```swift
-	/// try db.add(collation: "localizedCompare", { (lhs, rhs) -> ComparisonResult in
+	/// try db.addCollation("localizedCompare", { (lhs, rhs) -> ComparisonResult in
 	///     return lhs.localizedCompare(rhs)
 	/// })
 	/// ```
@@ -419,7 +419,7 @@ extension Database {
 	/// - parameter block: A string comparison function
 	///
 	/// - throws: An error if the collation function couldn't be added
-	public func add(collation name: String, _ block: @escaping StringComparator) throws {
+	public func addCollation(_ name: String, _ block: @escaping StringComparator) throws {
 		let function_ptr = UnsafeMutablePointer<StringComparator>.allocate(capacity: 1)
 		function_ptr.initialize(to: block)
 		guard sqlite3_create_collation_v2(db, name, SQLITE_UTF8, function_ptr, { (context, lhs_len, lhs_data, rhs_len, rhs_data) -> Int32 in
@@ -445,7 +445,7 @@ extension Database {
 	/// - parameter name: The name of the custom collation sequence
 	///
 	/// - throws: An error if the collation function couldn't be removed
-	public func remove(collation name: String) throws {
+	public func removeCollation(_ name: String) throws {
 		guard sqlite3_create_collation_v2(db, name, SQLITE_UTF8, nil, nil, nil) == SQLITE_OK else {
 			throw DatabaseError(message: "Error removing collation sequence \"\(name)\"", takingDescriptionFromDatabase: db)
 		}
@@ -465,7 +465,7 @@ extension Database {
 	/// Adds a custom SQL function.
 	///
 	/// ```swift
-	/// try db.add(function: "localizedUppercase", arity: 1) { values in
+	/// try db.addFunction("localizedUppercase", arity: 1) { values in
 	///     let value = values.first.unsafelyUnwrapped
 	///     switch value {
 	///     case .text(let s):
@@ -483,7 +483,7 @@ extension Database {
 	/// - throws: An error if the SQL function couldn't be added
 	///
 	/// - seealso: [Create Or Redefine SQL Functions](https://sqlite.org/c3ref/create_function.html)
-	public func add(function name: String, arity: Int = -1, _ block: @escaping SQLFunction) throws {
+	public func addFunction(_ name: String, arity: Int = -1, _ block: @escaping SQLFunction) throws {
 		let function_ptr = UnsafeMutablePointer<SQLFunction>.allocate(capacity: 1)
 		function_ptr.initialize(to: block)
 		guard sqlite3_create_function_v2(db, name, Int32(arity), SQLITE_UTF8 | SQLITE_DETERMINISTIC, function_ptr, { sqlite_context, argc, argv in
@@ -529,7 +529,7 @@ extension Database {
 	/// - parameter arity: The number of arguments the custom SQL functions accepts
 	///
 	/// - throws: An error if the SQL function couldn't be removed
-	public func remove(function name: String, arity: Int = -1) throws {
+	public func removeFunction(_ name: String, arity: Int = -1) throws {
 		guard sqlite3_create_function_v2(db, name, Int32(arity), SQLITE_UTF8 | SQLITE_DETERMINISTIC, nil, nil, nil, nil, nil) == SQLITE_OK else {
 			throw DatabaseError(message: "Error removing SQL function \"\(name)\"", takingDescriptionFromDatabase: db)
 		}
@@ -547,7 +547,7 @@ extension Database {
 	/// Sets the hook called when a database transaction is committed.
 	///
 	/// - parameter commitHook: A closure called when a transaction is committed
-	public func set(commitHook block: @escaping CommitHook) {
+	public func setCommitHook(_ block: @escaping CommitHook) {
 		let context = UnsafeMutablePointer<CommitHook>.allocate(capacity: 1)
 		context.initialize(to: block)
 
@@ -577,7 +577,7 @@ extension Database {
 	/// Sets the hook called when a database transaction is rolled back.
 	///
 	/// - parameter rollbackHook: A closure called when a transaction is rolled back
-	public func set(rollbackHook block: @escaping RollbackHook) {
+	public func setRollbackHook(_ block: @escaping RollbackHook) {
 		let context = UnsafeMutablePointer<RollbackHook>.allocate(capacity: 1)
 		context.initialize(to: block)
 
@@ -614,7 +614,7 @@ extension Database {
 	/// Sets the hook called when a database transaction is committed in write-ahead log mode.
 	///
 	/// - parameter commitHook: A closure called when a transaction is committed
-	public func set(walCommitHook block: @escaping walCommitHook) {
+	public func setWALCommitHook(_ block: @escaping walCommitHook) {
 		let context = UnsafeMutablePointer<walCommitHook>.allocate(capacity: 1)
 		context.initialize(to: block)
 
@@ -666,7 +666,7 @@ extension Database {
 	/// Sets the hook called when a row is inserted, deleted, or updated in a rowid table.
 	///
 	/// - parameter updateHook: A closure called when a row is inserted, deleted, or updated
-	public func set(updateHook block: @escaping UpdateHook) {
+	public func setUpdateHook(_ block: @escaping UpdateHook) {
 		let context = UnsafeMutablePointer<UpdateHook>.allocate(capacity: 1)
 		context.initialize(to: block)
 
@@ -724,7 +724,7 @@ extension Database {
 	/// - parameter busyHandler: A closure called when an attempt is made to access a locked database table
 	///
 	/// - throws: An error if the busy handler couldn't be set
-	public func set(busyHandler block: @escaping BusyHandler) throws {
+	public func setBusyHandler(_ block: @escaping BusyHandler) throws {
 		if busyHandler == nil {
 			busyHandler = UnsafeMutablePointer<BusyHandler>.allocate(capacity: 1)
 		}
@@ -766,7 +766,7 @@ extension Database {
 	/// - throws: An error if the busy timeout couldn't be set
 	///
 	/// - seealso: [Set A Busy Timeout](http://www.sqlite.org/c3ref/busy_timeout.html)
-	public func set(busyTimeout ms: Int) throws {
+	public func setBusyTimeout(_ ms: Int) throws {
 		defer {
 			busyHandler?.deinitialize()
 			busyHandler?.deallocate(capacity: 1)
@@ -820,7 +820,7 @@ extension Database {
 	/// - returns: A tuple containing the current and highwater values of the requested parameter, as applicable
 	///
 	/// - seealso: [Database Connection Status](http://www.sqlite.org/c3ref/db_status.html)
-	public func status(of parameter: StatusParameter, resetHighwater: Bool = false) throws -> (Int, Int) {
+	public func status(ofParameter parameter: StatusParameter, resetHighwater: Bool = false) throws -> (Int, Int) {
 		let op: Int32
 		switch parameter {
 		case .lookasideUsed: 		op = SQLITE_DBSTATUS_LOOKASIDE_USED
@@ -895,7 +895,7 @@ public protocol FTS5Tokenizer {
 	///
 	/// - parameter text: The text to be tokenized.
 	/// - parameter reason: The reason tokenization is being requested.
-	func set(text: String, reason: Database.FTS5TokenizationReason)
+	func setText(_ text: String, reason: Database.FTS5TokenizationReason)
 
 	/// Advances the tokenizer to the next token.
 	///
@@ -997,7 +997,7 @@ extension Database {
 	/// - throws:  An error if the tokenizer can't be added
 	///
 	/// - seealso: [Custom Tokenizers](http://www.sqlite.org/fts5.html#custom_tokenizers)
-	public func add<T: FTS5Tokenizer>(tokenizer name: String, type: T.Type) throws {
+	public func addTokenizer<T: FTS5Tokenizer>(_ name: String, type: T.Type) throws {
 		// Fail early if FTS5 isn't available
 		let api_ptr = try get_fts5_api(for: db)
 
@@ -1033,7 +1033,7 @@ extension Database {
 			let text = String(bytesNoCopy: UnsafeMutableRawPointer(mutating: text_utf8.unsafelyUnwrapped), length: Int(text_len), encoding: .utf8, freeWhenDone: false).unsafelyUnwrapped
 			let reason = FTS5TokenizationReason(flags)
 
-			tokenizer.set(text: text, reason: reason)
+			tokenizer.setText(text, reason: reason)
 
 			// Use a local buffer for token extraction if possible
 			let bufsize = 512

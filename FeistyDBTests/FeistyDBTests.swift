@@ -7,6 +7,16 @@
 import XCTest
 @testable import FeistyDB
 
+extension DatabaseValue {
+	init(_ i: Int64) {
+		self = .integer(i)
+	}
+
+	init(_ t: String) {
+		self = .text(t)
+	}
+}
+
 class FeistyDBTests: XCTestCase {
 
     override func setUp() {
@@ -74,6 +84,32 @@ class FeistyDBTests: XCTestCase {
 		XCTAssertEqual(count, rowCount)
 	}
 
+	func testIteration2() {
+		let db = try! Database()
+
+		try! db.execute(sql: "create table t1(a,b,c,d);")
+
+		try! db.prepare(sql: "insert into t1(a,b,c,d) values (?,?,?,?);").bind(parameterValues: [1,2,3,4]).execute()
+		try! db.prepare(sql: "insert into t1(a,b,c,d) values (?,?,?,?);").bind(parameterValues: ["a","b","c","d"]).execute()
+		try! db.prepare(sql: "insert into t1(a,b,c,d) values (?,?,?,?);").bind(parameterValues: ["a",2,"c",4]).execute()
+
+		do {
+			let s = try! db.prepare(sql: "select * from t1 limit 1 offset 0;")
+			let r = try! s.firstRow()!
+			let v = [DatabaseValue](r)
+
+			XCTAssertEqual(v, [DatabaseValue(1),DatabaseValue(2),DatabaseValue(3),DatabaseValue(4)])
+		}
+
+		do {
+			let s = try! db.prepare(sql: "select * from t1 limit 1 offset 1;")
+			let r = try! s.firstRow()!
+			let v = [DatabaseValue](r)
+
+			XCTAssertEqual(v, [DatabaseValue("a"),DatabaseValue("b"),DatabaseValue("c"),DatabaseValue("d")])
+		}
+	}
+
 	func testUUIDExtension() {
 		let db = try! Database()
 
@@ -111,7 +147,7 @@ class FeistyDBTests: XCTestCase {
 	func testCustomCollation() {
 		let db = try! Database()
 
-		try! db.add(collation: "reversed", { (a, b) -> ComparisonResult in
+		try! db.addCollation("reversed", { (a, b) -> ComparisonResult in
 			return b.compare(a)
 		})
 
@@ -145,7 +181,7 @@ class FeistyDBTests: XCTestCase {
 			return String(s.map { rot13key[$0] ?? $0 })
 		}
 
-		try! db.add(function: "rot13", arity: 1) { values in
+		try! db.addFunction("rot13", arity: 1) { values in
 			let value = values.first.unsafelyUnwrapped
 			switch value {
 			case .text(let s):
@@ -168,7 +204,7 @@ class FeistyDBTests: XCTestCase {
 
 		XCTAssertEqual(results, ["guvf", "vf", "bayl", "n", "grfg"])
 
-		try! db.remove(function: "rot13", arity: 1)
+		try! db.removeFunction("rot13", arity: 1)
 		XCTAssertThrowsError(try db.prepare(sql: "select rot13(a) from t1;"))
 	}
 
@@ -182,7 +218,7 @@ class FeistyDBTests: XCTestCase {
 			required init(arguments: [String]) {
 			}
 
-			func set(text: String, reason: Database.FTS5TokenizationReason) {
+			func setText(_ text: String, reason: Database.FTS5TokenizationReason) {
 				self.text = text as CFString
 				tokenizer = CFStringTokenizerCreate(kCFAllocatorDefault, self.text, CFRangeMake(0, CFStringGetLength(self.text)), kCFStringTokenizerUnitWord, nil)
 			}
@@ -216,7 +252,7 @@ class FeistyDBTests: XCTestCase {
 
 		let db = try! Database()
 
-		try! db.add(tokenizer: "word", type: WordTokenizer.self)
+		try! db.addTokenizer("word", type: WordTokenizer.self)
 
 		try! db.execute(sql: "create virtual table t1 USING fts5(a, tokenize = 'word');")
 
