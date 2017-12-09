@@ -84,7 +84,7 @@ final public class Statement {
 	/// `true` if this statement makes no direct changes to the database, `false` otherwise.
 	///
 	/// - seealso: [Read-only statements in SQLite](https://sqlite.org/c3ref/stmt_readonly.html)
-	public lazy var readOnly: Bool = {
+	public lazy var isReadOnly: Bool = {
 		return sqlite3_stmt_readonly(self.stmt) != 0
 	}()
 
