@@ -40,12 +40,12 @@ extension Database {
 	/// Executes `sql` with the *n* parameters in `values` bound to the first *n* SQL parameters of `sql` and applies `block` to each result row.
 	///
 	/// - parameter sql: The SQL statement to execute
-	/// - parameter values: A sequence of values to bind to SQL parameters
+	/// - parameter values: A collection of values to bind to SQL parameters
 	/// - parameter block: A closure called for each result row
 	/// - parameter row: A result row of returned data
 	///
 	/// - throws: Any error thrown in `block` or an error if `sql` couldn't be compiled, `values` couldn't be bound, or the statement couldn't be executed
-	public func execute<S: Sequence>(sql: String, parameterValues values: S, _ block: ((_ row: Row) throws -> ())? = nil) throws where S.Element: ParameterBindable {
+	public func execute<C: Collection>(sql: String, parameterValues values: C, _ block: ((_ row: Row) throws -> ())? = nil) throws where C.Element: ParameterBindable {
 		let statement = try prepare(sql: sql)
 		try statement.bind(parameterValues: values)
 		if let block = block {
@@ -59,12 +59,12 @@ extension Database {
 	/// Executes `sql` with *value* bound to SQL parameter *name* for each (*name*, *value*) in `parameters` and applies `block` to each result row.
 	///
 	/// - parameter sql: The SQL statement to execute
-	/// - parameter parameters: A sequence of name and value pairs to bind to SQL parameters
+	/// - parameter parameters: A collection of name and value pairs to bind to SQL parameters
 	/// - parameter block: A closure called for each result row
 	/// - parameter row: A result row of returned data
 	///
 	/// - throws: Any error thrown in `block` or an error if `sql` couldn't be compiled, `parameters` couldn't be bound, or the statement couldn't be executed
-	public func execute<S: Sequence>(sql: String, parameters: S, _ block: ((_ row: Row) throws -> ())? = nil) throws where S.Element == (String, V: ParameterBindable) {
+	public func execute<C: Collection>(sql: String, parameters: C, _ block: ((_ row: Row) throws -> ())? = nil) throws where C.Element == (String, V: ParameterBindable) {
 		let statement = try prepare(sql: sql)
 		try statement.bind(parameters: parameters)
 		if let block = block {
@@ -197,12 +197,12 @@ extension Statement {
 extension Statement {
 	/// Binds the *n* parameters in `values` to the first *n* SQL parameters of `self`.
 	///
-	/// - parameter values: A sequence of values to bind to SQL parameters
+	/// - parameter values: A collection of values to bind to SQL parameters
 	///
 	/// - throws: An error if one of `values` couldn't be bound
 	///
 	/// - returns: `self`
-	@discardableResult public func bind<S: Sequence>(parameterValues values: S) throws -> Statement where S.Element: ParameterBindable {
+	@discardableResult public func bind<C: Collection>(parameterValues values: C) throws -> Statement where C.Element: ParameterBindable {
 		var index: Int32 = 1
 		for value in values {
 			try value.bind(to: stmt, parameter: index)
@@ -213,12 +213,12 @@ extension Statement {
 
 	/// Binds *value* to SQL parameter *name* for each (*name*, *value*) in `parameters`.
 	///
-	/// - parameter parameters: A sequence of name and value pairs to bind to SQL parameters
+	/// - parameter parameters: A collection of name and value pairs to bind to SQL parameters
 	///
 	/// - throws: An error if the SQL parameter *name* doesn't exist or *value* couldn't be bound
 	///
 	/// - returns: `self`
-	@discardableResult public func bind<S: Sequence>(parameters: S) throws -> Statement where S.Element == (String, V: ParameterBindable) {
+	@discardableResult public func bind<C: Collection>(parameters: C) throws -> Statement where C.Element == (String, V: ParameterBindable) {
 		for (name, value) in parameters {
 			let index = sqlite3_bind_parameter_index(stmt, name)
 			guard index > 0 else {
@@ -258,7 +258,7 @@ extension Statement {
 
 	/// Binds *value* to SQL parameter *name* for each (*name*, *value*) in `parameters`.
 	///
-	/// - parameter parameters: A sequence of name and value pairs to bind to SQL parameters
+	/// - parameter parameters: A series of name and value pairs to bind to SQL parameters
 	///
 	/// - throws: An error if the SQL parameter *name* doesn't exist or *value* couldn't be bound
 	///
