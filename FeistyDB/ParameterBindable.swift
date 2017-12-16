@@ -453,16 +453,9 @@ extension URL: ParameterBindable {
 	}
 }
 
-/// Used for date conversion
-// FIXME: Thread safe when more than one Database exists?
-let iso8601DateFormatter: ISO8601DateFormatter = {
-	let dateFormatter = ISO8601DateFormatter()
-	return dateFormatter
-}()
-
 extension Date: ParameterBindable {
 	public func bind(to stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
-		guard sqlite3_bind_text(stmt, idx, iso8601DateFormatter.string(from: self), -1, SQLITE_TRANSIENT) == SQLITE_OK else {
+		guard sqlite3_bind_double(stmt, idx, timeIntervalSinceReferenceDate) == SQLITE_OK else {
 			throw DatabaseError(message: "Error binding Date \"\(self)\" to parameter \(idx)", takingDescriptionFromStatement: stmt)
 		}
 	}

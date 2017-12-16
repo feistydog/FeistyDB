@@ -269,12 +269,7 @@ extension URL: ColumnConvertible {
 
 extension Date: ColumnConvertible {
 	public init(_ stmt: SQLitePreparedStatement, column idx: Int32) throws {
-		let s = String(cString: sqlite3_column_text(stmt, idx))
-		guard let d = iso8601DateFormatter.date(from: s) else {
-			throw DatabaseError("String \"\(s)\" isn't a valid ISO 8601 date")
-		}
-
-		self = d
+		self.init(timeIntervalSinceReferenceDate: sqlite3_column_double(stmt, idx))
 	}
 }
 
