@@ -108,7 +108,7 @@ final public class Database {
 	}
 
 	/// `true` if this database is read only, `false` otherwise
-	public lazy var readOnly: Bool = {
+	public lazy var isReadOnly: Bool = {
 		return sqlite3_db_readonly(self.db, nil) == 1
 	}()
 
