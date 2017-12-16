@@ -57,7 +57,52 @@ public final class ConcurrentDatabaseQueue {
 		}
 	}
 
+	/// Returns a compiled SQL statement.
+	///
+	/// Use this instead of `Database.prepare(sql:)` because it
+	/// serializes operations that can change the database, which
+	/// may not occur on different threads.
+	///
+	/// - parameter sql: The SQL statement to compile
+	///
+	/// - throws: An error if `sql` could not be compiled
+	///
+	/// - returns: A compiled SQL statement
+	public func prepare(sql: String) throws -> Statement {
+		return try queue.sync(flags: .barrier) {
+			return try database.prepare(sql: sql)
+		}
+	}
+
+	/// Compiles an SQL statement and submits an asynchronous read operation to the database queue.
+	///
+	/// - parameter sql: The SQL statement to compile
+	///
+	/// - important: Only read operations may be performed in `block`.  Actions
+	/// that modify the underlying database, including `Database.prepare(sql:)`,
+	/// are not allowed.
+	///
+	/// - parameter block: A closure performing the database operation
+	/// - parameter statement: A compiled version of `sql` used within `block`
+	public func read(sql: String, _ block: @escaping (_ statement: Statement) -> (Void)) throws {
+		let statement = try prepare(sql: sql)
+
+		#if DEBUG
+			guard statement.isReadOnly else {
+				throw DatabaseError("Statement is not read-only")
+			}
+		#endif
+
+		return queue.async {
+			block(statement)
+		}
+	}
+
 	/// Submits an asynchronous read operation to the database queue.
+	///
+	/// - important: Only read operations may be performed in `block`.  Actions
+	/// that modify the underlying database, including `Database.prepare(sql:)`,
+	/// are not allowed.
 	///
 	/// - parameter block: A closure performing the database operation
 	/// - parameter database: A `Database` used for database access within `block`
@@ -68,6 +113,10 @@ public final class ConcurrentDatabaseQueue {
 	}
 
 	/// Performs a synchronous read operation on the database.
+	///
+	/// - important: Only read operations may be performed in `block`.  Actions
+	/// that modify the underlying database, including `Database.prepare(sql:)`,
+	/// are not allowed.
 	///
 	/// - parameter block: A closure performing the database operation
 	/// - parameter database: A `Database` used for database access within `block`
