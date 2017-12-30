@@ -20,6 +20,9 @@ import Foundation
 /// }
 /// ```
 public final class ConcurrentDatabaseQueue {
+	/// A completion handler for asynchronous operations
+	public typealias CompletionHandler = () -> Void
+
 	/// The underlying database
 	private let database: Database
 	/// The dispatch queue used for concurrent access
@@ -106,9 +109,11 @@ public final class ConcurrentDatabaseQueue {
 	///
 	/// - parameter block: A closure performing the database operation
 	/// - parameter database: A `Database` used for database access within `block`
-	public func read(block: @escaping (_ database: Database) -> (Void)) {
+	/// - parameter completionHandler: A closure called after `block` completes
+	public func read(_ block: @escaping (_ database: Database) -> (Void), completionHandler: CompletionHandler? = nil) {
 		return queue.async {
 			block(self.database)
+			completionHandler?()
 		}
 	}
 
@@ -134,9 +139,10 @@ public final class ConcurrentDatabaseQueue {
 	///
 	/// - parameter block: A closure performing the database operation
 	/// - parameter database: A `Database` used for database access within `block`
-	public func write(block: @escaping (_ database: Database) -> (Void)) {
+	public func write(block: @escaping (_ database: Database) -> (Void), completionHandler: CompletionHandler? = nil) {
 		return queue.async(flags: .barrier) {
 			block(self.database)
+			completionHandler?()
 		}
 	}
 
@@ -158,13 +164,15 @@ public final class ConcurrentDatabaseQueue {
 	/// - parameter block: A closure performing the database operation
 	/// - parameter database: A `Database` used for database access within `block`
 	/// - parameter rollback: Whether to rollback the transaction after `block` completes
-	public func transaction(type: Database.TransactionType = .deferred, _ block: @escaping (_ database: Database, _ rollback: inout Bool) -> (Void)) {
+	/// - parameter completionHandler: A closure called after `block` completes and the transaction has successfully committed or rolled back
+	public func transaction(type: Database.TransactionType = .deferred, _ block: @escaping (_ database: Database, _ rollback: inout Bool) -> (Void), completionHandler: CompletionHandler? = nil) {
 		queue.async(flags: .barrier) {
 			do {
 				try self.database.begin(type: type)
 				var rollback = false
 				block(self.database, &rollback)
 				try rollback ? self.database.rollback() : self.database.commit()
+				completionHandler?()
 			}
 			catch let error {
 				#if DEBUG
@@ -199,7 +207,8 @@ public final class ConcurrentDatabaseQueue {
 	/// - parameter block: A closure performing the database operation
 	/// - parameter database: A `Database` used for database access within `block`
 	/// - parameter rollback: Whether to rollback the savepoint after `block` completes
-	public func savepoint(block: @escaping (_ database: Database, _ rollback: inout Bool) -> (Void)) {
+	/// - parameter completionHandler: A closure called after `block` completes and the savepoint has successfully released or rolled back
+	public func savepoint(block: @escaping (_ database: Database, _ rollback: inout Bool) -> (Void), completionHandler: CompletionHandler? = nil) {
 		queue.async(flags: .barrier) {
 			do {
 				let savepointUUID = UUID().uuidString
@@ -207,6 +216,7 @@ public final class ConcurrentDatabaseQueue {
 				var rollback = false
 				block(self.database, &rollback)
 				try rollback ? self.database.rollback(to: savepointUUID) : self.database.release(savepoint: savepointUUID)
+				completionHandler?()
 			}
 			catch let error {
 				#if DEBUG
