@@ -24,6 +24,7 @@
 		324CCF5A1DC623C20056935B /* DatabaseValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324CCF591DC623C20056935B /* DatabaseValue.swift */; };
 		324CCF5E1DC624950056935B /* DatabaseQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324CCF5D1DC624950056935B /* DatabaseQueue.swift */; };
 		324CCF711DC69CEF0056935B /* ConcurrentDatabaseQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324CCF701DC69CEF0056935B /* ConcurrentDatabaseQueue.swift */; };
+		32A017E21FF7587F00CFEB61 /* SQLiteError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32A017E11FF7587F00CFEB61 /* SQLiteError.swift */; };
 		32D3CF941DCD5A8B00BB53C6 /* DatabaseSerializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D3CF931DCD5A8B00BB53C6 /* DatabaseSerializable.swift */; };
 /* End PBXBuildFile section */
 
@@ -59,6 +60,7 @@
 		324CCF591DC623C20056935B /* DatabaseValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseValue.swift; sourceTree = "<group>"; };
 		324CCF5D1DC624950056935B /* DatabaseQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseQueue.swift; sourceTree = "<group>"; };
 		324CCF701DC69CEF0056935B /* ConcurrentDatabaseQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConcurrentDatabaseQueue.swift; sourceTree = "<group>"; };
+		32A017E11FF7587F00CFEB61 /* SQLiteError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLiteError.swift; sourceTree = "<group>"; };
 		32CF82E41DD038B800A0E2FB /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		32D3CF931DCD5A8B00BB53C6 /* DatabaseSerializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseSerializable.swift; sourceTree = "<group>"; };
 		32D3CF951DCE2F4100BB53C6 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -113,6 +115,7 @@
 				324CCF3A1DC61D640056935B /* Row.swift */,
 				324CCF591DC623C20056935B /* DatabaseValue.swift */,
 				324CCF531DC621F00056935B /* DatabaseError.swift */,
+				32A017E11FF7587F00CFEB61 /* SQLiteError.swift */,
 				324CCF5D1DC624950056935B /* DatabaseQueue.swift */,
 				324CCF701DC69CEF0056935B /* ConcurrentDatabaseQueue.swift */,
 				324CCF571DC6233E0056935B /* ColumnConvertible.swift */,
@@ -270,6 +273,7 @@
 				324CCF3F1DC61DE90056935B /* Statement.swift in Sources */,
 				324CCF5E1DC624950056935B /* DatabaseQueue.swift in Sources */,
 				32135F111DC819CC004B0E93 /* feisty_db_register_sqlite_uuid_extension.c in Sources */,
+				32A017E21FF7587F00CFEB61 /* SQLiteError.swift in Sources */,
 				32D3CF941DCD5A8B00BB53C6 /* DatabaseSerializable.swift in Sources */,
 				324CCF4C1DC61F020056935B /* sqlite3.c in Sources */,
 				324CCF4F1DC61F020056935B /* uuid.c in Sources */,

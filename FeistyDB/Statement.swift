@@ -71,7 +71,7 @@ final public class Statement {
 
 		var stmt: SQLitePreparedStatement? = nil
 		guard sqlite3_prepare_v2(database.db, sql, -1, &stmt, nil) == SQLITE_OK else {
-			throw DatabaseError(message: "Error preparing SQL \"\(sql)\"", takingDescriptionFromDatabase: database.db)
+			throw SQLiteError("Error preparing SQL \"\(sql)\"", takingDescriptionFromDatabase: database.db)
 		}
 
 		self.stmt = stmt!
@@ -173,7 +173,7 @@ final public class Statement {
 		case SQLITE_ROW:
 			throw DatabaseError("Result rows may not be discarded")
 		default:
-			throw DatabaseError(message: "Error executing statement", takingDescriptionFromStatement: stmt)
+			throw SQLiteError("Error executing statement", takingDescriptionFromStatement: stmt)
 		}
 	}
 
@@ -191,7 +191,7 @@ final public class Statement {
 		}
 
 		guard result == SQLITE_DONE else {
-			throw DatabaseError(message: "Error executing statement", takingDescriptionFromStatement: stmt)
+			throw SQLiteError("Error executing statement", takingDescriptionFromStatement: stmt)
 		}
 	}
 
@@ -207,7 +207,7 @@ final public class Statement {
 		case SQLITE_DONE:
 			return nil
 		default:
-			throw DatabaseError(message: "Error executing statement", takingDescriptionFromStatement: stmt)
+			throw SQLiteError("Error executing statement", takingDescriptionFromStatement: stmt)
 		}
 	}
 
@@ -218,7 +218,7 @@ final public class Statement {
 	/// - throws: An error if the statement could not be reset
 	public func reset() throws {
 		guard sqlite3_reset(stmt) == SQLITE_OK else {
-			throw DatabaseError(message: "Error resetting statement", takingDescriptionFromStatement: stmt)
+			throw SQLiteError("Error resetting statement", takingDescriptionFromStatement: stmt)
 		}
 	}
 
@@ -227,7 +227,7 @@ final public class Statement {
 	/// - throws: An error if the bindings could not be cleared
 	public func clearBindings() throws {
 		guard sqlite3_clear_bindings(stmt) == SQLITE_OK else {
-			throw DatabaseError(message: "Error clearing bindings", takingDescriptionFromStatement: stmt)
+			throw SQLiteError("Error clearing bindings", takingDescriptionFromStatement: stmt)
 		}
 	}
 

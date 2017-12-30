@@ -42,7 +42,7 @@ final public class Database {
 	public init() throws {
 		var db: SQLiteDatabaseConnection?
 		guard sqlite3_open_v2(":memory:", &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, nil) == SQLITE_OK else {
-			throw DatabaseError(message: "Error creating in-memory database", takingDescriptionFromDatabase: db!)
+			throw SQLiteError("Error creating in-memory database", takingDescriptionFromDatabase: db!)
 		}
 
 		self.db =  db!
@@ -64,7 +64,7 @@ final public class Database {
 			}
 
 			guard sqlite3_open_v2(path, &db, flags, nil) == SQLITE_OK else {
-				throw DatabaseError(message: "Error opening database at \(url)", takingDescriptionFromDatabase: db!)
+				throw SQLiteError("Error opening database at \(url)", takingDescriptionFromDatabase: db!)
 			}
 		}
 
@@ -230,7 +230,7 @@ extension Database {
 		}
 
 		guard sqlite3_exec(db, sql, nil, nil, nil) == SQLITE_OK else {
-			throw DatabaseError(message: "Error beginning transaction", takingDescriptionFromDatabase: db)
+			throw SQLiteError("Error beginning transaction", takingDescriptionFromDatabase: db)
 		}
 	}
 
@@ -239,7 +239,7 @@ extension Database {
 	/// - throws: An error if the transaction couldn't be rolled back or there is no active transaction
 	public func rollback() throws {
 		guard sqlite3_exec(db, "ROLLBACK;", nil, nil, nil) == SQLITE_OK else {
-			throw DatabaseError(message: "Error rolling back", takingDescriptionFromDatabase: db)
+			throw SQLiteError("Error rolling back", takingDescriptionFromDatabase: db)
 		}
 	}
 
@@ -248,7 +248,7 @@ extension Database {
 	/// - throws: An error if the transaction couldn't be committed or there is no active transaction
 	public func commit() throws {
 		guard sqlite3_exec(db, "COMMIT;", nil, nil, nil) == SQLITE_OK else {
-			throw DatabaseError(message: "Error committing", takingDescriptionFromDatabase: db)
+			throw SQLiteError("Error committing", takingDescriptionFromDatabase: db)
 		}
 	}
 }
@@ -265,7 +265,7 @@ extension Database {
 	/// - seealso: [SAVEPOINT](https://sqlite.org/lang_savepoint.html)
 	public func begin(savepoint name: String) throws {
 		guard sqlite3_exec(db, "SAVEPOINT \(name);", nil, nil, nil) == SQLITE_OK else {
-			throw DatabaseError(message: "Error creating savepoint", takingDescriptionFromDatabase: db)
+			throw SQLiteError("Error creating savepoint", takingDescriptionFromDatabase: db)
 		}
 	}
 
@@ -276,7 +276,7 @@ extension Database {
 	/// - throws: An error if the savepoint transaction couldn't be rolled back or doesn't exist
 	public func rollback(to name: String) throws {
 		guard sqlite3_exec(db, "ROLLBACK TO \(name);", nil, nil, nil) == SQLITE_OK else {
-			throw DatabaseError(message: "Error rolling back savepoint", takingDescriptionFromDatabase: db)
+			throw SQLiteError("Error rolling back savepoint", takingDescriptionFromDatabase: db)
 		}
 	}
 
@@ -289,7 +289,7 @@ extension Database {
 	/// - throws: An error if the savepoint transaction couldn't be committed or doesn't exist
 	public func release(savepoint name: String) throws {
 		guard sqlite3_exec(db, "RELEASE \(name);", nil, nil, nil) == SQLITE_OK else {
-			throw DatabaseError(message: "Error releasing savepoint", takingDescriptionFromDatabase: db)
+			throw SQLiteError("Error releasing savepoint", takingDescriptionFromDatabase: db)
 		}
 	}
 }
@@ -399,7 +399,7 @@ extension Database {
 			sqlite3_backup_finish(backup)
 
 			guard sqlite3_errcode(destination.db) == SQLITE_OK else {
-				throw DatabaseError(message: "Unable to backup database", takingDescriptionFromDatabase: destination.db)
+				throw SQLiteError("Unable to backup database", takingDescriptionFromDatabase: destination.db)
 			}
 		}
 	}
@@ -443,7 +443,7 @@ extension Database {
 			function_ptr.deinitialize()
 			function_ptr.deallocate(capacity: 1)
 		}) == SQLITE_OK else {
-			throw DatabaseError(message: "Error adding collation sequence \"\(name)\"", takingDescriptionFromDatabase: db)
+			throw SQLiteError("Error adding collation sequence \"\(name)\"", takingDescriptionFromDatabase: db)
 		}
 	}
 
@@ -454,7 +454,7 @@ extension Database {
 	/// - throws: An error if the collation function couldn't be removed
 	public func removeCollation(_ name: String) throws {
 		guard sqlite3_create_collation_v2(db, name, SQLITE_UTF8, nil, nil, nil) == SQLITE_OK else {
-			throw DatabaseError(message: "Error removing collation sequence \"\(name)\"", takingDescriptionFromDatabase: db)
+			throw SQLiteError("Error removing collation sequence \"\(name)\"", takingDescriptionFromDatabase: db)
 		}
 	}
 }
@@ -464,7 +464,7 @@ extension Database {
 	///
 	/// - parameter values: The SQL function parameters
 	///
-	/// - throws: `DatabaseError`
+	/// - throws: `Error`
 	///
 	/// - returns: The result of applying the function to `values`
 	public typealias SQLFunction = (_ values: [DatabaseValue]) throws -> DatabaseValue
@@ -526,7 +526,7 @@ extension Database {
 			function_ptr.deinitialize()
 			function_ptr.deallocate(capacity: 1)
 		}) == SQLITE_OK else {
-			throw DatabaseError(message: "Error adding SQL function \"\(name)\"", takingDescriptionFromDatabase: db)
+			throw SQLiteError("Error adding SQL function \"\(name)\"", takingDescriptionFromDatabase: db)
 		}
 	}
 
@@ -538,7 +538,7 @@ extension Database {
 	/// - throws: An error if the SQL function couldn't be removed
 	public func removeFunction(_ name: String, arity: Int = -1) throws {
 		guard sqlite3_create_function_v2(db, name, Int32(arity), SQLITE_UTF8 | SQLITE_DETERMINISTIC, nil, nil, nil, nil, nil) == SQLITE_OK else {
-			throw DatabaseError(message: "Error removing SQL function \"\(name)\"", takingDescriptionFromDatabase: db)
+			throw SQLiteError("Error removing SQL function \"\(name)\"", takingDescriptionFromDatabase: db)
 		}
 	}
 }
@@ -762,7 +762,7 @@ extension Database {
 		}
 
 		guard sqlite3_busy_handler(db, nil, nil) == SQLITE_OK else {
-			throw DatabaseError(message: "Error removing busy handler", takingDescriptionFromDatabase: db)
+			throw SQLiteError("Error removing busy handler", takingDescriptionFromDatabase: db)
 		}
 	}
 
@@ -848,7 +848,7 @@ extension Database {
 		var highwater: Int32 = 0
 
 		guard sqlite3_db_status(db, op, &current, &highwater, resetHighwater ? 1 : 0) == SQLITE_OK else {
-			throw DatabaseError(message: "Error retrieving database status", takingDescriptionFromDatabase: db)
+			throw SQLiteError("Error retrieving database status", takingDescriptionFromDatabase: db)
 		}
 
 		return (Int(current), Int(highwater))
@@ -866,7 +866,7 @@ func get_fts5_api(for db: SQLiteDatabaseConnection) throws -> UnsafePointer<fts5
 	var stmt: SQLitePreparedStatement? = nil
 	let sql = "SELECT fts5(?1);"
 	guard sqlite3_prepare_v2(db, sql, -1, &stmt, nil) == SQLITE_OK else {
-		throw DatabaseError(message: "Error preparing SQL \"\(sql)\"", takingDescriptionFromDatabase: db)
+		throw SQLiteError("Error preparing SQL \"\(sql)\"", takingDescriptionFromDatabase: db)
 	}
 
 	defer {
@@ -875,11 +875,11 @@ func get_fts5_api(for db: SQLiteDatabaseConnection) throws -> UnsafePointer<fts5
 
 	var api_ptr: UnsafePointer<fts5_api>?
 	guard sqlite3_bind_pointer(stmt, 1, &api_ptr, "fts5_api_ptr", nil) == SQLITE_OK else {
-		throw DatabaseError(message: "Error binding FTS5 API pointer", takingDescriptionFromStatement: stmt!)
+		throw SQLiteError("Error binding FTS5 API pointer", takingDescriptionFromStatement: stmt!)
 	}
 
 	guard sqlite3_step(stmt) == SQLITE_ROW else {
-		throw DatabaseError(message: "Error retrieving FTS5 API pointer", takingDescriptionFromStatement: stmt!)
+		throw SQLiteError("Error retrieving FTS5 API pointer", takingDescriptionFromStatement: stmt!)
 	}
 
 	guard let api = api_ptr else {
@@ -1093,7 +1093,7 @@ extension Database {
 		}) == SQLITE_OK else {
 			// xDestroy is not called if fts5_api.xCreateTokenizer() fails
 			Unmanaged<FTS5TokenizerCreator>.fromOpaque(user_data_ptr).release()
-			throw DatabaseError(message: "Error creating FTS5 tokenizer", takingDescriptionFromDatabase: db)
+			throw SQLiteError("Error creating FTS5 tokenizer", takingDescriptionFromDatabase: db)
 		}
 	}
 }
