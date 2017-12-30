@@ -303,10 +303,8 @@ extension Database {
 	/// - throws: An error if `sql` could not be compiled
 	///
 	/// - returns: A compiled SQL statement
-	public func prepareStatement(sql: String, forKey key: String) throws -> Statement {
-		let statement = try prepare(sql: sql)
-		preparedStatements[key] = statement
-		return statement
+	public func prepareStatement(sql: String, forKey key: String) throws {
+		preparedStatements[key] = try prepare(sql: sql)
 	}
 
 	/// Returns the compiled SQL statement for `key`.
@@ -316,6 +314,15 @@ extension Database {
 	/// - returns: A compiled SQL statement or `nil` if no statement for the specified key was found
 	public func preparedStatement(forKey key: String) -> Statement? {
 		return preparedStatements[key]
+	}
+
+	/// Stores a compiled SQL statement for later use.
+	///
+	/// - parameter statement: A compiled SQL statement
+	/// - parameter key: A key used to identify the statement
+	public func setPreparedStatement(_ statement: Statement, forKey key: String) {
+//		precondition(statement.database.db == self.db)
+		preparedStatements[key] = statement
 	}
 
 	/// Removes a compiled SQL statement.
@@ -704,7 +711,7 @@ extension Database.RowChangeType {
 		case SQLITE_INSERT: 	self = .insert
 		case SQLITE_DELETE: 	self = .delete
 		case SQLITE_UPDATE: 	self = .update
-		default:				fatalError("Unexpected row change type")
+		default:				preconditionFailure("Unexpected row change type")
 		}
 	}
 }
@@ -1101,7 +1108,7 @@ extension Database.FTS5TokenizationReason {
 		case FTS5_TOKENIZE_QUERY: 							self = .query
 		case FTS5_TOKENIZE_QUERY | FTS5_TOKENIZE_PREFIX: 	self = .prefix
 		case FTS5_TOKENIZE_AUX: 							self = .aux
-		default:											fatalError("Unexpected FTS5 flag")
+		default:											preconditionFailure("Unexpected FTS5 flag")
 		}
 	}
 }
