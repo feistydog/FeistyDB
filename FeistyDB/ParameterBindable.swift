@@ -117,6 +117,40 @@ extension Database {
 }
 
 extension Statement {
+	/// Binds database `NULL` to the SQL parameter at `index`.
+	///
+	/// - note: Parameter indexes are 1-based.  The leftmost parameter in a statement has index 1.
+	///
+	/// - requires: `index > 0`
+	/// - requires: `index < parameterCount`
+	///
+	/// - parameter index: The index of the SQL parameter to bind
+	///
+	/// - throws: An error if `NULL` couldn't be bound
+	public func bindNull(toParameter index: Int) throws {
+		let idx = Int32(index)
+		guard sqlite3_bind_null(stmt, idx) == SQLITE_OK else {
+			throw DatabaseError(message: "Error binding null to parameter \(idx)", takingDescriptionFromStatement: stmt)
+		}
+	}
+
+	/// Binds database `NULL` to the SQL parameter `name`.
+	///
+	/// - parameter name: The name of the SQL parameter to bind
+	///
+	/// - throws: An error if the SQL parameter `name` doesn't exist or `NULL` couldn't be bound
+	public func bindNull(toParameter name: String) throws {
+		let idx = sqlite3_bind_parameter_index(stmt, name)
+		guard idx > 0 else {
+			throw DatabaseError("Unknown parameter \"\(name)\"")
+		}
+		guard sqlite3_bind_null(stmt, idx) == SQLITE_OK else {
+			throw DatabaseError(message: "Error binding null to parameter \(idx)", takingDescriptionFromStatement: stmt)
+		}
+	}
+}
+
+extension Statement {
 	/// Binds `value` to the SQL parameter at `index`.
 	///
 	/// - note: Parameter indexes are 1-based.  The leftmost parameter in a statement has index 1.
