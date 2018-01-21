@@ -77,10 +77,12 @@ public final class DatabaseQueue {
 
 	/// Submits an asynchronous operation to the database queue.
 	///
+	/// - parameter group: An optional `DispatchGroup` with which to associate `block`
+	/// - parameter qos: The quality of service for `block`
 	/// - parameter block: A closure performing the database operation
 	/// - parameter database: A `Database` used for database access within `block`
-	public func async(block: @escaping (_ database: Database) -> (Void)) {
-		queue.async {
+	public func async(group: DispatchGroup? = nil, qos: DispatchQoS = .unspecified, block: @escaping (_ database: Database) -> (Void)) {
+		queue.async(group: group, qos: qos) {
 			block(self.database)
 		}
 	}
@@ -108,11 +110,13 @@ public final class DatabaseQueue {
 	/// Submits an asynchronous transaction to the database queue.
 	///
 	/// - parameter type: The type of transaction to perform
+	/// - parameter group: An optional `DispatchGroup` with which to associate `block`
+	/// - parameter qos: The quality of service for `block`
 	/// - parameter block: A closure performing the database operation
 	/// - parameter database: A `Database` used for database access within `block`
 	/// - parameter rollback: Whether to rollback the transaction after `block` completes
-	public func transaction_async(type: Database.TransactionType = .deferred, _ block: @escaping (_ database: Database, _ rollback: inout Bool) -> (Void)) {
-		queue.async {
+	public func transaction_async(type: Database.TransactionType = .deferred, group: DispatchGroup? = nil, qos: DispatchQoS = .unspecified, _ block: @escaping (_ database: Database, _ rollback: inout Bool) -> (Void)) {
+		queue.async(group: group, qos: qos) {
 			do {
 				try self.database.begin(type: type)
 				var rollback = false
@@ -149,11 +153,13 @@ public final class DatabaseQueue {
 
 	/// Submits an asynchronous savepoint to the database queue.
 	///
+	/// - parameter group: An optional `DispatchGroup` with which to associate `block`
+	/// - parameter qos: The quality of service for `block`
 	/// - parameter block: A closure performing the database operation
 	/// - parameter database: A `Database` used for database access within `block`
 	/// - parameter rollback: Whether to rollback the savepoint after `block` completes
-	public func savepoint_async(block: @escaping (_ database: Database, _ rollback: inout Bool) -> (Void)) {
-		queue.async {
+	public func savepoint_async(group: DispatchGroup? = nil, qos: DispatchQoS = .unspecified, block: @escaping (_ database: Database, _ rollback: inout Bool) -> (Void)) {
+		queue.async(group: group, qos: qos) {
 			do {
 				let savepointUUID = UUID().uuidString
 				try self.database.begin(savepoint: savepointUUID)
