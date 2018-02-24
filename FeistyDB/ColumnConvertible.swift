@@ -164,7 +164,12 @@ extension String: ColumnConvertible {
 extension Data: ColumnConvertible {
 	public init(_ stmt: SQLitePreparedStatement, column idx: Int32) {
 		let byteCount = Int(sqlite3_column_bytes(stmt, idx))
-		self.init(bytes: sqlite3_column_blob(stmt, idx).assumingMemoryBound(to: UInt8.self), count: byteCount)
+		if byteCount > 0 {
+			self.init(bytes: sqlite3_column_blob(stmt, idx).assumingMemoryBound(to: UInt8.self), count: byteCount)
+		}
+		else {
+			self.init()
+		}
 	}
 }
 
