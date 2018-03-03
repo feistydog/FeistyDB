@@ -251,6 +251,13 @@ extension Database {
 			throw SQLiteError("Error committing", takingDescriptionFromDatabase: db)
 		}
 	}
+
+	/// `true` if this database is in autocommit mode, `false` otherwise
+	///
+	/// - seealso: [Test For Auto-Commit Mode](http://www.sqlite.org/c3ref/get_autocommit.html)
+	public var isInAutocommitMode: Bool {
+		return sqlite3_get_autocommit(db) != 0
+	}
 }
 
 extension Database {
