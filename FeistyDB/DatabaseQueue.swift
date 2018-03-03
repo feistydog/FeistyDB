@@ -87,23 +87,48 @@ public final class DatabaseQueue {
 		}
 	}
 
+	/// Possible ways to complete a transaction
+	public enum TransactionCompletion {
+		/// The transaction should be committed
+		case commit
+		/// The transaction should be rolled back
+		case rollback
+	}
+
+	/// A series of database actions grouped into a transaction
+	///
+	/// - parameter database: A `Database` used for database access within the block
+	///
+	/// - returns: `.commit` if the transaction should be committed or `.rollback` if the transaction should be rolled back
+	public typealias TransactionBlock = (_ database: Database) throws -> TransactionCompletion
+
 	/// Performs a synchronous transaction on the database.
 	///
 	/// - parameter type: The type of transaction to perform
 	/// - parameter block: A closure performing the database operation
-	/// - parameter database: A `Database` used for database access within `block`
-	/// - parameter rollback: Whether to rollback the transaction after `block` completes
 	///
 	/// - throws: Any error thrown in `block` or an error if the transaction could not be started, rolled back, or committed
 	///
-	/// - returns: The value returned by `block`
-	public func transaction<T>(type: Database.TransactionType = .deferred, _ block: (_ database: Database, _ rollback: inout Bool) throws -> (T)) rethrows -> T {
+	/// - note: If `block` throws an error the transaction will be rolled back and the error will be re-thrown
+	/// - note: If an error occurs committing the transaction a rollback will be attempted and the error will be re-thrown
+	public func transaction(type: Database.TransactionType = .deferred, _ block: TransactionBlock) throws {
 		return try queue.sync {
 			try database.begin(type: type)
-			var rollback = false
-			let result = try block(database, &rollback)
-			try rollback ? database.rollback() : database.commit()
-			return result
+			do {
+				let action = try block(database)
+				switch action {
+				case .commit:
+					try database.commit()
+				case .rollback:
+					try database.rollback()
+				}
+			}
+			catch let error {
+				if !database.isInAutocommitMode {
+					try database.rollback()
+				}
+				throw error
+			}
 		}
 	}
 
@@ -113,41 +138,78 @@ public final class DatabaseQueue {
 	/// - parameter group: An optional `DispatchGroup` with which to associate `block`
 	/// - parameter qos: The quality of service for `block`
 	/// - parameter block: A closure performing the database operation
-	/// - parameter database: A `Database` used for database access within `block`
-	/// - parameter rollback: Whether to rollback the transaction after `block` completes
-	public func transaction_async(type: Database.TransactionType = .deferred, group: DispatchGroup? = nil, qos: DispatchQoS = .unspecified, _ block: @escaping (_ database: Database, _ rollback: inout Bool) -> (Void)) {
+	public func transaction_async(type: Database.TransactionType = .deferred, group: DispatchGroup? = nil, qos: DispatchQoS = .unspecified, _ block: @escaping TransactionBlock) {
 		queue.async(group: group, qos: qos) {
 			do {
 				try self.database.begin(type: type)
-				var rollback = false
-				block(self.database, &rollback)
-				try rollback ? self.database.rollback() : self.database.commit()
 			}
 			catch let error {
 				#if DEBUG
 					print(error)
 				#endif
+				return
+			}
+
+			do {
+				let action = try block(self.database)
+				switch action {
+				case .commit:
+					try self.database.commit()
+				case .rollback:
+					try self.database.rollback()
+				}
+			}
+			catch let error {
+				#if DEBUG
+					print(error)
+				#endif
+				if !self.database.isInAutocommitMode {
+					try? self.database.rollback()
+				}
 			}
 		}
 	}
 
+	/// Possible ways to complete a savepoint
+	public enum SavepointCompletion {
+		/// The savepoint should be released
+		case release
+		/// The savepoint should be rolled back
+		case rollback
+	}
+
+	/// A series of database actions grouped into a savepoint
+	///
+	/// - parameter database: A `Database` used for database access within the block
+	///
+	/// - returns: `.release` if the savepoint should be released or `.rollback` if the savepoint should be rolled back
+	public typealias SavepointBlock = (_ database: Database) throws -> SavepointCompletion
+
 	/// Performs a synchronous savepoint on the database.
 	///
 	/// - parameter block: A closure performing the database operation
-	/// - parameter database: A `Database` used for database access within `block`
-	/// - parameter rollback: Whether to rollback the savepoint after `block` completes
 	///
 	/// - throws: Any error thrown in `block` or an error if the savepoint could not be started, rolled back, or released
 	///
-	/// - returns: The value returned by `block`
-	public func savepoint<T>(block: (_ database: Database, _ rollback: inout Bool) throws -> (T)) rethrows -> T {
+	/// - note: If `block` throws an error the savepoint will be rolled back and the error will be re-thrown
+	/// - note: If an error occurs releasing the savepoint a rollback will be attempted and the error will be re-thrown
+	public func savepoint(block: SavepointBlock) throws {
 		return try queue.sync {
 			let savepointUUID = UUID().uuidString
 			try database.begin(savepoint: savepointUUID)
-			var rollback = false
-			let result = try block(database, &rollback)
-			try rollback ? database.rollback(to: savepointUUID) : database.release(savepoint: savepointUUID)
-			return result
+			do {
+				let action = try block(database)
+				switch action {
+				case .release:
+					try database.release(savepoint: savepointUUID)
+				case .rollback:
+					try database.rollback(to: savepointUUID)
+				}
+			}
+			catch let error {
+				try? database.rollback(to: savepointUUID)
+				throw error
+			}
 		}
 	}
 
@@ -157,20 +219,34 @@ public final class DatabaseQueue {
 	/// - parameter qos: The quality of service for `block`
 	/// - parameter block: A closure performing the database operation
 	/// - parameter database: A `Database` used for database access within `block`
-	/// - parameter rollback: Whether to rollback the savepoint after `block` completes
-	public func savepoint_async(group: DispatchGroup? = nil, qos: DispatchQoS = .unspecified, block: @escaping (_ database: Database, _ rollback: inout Bool) -> (Void)) {
+	public func savepoint_async(group: DispatchGroup? = nil, qos: DispatchQoS = .unspecified, block: @escaping SavepointBlock) {
 		queue.async(group: group, qos: qos) {
+			let savepointUUID = UUID().uuidString
+
 			do {
-				let savepointUUID = UUID().uuidString
 				try self.database.begin(savepoint: savepointUUID)
-				var rollback = false
-				block(self.database, &rollback)
-				try rollback ? self.database.rollback(to: savepointUUID) : self.database.release(savepoint: savepointUUID)
 			}
 			catch let error {
 				#if DEBUG
 					print(error)
 				#endif
+				return
+			}
+
+			do {
+				let action = try block(self.database)
+				switch action {
+				case .release:
+					try self.database.release(savepoint: savepointUUID)
+				case .rollback:
+					try self.database.rollback(to: savepointUUID)
+				}
+			}
+			catch let error {
+				#if DEBUG
+					print(error)
+				#endif
+				try? self.database.rollback(to: savepointUUID)
 			}
 		}
 	}
