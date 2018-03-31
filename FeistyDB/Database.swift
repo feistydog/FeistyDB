@@ -103,8 +103,8 @@ final public class Database {
 	deinit {
 		preparedStatements.removeAll()
 		sqlite3_close(db)
-		busyHandler?.deinitialize()
-		busyHandler?.deallocate(capacity: 1)
+		busyHandler?.deinitialize(count: 1)
+		busyHandler?.deallocate()
 	}
 
 	/// `true` if this database is read only, `false` otherwise
@@ -447,8 +447,8 @@ extension Database {
 			return Int32(result.rawValue)
 		}, { context in
 			let function_ptr = context.unsafelyUnwrapped.assumingMemoryBound(to: StringComparator.self)
-			function_ptr.deinitialize()
-			function_ptr.deallocate(capacity: 1)
+			function_ptr.deinitialize(count: 1)
+			function_ptr.deallocate()
 		}) == SQLITE_OK else {
 			throw SQLiteError("Error adding collation sequence \"\(name)\"", takingDescriptionFromDatabase: db)
 		}
@@ -530,8 +530,8 @@ extension Database {
 			}
 		}, nil, nil, { context in
 			let function_ptr = context.unsafelyUnwrapped.assumingMemoryBound(to: SQLFunction.self)
-			function_ptr.deinitialize()
-			function_ptr.deallocate(capacity: 1)
+			function_ptr.deinitialize(count: 1)
+			function_ptr.deallocate()
 		}) == SQLITE_OK else {
 			throw SQLiteError("Error adding SQL function \"\(name)\"", takingDescriptionFromDatabase: db)
 		}
@@ -569,8 +569,8 @@ extension Database {
 			return context.unsafelyUnwrapped.assumingMemoryBound(to: CommitHook.self).pointee() ? 0 : 1
 		}, context) {
 			let oldContext = old.assumingMemoryBound(to: CommitHook.self)
-			oldContext.deinitialize()
-			oldContext.deallocate(capacity: 1)
+			oldContext.deinitialize(count: 1)
+			oldContext.deallocate()
 		}
 	}
 
@@ -578,8 +578,8 @@ extension Database {
 	public func removeCommitHook() {
 		if let old = sqlite3_commit_hook(db, nil, nil) {
 			let oldContext = old.assumingMemoryBound(to: CommitHook.self)
-			oldContext.deinitialize()
-			oldContext.deallocate(capacity: 1)
+			oldContext.deinitialize(count: 1)
+			oldContext.deallocate()
 		}
 	}
 
@@ -599,8 +599,8 @@ extension Database {
 			context.unsafelyUnwrapped.assumingMemoryBound(to: RollbackHook.self).pointee()
 		}, context) {
 			let oldContext = old.assumingMemoryBound(to: RollbackHook.self)
-			oldContext.deinitialize()
-			oldContext.deallocate(capacity: 1)
+			oldContext.deinitialize(count: 1)
+			oldContext.deallocate()
 		}
 	}
 
@@ -608,8 +608,8 @@ extension Database {
 	public func removeRollbackHook() {
 		if let old = sqlite3_rollback_hook(db, nil, nil) {
 			let oldContext = old.assumingMemoryBound(to: RollbackHook.self)
-			oldContext.deinitialize()
-			oldContext.deallocate(capacity: 1)
+			oldContext.deinitialize(count: 1)
+			oldContext.deallocate()
 		}
 	}
 }
@@ -640,8 +640,8 @@ extension Database {
 			return context.unsafelyUnwrapped.assumingMemoryBound(to: walCommitHook.self).pointee(database, Int(pageCount))
 		}, context) {
 			let oldContext = old.assumingMemoryBound(to: walCommitHook.self)
-			oldContext.deinitialize()
-			oldContext.deallocate(capacity: 1)
+			oldContext.deinitialize(count: 1)
+			oldContext.deallocate()
 		}
 	}
 
@@ -649,8 +649,8 @@ extension Database {
 	public func removeWALCommitHook() {
 		if let old = sqlite3_wal_hook(db, nil, nil) {
 			let oldContext = old.assumingMemoryBound(to: walCommitHook.self)
-			oldContext.deinitialize()
-			oldContext.deallocate(capacity: 1)
+			oldContext.deinitialize(count: 1)
+			oldContext.deallocate()
 		}
 	}
 }
@@ -694,8 +694,8 @@ extension Database {
 			function_ptr.pointee(changeType, database, table, rowid)
 		}, context) {
 			let oldContext = old.assumingMemoryBound(to: UpdateHook.self)
-			oldContext.deinitialize()
-			oldContext.deallocate(capacity: 1)
+			oldContext.deinitialize(count: 1)
+			oldContext.deallocate()
 		}
 	}
 
@@ -703,8 +703,8 @@ extension Database {
 	public func removeUpdateHook() {
 		if let old = sqlite3_update_hook(db, nil, nil) {
 			let oldContext = old.assumingMemoryBound(to: UpdateHook.self)
-			oldContext.deinitialize()
-			oldContext.deallocate(capacity: 1)
+			oldContext.deinitialize(count: 1)
+			oldContext.deallocate()
 		}
 	}
 }
@@ -743,7 +743,7 @@ extension Database {
 			busyHandler = UnsafeMutablePointer<BusyHandler>.allocate(capacity: 1)
 		}
 		else {
-			busyHandler?.deinitialize()
+			busyHandler?.deinitialize(count: 1)
 		}
 
 		busyHandler?.initialize(to: block)
@@ -751,8 +751,8 @@ extension Database {
 		guard sqlite3_busy_handler(db, { context, count in
 			return context.unsafelyUnwrapped.assumingMemoryBound(to: BusyHandler.self).pointee(Int(count)) ? 0 : 1
 		}, busyHandler) == SQLITE_OK else {
-			busyHandler?.deinitialize()
-			busyHandler?.deallocate(capacity: 1)
+			busyHandler?.deinitialize(count: 1)
+			busyHandler?.deallocate()
 			busyHandler = nil
 			throw DatabaseError("Error setting busy handler")
 		}
@@ -763,8 +763,8 @@ extension Database {
 	/// - throws: An error if the busy handler couldn't be removed
 	public func removeBusyHandler() throws {
 		defer {
-			busyHandler?.deinitialize()
-			busyHandler?.deallocate(capacity: 1)
+			busyHandler?.deinitialize(count: 1)
+			busyHandler?.deallocate()
 			busyHandler = nil
 		}
 
@@ -782,8 +782,8 @@ extension Database {
 	/// - seealso: [Set A Busy Timeout](http://www.sqlite.org/c3ref/busy_timeout.html)
 	public func setBusyTimeout(_ ms: Int) throws {
 		defer {
-			busyHandler?.deinitialize()
-			busyHandler?.deallocate(capacity: 1)
+			busyHandler?.deinitialize(count: 1)
+			busyHandler?.deallocate()
 			busyHandler = nil
 		}
 
@@ -1054,7 +1054,7 @@ extension Database {
 			var buf = UnsafeMutablePointer<UInt8>.allocate(capacity: bufsize)
 
 			defer {
-				buf.deallocate(capacity: bufsize)
+				buf.deallocate()
 			}
 
 			// Process each token and pass to FTS5
