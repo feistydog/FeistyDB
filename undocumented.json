@@ -1,6 +1,19 @@
 {
   "warnings": [
-
+    {
+      "file": "/Users/sbooth/Development/FeistyDB/FeistyDB/ColumnConvertible.swift",
+      "line": 113,
+      "symbol": "Row.subscript(at:)",
+      "symbol_kind": "source.lang.swift.decl.function.subscript",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/sbooth/Development/FeistyDB/FeistyDB/ColumnConvertible.swift",
+      "line": 117,
+      "symbol": "Row.subscript(named:)",
+      "symbol_kind": "source.lang.swift.decl.function.subscript",
+      "warning": "undocumented"
+    }
   ],
   "source_directory": "/Users/sbooth/Development/FeistyDB"
 }
