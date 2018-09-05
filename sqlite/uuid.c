@@ -24,7 +24,6 @@ SQLITE_EXTENSION_INIT1
 #endif
 
 #ifdef USE_COMMONCRYPTO
-#define COMMON_DIGEST_FOR_OPENSSL
 #include <CommonCrypto/CommonDigest.h>
 #endif
 
@@ -72,12 +71,23 @@ static void uuid3func(
 
   uuid_t uu;
 
-  MD5_CTX mdctx;
-  unsigned char md_value[MD5_DIGEST_LENGTH];
-  MD5_Init(&mdctx);
-  MD5_Update(&mdctx, namespace_uuid, UUID_SIZE);
-  MD5_Update(&mdctx, name, strlen((const char *)name));
-  MD5_Final(md_value, &mdctx);
+#ifdef USE_OPENSSL
+	MD5_CTX mdctx;
+	unsigned char md_value[MD5_DIGEST_LENGTH];
+	MD5_Init(&mdctx);
+	MD5_Update(&mdctx, namespace_uuid, UUID_SIZE);
+	MD5_Update(&mdctx, name, strlen((const char *)name));
+	MD5_Final(md_value, &mdctx);
+#endif
+
+#ifdef USE_COMMONCRYPTO
+  CC_MD5_CTX mdctx;
+  unsigned char md_value[CC_MD5_DIGEST_LENGTH];
+  CC_MD5_Init(&mdctx);
+  CC_MD5_Update(&mdctx, namespace_uuid, UUID_SIZE);
+  CC_MD5_Update(&mdctx, name, (CC_LONG)strlen((const char *)name));
+  CC_MD5_Final(md_value, &mdctx);
+#endif
 
   SET_VARIANT(md_value);
   SET_VERSION(md_value, 3);
@@ -126,12 +136,23 @@ static void uuid5func(
 
   uuid_t uu;
 
-  SHA_CTX mdctx;
-  unsigned char md_value[SHA_DIGEST_LENGTH];
-  SHA1_Init(&mdctx);
-  SHA1_Update(&mdctx, namespace_uuid, UUID_SIZE);
-  SHA1_Update(&mdctx, name, strlen((const char *)name));
-  SHA1_Final(md_value, &mdctx);
+#ifdef USE_OPENSSL
+	SHA_CTX mdctx;
+	unsigned char md_value[SHA_DIGEST_LENGTH];
+	SHA1_Init(&mdctx);
+	SHA1_Update(&mdctx, namespace_uuid, UUID_SIZE);
+	SHA1_Update(&mdctx, name, strlen((const char *)name));
+	SHA1_Final(md_value, &mdctx);
+#endif
+
+#ifdef USE_COMMONCRYPTO
+  CC_SHA1_CTX mdctx;
+  unsigned char md_value[CC_SHA1_DIGEST_LENGTH];
+  CC_SHA1_Init(&mdctx);
+  CC_SHA1_Update(&mdctx, namespace_uuid, UUID_SIZE);
+  CC_SHA1_Update(&mdctx, name, (CC_LONG)strlen((const char *)name));
+  CC_SHA1_Final(md_value, &mdctx);
+#endif
 
   SET_VARIANT(md_value);
   SET_VERSION(md_value, 5);
