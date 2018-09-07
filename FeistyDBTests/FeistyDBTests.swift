@@ -121,6 +121,17 @@ class FeistyDBTests: XCTestCase {
 		XCTAssertNotNil(u)
 	}
 
+	func testSHAExtension() {
+		let db = try! Database()
+
+		try! db.execute(sql: "create table t1(a);")
+		try! db.execute(sql: "insert into t1 (a) values (sha256('lu'));")
+
+		let s: String? = try! db.prepare(sql: "select hex(a) from t1 limit 1;").front()
+
+		XCTAssertEqual(s, "80C0FCBBFA9D03D861B22230E67C380AFB545C12DE43094F3985128625858361")
+	}
+
 	func testEncodable() {
 		let db = try! Database()
 
