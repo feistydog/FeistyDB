@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import os.log
 
 /// An `sqlite3_stmt *` object.
 ///
@@ -101,9 +102,7 @@ final public class Statement {
 	/// The SQL text of the statement with bound parameters expanded
 	public var expandedSQL: String {
 		guard let s = sqlite3_expanded_sql(stmt) else {
-			#if DEBUG
-				print("sqlite3_expanded_sql() returned NULL")
-			#endif
+			os_log("sqlite3_expanded_sql() returned NULL", type: .info);
 			return ""
 		}
 		defer {

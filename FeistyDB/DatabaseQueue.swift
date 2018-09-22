@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import os.log
 
 /// A queue providing serialized execution of work items on a database.
 ///
@@ -112,7 +113,7 @@ public final class DatabaseQueue {
 	/// - note: If `block` throws an error the transaction will be rolled back and the error will be re-thrown
 	/// - note: If an error occurs committing the transaction a rollback will be attempted and the error will be re-thrown
 	public func transaction(type: Database.TransactionType = .deferred, _ block: TransactionBlock) throws {
-		return try queue.sync {
+		try queue.sync {
 			try database.begin(type: type)
 			do {
 				let action = try block(database)
@@ -144,9 +145,7 @@ public final class DatabaseQueue {
 				try self.database.begin(type: type)
 			}
 			catch let error {
-				#if DEBUG
-					print(error)
-				#endif
+				os_log("Error beginning transaction: %{public}@", type: .info, error.localizedDescription);
 				return
 			}
 
@@ -160,9 +159,7 @@ public final class DatabaseQueue {
 				}
 			}
 			catch let error {
-				#if DEBUG
-					print(error)
-				#endif
+				os_log("Error during transaction: %{public}@", type: .info, error.localizedDescription);
 				if !self.database.isInAutocommitMode {
 					try? self.database.rollback()
 				}
@@ -194,7 +191,7 @@ public final class DatabaseQueue {
 	/// - note: If `block` throws an error the savepoint will be rolled back and the error will be re-thrown
 	/// - note: If an error occurs releasing the savepoint a rollback will be attempted and the error will be re-thrown
 	public func savepoint(block: SavepointBlock) throws {
-		return try queue.sync {
+		try queue.sync {
 			let savepointUUID = UUID().uuidString
 			try database.begin(savepoint: savepointUUID)
 			do {
@@ -227,9 +224,7 @@ public final class DatabaseQueue {
 				try self.database.begin(savepoint: savepointUUID)
 			}
 			catch let error {
-				#if DEBUG
-					print(error)
-				#endif
+				os_log("Error beginning savepoint: %{public}@", type: .info, error.localizedDescription);
 				return
 			}
 
@@ -243,9 +238,7 @@ public final class DatabaseQueue {
 				}
 			}
 			catch let error {
-				#if DEBUG
-					print(error)
-				#endif
+				os_log("Error during savepoint: %{public}@", type: .info, error.localizedDescription);
 				try? self.database.rollback(to: savepointUUID)
 			}
 		}

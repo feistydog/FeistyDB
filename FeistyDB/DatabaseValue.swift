@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import os.log
 
 /// A native data type that may be stored in an SQLite database.
 ///
@@ -87,9 +88,7 @@ extension DatabaseValue {
 			self = .null
 
 		default:
-			#if DEBUG
-				print("Unknown SQLite column type \(type) encountered")
-			#endif
+			os_log("Unknown SQLite column type %d encountered", type: .info, type);
 			self = .null
 		}
 	}
@@ -118,9 +117,7 @@ extension DatabaseValue {
 		case SQLITE_NULL:
 			self = .null
 		default:
-			#if DEBUG
-				print("Unknown SQLite value type \(type) encountered")
-			#endif
+			os_log("Unknown SQLite value type %d encountered", type: .info, type);
 			self = .null
 		}
 	}
