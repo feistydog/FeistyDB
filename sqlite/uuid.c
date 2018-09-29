@@ -72,12 +72,12 @@ static void uuid3func(
   uuid_t uu;
 
 #ifdef USE_OPENSSL
-	MD5_CTX mdctx;
-	unsigned char md_value[MD5_DIGEST_LENGTH];
-	MD5_Init(&mdctx);
-	MD5_Update(&mdctx, namespace_uuid, UUID_SIZE);
-	MD5_Update(&mdctx, name, strlen((const char *)name));
-	MD5_Final(md_value, &mdctx);
+  MD5_CTX mdctx;
+  unsigned char md_value[MD5_DIGEST_LENGTH];
+  MD5_Init(&mdctx);
+  MD5_Update(&mdctx, namespace_uuid, UUID_SIZE);
+  MD5_Update(&mdctx, name, strlen((const char *)name));
+  MD5_Final(md_value, &mdctx);
 #endif
 
 #ifdef USE_COMMONCRYPTO
@@ -137,12 +137,12 @@ static void uuid5func(
   uuid_t uu;
 
 #ifdef USE_OPENSSL
-	SHA_CTX mdctx;
-	unsigned char md_value[SHA_DIGEST_LENGTH];
-	SHA1_Init(&mdctx);
-	SHA1_Update(&mdctx, namespace_uuid, UUID_SIZE);
-	SHA1_Update(&mdctx, name, strlen((const char *)name));
-	SHA1_Final(md_value, &mdctx);
+  SHA_CTX mdctx;
+  unsigned char md_value[SHA_DIGEST_LENGTH];
+  SHA1_Init(&mdctx);
+  SHA1_Update(&mdctx, namespace_uuid, UUID_SIZE);
+  SHA1_Update(&mdctx, name, strlen((const char *)name));
+  SHA1_Final(md_value, &mdctx);
 #endif
 
 #ifdef USE_COMMONCRYPTO
@@ -231,7 +231,7 @@ static void uuid_to_blob_func(
 ){
   assert(argc==1);
   uuid_t uuid;
-  const unsigned char *uuid_str	= sqlite3_value_text(argv[0]);
+  const unsigned char *uuid_str = sqlite3_value_text(argv[0]);
   if(uuid_parse((const char *)uuid_str, uuid) == -1) {
     sqlite3_result_error(context, "invalid uuid", -1);
     return;
