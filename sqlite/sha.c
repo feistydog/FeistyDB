@@ -15,8 +15,6 @@
 #include <sqlite3ext.h>
 SQLITE_EXTENSION_INIT1
 #include <assert.h>
-#include <uuid/uuid.h>
-#include <string.h>
 
 #include <CommonCrypto/CommonDigest.h>
 
