@@ -243,4 +243,19 @@ public final class DatabaseQueue {
 			}
 		}
 	}
+
+	/// Performs a synchronous operation on the database.
+	///
+	/// - warning: This bypasses the internal dispatch queue and may result in
+	/// unpredictability, data corruption, or a crash if used incorrectly.
+	///
+	/// - parameter block: A closure performing the database operation
+	/// - parameter database: A `Database` used for database access within `block`
+	///
+	/// - throws: Any error thrown in `block`
+	///
+	/// - returns: The value returned by `block`
+	public func withUnsafeDatabase<T>(block: (_ database: Database) throws -> (T)) rethrows -> T {
+		return try block(self.database)
+	}
 }
