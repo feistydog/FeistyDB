@@ -307,4 +307,15 @@ public final class ConcurrentDatabaseQueue {
 			}
 		}
 	}
+
+	/// Perform a write-ahead log checkpoint on the database.
+	///
+	/// - parameter type: The type of checkpoint to perform
+	///
+	/// - throws: An error if the checkpoint failed
+	public func checkpoint(_ type: Database.WALCheckpointType = .passive) throws {
+		try queue.sync(flags: .barrier) {
+			try database.walCheckpoint(type: type)
+		}
+	}
 }
