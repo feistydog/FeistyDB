@@ -258,6 +258,49 @@ extension Database {
 	public var isInAutocommitMode: Bool {
 		return sqlite3_get_autocommit(db) != 0
 	}
+
+	/// Possible ways to complete a transaction
+	public enum TransactionCompletion {
+		/// The transaction should be committed
+		case commit
+		/// The transaction should be rolled back
+		case rollback
+	}
+
+	/// A series of database actions grouped into a transaction
+	///
+	/// - parameter database: A `Database` used for database access within the block
+	///
+	/// - returns: `.commit` if the transaction should be committed or `.rollback` if the transaction should be rolled back
+	public typealias TransactionBlock = (_ database: Database) throws -> TransactionCompletion
+
+	/// Performs a transaction on the database.
+	///
+	/// - parameter type: The type of transaction to perform
+	/// - parameter block: A closure performing the database operation
+	///
+	/// - throws: Any error thrown in `block` or an error if the transaction could not be started, rolled back, or committed
+	///
+	/// - note: If `block` throws an error the transaction will be rolled back and the error will be re-thrown
+	/// - note: If an error occurs committing the transaction a rollback will be attempted and the error will be re-thrown
+	public func transaction(type: Database.TransactionType = .deferred, _ block: TransactionBlock) throws {
+		try begin(type: type)
+		do {
+			let action = try block(self)
+			switch action {
+			case .commit:
+				try commit()
+			case .rollback:
+				try rollback()
+			}
+		}
+		catch let error {
+			if !isInAutocommitMode {
+				try rollback()
+			}
+			throw error
+		}
+	}
 }
 
 extension Database {
@@ -297,6 +340,47 @@ extension Database {
 	public func release(savepoint name: String) throws {
 		guard sqlite3_exec(db, "RELEASE '\(name)';", nil, nil, nil) == SQLITE_OK else {
 			throw SQLiteError("Error releasing savepoint", takingDescriptionFromDatabase: db)
+		}
+	}
+
+	/// Possible ways to complete a savepoint
+	public enum SavepointCompletion {
+		/// The savepoint should be released
+		case release
+		/// The savepoint should be rolled back
+		case rollback
+	}
+
+	/// A series of database actions grouped into a savepoint transaction
+	///
+	/// - parameter database: A `Database` used for database access within the block
+	///
+	/// - returns: `.release` if the savepoint should be released or `.rollback` if the savepoint should be rolled back
+	public typealias SavepointBlock = (_ database: Database) throws -> SavepointCompletion
+
+	/// Performs a savepoint transaction on the database.
+	///
+	/// - parameter block: A closure performing the database operation
+	///
+	/// - throws: Any error thrown in `block` or an error if the savepoint could not be started, rolled back, or released
+	///
+	/// - note: If `block` throws an error the savepoint will be rolled back and the error will be re-thrown
+	/// - note: If an error occurs releasing the savepoint a rollback will be attempted and the error will be re-thrown
+	public func savepoint(block: SavepointBlock) throws {
+		let savepointUUID = UUID().uuidString
+		try begin(savepoint: savepointUUID)
+		do {
+			let action = try block(self)
+			switch action {
+			case .release:
+				try release(savepoint: savepointUUID)
+			case .rollback:
+				try rollback(to: savepointUUID)
+			}
+		}
+		catch let error {
+			try? rollback(to: savepointUUID)
+			throw error
 		}
 	}
 }

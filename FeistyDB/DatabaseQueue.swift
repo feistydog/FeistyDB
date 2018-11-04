@@ -88,21 +88,6 @@ public final class DatabaseQueue {
 		}
 	}
 
-	/// Possible ways to complete a transaction
-	public enum TransactionCompletion {
-		/// The transaction should be committed
-		case commit
-		/// The transaction should be rolled back
-		case rollback
-	}
-
-	/// A series of database actions grouped into a transaction
-	///
-	/// - parameter database: A `Database` used for database access within the block
-	///
-	/// - returns: `.commit` if the transaction should be committed or `.rollback` if the transaction should be rolled back
-	public typealias TransactionBlock = (_ database: Database) throws -> TransactionCompletion
-
 	/// Performs a synchronous transaction on the database.
 	///
 	/// - parameter type: The type of transaction to perform
@@ -112,24 +97,9 @@ public final class DatabaseQueue {
 	///
 	/// - note: If `block` throws an error the transaction will be rolled back and the error will be re-thrown
 	/// - note: If an error occurs committing the transaction a rollback will be attempted and the error will be re-thrown
-	public func transaction(type: Database.TransactionType = .deferred, _ block: TransactionBlock) throws {
+	public func transaction(type: Database.TransactionType = .deferred, _ block: Database.TransactionBlock) throws {
 		try queue.sync {
-			try database.begin(type: type)
-			do {
-				let action = try block(database)
-				switch action {
-				case .commit:
-					try database.commit()
-				case .rollback:
-					try database.rollback()
-				}
-			}
-			catch let error {
-				if !database.isInAutocommitMode {
-					try database.rollback()
-				}
-				throw error
-			}
+			try database.transaction(type: type, block)
 		}
 	}
 
@@ -139,50 +109,18 @@ public final class DatabaseQueue {
 	/// - parameter group: An optional `DispatchGroup` with which to associate `block`
 	/// - parameter qos: The quality of service for `block`
 	/// - parameter block: A closure performing the database operation
-	public func transaction_async(type: Database.TransactionType = .deferred, group: DispatchGroup? = nil, qos: DispatchQoS = .unspecified, _ block: @escaping TransactionBlock) {
+	public func transaction_async(type: Database.TransactionType = .deferred, group: DispatchGroup? = nil, qos: DispatchQoS = .unspecified, _ block: @escaping Database.TransactionBlock) {
 		queue.async(group: group, qos: qos) {
 			do {
-				try self.database.begin(type: type)
+				try self.database.transaction(type: type, block)
 			}
 			catch let error {
-				os_log("Error beginning transaction: %{public}@", type: .info, error.localizedDescription);
-				return
-			}
-
-			do {
-				let action = try block(self.database)
-				switch action {
-				case .commit:
-					try self.database.commit()
-				case .rollback:
-					try self.database.rollback()
-				}
-			}
-			catch let error {
-				os_log("Error during transaction: %{public}@", type: .info, error.localizedDescription);
-				if !self.database.isInAutocommitMode {
-					try? self.database.rollback()
-				}
+				os_log("Error performing database transaction: %{public}@", type: .info, error.localizedDescription);
 			}
 		}
 	}
 
-	/// Possible ways to complete a savepoint
-	public enum SavepointCompletion {
-		/// The savepoint should be released
-		case release
-		/// The savepoint should be rolled back
-		case rollback
-	}
-
-	/// A series of database actions grouped into a savepoint
-	///
-	/// - parameter database: A `Database` used for database access within the block
-	///
-	/// - returns: `.release` if the savepoint should be released or `.rollback` if the savepoint should be rolled back
-	public typealias SavepointBlock = (_ database: Database) throws -> SavepointCompletion
-
-	/// Performs a synchronous savepoint on the database.
+	/// Performs a synchronous savepoint transaction on the database.
 	///
 	/// - parameter block: A closure performing the database operation
 	///
@@ -190,56 +128,25 @@ public final class DatabaseQueue {
 	///
 	/// - note: If `block` throws an error the savepoint will be rolled back and the error will be re-thrown
 	/// - note: If an error occurs releasing the savepoint a rollback will be attempted and the error will be re-thrown
-	public func savepoint(block: SavepointBlock) throws {
+	public func savepoint(block: Database.SavepointBlock) throws {
 		try queue.sync {
-			let savepointUUID = UUID().uuidString
-			try database.begin(savepoint: savepointUUID)
-			do {
-				let action = try block(database)
-				switch action {
-				case .release:
-					try database.release(savepoint: savepointUUID)
-				case .rollback:
-					try database.rollback(to: savepointUUID)
-				}
-			}
-			catch let error {
-				try? database.rollback(to: savepointUUID)
-				throw error
-			}
+			try database.savepoint(block: block)
 		}
 	}
 
-	/// Submits an asynchronous savepoint to the database queue.
+	/// Submits an asynchronous savepoint transaction to the database queue.
 	///
 	/// - parameter group: An optional `DispatchGroup` with which to associate `block`
 	/// - parameter qos: The quality of service for `block`
 	/// - parameter block: A closure performing the database operation
 	/// - parameter database: A `Database` used for database access within `block`
-	public func savepoint_async(group: DispatchGroup? = nil, qos: DispatchQoS = .unspecified, block: @escaping SavepointBlock) {
+	public func savepoint_async(group: DispatchGroup? = nil, qos: DispatchQoS = .unspecified, block: @escaping Database.SavepointBlock) {
 		queue.async(group: group, qos: qos) {
-			let savepointUUID = UUID().uuidString
-
 			do {
-				try self.database.begin(savepoint: savepointUUID)
+				try self.database.savepoint(block: block)
 			}
 			catch let error {
-				os_log("Error beginning savepoint: %{public}@", type: .info, error.localizedDescription);
-				return
-			}
-
-			do {
-				let action = try block(self.database)
-				switch action {
-				case .release:
-					try self.database.release(savepoint: savepointUUID)
-				case .rollback:
-					try self.database.rollback(to: savepointUUID)
-				}
-			}
-			catch let error {
-				os_log("Error during savepoint: %{public}@", type: .info, error.localizedDescription);
-				try? self.database.rollback(to: savepointUUID)
+				os_log("Error performing database savepoint: %{public}@", type: .info, error.localizedDescription);
 			}
 		}
 	}
