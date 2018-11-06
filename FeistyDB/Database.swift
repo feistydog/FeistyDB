@@ -34,7 +34,7 @@ final public class Database {
 	var busyHandler: UnsafeMutablePointer<BusyHandler>?
 
 	/// Prepared statements
-	var preparedStatements = [String: Statement]()
+	var preparedStatements = [AnyHashable: Statement]()
 
 	/// Creates an in-memory database.
 	///
@@ -434,7 +434,7 @@ extension Database {
 	/// - throws: An error if `sql` could not be compiled
 	///
 	/// - returns: A compiled SQL statement
-	public func prepareStatement(sql: String, forKey key: String) throws {
+	public func prepareStatement(sql: String, forKey key: AnyHashable) throws {
 		preparedStatements[key] = try prepare(sql: sql)
 	}
 
@@ -443,7 +443,7 @@ extension Database {
 	/// - parameter key: The key used to identify the statement
 	///
 	/// - returns: A compiled SQL statement or `nil` if no statement for the specified key was found
-	public func preparedStatement(forKey key: String) -> Statement? {
+	public func preparedStatement(forKey key: AnyHashable) -> Statement? {
 		return preparedStatements[key]
 	}
 
@@ -451,7 +451,7 @@ extension Database {
 	///
 	/// - parameter statement: A compiled SQL statement
 	/// - parameter key: A key used to identify the statement
-	public func setPreparedStatement(_ statement: Statement, forKey key: String) {
+	public func setPreparedStatement(_ statement: Statement, forKey key: AnyHashable) {
 //		precondition(statement.database.db == self.db)
 		preparedStatements[key] = statement
 	}
@@ -461,7 +461,7 @@ extension Database {
 	/// - parameter key: The key used to identify the statement
 	///
 	/// - returns: The statement that was removed, or `nil` if the key was not present
-	public func removePreparedStatement(forKey key: String) -> Statement? {
+	public func removePreparedStatement(forKey key: AnyHashable) -> Statement? {
 		return preparedStatements.removeValue(forKey: key)
 	}
 
@@ -476,7 +476,7 @@ extension Database {
 	/// - throws: An error if no statement for the specified key was found, any error thrown by `block`, or an error if the statement couldn't be reset
 	///
 	/// - returns: The value returned by `block`
-	public func withPreparedStatement<T>(forKey key: String, _ block: (_ statement: Statement) throws -> T) throws -> T {
+	public func withPreparedStatement<T>(forKey key: AnyHashable, _ block: (_ statement: Statement) throws -> T) throws -> T {
 		guard let statement = preparedStatements[key] else {
 			throw DatabaseError("No prepared statement for key \"\(key)\"")
 		}
@@ -488,7 +488,7 @@ extension Database {
 	/// Returns or stores the compiled SQL statement for `key`.
 	///
 	/// - parameter key: The key used to identify the statement
-	public subscript(key: String) -> Statement? {
+	public subscript(key: AnyHashable) -> Statement? {
 		get {
 			return preparedStatements[key]
 		}
