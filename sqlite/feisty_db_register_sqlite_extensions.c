@@ -9,10 +9,12 @@
 // Bogus prototypes
 void sqlite3_uuid_init(void);
 void sqlite3_sha_init(void);
+void sqlite3_xxh_init(void);
 
 __attribute__((constructor))
 static void feisty_db_register_sqlite_extensions()
 {
   sqlite3_auto_extension(sqlite3_uuid_init);
   sqlite3_auto_extension(sqlite3_sha_init);
+  sqlite3_auto_extension(sqlite3_xxh_init);
 }
