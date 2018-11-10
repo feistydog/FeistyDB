@@ -26,7 +26,14 @@ class FeistyDBTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
     }
-    
+
+	func testSQLiteKeywords() {
+		XCTAssertTrue(SQLite.isKeyword("BEGIN"))
+		XCTAssertTrue(SQLite.isKeyword("begin"))
+		XCTAssertTrue(SQLite.isKeyword("BeGiN"))
+		XCTAssertFalse(SQLite.isKeyword("BEGINNING"))
+	}
+
 	func testDatabase() {
 		let db = try! Database()
 
