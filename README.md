@@ -5,9 +5,8 @@
 A powerful and performant Swift interface to [SQLite](https://sqlite.org) featuring:
 
 - Type-safe and type-agnostic database values.
-- Thread-safe wrappers for serialized and concurrent database access.
+- Thread-safe wrapper for database access.
 -  Full support for transactions and savepoints, custom collation sequences, and custom SQL functions.
-
 
 FeistyDB allows fast, easy database access with robust error handling.  It is not a general-purpose object-relational mapper.
 
@@ -49,6 +48,8 @@ try dbQ.sync { db in
 }
 ```
 
+For databases using [Write-Ahead Logging](https://www.sqlite.org/wal.html), concurrent read operations may be performed using multiple `DatabaseQueue` instances. Write operations must always be confined to a single queue. 
+
 ## Design
 
 The core of FeistyDB is the types `Database`, `Statement`, and `Row`.
@@ -75,11 +76,9 @@ General object storage is provided by classes implementing the `DatabaseSerializ
 
 - `DatabaseSerializable ` is a type that can be serialized to and deserialized from a database column.
 
-Thread-safe access to a database is provided by `DatabaseQueue` and `ConcurrentDatabaseQueue`.
+Thread-safe access to a database is provided by `DatabaseQueue`.
 
 - `DatabaseQueue` serializes work items on a database.
-
-- `ConcurrentDatabaseQueue` serializes write access to a database but allows concurrent reads.
 
 ## Examples
 
