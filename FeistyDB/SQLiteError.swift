@@ -395,6 +395,18 @@ public struct SQLiteError: Error {
 }
 
 extension SQLiteError {
+	/// Creates an error with the given message and code.
+	///
+	/// The description is obtained using `sqlite3_errstr(code)`.
+	///
+	/// - parameter message: A brief message describing the error
+	/// - parameter code: An SQLite error code
+	public init(_ message: String, code: Int32) {
+		self.message = message
+		self.code = SQLiteResultCode(code)
+		self.details = String(cString: sqlite3_errstr(code))
+	}
+
 	/// Creates an error with the given message, with result code and description obtained from `db`.
 	///
 	/// The error code is obtained using `sqlite3_extended_errcode(db)`.

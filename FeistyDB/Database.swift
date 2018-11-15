@@ -41,8 +41,9 @@ final public class Database {
 	/// - throws: An error if the database could not be created
 	public init() throws {
 		var db: SQLiteDatabaseConnection?
-		guard sqlite3_open_v2(":memory:", &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, nil) == SQLITE_OK else {
-			throw SQLiteError("Error creating in-memory database", takingDescriptionFromDatabase: db!)
+		let result = sqlite3_open_v2(":memory:", &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, nil)
+		guard result == SQLITE_OK else {
+			throw SQLiteError("Error creating in-memory database", code: result)
 		}
 
 		self.db =  db!
@@ -63,8 +64,9 @@ final public class Database {
 				flags |= SQLITE_OPEN_CREATE
 			}
 
-			guard sqlite3_open_v2(path, &db, flags, nil) == SQLITE_OK else {
-				throw SQLiteError("Error opening database at \(url)", takingDescriptionFromDatabase: db!)
+			let result = sqlite3_open_v2(path, &db, flags, nil)
+			guard result == SQLITE_OK else {
+				throw SQLiteError("Error opening database at \(url)", code: result)
 			}
 		}
 
