@@ -43,6 +43,7 @@ final public class Database {
 		var db: SQLiteDatabaseConnection?
 		let result = sqlite3_open_v2(":memory:", &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, nil)
 		guard result == SQLITE_OK else {
+			sqlite3_close(db)
 			throw SQLiteError("Error creating in-memory database", code: result)
 		}
 
@@ -66,7 +67,8 @@ final public class Database {
 
 			let result = sqlite3_open_v2(path, &db, flags, nil)
 			guard result == SQLITE_OK else {
-				throw SQLiteError("Error opening database at \(url)", code: result)
+				sqlite3_close(db)
+				throw SQLiteError("Error opening database \(url)", code: result)
 			}
 		}
 
