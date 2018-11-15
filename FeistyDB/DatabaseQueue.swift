@@ -34,8 +34,8 @@ import os.log
 public final class DatabaseQueue {
 	/// The underlying database
 	private let database: Database
-	/// The dispatch queue used to serialize access
-	private let queue = DispatchQueue(label: "com.feisty-dog.FeistyDB.DatabaseQueue")
+	/// The dispatch queue used to serialize access to the underlying database connection
+	public let queue = DispatchQueue(label: "com.feisty-dog.FeistyDB.DatabaseQueue")
 
 	/// Creates a database queue for serialized access to an in-memory database.
 	///
