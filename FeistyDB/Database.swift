@@ -137,6 +137,22 @@ final public class Database {
 		sqlite3_interrupt(db)
 	}
 
+	/// Returns the location of the file associated with database `name`.
+	///
+	/// - note: The main database file has the name *main*
+	///
+	/// - parameter name: The name of the attached database whose location is desired
+	///
+	/// - throws: An error if there is no attached database with the specified name, or if `name` is a temporary or in-memory database
+	///
+	/// - returns: The URL for the file associated with database `name`
+	public func url(forDatabase name: String = "main") throws -> URL {
+		guard let path = sqlite3_db_filename(self.db, name) else {
+			throw DatabaseError("The database \(name) does not exist or is a temporary or in-memory database")
+		}
+		return URL(fileURLWithPath: String(cString: path))
+	}
+
 	/// Performs a low-level SQLite database operation.
 	///
 	/// **Use of this function should be avoided whenever possible**
