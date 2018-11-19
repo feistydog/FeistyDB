@@ -58,4 +58,19 @@ public struct SQLite {
 			return sqlite3_keyword_check($0, Int32(strlen($0)))
 		} != 0
 	}
+
+	/// Generates `count` bytes of randomness.
+	///
+	/// - parameter count: The number of random bytes to generate
+	///
+	/// - returns: A `Data` object containing `count` bytes of randomness
+	///
+	/// - seealso: [Pseudo-Random Number Generator](https://www.sqlite.org/c3ref/randomness.html)
+	static func randomness(_ count: Int) -> Data {
+		var data = Data(count: count)
+		data.withUnsafeMutableBytes {
+			sqlite3_randomness(Int32(count), $0)
+		}
+		return data
+	}
 }
