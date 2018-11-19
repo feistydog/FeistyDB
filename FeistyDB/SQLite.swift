@@ -23,6 +23,18 @@ public struct SQLite {
 	/// - seealso: [Run-Time Library Version Numbers](https://www.sqlite.org/c3ref/libversion.html)
 	static let sourceID = String(cString: sqlite3_sourceid())
 
+	/// The number of bytes of memory `malloc`ed but not yet `free`d by SQLite
+	static var memoryUsed: Int64 {
+		return sqlite3_memory_used()
+	}
+
+	/// Returns the maximum amount of memory used by SQLite since the memory highwater mark was last reset.
+	///
+	/// - parameter reset: If `true` the memory highwater mark is reset to the value of `memoryUsed`
+	static func memoryHighwater(reset: Bool = false) -> Int64 {
+		return sqlite3_memory_highwater(reset ? 1 : 0)
+	}
+
 	/// The keywords understood by SQLite.
 	///
 	/// - note: Keywords in SQLite are not case sensitive.
