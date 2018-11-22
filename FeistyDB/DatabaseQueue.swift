@@ -139,7 +139,6 @@ public final class DatabaseQueue {
 	/// - parameter group: An optional `DispatchGroup` with which to associate `block`
 	/// - parameter qos: The quality of service for `block`
 	/// - parameter block: A closure performing the database operation
-	/// - parameter database: A `Database` used for database access within `block`
 	public func savepoint_async(group: DispatchGroup? = nil, qos: DispatchQoS = .unspecified, block: @escaping Database.SavepointBlock) {
 		queue.async(group: group, qos: qos) {
 			do {
