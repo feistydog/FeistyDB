@@ -44,3 +44,13 @@ extension DatabaseError: CustomStringConvertible {
 		}
 	}
 }
+
+extension DatabaseError: LocalizedError {
+	public var errorDescription: String? {
+		return message
+	}
+
+	public var failureReason: String? {
+		return details
+	}
+}

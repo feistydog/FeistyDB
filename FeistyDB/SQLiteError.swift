@@ -444,3 +444,13 @@ extension SQLiteError: CustomStringConvertible {
 		}
 	}
 }
+
+extension SQLiteError: LocalizedError {
+	public var errorDescription: String? {
+		return message
+	}
+
+	public var failureReason: String? {
+		return details
+	}
+}
