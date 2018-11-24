@@ -35,13 +35,14 @@ public final class DatabaseQueue {
 	/// The underlying database
 	private let database: Database
 	/// The dispatch queue used to serialize access to the underlying database connection
-	public let queue = DispatchQueue(label: "com.feisty-dog.FeistyDB.DatabaseQueue")
+	public let queue: DispatchQueue
 
 	/// Creates a database queue for serialized access to an in-memory database.
 	///
 	/// - throws: An error if the database could not be created
-	public init() throws {
+	public init(qos: DispatchQoS = .default) throws {
 		self.database = try Database()
+		self.queue = DispatchQueue(label: "com.feisty-dog.FeistyDB.DatabaseQueue", qos: qos)
 	}
 
 	/// Creates a database queue for serialized access to a database from a file.
@@ -49,8 +50,9 @@ public final class DatabaseQueue {
 	/// - parameter url: The location of the SQLite database
 	///
 	/// - throws: An error if the database could not be opened
-	public init(url: URL) throws {
+	public init(url: URL, qos: DispatchQoS = .default) throws {
 		self.database = try Database(url: url)
+		self.queue = DispatchQueue(label: "com.feisty-dog.FeistyDB.DatabaseQueue", qos: qos)
 	}
 
 	/// Creates a database queue for serialized access to an existing database.
@@ -58,8 +60,9 @@ public final class DatabaseQueue {
 	/// - attention: The database queue takes ownership of `database`.  The result of further use of `database` is undefined.
 	///
 	/// - parameter database: The database to be serialized
-	public init(database: Database) {
+	public init(database: Database, qos: DispatchQoS = .default) {
 		self.database = database
+		self.queue = DispatchQueue(label: "com.feisty-dog.FeistyDB.DatabaseQueue", qos: qos)
 	}
 
 	/// Performs a synchronous operation on the database.
