@@ -39,6 +39,8 @@ public final class DatabaseQueue {
 
 	/// Creates a database queue for serialized access to an in-memory database.
 	///
+	/// - parameter qos: The quality of service class for the work performed by the database queue
+	///
 	/// - throws: An error if the database could not be created
 	public init(qos: DispatchQoS = .default) throws {
 		self.database = try Database()
@@ -48,6 +50,7 @@ public final class DatabaseQueue {
 	/// Creates a database queue for serialized access to a database from a file.
 	///
 	/// - parameter url: The location of the SQLite database
+	/// - parameter qos: The quality of service class for the work performed by the database queue
 	///
 	/// - throws: An error if the database could not be opened
 	public init(url: URL, qos: DispatchQoS = .default) throws {
@@ -60,6 +63,7 @@ public final class DatabaseQueue {
 	/// - attention: The database queue takes ownership of `database`.  The result of further use of `database` is undefined.
 	///
 	/// - parameter database: The database to be serialized
+	/// - parameter qos: The quality of service class for the work performed by the database queue
 	public init(database: Database, qos: DispatchQoS = .default) {
 		self.database = database
 		self.queue = DispatchQueue(label: "com.feisty-dog.FeistyDB.DatabaseQueue", qos: qos)
