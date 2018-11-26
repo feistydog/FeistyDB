@@ -18,8 +18,8 @@ import os.log
 /// internally for work item management.
 ///
 /// ```swift
-/// let dbQueue = DatabaseQueue()
-/// dbQueue.sync { db in
+/// let dbQueue = try DatabaseQueue()
+/// try dbQueue.sync { db in
 ///     // Do something with `db`
 /// }
 /// ```
@@ -29,11 +29,12 @@ import os.log
 /// ```swift
 /// dbQueue.transaction { db in
 ///     // All database operations here are contained within a transaction
+///     return .commit
 /// }
 /// ```
 public final class DatabaseQueue {
 	/// The underlying database
-	private let database: Database
+	let database: Database
 	/// The dispatch queue used to serialize access to the underlying database connection
 	public let queue: DispatchQueue
 
@@ -89,7 +90,7 @@ public final class DatabaseQueue {
 	/// - parameter qos: The quality of service for `block`
 	/// - parameter block: A closure performing the database operation
 	/// - parameter database: A `Database` used for database access within `block`
-	public func async(group: DispatchGroup? = nil, qos: DispatchQoS = .unspecified, block: @escaping (_ database: Database) -> (Void)) {
+	public func async(group: DispatchGroup? = nil, qos: DispatchQoS = .default, block: @escaping (_ database: Database) -> (Void)) {
 		queue.async(group: group, qos: qos) {
 			block(self.database)
 		}
@@ -116,7 +117,7 @@ public final class DatabaseQueue {
 	/// - parameter group: An optional `DispatchGroup` with which to associate `block`
 	/// - parameter qos: The quality of service for `block`
 	/// - parameter block: A closure performing the database operation
-	public func transaction_async(type: Database.TransactionType = .deferred, group: DispatchGroup? = nil, qos: DispatchQoS = .unspecified, _ block: @escaping Database.TransactionBlock) {
+	public func asyncTransaction(type: Database.TransactionType = .deferred, group: DispatchGroup? = nil, qos: DispatchQoS = .default, _ block: @escaping Database.TransactionBlock) {
 		queue.async(group: group, qos: qos) {
 			do {
 				try self.database.transaction(type: type, block)
@@ -146,7 +147,7 @@ public final class DatabaseQueue {
 	/// - parameter group: An optional `DispatchGroup` with which to associate `block`
 	/// - parameter qos: The quality of service for `block`
 	/// - parameter block: A closure performing the database operation
-	public func savepoint_async(group: DispatchGroup? = nil, qos: DispatchQoS = .unspecified, block: @escaping Database.SavepointBlock) {
+	public func asyncSavepoint(group: DispatchGroup? = nil, qos: DispatchQoS = .default, block: @escaping Database.SavepointBlock) {
 		queue.async(group: group, qos: qos) {
 			do {
 				try self.database.savepoint(block: block)
