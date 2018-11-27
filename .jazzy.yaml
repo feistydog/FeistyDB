@@ -24,4 +24,4 @@ custom_categories:
  - name: Queues
    children:
    - DatabaseQueue
-   - ConcurrentDatabaseQueue
+   - DatabaseReadQueue
