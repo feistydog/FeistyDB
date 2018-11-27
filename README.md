@@ -5,7 +5,7 @@
 A powerful and performant Swift interface to [SQLite](https://sqlite.org) featuring:
 
 - Type-safe and type-agnostic database values.
-- Thread-safe wrapper for database access.
+- Thread-safe database access.
 -  Full support for transactions and savepoints, custom collation sequences, and custom SQL functions.
 
 FeistyDB allows fast, easy database access with robust error handling.  It is not a general-purpose object-relational mapper.
@@ -36,7 +36,7 @@ try db.execute(sql: "select a, b from t1;") { row in
 }
 ```
 
-Most applications should not create a `Database` directly but instead should use the thread-safe `DatabaseQueue` wrapper.
+Most applications should not create a `Database` directly but instead should use a thread-safe `DatabaseQueue`.
 
 ```swift
 // Create a queue serializing access to an in-memory database
@@ -48,7 +48,7 @@ try dbQ.sync { db in
 }
 ```
 
-For databases using [Write-Ahead Logging](https://www.sqlite.org/wal.html), concurrent read operations may be performed using multiple `DatabaseQueue` instances. Write operations must always be confined to a single queue. 
+For databases using [Write-Ahead Logging](https://www.sqlite.org/wal.html) concurrent reading and writing is supported. Multiple read operations may be performed simultaneously using more than one `DatabaseReadQueue` instance.  Write operations must always be confined to a single `DatabaseQueue`.  A typical usage pattern is one global `DatabaseQueue` instance used for writing located in the application's delegate, with `DatabaseReadQueue` instances located in individual window or view controllers.  When used with long-running read transactions each `DatabaseReadQueue` maintains a separate, consistent snapshot of the database that may be updated in response to database changes.
 
 ## Design
 
@@ -79,6 +79,7 @@ General object storage is provided by classes implementing the `DatabaseSerializ
 Thread-safe access to a database is provided by `DatabaseQueue`.
 
 - `DatabaseQueue` serializes work items on a database.
+- `DatabaseReadQueue` serializes read operations on a database.
 
 ## Examples
 
