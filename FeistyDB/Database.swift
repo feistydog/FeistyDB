@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015 - 2018 Feisty Dog, LLC
+// Copyright (c) 2015 - 2019 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
@@ -50,17 +50,34 @@ final public class Database {
 		self.db =  db!
 	}
 
-	/// Creates a database from a file.
+	/// Creates a read-only database from a file.
 	///
 	/// - parameter url: The location of the SQLite database
-	/// - parameter readOnly: Whether to open the database in read-only mode
+	///
+	/// - throws: An error if the database could not be opened
+	public init(readingFrom url: URL) throws {
+		var db: SQLiteDatabaseConnection?
+		try url.withUnsafeFileSystemRepresentation { path in
+			let result = sqlite3_open_v2(path, &db, SQLITE_OPEN_READONLY, nil)
+			guard result == SQLITE_OK else {
+				sqlite3_close(db)
+				throw SQLiteError("Error opening database \(url)", code: result)
+			}
+		}
+
+		self.db = db!
+	}
+
+	/// Creates a read-write database from a file.
+	///
+	/// - parameter url: The location of the SQLite database
 	/// - parameter create: Whether to create the database if it doesn't exist
 	///
 	/// - throws: An error if the database could not be opened
-	public init(url: URL, readOnly: Bool = false, create: Bool = true) throws {
+	public init(url: URL, create: Bool = true) throws {
 		var db: SQLiteDatabaseConnection?
 		try url.withUnsafeFileSystemRepresentation { path in
-			var flags = (readOnly ? SQLITE_OPEN_READONLY : SQLITE_OPEN_READWRITE)
+			var flags = SQLITE_OPEN_READWRITE
 			if create {
 				flags |= SQLITE_OPEN_CREATE
 			}

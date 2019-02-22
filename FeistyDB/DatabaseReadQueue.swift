@@ -35,7 +35,7 @@ public final class DatabaseReadQueue {
 	///
 	/// - throws: An error if the database could not be opened
 	public init(url: URL, qos: DispatchQoS = .default) throws {
-		self.database = try Database(url: url, readOnly: true)
+		self.database = try Database(readingFrom: url)
 		self.queue = DispatchQueue(label: "com.feisty-dog.FeistyDB.DatabaseReadQueue", qos: qos)
 	}
 
