@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2018 Feisty Dog, LLC
+// Copyright (c) 2018 - 2019 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
@@ -50,15 +50,32 @@ public final class DatabaseReadQueue {
 		self.queue = DispatchQueue(label: "com.feisty-dog.FeistyDB.DatabaseReadQueue", qos: qos)
 	}
 
-	/// Begins or renews a read transaction on the database.
+	/// Begins a long-running read transaction on the database.
 	///
 	/// - throws: An error if the transaction could not be started
 	public func beginReadTransaction() throws {
 		try sync { db in
-			if !db.isInAutocommitMode {
-				try db.rollback()
-			}
-			try db.begin(type: .deferred)
+			try db.beginReadTransaction()
+		}
+	}
+
+	/// Ends a long-running read transaction on the database.
+	///
+	/// - throws: An error if the transaction could not be rolled back
+	public func endReadTransaction() throws {
+		try sync { db in
+			try db.rollback()
+		}
+	}
+
+	/// Updates a long-running read transaction to make the latest database changes visible.
+	///
+	/// If there is an active read transaction it is ended before beginning a new read transaction.
+	///
+	/// - throws: An error if the transaction could not be rolled back or started
+	public func updateReadTransaction() throws {
+		try sync { db in
+			try db.updateReadTransaction()
 		}
 	}
 
@@ -112,5 +129,37 @@ extension DatabaseReadQueue {
 			return try db.url(forDatabase: "main")
 		}
 		try self.init(url: url, qos: qos)
+	}
+}
+
+extension Database {
+	/// Begins a long-running read transaction on the database.
+	///
+	/// This is equivalent to the SQL `BEGIN DEFERRED TRANSACTION;`
+	///
+	/// - throws: An error if the transaction could not be started
+	public func beginReadTransaction() throws {
+		try begin(type: .deferred)
+	}
+
+	/// Ends a long-running read transaction on the database.
+	///
+	/// This is equivalent to the SQL `ROLLBACK;`
+	///
+	/// - throws: An error if the transaction could not be rolled back
+	public func endReadTransaction() throws {
+		try rollback()
+	}
+
+	/// Updates a long-running read transaction to make the latest database changes visible.
+	///
+	/// If there is an active read transaction it is ended before beginning a new read transaction.
+	///
+	/// - throws: An error if the transaction could not be started
+	public func updateReadTransaction() throws {
+		if !isInAutocommitMode {
+			try rollback()
+		}
+		try beginReadTransaction()
 	}
 }
