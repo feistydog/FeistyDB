@@ -18,7 +18,7 @@ import Foundation
 ///
 /// It is possible to maintain a consistent snapshot of a database using read
 /// transactions. Changes committed to a database are not visible within a read transaction
-/// until the transaction is renewed or upgraded.
+/// until the transaction is updated or restarted.
 ///
 /// The interface is similar to `DispatchQueue` and a dispatch queue is used
 /// internally for work item management.
@@ -64,7 +64,7 @@ public final class DatabaseReadQueue {
 	/// - throws: An error if the transaction could not be rolled back
 	public func endReadTransaction() throws {
 		try sync { db in
-			try db.rollback()
+			try db.endReadTransaction()
 		}
 	}
 
