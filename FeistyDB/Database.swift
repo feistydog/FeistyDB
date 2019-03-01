@@ -36,15 +36,18 @@ final public class Database {
 	/// Prepared statements
 	var preparedStatements = [AnyHashable: Statement]()
 
-	/// Creates an in-memory database.
+	/// Creates a temporary database.
+	///
+	/// - parameter inMemory: Whether the temporary database should be created in-memory or on-disk
 	///
 	/// - throws: An error if the database could not be created
-	public init() throws {
+	public init(inMemory: Bool = true) throws {
 		var db: SQLiteDatabaseConnection?
-		let result = sqlite3_open_v2(":memory:", &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, nil)
+		let path = inMemory ? ":memory:" : ""
+		let result = sqlite3_open_v2(path, &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, nil)
 		guard result == SQLITE_OK else {
 			sqlite3_close(db)
-			throw SQLiteError("Error creating in-memory database", code: result)
+			throw SQLiteError("Error creating temporary database", code: result)
 		}
 
 		self.db =  db!
