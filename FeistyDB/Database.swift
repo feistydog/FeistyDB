@@ -1230,7 +1230,7 @@ extension Database {
 						continue
 					}
 					let utf8 = token.utf8
-					let result = xToken.unsafelyUnwrapped(context, 0, token, Int32(utf8.count), Int32(utf8.startIndex.encodedOffset), Int32(utf8.endIndex.encodedOffset))
+					let result = xToken.unsafelyUnwrapped(context, 0, token, Int32(utf8.count), 0, Int32(utf8.count))
 					guard result == SQLITE_OK else {
 						return result
 					}
