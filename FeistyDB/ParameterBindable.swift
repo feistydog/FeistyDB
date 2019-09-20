@@ -335,8 +335,8 @@ extension DatabaseValue: ParameterBindable {
 			}
 
 		case .blob(let b):
-			try b.withUnsafeBytes { (bytes: UnsafePointer<UInt8>) throws in
-				guard sqlite3_bind_blob(stmt, idx, bytes, Int32(b.count), SQLITE_TRANSIENT) == SQLITE_OK else {
+			try b.withUnsafeBytes {
+				guard sqlite3_bind_blob(stmt, idx, $0.baseAddress, Int32(b.count), SQLITE_TRANSIENT) == SQLITE_OK else {
 					throw SQLiteError("Error binding Data to parameter \(idx)", takingDescriptionFromStatement: stmt)
 				}
 			}
@@ -359,8 +359,8 @@ extension String: ParameterBindable {
 
 extension Data: ParameterBindable {
 	public func bind(to stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
-		try self.withUnsafeBytes { (bytes: UnsafePointer<UInt8>) throws in
-			guard sqlite3_bind_blob(stmt, idx, bytes, Int32(self.count), SQLITE_TRANSIENT) == SQLITE_OK else {
+		try self.withUnsafeBytes {
+			guard sqlite3_bind_blob(stmt, idx, $0.baseAddress, Int32(self.count), SQLITE_TRANSIENT) == SQLITE_OK else {
 				throw SQLiteError("Error binding Data to parameter \(idx)", takingDescriptionFromStatement: stmt)
 			}
 		}
@@ -498,8 +498,8 @@ extension Date: ParameterBindable {
 extension ParameterBindable where Self: Encodable {
 	public func bind(to stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
 		let data = try JSONEncoder().encode(self)
-		try data.withUnsafeBytes { (bytes: UnsafePointer<UInt8>) throws in
-			guard sqlite3_bind_blob(stmt, idx, bytes, Int32(data.count), SQLITE_TRANSIENT) == SQLITE_OK else {
+		try data.withUnsafeBytes {
+			guard sqlite3_bind_blob(stmt, idx, $0.baseAddress, Int32(data.count), SQLITE_TRANSIENT) == SQLITE_OK else {
 				throw SQLiteError("Error binding \(Self.self) to parameter \(idx)", takingDescriptionFromStatement: stmt)
 			}
 		}

@@ -670,7 +670,7 @@ extension Database {
 					sqlite3_result_text(sqlite_context, t, -1, SQLITE_TRANSIENT)
 				case .blob(let b):
 					b.withUnsafeBytes { bytes in
-						sqlite3_result_blob(sqlite_context, bytes, Int32(b.count), SQLITE_TRANSIENT)
+						sqlite3_result_blob(sqlite_context, bytes.baseAddress, Int32(b.count), SQLITE_TRANSIENT)
 					}
 				case .null:
 					sqlite3_result_null(sqlite_context)

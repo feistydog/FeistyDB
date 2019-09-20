@@ -161,6 +161,8 @@ extension NSNumber: DatabaseSerializable {
 
 		case .float32Type, .float64Type, .floatType, .doubleType, .cgFloatType:
 			return DatabaseValue.float(self.doubleValue)
+		@unknown default:
+			return DatabaseValue.null
 		}
 	}
 

@@ -308,12 +308,12 @@
 					};
 					324CCF131DC61C0E0056935B = {
 						CreatedOnToolsVersion = 8.1;
-						LastSwiftMigration = "";
+						LastSwiftMigration = 1030;
 						ProvisioningStyle = Automatic;
 					};
 					324CCF1C1DC61C0E0056935B = {
 						CreatedOnToolsVersion = 8.1;
-						LastSwiftMigration = "";
+						LastSwiftMigration = 1030;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -634,7 +634,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -660,7 +660,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.feisty-dog.FeistyDB";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -678,7 +678,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.feisty-dog.FeistyDBTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -696,7 +696,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.feisty-dog.FeistyDBTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};

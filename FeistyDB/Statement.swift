@@ -276,10 +276,7 @@ extension Statement: IteratorProtocol {
 	///
 	/// - returns: The next result row of returned data
 	public func next() -> Row? {
-		guard let row = try? nextRow() else {
-			return nil
-		}
-		return row
+		return try? nextRow()
 	}
 }
 
