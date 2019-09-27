@@ -618,6 +618,27 @@ extension Database {
 	}
 }
 
+/// Passes `value` to the appropriate `sqlite3_result` function
+///
+/// - parameter sqlite_context: An `sqlite3_context *` object
+/// - parameter value: The value to pass
+func set_sql_function_result(_ sqlite_context: OpaquePointer!, value: DatabaseValue) {
+	switch value {
+	case .integer(let i):
+		sqlite3_result_int64(sqlite_context, i)
+	case .float(let f):
+		sqlite3_result_double(sqlite_context, f)
+	case .text(let t):
+		sqlite3_result_text(sqlite_context, t, -1, SQLITE_TRANSIENT)
+	case .blob(let b):
+		b.withUnsafeBytes { bytes in
+			sqlite3_result_blob(sqlite_context, bytes.baseAddress, Int32(b.count), SQLITE_TRANSIENT)
+		}
+	case .null:
+		sqlite3_result_null(sqlite_context)
+	}
+}
+
 extension Database {
 	/// A custom SQL function.
 	///
@@ -627,9 +648,48 @@ extension Database {
 	///
 	/// - returns: The result of applying the function to `values`
 	public typealias SQLFunction = (_ values: [DatabaseValue]) throws -> DatabaseValue
+}
 
-	/// Adds a custom SQL function.
+/// A custom SQL aggregate function.
+public protocol SQLAggregateFunction {
+	/// Invokes the aggregate function for one or more values in a row.
 	///
+	/// - parameter values: The SQL function parameters
+	///
+	/// - throws: `Error`
+	func step(_ values: [DatabaseValue]) throws
+
+	/// Returns the current value of the aggregate function.
+	///
+	/// - note: This should also reset any function context to defaults.
+	///
+	/// - throws: `Error`
+	///
+	/// - returns: The current value of the aggregate function.
+	func final() throws -> DatabaseValue
+}
+
+/// A custom SQL aggregate window function.
+public protocol SQLAggregateWindowFunction: SQLAggregateFunction {
+	/// Invokes the inverse aggregate function for one or more values in a row.
+	///
+	/// - parameter values: The SQL function parameters
+	///
+	/// - throws: `Error`
+	func inverse(_ values: [DatabaseValue]) throws
+
+	/// Returns the current value of the aggregate window function.
+	///
+	/// - throws: `Error`
+	///
+	/// - returns: The current value of the aggregate window function.
+	func value() throws -> DatabaseValue
+}
+
+extension Database {
+	/// Adds a custom SQL scalar function.
+	///
+	/// For example, a localized uppercase scalar function could be implemented as:
 	/// ```swift
 	/// try db.addFunction("localizedUppercase", arity: 1) { values in
 	///     let value = values.first.unsafelyUnwrapped
@@ -646,7 +706,7 @@ extension Database {
 	/// - parameter arity: The number of arguments the function accepts
 	/// - parameter block: A closure that returns the result of applying the function to the supplied arguments
 	///
-	/// - throws: An error if the SQL function couldn't be added
+	/// - throws: An error if the SQL scalar function couldn't be added
 	///
 	/// - seealso: [Create Or Redefine SQL Functions](https://sqlite.org/c3ref/create_function.html)
 	public func addFunction(_ name: String, arity: Int = -1, _ block: @escaping SQLFunction) throws {
@@ -660,21 +720,7 @@ extension Database {
 			let arguments = args.map { DatabaseValue($0.unsafelyUnwrapped) }
 
 			do {
-				// Call the function and pass the result to sqlite
-				switch try function_ptr.pointee(arguments) {
-				case .integer(let i):
-					sqlite3_result_int64(sqlite_context, i)
-				case .float(let f):
-					sqlite3_result_double(sqlite_context, f)
-				case .text(let t):
-					sqlite3_result_text(sqlite_context, t, -1, SQLITE_TRANSIENT)
-				case .blob(let b):
-					b.withUnsafeBytes { bytes in
-						sqlite3_result_blob(sqlite_context, bytes.baseAddress, Int32(b.count), SQLITE_TRANSIENT)
-					}
-				case .null:
-					sqlite3_result_null(sqlite_context)
-				}
+				set_sql_function_result(sqlite_context, value: try function_ptr.pointee(arguments))
 			}
 
 			catch let error {
@@ -685,14 +731,193 @@ extension Database {
 			function_ptr.deinitialize(count: 1)
 			function_ptr.deallocate()
 		}) == SQLITE_OK else {
-			throw SQLiteError("Error adding SQL function \"\(name)\"", takingDescriptionFromDatabase: db)
+			throw SQLiteError("Error adding SQL scalar function \"\(name)\"", takingDescriptionFromDatabase: db)
 		}
 	}
 
-	/// Removes a custom SQL function.
+	/// Adds a custom SQL aggregate function.
+	///
+	/// For example, an integer sum aggregate function could be implemented as:
+	/// ```swift
+	/// class IntegerSumAggregateFunction: SQLAggregateFunction {
+	///     func step(_ values: [DatabaseValue]) throws {
+	///         let value = values.first.unsafelyUnwrapped
+	///         switch value {
+	///             case .integer(let i):
+	///                 sum += i
+	///             default:
+	///                 throw DatabaseError("Only integer values supported")
+	///         }
+	///     }
+	///
+	///     func final() throws -> DatabaseValue {
+	///         defer {
+	///             sum = 0
+	///         }
+	///         return DatabaseValue(sum)
+	///     }
+	///
+	///     var sum: Int64 = 0
+	/// }
+	/// ```
+	///
+	/// - parameter name: The name of the aggregate function
+	/// - parameter arity: The number of arguments the function accepts
+	/// - parameter aggregateFunction: An object defining the aggregate function
+	///
+	/// - throws:  An error if the SQL aggregate function can't be added
+	///
+	/// - seealso: [Create Or Redefine SQL Functions](https://sqlite.org/c3ref/create_function.html)
+	public func addAggregateFunction(_ name: String, arity: Int = -1, _ function: SQLAggregateFunction) throws {
+		// function must live until the xDelete function is invoked; store it as a +1 object in context
+		let context = Unmanaged.passRetained(function as AnyObject).toOpaque()
+
+		guard sqlite3_create_function_v2(db, name, Int32(arity), SQLITE_UTF8 | SQLITE_DETERMINISTIC, context, nil, { sqlite_context, argc, argv in
+			let context = sqlite3_user_data(sqlite_context)
+			let function = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(context.unsafelyUnwrapped)).takeUnretainedValue() as! SQLAggregateFunction
+
+			let args = UnsafeBufferPointer(start: argv, count: Int(argc))
+			let arguments = args.map { DatabaseValue($0.unsafelyUnwrapped) }
+
+			do {
+				try function.step(arguments)
+			}
+
+			catch let error {
+				sqlite3_result_error(sqlite_context, "\(error)", -1)
+			}
+		}, { sqlite_context in
+			let context = sqlite3_user_data(sqlite_context)
+			let function = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(context.unsafelyUnwrapped)).takeUnretainedValue() as! SQLAggregateFunction
+
+			do {
+				set_sql_function_result(sqlite_context, value: try function.final())
+			}
+
+			catch let error {
+				sqlite3_result_error(sqlite_context, "\(error)", -1)
+			}
+		}, { context in
+			// Balance the +1 retain above
+			Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(context.unsafelyUnwrapped)).release()
+		}) == SQLITE_OK else {
+			throw SQLiteError("Error adding SQL aggregate function \"\(name)\"", takingDescriptionFromDatabase: db)
+		}
+	}
+
+	/// Adds a custom SQL aggregate window function.
+	///
+	/// For example, an integer sum aggregate window function could be implemented as:
+	/// ```swift
+	/// class IntegerSumAggregateWindowFunction: SQLAggregateWindowFunction {
+	///     func step(_ values: [DatabaseValue]) throws {
+	///         let value = values.first.unsafelyUnwrapped
+	///         switch value {
+	///             case .integer(let i):
+	///                 sum += i
+	///             default:
+	///                 throw DatabaseError("Only integer values supported")
+	///         }
+	///     }
+	///
+	///     func inverse(_ values: [DatabaseValue]) throws {
+	///         let value = values.first.unsafelyUnwrapped
+	///         switch value {
+	///             case .integer(let i):
+	///                 sum -= i
+	///             default:
+	///                 throw DatabaseError("Only integer values supported")
+	///         }
+	///     }
+	///
+	///     func value() throws -> DatabaseValue {
+	///         return DatabaseValue(sum)
+	///     }
+	///
+	///     func final() throws -> DatabaseValue {
+	///         defer {
+	///             sum = 0
+	///         }
+	///         return DatabaseValue(sum)
+	///     }
+	///
+	///     var sum: Int64 = 0
+	/// }
+	/// ```
+	///
+	/// - parameter name: The name of the aggregate window function
+	/// - parameter arity: The number of arguments the function accepts
+	/// - parameter aggregateWindowFunction: An object defining the aggregate window function
+	///
+	/// - throws:  An error if the SQL aggregate window function can't be added
+	///
+	/// - seealso: [User-Defined Aggregate Window Functions](https://sqlite.org/windowfunctions.html#udfwinfunc)
+	public func addAggregateWindowFunction(_ name: String, arity: Int = -1, _ function: SQLAggregateWindowFunction) throws {
+		// function must live until the xDelete function is invoked; store it as a +1 object in context
+		let context = Unmanaged.passRetained(function as AnyObject).toOpaque()
+
+		guard sqlite3_create_window_function(db, name, Int32(arity), SQLITE_UTF8 | SQLITE_DETERMINISTIC, context, { sqlite_context, argc, argv in
+			let context = sqlite3_user_data(sqlite_context)
+			let function = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(context.unsafelyUnwrapped)).takeUnretainedValue() as! SQLAggregateWindowFunction
+
+			let args = UnsafeBufferPointer(start: argv, count: Int(argc))
+			let arguments = args.map { DatabaseValue($0.unsafelyUnwrapped) }
+
+			do {
+				try function.step(arguments)
+			}
+
+			catch let error {
+				sqlite3_result_error(sqlite_context, "\(error)", -1)
+			}
+		}, { sqlite_context in
+			let context = sqlite3_user_data(sqlite_context)
+			let function = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(context.unsafelyUnwrapped)).takeUnretainedValue() as! SQLAggregateWindowFunction
+
+			do {
+				set_sql_function_result(sqlite_context, value: try function.final())
+			}
+
+			catch let error {
+				sqlite3_result_error(sqlite_context, "\(error)", -1)
+			}
+		}, { sqlite_context in
+			let context = sqlite3_user_data(sqlite_context)
+			let function = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(context.unsafelyUnwrapped)).takeUnretainedValue() as! SQLAggregateWindowFunction
+
+			do {
+				set_sql_function_result(sqlite_context, value: try function.value())
+			}
+
+			catch let error {
+				sqlite3_result_error(sqlite_context, "\(error)", -1)
+			}
+		}, { sqlite_context, argc, argv in
+			let context = sqlite3_user_data(sqlite_context)
+			let function = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(context.unsafelyUnwrapped)).takeUnretainedValue() as! SQLAggregateWindowFunction
+
+			let args = UnsafeBufferPointer(start: argv, count: Int(argc))
+			let arguments = args.map { DatabaseValue($0.unsafelyUnwrapped) }
+
+			do {
+				try function.inverse(arguments)
+			}
+
+			catch let error {
+				sqlite3_result_error(sqlite_context, "\(error)", -1)
+			}
+		}, { context in
+			// Balance the +1 retain above
+			Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(context.unsafelyUnwrapped)).release()
+		}) == SQLITE_OK else {
+			throw SQLiteError("Error adding SQL aggregate window function \"\(name)\"", takingDescriptionFromDatabase: db)
+		}
+	}
+
+	/// Removes a custom SQL scalar, aggregate, or window function.
 	///
 	/// - parameter name: The name of the custom SQL function
-	/// - parameter arity: The number of arguments the custom SQL functions accepts
+	/// - parameter arity: The number of arguments the custom SQL function accepts
 	///
 	/// - throws: An error if the SQL function couldn't be removed
 	public func removeFunction(_ name: String, arity: Int = -1) throws {
