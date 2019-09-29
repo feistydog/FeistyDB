@@ -226,6 +226,102 @@ class FeistyDBTests: XCTestCase {
 		XCTAssertThrowsError(try db.prepare(sql: "select rot13(a) from t1;"))
 	}
 
+	func testCustomAggregateFunction() {
+		let db = try! Database()
+
+		class IntegerSumAggregateFunction: SQLAggregateFunction {
+			func step(_ values: [DatabaseValue]) throws {
+			let value = values.first.unsafelyUnwrapped
+				switch value {
+				case .integer(let i):
+					sum += i
+				default:
+					throw DatabaseError("Only integer values supported")
+				}
+			}
+
+			func final() throws -> DatabaseValue {
+				defer {
+					sum = 0
+				}
+				return DatabaseValue(sum)
+			}
+
+			var sum: Int64 = 0
+		}
+
+		try! db.addAggregateFunction("integer_sum", arity: 1, IntegerSumAggregateFunction())
+
+		try! db.execute(sql: "create table t1(a);")
+
+		for i in  0..<10 {
+			try! db.execute(sql: "insert into t1(a) values (?);", parameterValues: [i])
+		}
+
+		let s: Int64 = try! db.prepare(sql: "select integer_sum(a) from t1;").front()
+		XCTAssertEqual(s, 45)
+
+		let ss: Int64 = try! db.prepare(sql: "select integer_sum(a) from t1;").front()
+		XCTAssertEqual(ss, 45)
+
+		try! db.removeFunction("integer_sum", arity: 1)
+		XCTAssertThrowsError(try db.prepare(sql: "select integer_sum(a) from t1;"))
+	}
+
+	func testCustomAggregateWindowFunction() {
+		let db = try! Database()
+
+		class IntegerSumAggregateWindowFunction: SQLAggregateWindowFunction {
+			func step(_ values: [DatabaseValue]) throws {
+				let value = values.first.unsafelyUnwrapped
+				switch value {
+				case .integer(let i):
+					sum += i
+				default:
+					throw DatabaseError("Only integer values supported")
+				}
+			}
+
+			func inverse(_ values: [DatabaseValue]) throws {
+				let value = values.first.unsafelyUnwrapped
+				switch value {
+				case .integer(let i):
+					sum -= i
+				default:
+					throw DatabaseError("Only integer values supported")
+				}
+			}
+
+			func value() throws -> DatabaseValue {
+				return DatabaseValue(sum)
+			}
+
+			func final() throws -> DatabaseValue {
+				defer {
+					sum = 0
+				}
+				return DatabaseValue(sum)
+			}
+
+			var sum: Int64 = 0
+		}
+
+		try! db.addAggregateWindowFunction("integer_sum", arity: 1, IntegerSumAggregateWindowFunction())
+
+		try! db.execute(sql: "create table t1(a);")
+
+		for i in  0..<10 {
+			try! db.execute(sql: "insert into t1(a) values (?);", parameterValues: [i])
+		}
+
+		let s = try! db.prepare(sql: "select integer_sum(a) OVER (ORDER BY a ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING) from t1;")
+		let results = s.map { try! $0.leftmostValue() as Int64 }
+
+		XCTAssertEqual(results, [1, 3, 6, 9, 12, 15, 18, 21, 24, 17])
+
+		try! db.removeFunction("integer_sum", arity: 1)
+		XCTAssertThrowsError(try db.prepare(sql: "select integer_sum(a) OVER (ORDER BY a ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING) from t1;"))	}
+
 	func testCustomTokenizer() {
 
 		/// A word tokenizer using CFStringTokenizer
