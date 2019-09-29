@@ -39,6 +39,7 @@
 		324CCF581DC6233E0056935B /* ColumnConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324CCF571DC6233E0056935B /* ColumnConvertible.swift */; };
 		324CCF5A1DC623C20056935B /* DatabaseValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324CCF591DC623C20056935B /* DatabaseValue.swift */; };
 		324CCF5E1DC624950056935B /* DatabaseQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324CCF5D1DC624950056935B /* DatabaseQueue.swift */; };
+		32702D3B2340F93900A9A53E /* DatabaseReadQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32702D3A2340F93900A9A53E /* DatabaseReadQueue.swift */; };
 		328BBAEA215FAE0B004150C6 /* xxh.c in Sources */ = {isa = PBXBuildFile; fileRef = 328BBAE9215FAE0B004150C6 /* xxh.c */; settings = {COMPILER_FLAGS = "-DSQLITE_CORE"; }; };
 		328BBB11215FB120004150C6 /* xxhash.c in Sources */ = {isa = PBXBuildFile; fileRef = 328BBB10215FB113004150C6 /* xxhash.c */; };
 		328BBB12215FB125004150C6 /* xxhash.c in Sources */ = {isa = PBXBuildFile; fileRef = 328BBB10215FB113004150C6 /* xxhash.c */; settings = {COMPILER_FLAGS = "-DSQLITE_CORE"; }; };
@@ -86,6 +87,7 @@
 		324CCF571DC6233E0056935B /* ColumnConvertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColumnConvertible.swift; sourceTree = "<group>"; };
 		324CCF591DC623C20056935B /* DatabaseValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseValue.swift; sourceTree = "<group>"; };
 		324CCF5D1DC624950056935B /* DatabaseQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseQueue.swift; sourceTree = "<group>"; };
+		32702D3A2340F93900A9A53E /* DatabaseReadQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseReadQueue.swift; sourceTree = "<group>"; };
 		328BBAE9215FAE0B004150C6 /* xxh.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = xxh.c; sourceTree = "<group>"; };
 		328BBB0F215FB113004150C6 /* xxhash.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = xxhash.h; sourceTree = "<group>"; };
 		328BBB10215FB113004150C6 /* xxhash.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = xxhash.c; sourceTree = "<group>"; };
@@ -169,6 +171,7 @@
 				324CCF531DC621F00056935B /* DatabaseError.swift */,
 				32A017E11FF7587F00CFEB61 /* SQLiteError.swift */,
 				324CCF5D1DC624950056935B /* DatabaseQueue.swift */,
+				32702D3A2340F93900A9A53E /* DatabaseReadQueue.swift */,
 				324CCF571DC6233E0056935B /* ColumnConvertible.swift */,
 				321AC9131DCA9D6D00FD8ECA /* ParameterBindable.swift */,
 				32D3CF931DCD5A8B00BB53C6 /* DatabaseSerializable.swift */,
@@ -397,6 +400,7 @@
 				324CCF5A1DC623C20056935B /* DatabaseValue.swift in Sources */,
 				324CCF581DC6233E0056935B /* ColumnConvertible.swift in Sources */,
 				324CCF541DC621F00056935B /* DatabaseError.swift in Sources */,
+				32702D3B2340F93900A9A53E /* DatabaseReadQueue.swift in Sources */,
 				324CCF3F1DC61DE90056935B /* Statement.swift in Sources */,
 				324CCF5E1DC624950056935B /* DatabaseQueue.swift in Sources */,
 				32135F111DC819CC004B0E93 /* feisty_db_register_sqlite_extensions.c in Sources */,
