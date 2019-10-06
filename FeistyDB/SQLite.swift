@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2018 Feisty Dog, LLC
+// Copyright (c) 2018 - 2019 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
@@ -22,6 +22,32 @@ public struct SQLite {
 	///
 	/// - seealso: [Run-Time Library Version Numbers](https://www.sqlite.org/c3ref/libversion.html)
 	static let sourceID = String(cString: sqlite3_sourceid())
+
+	/// Initializes the SQLite library
+	///
+	/// - note: This function is automatically invoked by SQLite and is not normally called directly
+	///
+	/// - throws:  An error if SQLite initialization fails
+	static func initialize() throws {
+		let rc = sqlite3_initialize()
+		guard rc == SQLITE_OK else {
+			throw SQLiteError("Error initializing sqlite3", code: rc)
+		}
+	}
+
+	/// Deallocates any resources allocated by `initialize()`
+	///
+	/// All open database connections must be closed and all other SQLite resources must be deallocated prior to invoking this function.
+	///
+	/// - note: This function is automatically invoked by SQLite and is not normally called directly
+	///
+	/// - throws:  An error if SQLite shutdown fails
+	static func shutdown() throws {
+		let rc = sqlite3_shutdown()
+		guard rc == SQLITE_OK else {
+			throw SQLiteError("Error shutting down sqlite3", code: rc)
+		}
+	}
 
 	/// The number of bytes of memory `malloc`ed but not yet `free`d by SQLite
 	static var memoryUsed: Int64 {
