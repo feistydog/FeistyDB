@@ -18,13 +18,13 @@ SQLITE_EXTENSION_INIT1
 #include <uuid/uuid.h>
 #include <string.h>
 
-#ifdef USE_OPENSSL
+#if USE_OPENSSL
 #include <openssl/md5.h>
 #include <openssl/sha.h>
-#endif
-
-#ifdef USE_COMMONCRYPTO
+#elif USE_COMMONCRYPTO
 #include <CommonCrypto/CommonDigest.h>
+#else
+#error "Either USE_OPENSSL or USE_COMMONCRYPTO must be 1"
 #endif
 
 #define SET_VARIANT(uu)           (uu[8] = (uu[8] & 0xbf) | 0x80)
@@ -71,16 +71,14 @@ static void uuid3func(
 
   uuid_t uu;
 
-#ifdef USE_OPENSSL
+#if USE_OPENSSL
   MD5_CTX mdctx;
   unsigned char md_value[MD5_DIGEST_LENGTH];
   MD5_Init(&mdctx);
   MD5_Update(&mdctx, namespace_uuid, UUID_SIZE);
   MD5_Update(&mdctx, name, strlen((const char *)name));
   MD5_Final(md_value, &mdctx);
-#endif
-
-#ifdef USE_COMMONCRYPTO
+#elif USE_COMMONCRYPTO
   CC_MD5_CTX mdctx;
   unsigned char md_value[CC_MD5_DIGEST_LENGTH];
   CC_MD5_Init(&mdctx);
@@ -136,16 +134,14 @@ static void uuid5func(
 
   uuid_t uu;
 
-#ifdef USE_OPENSSL
+#if USE_OPENSSL
   SHA_CTX mdctx;
   unsigned char md_value[SHA_DIGEST_LENGTH];
   SHA1_Init(&mdctx);
   SHA1_Update(&mdctx, namespace_uuid, UUID_SIZE);
   SHA1_Update(&mdctx, name, strlen((const char *)name));
   SHA1_Final(md_value, &mdctx);
-#endif
-
-#ifdef USE_COMMONCRYPTO
+#elif USE_COMMONCRYPTO
   CC_SHA1_CTX mdctx;
   unsigned char md_value[CC_SHA1_DIGEST_LENGTH];
   CC_SHA1_Init(&mdctx);
