@@ -440,7 +440,7 @@ class FeistyDBTests: XCTestCase {
 	}
 
     func testSQLiteInsertPerformance() {
-		self.measureMetrics([XCTPerformanceMetric.wallClockTime], automaticallyStartMeasuring: false) {
+		self.measureMetrics(XCTestCase.defaultPerformanceMetrics, automaticallyStartMeasuring: false) {
 			var db: OpaquePointer?
 			sqlite3_open_v2(":memory:", &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, nil)
 
@@ -475,7 +475,7 @@ class FeistyDBTests: XCTestCase {
     }
 
 	func testFeistyDBInsertPerformance() {
-		self.measureMetrics([XCTPerformanceMetric.wallClockTime], automaticallyStartMeasuring: false) {
+		self.measureMetrics(XCTestCase.defaultPerformanceMetrics, automaticallyStartMeasuring: false) {
 			let db = try! Database()
 
 			try! db.execute(sql: "create table t1(a, b);")
@@ -505,7 +505,7 @@ class FeistyDBTests: XCTestCase {
 	}
 
 	func testSQLiteInsertPerformance2() {
-		self.measureMetrics([XCTPerformanceMetric.wallClockTime], automaticallyStartMeasuring: false) {
+		self.measureMetrics(XCTestCase.defaultPerformanceMetrics, automaticallyStartMeasuring: false) {
 			var db: OpaquePointer?
 			sqlite3_open_v2(":memory:", &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, nil)
 
@@ -543,7 +543,7 @@ class FeistyDBTests: XCTestCase {
 	}
 
 	func testFeistyDBInsertPerformance2() {
-		self.measureMetrics([XCTPerformanceMetric.wallClockTime], automaticallyStartMeasuring: false) {
+		self.measureMetrics(XCTestCase.defaultPerformanceMetrics, automaticallyStartMeasuring: false) {
 			let db = try! Database()
 
 			try! db.execute(sql: "create table t1(a, b);")
@@ -573,7 +573,7 @@ class FeistyDBTests: XCTestCase {
 	}
 
 	func testFeistyDBInsertPerformance31() {
-		self.measureMetrics([XCTPerformanceMetric.wallClockTime], automaticallyStartMeasuring: false) {
+		self.measureMetrics(XCTestCase.defaultPerformanceMetrics, automaticallyStartMeasuring: false) {
 			let db = try! Database()
 
 			try! db.execute(sql: "create table t1(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z);")
@@ -604,7 +604,7 @@ class FeistyDBTests: XCTestCase {
 	}
 
 	func testFeistyDBInsertPerformance32() {
-		self.measureMetrics([XCTPerformanceMetric.wallClockTime], automaticallyStartMeasuring: false) {
+		self.measureMetrics(XCTestCase.defaultPerformanceMetrics, automaticallyStartMeasuring: false) {
 			let db = try! Database()
 
 			try! db.execute(sql: "create table t1(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z);")
@@ -635,7 +635,7 @@ class FeistyDBTests: XCTestCase {
 	}
 
 	func testSQLiteSelectPerformance() {
-		self.measureMetrics([XCTPerformanceMetric.wallClockTime], automaticallyStartMeasuring: false) {
+		self.measureMetrics(XCTestCase.defaultPerformanceMetrics, automaticallyStartMeasuring: false) {
 			var db: OpaquePointer?
 			sqlite3_open_v2(":memory:", &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, nil)
 
@@ -671,7 +671,7 @@ class FeistyDBTests: XCTestCase {
 	}
 
 	func testFeistyDBSelectPerformance() {
-		self.measureMetrics([XCTPerformanceMetric.wallClockTime], automaticallyStartMeasuring: false) {
+		self.measureMetrics(XCTestCase.defaultPerformanceMetrics, automaticallyStartMeasuring: false) {
 			let db = try! Database()
 
 			try! db.execute(sql: "create table t1(a, b);")
