@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015 - 2018 Feisty Dog, LLC
+// Copyright (c) 2015 - 2019 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
@@ -439,15 +439,14 @@ class FeistyDBTests: XCTestCase {
 	func testDatabaseQueue() {
 	}
 
-	func testConcurrentDatabaseQueue() {
-	}
-
     func testSQLiteInsertPerformance() {
-        self.measure {
+		self.measureMetrics([XCTPerformanceMetric.wallClockTime], automaticallyStartMeasuring: false) {
 			var db: OpaquePointer?
 			sqlite3_open_v2(":memory:", &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, nil)
 
 			sqlite3_exec(db, "create table t1(a, b);", nil, nil, nil)
+
+			startMeasuring()
 
 			let rowCount = 50_000
 			for i in 0..<rowCount {
@@ -461,6 +460,8 @@ class FeistyDBTests: XCTestCase {
 				sqlite3_finalize(stmt)
 			}
 
+			stopMeasuring()
+
 			var stmt: OpaquePointer?
 			sqlite3_prepare_v2(db, "select count(*) from t1;", -1, &stmt, nil)
 			sqlite3_step(stmt)
@@ -473,11 +474,13 @@ class FeistyDBTests: XCTestCase {
         }
     }
 
-	func testDatabaseInsertPerformance() {
-		self.measure {
+	func testFeistyDBInsertPerformance() {
+		self.measureMetrics([XCTPerformanceMetric.wallClockTime], automaticallyStartMeasuring: false) {
 			let db = try! Database()
 
 			try! db.execute(sql: "create table t1(a, b);")
+
+			startMeasuring()
 
 			let rowCount = 50_000
 			for i in 0..<rowCount {
@@ -488,6 +491,8 @@ class FeistyDBTests: XCTestCase {
 
 				try! s.execute()
 			}
+
+			stopMeasuring()
 
 			let s = try! db.prepare(sql: "select count(*) from t1;")
 			var count = 0
@@ -500,7 +505,7 @@ class FeistyDBTests: XCTestCase {
 	}
 
 	func testSQLiteInsertPerformance2() {
-		self.measure {
+		self.measureMetrics([XCTPerformanceMetric.wallClockTime], automaticallyStartMeasuring: false) {
 			var db: OpaquePointer?
 			sqlite3_open_v2(":memory:", &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, nil)
 
@@ -508,6 +513,8 @@ class FeistyDBTests: XCTestCase {
 
 			var stmt: OpaquePointer?
 			sqlite3_prepare_v2(db, "insert into t1(a, b) values (?, ?);", -1, &stmt, nil)
+
+			startMeasuring()
 
 			let rowCount = 50_000
 			for i in 0..<rowCount {
@@ -519,6 +526,8 @@ class FeistyDBTests: XCTestCase {
 				sqlite3_clear_bindings(stmt)
 				sqlite3_reset(stmt)
 			}
+
+			stopMeasuring()
 
 			sqlite3_finalize(stmt)
 
@@ -533,13 +542,15 @@ class FeistyDBTests: XCTestCase {
 		}
 	}
 
-	func testDatabaseInsertPerformance2() {
-		self.measure {
+	func testFeistyDBInsertPerformance2() {
+		self.measureMetrics([XCTPerformanceMetric.wallClockTime], automaticallyStartMeasuring: false) {
 			let db = try! Database()
 
 			try! db.execute(sql: "create table t1(a, b);")
 
 			var s = try! db.prepare(sql: "insert into t1(a, b) values (?, ?);")
+
+			startMeasuring()
 
 			let rowCount = 50_000
 			for i in 0..<rowCount {
@@ -552,6 +563,8 @@ class FeistyDBTests: XCTestCase {
 				try! s.reset()
 			}
 
+			stopMeasuring()
+
 			s = try! db.prepare(sql: "select count(*) from t1;")
 			let count: Int = try! s.front()
 
@@ -559,8 +572,8 @@ class FeistyDBTests: XCTestCase {
 		}
 	}
 
-	func testDatabaseInsertPerformance31() {
-		self.measure {
+	func testFeistyDBInsertPerformance31() {
+		self.measureMetrics([XCTPerformanceMetric.wallClockTime], automaticallyStartMeasuring: false) {
 			let db = try! Database()
 
 			try! db.execute(sql: "create table t1(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z);")
@@ -569,6 +582,8 @@ class FeistyDBTests: XCTestCase {
 
 			let values: [Int?] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26]
 
+			startMeasuring()
+
 			let rowCount = 10_000
 			for _ in 0..<rowCount {
 				try! s.bind(parameterValues: values)
@@ -578,6 +593,8 @@ class FeistyDBTests: XCTestCase {
 				try! s.clearBindings()
 				try! s.reset()
 			}
+
+			stopMeasuring()
 
 			s = try! db.prepare(sql: "select count(*) from t1;")
 			let count: Int = try! s.front()
@@ -586,8 +603,8 @@ class FeistyDBTests: XCTestCase {
 		}
 	}
 
-	func testDatabaseInsertPerformance32() {
-		self.measure {
+	func testFeistyDBInsertPerformance32() {
+		self.measureMetrics([XCTPerformanceMetric.wallClockTime], automaticallyStartMeasuring: false) {
 			let db = try! Database()
 
 			try! db.execute(sql: "create table t1(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z);")
@@ -595,6 +612,8 @@ class FeistyDBTests: XCTestCase {
 			var s = try! db.prepare(sql: "insert into t1(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);")
 
 			let values: [Int] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26]
+
+			startMeasuring()
 
 			let rowCount = 10_000
 			for _ in 0..<rowCount {
@@ -605,6 +624,8 @@ class FeistyDBTests: XCTestCase {
 				try! s.clearBindings()
 				try! s.reset()
 			}
+
+			stopMeasuring()
 
 			s = try! db.prepare(sql: "select count(*) from t1;")
 			let count: Int = try! s.front()
@@ -614,7 +635,7 @@ class FeistyDBTests: XCTestCase {
 	}
 
 	func testSQLiteSelectPerformance() {
-		self.measure {
+		self.measureMetrics([XCTPerformanceMetric.wallClockTime], automaticallyStartMeasuring: false) {
 			var db: OpaquePointer?
 			sqlite3_open_v2(":memory:", &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, nil)
 
@@ -633,6 +654,8 @@ class FeistyDBTests: XCTestCase {
 
 			sqlite3_prepare_v2(db, "select a, b from t1;", -1, &stmt, nil)
 
+			startMeasuring()
+
 			var result = sqlite3_step(stmt)
 			while result == SQLITE_ROW {
 				let _ = Int(sqlite3_column_int64(stmt, 0))
@@ -640,13 +663,15 @@ class FeistyDBTests: XCTestCase {
 				result = sqlite3_step(stmt)
 			}
 
+			stopMeasuring()
+
 			sqlite3_finalize(stmt)
 			sqlite3_close(db)
 		}
 	}
 
-	func testDatabaseSelectPerformance() {
-		self.measure {
+	func testFeistyDBSelectPerformance() {
+		self.measureMetrics([XCTPerformanceMetric.wallClockTime], automaticallyStartMeasuring: false) {
 			let db = try! Database()
 
 			try! db.execute(sql: "create table t1(a, b);")
@@ -660,10 +685,15 @@ class FeistyDBTests: XCTestCase {
 			}
 
 			s = try! db.prepare(sql: "select a, b from t1;")
+
+			startMeasuring()
+
 			try! s.results { row in
 				let _: Int = try row.value(at: 0)
 				let _: Int = try row.value(at: 1)
 			}
+
+			stopMeasuring()
 		}
 	}
 
