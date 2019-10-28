@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015 - 2018 Feisty Dog, LLC
+// Copyright (c) 2015 - 2019 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
@@ -42,7 +42,7 @@ import Foundation
 /// ```
 ///
 /// This allows for simple result row processing at the expense of error handling.
-public final class Row {
+public struct Row {
 	/// The statement owning this row.
 	public let statement: Statement
 
@@ -51,12 +51,11 @@ public final class Row {
 	/// - parameter statement: The owning statement
 	init(statement: Statement) {
 		self.statement = statement
+		self.columnCount = Int(sqlite3_data_count(statement.stmt))
 	}
 
 	/// The number of columns in the row.
-	public lazy var columnCount: Int = {
-		return Int(sqlite3_data_count(self.statement.stmt))
-	}()
+	public let columnCount: Int
 
 	/// Returns the name of the column at `index`.
 	///
