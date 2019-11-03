@@ -122,8 +122,11 @@ public final class DatabaseQueue {
 			do {
 				try self.database.transaction(type: type, block)
 			}
+			catch let error as Error {
+				os_log("Error performing database transaction: %{public}@", type: .info, String(describing: error))
+			}
 			catch let error {
-				os_log("Error performing database transaction: %{public}@", type: .info, error.localizedDescription);
+				os_log("Error performing database transaction: %{public}@", type: .info, error.localizedDescription)
 			}
 		}
 	}
@@ -152,8 +155,11 @@ public final class DatabaseQueue {
 			do {
 				try self.database.savepoint(block: block)
 			}
+			catch let error as Error {
+				os_log("Error performing database savepoint: %{public}@", type: .info, String(describing: error))
+			}
 			catch let error {
-				os_log("Error performing database savepoint: %{public}@", type: .info, error.localizedDescription);
+				os_log("Error performing database savepoint: %{public}@", type: .info, error.localizedDescription)
 			}
 		}
 	}
