@@ -1,3 +1,0 @@
-[submodule "sqlite/xxHash"]
-	path = sqlite/xxHash
-	url = https://github.com/Cyan4973/xxHash.git

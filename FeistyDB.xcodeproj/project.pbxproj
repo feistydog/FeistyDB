@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		32135F111DC819CC004B0E93 /* feisty_db_register_sqlite_extensions.c in Sources */ = {isa = PBXBuildFile; fileRef = 32135F101DC819CC004B0E93 /* feisty_db_register_sqlite_extensions.c */; settings = {COMPILER_FLAGS = "-DSQLITE_CORE"; }; };
 		321AC9141DCA9D6D00FD8ECA /* ParameterBindable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321AC9131DCA9D6D00FD8ECA /* ParameterBindable.swift */; };
 		3236FD841DC6EDE50057703E /* FeistyDB.h in Headers */ = {isa = PBXBuildFile; fileRef = 3236FD831DC6EDE50057703E /* FeistyDB.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3236FD871DC6EF420057703E /* FeistyDBTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3236FD851DC6EDF90057703E /* FeistyDBTests.swift */; };
@@ -15,8 +14,6 @@
 		324CAE0920746247007B5E43 /* sqlite3.h in Headers */ = {isa = PBXBuildFile; fileRef = 324CCF481DC61F020056935B /* sqlite3.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		324CAE0A2074624D007B5E43 /* sqlite3.c in Sources */ = {isa = PBXBuildFile; fileRef = 324CCF471DC61F020056935B /* sqlite3.c */; settings = {COMPILER_FLAGS = "-w -DSQLITE_THREADSAFE=0 -DSQLITE_DEFAULT_MEMSTATUS=0 -DSQLITE_DEFAULT_WAL_SYNCHRONOUS=1 -DSQLITE_LIKE_DOESNT_MATCH_BLOBS -DSQLITE_MAX_EXPR_DEPTH=0 -DSQLITE_OMIT_DECLTYPE -DSQLITE_OMIT_DEPRECATED -DSQLITE_OMIT_PROGRESS_CALLBACK -DSQLITE_OMIT_SHARED_CACHE -DSQLITE_USE_ALLOCA=1 -DSQLITE_ENABLE_FTS5 -DSQLITE_ENABLE_RTREE -DSQLITE_ENABLE_STAT4 -DSQLITE_ENABLE_SNAPSHOT"; }; };
 		324CAE0B20746250007B5E43 /* sqlite3ext.h in Headers */ = {isa = PBXBuildFile; fileRef = 324CCF491DC61F020056935B /* sqlite3ext.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		324CAE0C20746256007B5E43 /* uuid.c in Sources */ = {isa = PBXBuildFile; fileRef = 324CCF4A1DC61F020056935B /* uuid.c */; settings = {COMPILER_FLAGS = "-DSQLITE_CORE -DUSE_COMMONCRYPTO"; }; };
-		324CAE0D20746258007B5E43 /* feisty_db_register_sqlite_extensions.c in Sources */ = {isa = PBXBuildFile; fileRef = 32135F101DC819CC004B0E93 /* feisty_db_register_sqlite_extensions.c */; settings = {COMPILER_FLAGS = "-DSQLITE_CORE"; }; };
 		324CAE0F2074626D007B5E43 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324CCF331DC61D1F0056935B /* Database.swift */; };
 		324CAE102074626D007B5E43 /* Statement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324CCF3E1DC61DE90056935B /* Statement.swift */; };
 		324CAE112074626D007B5E43 /* Row.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324CCF3A1DC61D640056935B /* Row.swift */; };
@@ -34,22 +31,15 @@
 		324CCF4C1DC61F020056935B /* sqlite3.c in Sources */ = {isa = PBXBuildFile; fileRef = 324CCF471DC61F020056935B /* sqlite3.c */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks -DSQLITE_DQS=0 -DSQLITE_THREADSAFE=0 -DSQLITE_DEFAULT_MEMSTATUS=0 -DSQLITE_DEFAULT_WAL_SYNCHRONOUS=1 -DSQLITE_LIKE_DOESNT_MATCH_BLOBS -DSQLITE_MAX_EXPR_DEPTH=0 -DSQLITE_OMIT_DECLTYPE -DSQLITE_OMIT_DEPRECATED -DSQLITE_OMIT_PROGRESS_CALLBACK -DSQLITE_OMIT_SHARED_CACHE -DSQLITE_USE_ALLOCA=1 -DSQLITE_ENABLE_FTS5 -DSQLITE_ENABLE_RTREE -DSQLITE_ENABLE_STAT4 -DSQLITE_ENABLE_SNAPSHOT -DSQLITE_ENABLE_JSON1"; }; };
 		324CCF4D1DC61F020056935B /* sqlite3.h in Headers */ = {isa = PBXBuildFile; fileRef = 324CCF481DC61F020056935B /* sqlite3.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		324CCF4E1DC61F020056935B /* sqlite3ext.h in Headers */ = {isa = PBXBuildFile; fileRef = 324CCF491DC61F020056935B /* sqlite3ext.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		324CCF4F1DC61F020056935B /* uuid.c in Sources */ = {isa = PBXBuildFile; fileRef = 324CCF4A1DC61F020056935B /* uuid.c */; settings = {COMPILER_FLAGS = "-DSQLITE_CORE -DUSE_COMMONCRYPTO=1"; }; };
 		324CCF541DC621F00056935B /* DatabaseError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324CCF531DC621F00056935B /* DatabaseError.swift */; };
 		324CCF581DC6233E0056935B /* ColumnConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324CCF571DC6233E0056935B /* ColumnConvertible.swift */; };
 		324CCF5A1DC623C20056935B /* DatabaseValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324CCF591DC623C20056935B /* DatabaseValue.swift */; };
 		324CCF5E1DC624950056935B /* DatabaseQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324CCF5D1DC624950056935B /* DatabaseQueue.swift */; };
 		32702D3B2340F93900A9A53E /* DatabaseReadQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32702D3A2340F93900A9A53E /* DatabaseReadQueue.swift */; };
-		328BBAEA215FAE0B004150C6 /* xxh.c in Sources */ = {isa = PBXBuildFile; fileRef = 328BBAE9215FAE0B004150C6 /* xxh.c */; settings = {COMPILER_FLAGS = "-DSQLITE_CORE"; }; };
-		328BBB11215FB120004150C6 /* xxhash.c in Sources */ = {isa = PBXBuildFile; fileRef = 328BBB10215FB113004150C6 /* xxhash.c */; };
-		328BBB12215FB125004150C6 /* xxhash.c in Sources */ = {isa = PBXBuildFile; fileRef = 328BBB10215FB113004150C6 /* xxhash.c */; settings = {COMPILER_FLAGS = "-DSQLITE_CORE"; }; };
 		32A017E21FF7587F00CFEB61 /* SQLiteError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32A017E11FF7587F00CFEB61 /* SQLiteError.swift */; };
-		32AFD79F21420B970059CBC7 /* sha.c in Sources */ = {isa = PBXBuildFile; fileRef = 32AFD79E21420B970059CBC7 /* sha.c */; settings = {COMPILER_FLAGS = "-DSQLITE_CORE"; }; };
-		32AFD7A0214213CD0059CBC7 /* sha.c in Sources */ = {isa = PBXBuildFile; fileRef = 32AFD79E21420B970059CBC7 /* sha.c */; settings = {COMPILER_FLAGS = "-DSQLITE_CORE"; }; };
 		32D3CF941DCD5A8B00BB53C6 /* DatabaseSerializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D3CF931DCD5A8B00BB53C6 /* DatabaseSerializable.swift */; };
 		32FFA0A4219609EC000EE1C6 /* SQLite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FFA0A3219609EC000EE1C6 /* SQLite.swift */; };
 		32FFA0A521967870000EE1C6 /* SQLite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FFA0A3219609EC000EE1C6 /* SQLite.swift */; };
-		32FFA0A6219725F6000EE1C6 /* xxh.c in Sources */ = {isa = PBXBuildFile; fileRef = 328BBAE9215FAE0B004150C6 /* xxh.c */; };
 		32FFA0AB21987258000EE1C6 /* Snapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FFA0AA21987258000EE1C6 /* Snapshot.swift */; };
 /* End PBXBuildFile section */
 
@@ -64,7 +54,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		32135F101DC819CC004B0E93 /* feisty_db_register_sqlite_extensions.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = feisty_db_register_sqlite_extensions.c; sourceTree = "<group>"; };
 		321AC9131DCA9D6D00FD8ECA /* ParameterBindable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParameterBindable.swift; sourceTree = "<group>"; };
 		3236FD831DC6EDE50057703E /* FeistyDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeistyDB.h; sourceTree = "<group>"; };
 		3236FD851DC6EDF90057703E /* FeistyDBTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeistyDBTests.swift; sourceTree = "<group>"; };
@@ -82,17 +71,12 @@
 		324CCF471DC61F020056935B /* sqlite3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sqlite3.c; sourceTree = "<group>"; };
 		324CCF481DC61F020056935B /* sqlite3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sqlite3.h; sourceTree = "<group>"; };
 		324CCF491DC61F020056935B /* sqlite3ext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sqlite3ext.h; sourceTree = "<group>"; };
-		324CCF4A1DC61F020056935B /* uuid.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = uuid.c; sourceTree = "<group>"; };
 		324CCF531DC621F00056935B /* DatabaseError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseError.swift; sourceTree = "<group>"; };
 		324CCF571DC6233E0056935B /* ColumnConvertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColumnConvertible.swift; sourceTree = "<group>"; };
 		324CCF591DC623C20056935B /* DatabaseValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseValue.swift; sourceTree = "<group>"; };
 		324CCF5D1DC624950056935B /* DatabaseQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseQueue.swift; sourceTree = "<group>"; };
 		32702D3A2340F93900A9A53E /* DatabaseReadQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseReadQueue.swift; sourceTree = "<group>"; };
-		328BBAE9215FAE0B004150C6 /* xxh.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = xxh.c; sourceTree = "<group>"; };
-		328BBB0F215FB113004150C6 /* xxhash.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = xxhash.h; sourceTree = "<group>"; };
-		328BBB10215FB113004150C6 /* xxhash.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = xxhash.c; sourceTree = "<group>"; };
 		32A017E11FF7587F00CFEB61 /* SQLiteError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLiteError.swift; sourceTree = "<group>"; };
-		32AFD79E21420B970059CBC7 /* sha.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sha.c; sourceTree = "<group>"; };
 		32CF82E41DD038B800A0E2FB /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		32D3CF931DCD5A8B00BB53C6 /* DatabaseSerializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseSerializable.swift; sourceTree = "<group>"; };
 		32D3CF951DCE2F4100BB53C6 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -193,25 +177,11 @@
 		324CCF451DC61F020056935B /* sqlite */ = {
 			isa = PBXGroup;
 			children = (
-				328BBB0E215FB103004150C6 /* xxHash */,
 				324CCF481DC61F020056935B /* sqlite3.h */,
 				324CCF471DC61F020056935B /* sqlite3.c */,
 				324CCF491DC61F020056935B /* sqlite3ext.h */,
-				324CCF4A1DC61F020056935B /* uuid.c */,
-				32AFD79E21420B970059CBC7 /* sha.c */,
-				328BBAE9215FAE0B004150C6 /* xxh.c */,
-				32135F101DC819CC004B0E93 /* feisty_db_register_sqlite_extensions.c */,
 			);
 			path = sqlite;
-			sourceTree = "<group>";
-		};
-		328BBB0E215FB103004150C6 /* xxHash */ = {
-			isa = PBXGroup;
-			children = (
-				328BBB0F215FB113004150C6 /* xxhash.h */,
-				328BBB10215FB113004150C6 /* xxhash.c */,
-			);
-			path = xxHash;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -370,12 +340,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				324CAE0C20746256007B5E43 /* uuid.c in Sources */,
 				324CAE0A2074624D007B5E43 /* sqlite3.c in Sources */,
 				324CAE0F2074626D007B5E43 /* Database.swift in Sources */,
-				32AFD7A0214213CD0059CBC7 /* sha.c in Sources */,
-				324CAE0D20746258007B5E43 /* feisty_db_register_sqlite_extensions.c in Sources */,
-				32FFA0A6219725F6000EE1C6 /* xxh.c in Sources */,
 				324CAE152074626D007B5E43 /* DatabaseQueue.swift in Sources */,
 				324CAE112074626D007B5E43 /* Row.swift in Sources */,
 				324CAE182074626D007B5E43 /* ParameterBindable.swift in Sources */,
@@ -384,7 +350,6 @@
 				324CAE172074626D007B5E43 /* ColumnConvertible.swift in Sources */,
 				32FFA0A521967870000EE1C6 /* SQLite.swift in Sources */,
 				324CAE192074626D007B5E43 /* DatabaseSerializable.swift in Sources */,
-				328BBB12215FB125004150C6 /* xxhash.c in Sources */,
 				324CAE142074626D007B5E43 /* SQLiteError.swift in Sources */,
 				324CAE122074626D007B5E43 /* DatabaseValue.swift in Sources */,
 			);
@@ -403,16 +368,11 @@
 				32702D3B2340F93900A9A53E /* DatabaseReadQueue.swift in Sources */,
 				324CCF3F1DC61DE90056935B /* Statement.swift in Sources */,
 				324CCF5E1DC624950056935B /* DatabaseQueue.swift in Sources */,
-				32135F111DC819CC004B0E93 /* feisty_db_register_sqlite_extensions.c in Sources */,
 				32A017E21FF7587F00CFEB61 /* SQLiteError.swift in Sources */,
 				32D3CF941DCD5A8B00BB53C6 /* DatabaseSerializable.swift in Sources */,
-				328BBB11215FB120004150C6 /* xxhash.c in Sources */,
 				32FFA0A4219609EC000EE1C6 /* SQLite.swift in Sources */,
 				324CCF4C1DC61F020056935B /* sqlite3.c in Sources */,
-				324CCF4F1DC61F020056935B /* uuid.c in Sources */,
 				32FFA0AB21987258000EE1C6 /* Snapshot.swift in Sources */,
-				328BBAEA215FAE0B004150C6 /* xxh.c in Sources */,
-				32AFD79F21420B970059CBC7 /* sha.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
