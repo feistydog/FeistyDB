@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015 - 2018 Feisty Dog, LLC
+// Copyright (c) 2015 - 2020 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
@@ -473,7 +473,7 @@ extension Bool: ParameterBindable {
 
 extension UUID: ParameterBindable {
 	public func bind(to stmt: SQLitePreparedStatement, parameter idx: Int32) throws {
-		guard sqlite3_bind_text(stmt, idx, self.uuidString, -1, SQLITE_TRANSIENT) == SQLITE_OK else {
+		guard sqlite3_bind_text(stmt, idx, self.uuidString.lowercased(), -1, SQLITE_TRANSIENT) == SQLITE_OK else {
 			throw SQLiteError("Error binding UUID \"\(self)\" to parameter \(idx)", takingDescriptionFromStatement: stmt)
 		}
 	}
