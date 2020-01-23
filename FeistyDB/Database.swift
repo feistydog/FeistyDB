@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015 - 2019 Feisty Dog, LLC
+// Copyright (c) 2015 - 2020 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
@@ -648,6 +648,50 @@ extension Database {
 	///
 	/// - returns: The result of applying the function to `values`
 	public typealias SQLFunction = (_ values: [DatabaseValue]) throws -> DatabaseValue
+
+	/// Custom SQL function flags
+	///
+	/// - seealso: [Function Flags](https://www.sqlite.org/c3ref/c_deterministic.html)
+	public struct SQLFunctionFlags: OptionSet {
+		public let rawValue: Int
+
+		public init(rawValue: Int) {
+			self.rawValue = rawValue
+		}
+
+		/// The function gives the same output when the input parameters are the same
+		public static let deterministic = SQLFunctionFlags(rawValue: 1 << 0)
+		/// The function may only be invoked from top-level SQL, and cannot be used in `VIEW`s or `TRIGGER`s
+		/// nor in schema structures such as `CHECK` constraints, `DEFAULT` clauses, expression indexes, partial indexes, or generated columns
+		public static let directOnly = SQLFunctionFlags(rawValue: 1 << 1)
+		/// Indicates to SQLite that a function may call `sqlite3_value_subtype() `to inspect the sub-types of its arguments
+		public static let subtype = SQLFunctionFlags(rawValue: 1 << 2)
+		/// The function is unlikely to cause problems even if misused.
+		/// An innocuous function should have no side effects and should not depend on any values other than its input parameters.
+		public static let innocuous = SQLFunctionFlags(rawValue: 1 << 3)
+	}
+}
+
+extension Database.SQLFunctionFlags {
+	/// Returns the vallue of `self` using SQLIte's flag values
+	func asSQLiteFlags() -> Int32 {
+		var flags: Int32 = 0
+
+		if contains(.deterministic) {
+			flags |= SQLITE_DETERMINISTIC
+		}
+		if contains(.directOnly) {
+			flags |= SQLITE_DIRECTONLY
+		}
+		if contains(.subtype) {
+			flags |= SQLITE_SUBTYPE
+		}
+		if contains(.innocuous) {
+			flags |= SQLITE_INNOCUOUS
+		}
+
+		return flags
+	}
 }
 
 /// A custom SQL aggregate function.
@@ -704,26 +748,18 @@ extension Database {
 	///
 	/// - parameter name: The name of the function
 	/// - parameter arity: The number of arguments the function accepts
-	/// - parameter deterministic: Whether the function will always return the same result given the same inputs within a single SQL statement
-	/// - parameter directOnly: Whether the function may only be invoked from top-level SQL, and cannot be used in VIEWs or TRIGGERs
+	/// - parameter flags: Flags affecting the function's use by SQLite
 	/// - parameter block: A closure that returns the result of applying the function to the supplied arguments
 	///
 	/// - throws: An error if the SQL scalar function couldn't be added
 	///
 	/// - seealso: [Create Or Redefine SQL Functions](https://sqlite.org/c3ref/create_function.html)
-	public func addFunction(_ name: String, arity: Int = -1, deterministic: Bool = true, directOnly: Bool = true, _ block: @escaping SQLFunction) throws {
+	public func addFunction(_ name: String, arity: Int = -1, flags: SQLFunctionFlags = [.deterministic, .directOnly], _ block: @escaping SQLFunction) throws {
 		let function_ptr = UnsafeMutablePointer<SQLFunction>.allocate(capacity: 1)
 		function_ptr.initialize(to: block)
 
-		var flags = SQLITE_UTF8
-		if deterministic {
-			flags |= SQLITE_DETERMINISTIC
-		}
-		if directOnly {
-			flags |= SQLITE_DIRECTONLY
-		}
-
-		guard sqlite3_create_function_v2(db, name, Int32(arity), flags, function_ptr, { sqlite_context, argc, argv in
+		let function_flags = SQLITE_UTF8 | flags.asSQLiteFlags()
+		guard sqlite3_create_function_v2(db, name, Int32(arity), function_flags, function_ptr, { sqlite_context, argc, argv in
 			let context = sqlite3_user_data(sqlite_context)
 			let function_ptr = context.unsafelyUnwrapped.assumingMemoryBound(to: SQLFunction.self)
 
@@ -774,26 +810,18 @@ extension Database {
 	///
 	/// - parameter name: The name of the aggregate function
 	/// - parameter arity: The number of arguments the function accepts
-	/// - parameter deterministic: Whether the function will always return the same result given the same inputs within a single SQL statement
-	/// - parameter directOnly: Whether the function may only be invoked from top-level SQL, and cannot be used in VIEWs or TRIGGERs
+	/// - parameter flags: Flags affecting the function's use by SQLite
 	/// - parameter aggregateFunction: An object defining the aggregate function
 	///
 	/// - throws:  An error if the SQL aggregate function can't be added
 	///
 	/// - seealso: [Create Or Redefine SQL Functions](https://sqlite.org/c3ref/create_function.html)
-	public func addAggregateFunction(_ name: String, arity: Int = -1, deterministic: Bool = true, directOnly: Bool = true, _ function: SQLAggregateFunction) throws {
+	public func addAggregateFunction(_ name: String, arity: Int = -1, flags: SQLFunctionFlags = [.deterministic, .directOnly], _ function: SQLAggregateFunction) throws {
 		// function must live until the xDelete function is invoked; store it as a +1 object in context
 		let context = Unmanaged.passRetained(function as AnyObject).toOpaque()
 
-		var flags = SQLITE_UTF8
-		if deterministic {
-			flags |= SQLITE_DETERMINISTIC
-		}
-		if directOnly {
-			flags |= SQLITE_DIRECTONLY
-		}
-
-		guard sqlite3_create_function_v2(db, name, Int32(arity), flags, context, nil, { sqlite_context, argc, argv in
+		let function_flags = SQLITE_UTF8 | flags.asSQLiteFlags()
+		guard sqlite3_create_function_v2(db, name, Int32(arity), function_flags, context, nil, { sqlite_context, argc, argv in
 			let context = sqlite3_user_data(sqlite_context)
 			let function = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(context.unsafelyUnwrapped)).takeUnretainedValue() as! SQLAggregateFunction
 
@@ -868,18 +896,18 @@ extension Database {
 	///
 	/// - parameter name: The name of the aggregate window function
 	/// - parameter arity: The number of arguments the function accepts
-	/// - parameter deterministic: Whether the function will always return the same result given the same inputs within a single SQL statement
+	/// - parameter flags: Flags affecting the function's use by SQLite
 	/// - parameter aggregateWindowFunction: An object defining the aggregate window function
 	///
 	/// - throws:  An error if the SQL aggregate window function can't be added
 	///
 	/// - seealso: [User-Defined Aggregate Window Functions](https://sqlite.org/windowfunctions.html#udfwinfunc)
-	public func addAggregateWindowFunction(_ name: String, arity: Int = -1, deterministic: Bool = true, _ function: SQLAggregateWindowFunction) throws {
+	public func addAggregateWindowFunction(_ name: String, arity: Int = -1, flags: SQLFunctionFlags = [.deterministic, .directOnly], _ function: SQLAggregateWindowFunction) throws {
 		// function must live until the xDelete function is invoked; store it as a +1 object in context
 		let context = Unmanaged.passRetained(function as AnyObject).toOpaque()
 
-		let flags = deterministic ? SQLITE_UTF8 | SQLITE_DETERMINISTIC : SQLITE_UTF8
-		guard sqlite3_create_window_function(db, name, Int32(arity), flags, context, { sqlite_context, argc, argv in
+		let function_flags = SQLITE_UTF8 | flags.asSQLiteFlags()
+		guard sqlite3_create_window_function(db, name, Int32(arity), function_flags, context, { sqlite_context, argc, argv in
 			let context = sqlite3_user_data(sqlite_context)
 			let function = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(context.unsafelyUnwrapped)).takeUnretainedValue() as! SQLAggregateWindowFunction
 
