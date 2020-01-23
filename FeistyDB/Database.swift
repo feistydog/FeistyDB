@@ -673,7 +673,7 @@ extension Database {
 }
 
 extension Database.SQLFunctionFlags {
-	/// Returns the vallue of `self` using SQLIte's flag values
+	/// Returns the value of `self` using SQLIte's flag values
 	func asSQLiteFlags() -> Int32 {
 		var flags: Int32 = 0
 
