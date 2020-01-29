@@ -508,9 +508,15 @@ extension Database {
 		guard let statement = preparedStatements[key] else {
 			throw DatabaseError("No prepared statement for key \"\(key)\"")
 		}
-		let result = try block(statement)
-		try statement.reset()
-		return result
+		do {
+			let result = try block(statement)
+			try statement.reset()
+			return result
+		}
+		catch let error {
+			try? statement.reset()
+			throw error
+		}
 	}
 
 	/// Returns or stores the compiled SQL statement for `key`.
