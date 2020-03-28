@@ -4,6 +4,7 @@
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
 
+import os.log
 import Foundation
 
 // C -> Swift Hacks
@@ -1462,6 +1463,7 @@ extension Database {
 			}
 
 			catch let error {
+				os_log("Error constructing FTS5 tokenizer: %{public}@", type: .info, error.localizedDescription)
 				return SQLITE_ERROR
 			}
 
