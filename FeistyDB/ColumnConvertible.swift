@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015 - 2018 Feisty Dog, LLC
+// Copyright (c) 2015 - 2020 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
@@ -116,6 +116,21 @@ extension Row {
 
 	public subscript<T: ColumnConvertible>(named name: String) -> T? {
 		return try? value(named: name)
+	}
+}
+
+extension Statement {
+	/// Returns the value of the leftmost column for each row in the result set.
+	///
+	/// - throws: An error if there are no columns
+	///
+	/// - returns: An array containing the leftmost column's values
+	public func leftmostColumn<T: ColumnConvertible>() throws -> [T] {
+		var values = [T]()
+		try results { row in
+			values.append(try row.value(at: 0))
+		}
+		return values
 	}
 }
 

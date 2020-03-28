@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015 - 2018 Feisty Dog, LLC
+// Copyright (c) 2015 - 2020 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
@@ -170,6 +170,21 @@ extension Row {
 	/// - returns: The column's value
 	public func value(named name: String) throws -> DatabaseValue {
 		return try value(at: statement.index(ofColumn: name))
+	}
+}
+
+extension Statement {
+	/// Returns the value of the leftmost column for each row in the result set.
+	///
+	/// - throws: An error if there are no columns
+	///
+	/// - returns: An array containing the leftmost column's values
+	public func leftmostColumn() throws -> [DatabaseValue] {
+		var values = [DatabaseValue]()
+		try results { row in
+			values.append(try row.value(at: 0))
+		}
+		return values
 	}
 }
 

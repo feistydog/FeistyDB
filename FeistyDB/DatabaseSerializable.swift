@@ -95,6 +95,21 @@ extension Row {
 	}
 }
 
+extension Statement {
+	/// Returns the value of the leftmost column for each row in the result set.
+	///
+	/// - throws: An error if there are no columns
+	///
+	/// - returns: An array containing the leftmost column's values
+	public func leftmostColumn<T: DatabaseSerializable>() throws -> [T] {
+		var values = [T]()
+		try results { row in
+			values.append(try row.value(at: 0))
+		}
+		return values
+	}
+}
+
 extension Row {
 	/// Returns the value of the leftmost column.
 	///
