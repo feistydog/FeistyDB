@@ -240,10 +240,6 @@ extension Database {
 		let context = block != nil ? Unmanaged.passRetained(block as AnyObject).toOpaque() : nil
 		var errmsg: UnsafeMutablePointer<Int8>?
 		guard sqlite3_exec(db, sql, { (context, count, raw_values, raw_names) -> Int32 in
-			guard context != nil else {
-				return SQLITE_OK
-			}
-
 			let values = UnsafeMutableBufferPointer<UnsafeMutablePointer<Int8>?>(start: raw_values, count: Int(count))
 			let names = UnsafeMutableBufferPointer<UnsafeMutablePointer<Int8>?>(start: raw_names, count: Int(count))
 
@@ -256,8 +252,10 @@ extension Database {
 				row[name] = value
 			}
 
-			let block = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(context.unsafelyUnwrapped)).takeRetainedValue() as! ([String: String]) -> Void
-			block(row)
+			if context != nil {
+				let block = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(context.unsafelyUnwrapped)).takeRetainedValue() as! ([String: String]) -> Void
+				block(row)
+			}
 
 			return SQLITE_OK
 		}, context, &errmsg) == SQLITE_OK else {
