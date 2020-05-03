@@ -50,20 +50,6 @@ class FeistyDBTests: XCTestCase {
 		XCTAssertEqual(count, rowCount)
 	}
 
-	func testBatch() {
-		let db = try! Database()
-
-		try! db.batch(sql: "pragma application_id;")
-		try! db.batch(sql: "pragma application_id; pragma foreign_keys;")
-
-		XCTAssertThrowsError(try db.batch(sql: "lulu"))
-
-		try! db.batch(sql: "pragma application_id;") { row in
-			XCTAssertEqual(row.keys.count, 1)
-			XCTAssertEqual(row["application_id"], "0")
-		}
-	}
-
 	func testInsert() {
 		let db = try! Database()
 
