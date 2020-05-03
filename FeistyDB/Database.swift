@@ -237,33 +237,30 @@ extension Database {
 	///
 	/// - throws: An error if `sql` could not be compiled or executed
 	public func batch(sql: String, _ block: ((_ row: [String: String]) -> Void)? = nil) throws {
-		var result: Int32
+		let context = block != nil ? Unmanaged.passRetained(block as AnyObject).toOpaque() : nil
 		var errmsg: UnsafeMutablePointer<Int8>?
-		if let block = block {
-			let context = Unmanaged.passRetained(block as AnyObject).toOpaque()
-			result = sqlite3_exec(db, sql, { (context, count, raw_values, raw_names) -> Int32 in
-				let values = UnsafeMutableBufferPointer<UnsafeMutablePointer<Int8>?>(start: raw_values, count: Int(count))
-				let names = UnsafeMutableBufferPointer<UnsafeMutablePointer<Int8>?>(start: raw_names, count: Int(count))
-
-				var row = [String: String]()
-				for i in 0 ..< Int(count) {
-					let raw_value = values[i].unsafelyUnwrapped
-					let value = String(bytesNoCopy: raw_value, length: strlen(raw_value), encoding: .utf8, freeWhenDone: false).unsafelyUnwrapped
-					let raw_name = names[i].unsafelyUnwrapped
-					let name = String(bytesNoCopy: raw_name, length: strlen(raw_name), encoding: .utf8, freeWhenDone: false).unsafelyUnwrapped
-					row[name] = value
-				}
-
-				let block = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(context.unsafelyUnwrapped)).takeRetainedValue() as! ([String: String]) -> Void
-				block(row)
-
+		guard sqlite3_exec(db, sql, { (context, count, raw_values, raw_names) -> Int32 in
+			guard context != nil else {
 				return SQLITE_OK
-			}, context, &errmsg)
-		}
-		else {
-			result = sqlite3_exec(db, sql, nil, nil, &errmsg)
-		}
-		guard result == SQLITE_OK else {
+			}
+
+			let values = UnsafeMutableBufferPointer<UnsafeMutablePointer<Int8>?>(start: raw_values, count: Int(count))
+			let names = UnsafeMutableBufferPointer<UnsafeMutablePointer<Int8>?>(start: raw_names, count: Int(count))
+
+			var row = [String: String]()
+			for i in 0 ..< Int(count) {
+				let raw_value = values[i].unsafelyUnwrapped
+				let value = String(bytesNoCopy: raw_value, length: strlen(raw_value), encoding: .utf8, freeWhenDone: false).unsafelyUnwrapped
+				let raw_name = names[i].unsafelyUnwrapped
+				let name = String(bytesNoCopy: raw_name, length: strlen(raw_name), encoding: .utf8, freeWhenDone: false).unsafelyUnwrapped
+				row[name] = value
+			}
+
+			let block = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(context.unsafelyUnwrapped)).takeRetainedValue() as! ([String: String]) -> Void
+			block(row)
+
+			return SQLITE_OK
+		}, context, &errmsg) == SQLITE_OK else {
 			let details = errmsg != nil ? String(bytesNoCopy: errmsg.unsafelyUnwrapped, length: strlen(errmsg.unsafelyUnwrapped), encoding: .utf8, freeWhenDone: true).unsafelyUnwrapped : nil
 			throw DatabaseError(message: "Error executing SQL", details: details)
 		}
