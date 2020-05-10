@@ -427,6 +427,33 @@ class FeistyDBTests: XCTestCase {
 		}
 	}
 
+	func testUUIDExtension() {
+		let db = try! Database()
+		let statement = try! db.prepare(sql: "select uuid();")
+		let s: String = try! statement.front()
+		let u = UUID(uuidString: s)
+		XCTAssertEqual(u?.uuidString.lowercased(), s.lowercased())
+	}
+
+	func testCArrayExtension() {
+		let db = try! Database()
+
+		try! db.execute(sql: "create table animals(kind);")
+
+		try! db.prepare(sql: "insert into animals(kind) values ('dog');").execute()
+		try! db.prepare(sql: "insert into animals(kind) values ('cat');").execute()
+		try! db.prepare(sql: "insert into animals(kind) values ('bird');").execute()
+		try! db.prepare(sql: "insert into animals(kind) values ('hedgehog');").execute()
+
+		let pets = [ "dog", "dragon", "hedgehog" ]
+		let statement = try! db.prepare(sql: "SELECT * FROM animals WHERE kind IN carray(?1,?2,'char*');")
+		try! statement.bind(array: pets, toParameter: 1)
+		try! statement.bind(value: pets.count, toParameter: 2)
+
+		let results: [String] = statement.map({try! $0.value(at: 0)})
+
+		XCTAssertEqual([ "dog", "hedgehog" ], results)
+	}
 
 	func testDatabaseQueue() {
 	}
