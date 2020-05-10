@@ -15,13 +15,21 @@ if ! [ -f "./$SQLITE_ARCHIVE" ]; then
 	curl -O "$SQLITE_DOWNLOAD_URL"
 fi
 
-/usr/bin/unzip -u "$SQLITE_ARCHIVE"
+/usr/bin/unzip -u "./$SQLITE_ARCHIVE"
 
-(cd "./$SQLITE_DIR" && ./configure --disable-tcl && make sqlite3.c)
+if ! [ -f "./$SQLITE_DIR/Makefile" ]; then
+	(cd "./$SQLITE_DIR" && ./configure --disable-tcl)
+fi
 
-MATCH_FOUND=$(/usr/bin/fgrep "FeistyDB" "$SQLITE_DIR/sqlite3.c")
+/usr/bin/make -C "./$SQLITE_DIR" sqlite3.c
 
-if test "$MATCH_FOUND" != 0; then
+/usr/bin/fgrep "FeistyDB" "./$SQLITE_DIR/sqlite3.c" > /dev/null
+STATUS=$?
+
+if [ $STATUS -gt 1 ]; then
+	echo "Error: fgrep failed"
+	exit 1
+elif [ $STATUS -eq 1 ]; then
 	cat <<EOF >> "$SQLITE_DIR/sqlite3.c"
 /************************** FeistyDB additions ****************************/
 
@@ -69,4 +77,6 @@ if [ -d ./sqlite ]; then
 	/bin/rm ./sqlite
 fi
 
-ln -s "$SQLITE_DIR" sqlite
+/bin/ln -s "$SQLITE_DIR" ./sqlite
+
+echo "sqlite successfully configured for FeistyDB"
