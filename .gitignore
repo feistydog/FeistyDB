@@ -14,7 +14,6 @@ build/
 docs/
 
 ## SQLite source
-sqlite-amalgamation-*.zip
-sqlite/sqlite3.c
-sqlite/sqlite3.h
-sqlite/sqlite3ext.h
+sqlite-src-*.zip
+sqlite-src-*/*
+sqlite
