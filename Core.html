@@ -10,6 +10,7 @@
     
   </head>
   <body>
+    <a name="//apple_ref/swift/Section/Core" class="dashAnchor"></a>
     <a title="Core  Reference"></a>
     <header>
       <div class="content-wrapper">
@@ -37,6 +38,18 @@
                 <a href="Classes/Database/TransactionType.html">– TransactionType</a>
               </li>
               <li class="nav-group-task">
+                <a href="Classes/Database/TransactionCompletion.html">– TransactionCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/Database/SavepointCompletion.html">– SavepointCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/Database/WALCheckpointType.html">– WALCheckpointType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/Database/SQLFunctionFlags.html">– SQLFunctionFlags</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="Classes/Database/RowChangeType.html">– RowChangeType</a>
               </li>
               <li class="nav-group-task">
@@ -52,7 +65,7 @@
                 <a href="Classes/Statement/Counter.html">– Counter</a>
               </li>
               <li class="nav-group-task">
-                <a href="Classes/Row.html">Row</a>
+                <a href="Structs/Row.html">Row</a>
               </li>
             </ul>
           </li>
@@ -80,18 +93,20 @@
                 <a href="Classes/DatabaseQueue.html">DatabaseQueue</a>
               </li>
               <li class="nav-group-task">
-                <a href="Classes/DatabaseQueue/TransactionCompletion.html">– TransactionCompletion</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Classes/DatabaseQueue/SavepointCompletion.html">– SavepointCompletion</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Classes/ConcurrentDatabaseQueue.html">ConcurrentDatabaseQueue</a>
+                <a href="Classes/DatabaseReadQueue.html">DatabaseReadQueue</a>
               </li>
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="Other Enums.html">Other Enumerations</a>
+            <a href="Other%20Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Classes/Snapshot.html">Snapshot</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Other%20Enums.html">Other Enumerations</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="Enums/SQLiteResultCode.html">SQLiteResultCode</a>
@@ -135,7 +150,7 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="Other Extensions.html">Other Extensions</a>
+            <a href="Other%20Extensions.html">Other Extensions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="Extensions/Bool.html">Bool</a>
@@ -200,7 +215,7 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="Other Protocols.html">Other Protocols</a>
+            <a href="Other%20Protocols.html">Other Protocols</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="Protocols/Error.html">Error</a>
@@ -208,13 +223,22 @@
               <li class="nav-group-task">
                 <a href="Protocols/FTS5Tokenizer.html">FTS5Tokenizer</a>
               </li>
+              <li class="nav-group-task">
+                <a href="Protocols/SQLAggregateFunction.html">SQLAggregateFunction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/SQLAggregateWindowFunction.html">SQLAggregateWindowFunction</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="Other Structs.html">Other Structures</a>
+            <a href="Other%20Structs.html">Other Structures</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="Structs/DatabaseError.html">DatabaseError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Other%20Structs.html#/s:8FeistyDB6SQLiteV">SQLite</a>
               </li>
               <li class="nav-group-task">
                 <a href="Structs/SQLiteError.html">SQLiteError</a>
@@ -222,13 +246,16 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="Other Typealiases.html">Other Type Aliases</a>
+            <a href="Other%20Typealiases.html">Other Type Aliases</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="Other Typealiases.html#/s:8FeistyDB24SQLiteDatabaseConnectiona">SQLiteDatabaseConnection</a>
+                <a href="Other%20Typealiases.html#/s:8FeistyDB24SQLiteDatabaseConnectiona">SQLiteDatabaseConnection</a>
               </li>
               <li class="nav-group-task">
-                <a href="Other Typealiases.html#/s:8FeistyDB23SQLitePreparedStatementa">SQLitePreparedStatement</a>
+                <a href="Other%20Typealiases.html#/s:8FeistyDB23SQLitePreparedStatementa">SQLitePreparedStatement</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Other%20Typealiases.html#/s:8FeistyDB14SQLiteSnapshota">SQLiteSnapshot</a>
               </li>
             </ul>
           </li>
@@ -279,10 +306,6 @@
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
                 <li class="item">
                   <div>
                     <code>
@@ -341,22 +364,20 @@ silently discarded.</p>
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">final</span> <span class="kd">public</span> <span class="kd">class</span> <span class="kt">Statement</span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Statement</span><span class="p">:</span> <span class="kt">Sequence</span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Statement</span><span class="p">:</span> <span class="kt">IteratorProtocol</span></code></pre>
 
                         </div>
                       </div>
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB3RowC"></a>
-                    <a name="//apple_ref/swift/Class/Row" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB3RowC">Row</a>
+                    <a name="/s:8FeistyDB3RowV"></a>
+                    <a name="//apple_ref/swift/Struct/Row" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB3RowV">Row</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -395,13 +416,15 @@ a type implements either the <code><a href="Protocols/ColumnConvertible.html">Co
 
 <p>This allows for simple result row processing at the expense of error handling.</p>
 
-                        <a href="Classes/Row.html" class="slightly-smaller">See more</a>
+                        <a href="Structs/Row.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">Row</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Row</span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Row</span><span class="p">:</span> <span class="kt">CustomStringConvertible</span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Row</span><span class="p">:</span> <span class="kt">Collection</span></code></pre>
 
                         </div>
                       </div>
@@ -413,8 +436,8 @@ a type implements either the <code><a href="Protocols/ColumnConvertible.html">Co
           </section>
         </section>
         <section id="footer">
-          <p>© 2015 - 2018 <a class="link" href="https://www.feisty-dog.com" target="_blank" rel="external">Feisty Dog, LLC</a> under the <a class="link" href="https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt" target="_blank" rel="external">MIT License</a>.</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+          <p>© 2015 - 2020 <a class="link" href="https://www.feisty-dog.com" target="_blank" rel="external">Feisty Dog, LLC</a> under the <a class="link" href="https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt" target="_blank" rel="external">MIT License</a>.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
     </div>

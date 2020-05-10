@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>DatabaseReadQueue Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Class/DatabaseReadQueue" class="dashAnchor"></a>
+    <a title="DatabaseReadQueue Class Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html">FeistyDB Docs</a> (99% documented)</p>
+        <p class="header-right"><a href="https://github.com/feistydog/FeistyDB"><img src="../img/gh.png"/>View on GitHub</a></p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html">FeistyDB Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        DatabaseReadQueue Class Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Core.html">Core</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/Database.html">Database</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Database/TransactionType.html">– TransactionType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Database/TransactionCompletion.html">– TransactionCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Database/SavepointCompletion.html">– SavepointCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Database/WALCheckpointType.html">– WALCheckpointType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Database/SQLFunctionFlags.html">– SQLFunctionFlags</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Database/RowChangeType.html">– RowChangeType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Database/StatusParameter.html">– StatusParameter</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Database/FTS5TokenizationReason.html">– FTS5TokenizationReason</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Statement.html">Statement</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Statement/Counter.html">– Counter</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Row.html">Row</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Values.html">Values</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/DatabaseValue.html">DatabaseValue</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ColumnConvertible.html">ColumnConvertible</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ParameterBindable.html">ParameterBindable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/DatabaseSerializable.html">DatabaseSerializable</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Queues.html">Queues</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/DatabaseQueue.html">DatabaseQueue</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DatabaseReadQueue.html">DatabaseReadQueue</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other%20Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/Snapshot.html">Snapshot</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other%20Enums.html">Other Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/SQLiteResultCode.html">SQLiteResultCode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SQLiteResultCode/IOErrExtendedResultCode.html">– IOErrExtendedResultCode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SQLiteResultCode/LockedExtendedResultCode.html">– LockedExtendedResultCode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SQLiteResultCode/BusyExtendedResultCode.html">– BusyExtendedResultCode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SQLiteResultCode/CantOpenExtendedResultCode.html">– CantOpenExtendedResultCode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SQLiteResultCode/CorruptExtendedResultCode.html">– CorruptExtendedResultCode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SQLiteResultCode/ReadOnlyExtendedResultCode.html">– ReadOnlyExtendedResultCode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SQLiteResultCode/AbortExtendedResultCode.html">– AbortExtendedResultCode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SQLiteResultCode/ConstraintExtendedResultCode.html">– ConstraintExtendedResultCode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SQLiteResultCode/NoticeExtendedResultCode.html">– NoticeExtendedResultCode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SQLiteResultCode/WarningExtendedResultCode.html">– WarningExtendedResultCode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SQLiteResultCode/AuthExtendedResultCode.html">– AuthExtendedResultCode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SQLiteResultCode/OKExtendedResultCode.html">– OKExtendedResultCode</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other%20Extensions.html">Other Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Extensions/Bool.html">Bool</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Data.html">Data</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Date.html">Date</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Double.html">Double</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Float.html">Float</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Int.html">Int</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Int16.html">Int16</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Int32.html">Int32</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Int64.html">Int64</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Int8.html">Int8</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/NSNull.html">NSNull</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/NSNumber.html">NSNumber</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/String.html">String</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UInt.html">UInt</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UInt16.html">UInt16</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UInt32.html">UInt32</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UInt64.html">UInt64</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UInt8.html">UInt8</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/URL.html">URL</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UUID.html">UUID</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other%20Protocols.html">Other Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/Error.html">Error</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/FTS5Tokenizer.html">FTS5Tokenizer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/SQLAggregateFunction.html">SQLAggregateFunction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/SQLAggregateWindowFunction.html">SQLAggregateWindowFunction</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other%20Structs.html">Other Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Structs/DatabaseError.html">DatabaseError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Other%20Structs.html#/s:8FeistyDB6SQLiteV">SQLite</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/SQLiteError.html">SQLiteError</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other%20Typealiases.html">Other Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Other%20Typealiases.html#/s:8FeistyDB24SQLiteDatabaseConnectiona">SQLiteDatabaseConnection</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Other%20Typealiases.html#/s:8FeistyDB23SQLitePreparedStatementa">SQLitePreparedStatement</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Other%20Typealiases.html#/s:8FeistyDB14SQLiteSnapshota">SQLiteSnapshot</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>DatabaseReadQueue</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">DatabaseReadQueue</span></code></pre>
+
+                </div>
+              </div>
+            <p>A queue providing serialized execution of read operations on a database.</p>
+
+<p>Normally read queues are used for concurrent read access to databases using WAL mode.</p>
+
+<p>A database read queue manages the execution of read-only database operations to
+ensure they occur one at a time in FIFO order.  This provides thread-safe
+database access.</p>
+
+<p>Database read operations may be submitted for synchronous or asynchronous execution.</p>
+
+<p>It is possible to maintain a consistent snapshot of a database using read
+transactions. Changes committed to a database are not visible within a read transaction
+until the transaction is updated or restarted.</p>
+
+<p>The interface is similar to <code>DispatchQueue</code> and a dispatch queue is used
+internally for work item management.</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB17DatabaseReadQueueC5queueSo012OS_dispatch_F0Cvp"></a>
+                    <a name="//apple_ref/swift/Property/queue" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB17DatabaseReadQueueC5queueSo012OS_dispatch_F0Cvp">queue</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The dispatch queue used to serialize access to the underlying database connection</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">queue</span><span class="p">:</span> <span class="kt">DispatchQueue</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB17DatabaseReadQueueC3url3qosAC10Foundation3URLV_8Dispatch0J3QoSVtKcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(url:qos:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB17DatabaseReadQueueC3url3qosAC10Foundation3URLV_8Dispatch0J3QoSVtKcfc">init(url:<wbr>qos:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates a database read queue for serialized read access to a database from a file.</p>
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <p>An error if the database could not be opened</p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="kt">URL</span><span class="p">,</span> <span class="nv">qos</span><span class="p">:</span> <span class="kt">DispatchQoS</span> <span class="o">=</span> <span class="o">.</span><span class="k">default</span><span class="p">)</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>url</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The location of the SQLite database</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>qos</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The quality of service class for the work performed by the database queue</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB17DatabaseReadQueueC8database3qosAcA0C0C_8Dispatch0H3QoSVtcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(database:qos:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB17DatabaseReadQueueC8database3qosAcA0C0C_8Dispatch0H3QoSVtcfc">init(database:<wbr>qos:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates a database read queue for serialized read access to an existing database.</p>
+<div class="aside aside-attention">
+    <p class="aside-title">Attention</p>
+    <p>The database queue takes ownership of <code>database</code>.  The result of further use of <code>database</code> is undefined.</p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">database</span><span class="p">:</span> <span class="kt"><a href="../Classes/Database.html">Database</a></span><span class="p">,</span> <span class="nv">qos</span><span class="p">:</span> <span class="kt">DispatchQoS</span> <span class="o">=</span> <span class="o">.</span><span class="k">default</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>database</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The database to be serialized</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>qos</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The quality of service class for the work performed by the database queue</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB17DatabaseReadQueueC05beginD11TransactionyyKF"></a>
+                    <a name="//apple_ref/swift/Method/beginReadTransaction()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB17DatabaseReadQueueC05beginD11TransactionyyKF">beginReadTransaction()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Begins a long-running read transaction on the database.</p>
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    An error if the transaction could not be started
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">beginReadTransaction</span><span class="p">()</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB17DatabaseReadQueueC03endD11TransactionyyKF"></a>
+                    <a name="//apple_ref/swift/Method/endReadTransaction()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB17DatabaseReadQueueC03endD11TransactionyyKF">endReadTransaction()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Ends a long-running read transaction on the database.</p>
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    An error if the transaction could not be rolled back
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">endReadTransaction</span><span class="p">()</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB17DatabaseReadQueueC06updateD11TransactionyyKF"></a>
+                    <a name="//apple_ref/swift/Method/updateReadTransaction()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB17DatabaseReadQueueC06updateD11TransactionyyKF">updateReadTransaction()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Updates a long-running read transaction to make the latest database changes visible.</p>
+
+<p>If there is an active read transaction it is ended before beginning a new read transaction.</p>
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    An error if the transaction could not be rolled back or started
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">updateReadTransaction</span><span class="p">()</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB17DatabaseReadQueueC4sync5blockxxAA0C0CKXE_tKlF"></a>
+                    <a name="//apple_ref/swift/Method/sync(block:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB17DatabaseReadQueueC4sync5blockxxAA0C0CKXE_tKlF">sync(block:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Performs a synchronous read operation on the database.</p>
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <p>Any error thrown in <code>block</code></p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">sync</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">block</span><span class="p">:</span> <span class="p">(</span><span class="n">_</span> <span class="nv">database</span><span class="p">:</span> <span class="kt"><a href="../Classes/Database.html">Database</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kt">T</span><span class="p">))</span> <span class="k">rethrows</span> <span class="o">-&gt;</span> <span class="kt">T</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>block</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A closure performing the database operation</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>database</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A <code><a href="../Classes/Database.html">Database</a></code> used for database access within <code>block</code></p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The value returned by <code>block</code></p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB17DatabaseReadQueueC5async5group3qos5blockySo012OS_dispatch_G0CSg_8Dispatch0L3QoSVyAA0C0CctF"></a>
+                    <a name="//apple_ref/swift/Method/async(group:qos:block:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB17DatabaseReadQueueC5async5group3qos5blockySo012OS_dispatch_G0CSg_8Dispatch0L3QoSVyAA0C0CctF">async(group:<wbr>qos:<wbr>block:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Submits an asynchronous read operation to the database queue.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">async</span><span class="p">(</span><span class="nv">group</span><span class="p">:</span> <span class="kt">DispatchGroup</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">qos</span><span class="p">:</span> <span class="kt">DispatchQoS</span> <span class="o">=</span> <span class="o">.</span><span class="n">unspecified</span><span class="p">,</span> <span class="nv">block</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="n">_</span> <span class="nv">database</span><span class="p">:</span> <span class="kt"><a href="../Classes/Database.html">Database</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kt">Void</span><span class="p">))</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>group</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An optional <code>DispatchGroup</code> with which to associate <code>block</code></p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>qos</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The quality of service for <code>block</code></p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>block</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A closure performing the database operation</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>database</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A <code><a href="../Classes/Database.html">Database</a></code> used for database access within <code>block</code></p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB17DatabaseReadQueueC05writeE0AcA0cE0C_tKcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(writeQueue:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB17DatabaseReadQueueC05writeE0AcA0cE0C_tKcfc">init(writeQueue:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates a database read queue for serialized read access to a database from the file corresponding to the database <em>main</em> on a write queue.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <p>The QoS for the database queue is set to the QoS of <code>writeQueue</code></p>
+
+</div><div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <p>An error if the database could not be opened</p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">convenience</span> <span class="nf">init</span><span class="p">(</span><span class="nv">writeQueue</span><span class="p">:</span> <span class="kt"><a href="../Classes/DatabaseQueue.html">DatabaseQueue</a></span><span class="p">)</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>writeQueue</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A database queue for the SQLite database</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB17DatabaseReadQueueC05writeE03qosAcA0cE0C_8Dispatch0H3QoSVtKcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(writeQueue:qos:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB17DatabaseReadQueueC05writeE03qosAcA0cE0C_8Dispatch0H3QoSVtKcfc">init(writeQueue:<wbr>qos:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates a database read queue for serialized read access to a database from the file corresponding to the database <em>main</em> on a write queue.</p>
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <p>An error if the database could not be opened</p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">convenience</span> <span class="nf">init</span><span class="p">(</span><span class="nv">writeQueue</span><span class="p">:</span> <span class="kt"><a href="../Classes/DatabaseQueue.html">DatabaseQueue</a></span><span class="p">,</span> <span class="nv">qos</span><span class="p">:</span> <span class="kt">DispatchQoS</span><span class="p">)</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>writeQueue</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A database queue for the SQLite database</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>qos</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The quality of service class for the work performed by the database queue</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>© 2015 - 2020 <a class="link" href="https://www.feisty-dog.com" target="_blank" rel="external">Feisty Dog, LLC</a> under the <a class="link" href="https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt" target="_blank" rel="external">MIT License</a>.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

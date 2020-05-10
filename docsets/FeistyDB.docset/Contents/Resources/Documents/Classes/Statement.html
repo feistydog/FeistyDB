@@ -38,6 +38,18 @@
                 <a href="../Classes/Database/TransactionType.html">– TransactionType</a>
               </li>
               <li class="nav-group-task">
+                <a href="../Classes/Database/TransactionCompletion.html">– TransactionCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Database/SavepointCompletion.html">– SavepointCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Database/WALCheckpointType.html">– WALCheckpointType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Database/SQLFunctionFlags.html">– SQLFunctionFlags</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Classes/Database/RowChangeType.html">– RowChangeType</a>
               </li>
               <li class="nav-group-task">
@@ -53,7 +65,7 @@
                 <a href="../Classes/Statement/Counter.html">– Counter</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/Row.html">Row</a>
+                <a href="../Structs/Row.html">Row</a>
               </li>
             </ul>
           </li>
@@ -81,18 +93,20 @@
                 <a href="../Classes/DatabaseQueue.html">DatabaseQueue</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/DatabaseQueue/TransactionCompletion.html">– TransactionCompletion</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/DatabaseQueue/SavepointCompletion.html">– SavepointCompletion</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/ConcurrentDatabaseQueue.html">ConcurrentDatabaseQueue</a>
+                <a href="../Classes/DatabaseReadQueue.html">DatabaseReadQueue</a>
               </li>
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="../Other Enums.html">Other Enumerations</a>
+            <a href="../Other%20Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/Snapshot.html">Snapshot</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other%20Enums.html">Other Enumerations</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="../Enums/SQLiteResultCode.html">SQLiteResultCode</a>
@@ -136,7 +150,7 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="../Other Extensions.html">Other Extensions</a>
+            <a href="../Other%20Extensions.html">Other Extensions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="../Extensions/Bool.html">Bool</a>
@@ -201,7 +215,7 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="../Other Protocols.html">Other Protocols</a>
+            <a href="../Other%20Protocols.html">Other Protocols</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="../Protocols/Error.html">Error</a>
@@ -209,13 +223,22 @@
               <li class="nav-group-task">
                 <a href="../Protocols/FTS5Tokenizer.html">FTS5Tokenizer</a>
               </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/SQLAggregateFunction.html">SQLAggregateFunction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/SQLAggregateWindowFunction.html">SQLAggregateWindowFunction</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="../Other Structs.html">Other Structures</a>
+            <a href="../Other%20Structs.html">Other Structures</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="../Structs/DatabaseError.html">DatabaseError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Other%20Structs.html#/s:8FeistyDB6SQLiteV">SQLite</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Structs/SQLiteError.html">SQLiteError</a>
@@ -223,13 +246,16 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="../Other Typealiases.html">Other Type Aliases</a>
+            <a href="../Other%20Typealiases.html">Other Type Aliases</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="../Other Typealiases.html#/s:8FeistyDB24SQLiteDatabaseConnectiona">SQLiteDatabaseConnection</a>
+                <a href="../Other%20Typealiases.html#/s:8FeistyDB24SQLiteDatabaseConnectiona">SQLiteDatabaseConnection</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Other Typealiases.html#/s:8FeistyDB23SQLitePreparedStatementa">SQLitePreparedStatement</a>
+                <a href="../Other%20Typealiases.html#/s:8FeistyDB23SQLitePreparedStatementa">SQLitePreparedStatement</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Other%20Typealiases.html#/s:8FeistyDB14SQLiteSnapshota">SQLiteSnapshot</a>
               </li>
             </ul>
           </li>
@@ -242,6 +268,8 @@
               <div class="declaration">
                 <div class="language">
                   <pre class="highlight swift"><code><span class="kd">final</span> <span class="kd">public</span> <span class="kd">class</span> <span class="kt">Statement</span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Statement</span><span class="p">:</span> <span class="kt">Sequence</span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Statement</span><span class="p">:</span> <span class="kt">IteratorProtocol</span></code></pre>
 
                 </div>
               </div>
@@ -339,7 +367,7 @@ silently discarded.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">lazy</span> <span class="k">var</span> <span class="nv">isReadOnly</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">lazy</span> <span class="k">var</span> <span class="nv">isReadOnly</span><span class="p">:</span> <span class="kt">Bool</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -366,7 +394,7 @@ silently discarded.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">lazy</span> <span class="k">var</span> <span class="nv">parameterCount</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">lazy</span> <span class="k">var</span> <span class="nv">parameterCount</span><span class="p">:</span> <span class="kt">Int</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -393,7 +421,7 @@ silently discarded.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">lazy</span> <span class="k">var</span> <span class="nv">sql</span><span class="p">:</span> <span class="kt">String</span> <span class="o">=</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">lazy</span> <span class="k">var</span> <span class="nv">sql</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -420,7 +448,7 @@ silently discarded.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">expandedSQL</span><span class="p">:</span> <span class="kt">String</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">expandedSQL</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -447,7 +475,7 @@ silently discarded.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">lazy</span> <span class="k">var</span> <span class="nv">columnCount</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">lazy</span> <span class="k">var</span> <span class="nv">columnCount</span><span class="p">:</span> <span class="kt">Int</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -457,9 +485,9 @@ silently discarded.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB9StatementC4nameSSSi8ofColumn_tKF"></a>
+                    <a name="/s:8FeistyDB9StatementC4name8ofColumnSSSi_tKF"></a>
                     <a name="//apple_ref/swift/Method/name(ofColumn:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB9StatementC4nameSSSi8ofColumn_tKF">name(ofColumn:)</a>
+                    <a class="token" href="#/s:8FeistyDB9StatementC4name8ofColumnSSSi_tKF">name(ofColumn:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -472,18 +500,15 @@ silently discarded.</p>
     <p class="aside-title">Note</p>
     <p>Column indexes are 0-based.  The leftmost column in a result row has index 0.</p>
 
-</div>
-<div class="aside aside-requires">
+</div><div class="aside aside-requires">
     <p class="aside-title">Requires</p>
     <p><code>index &gt;= 0</code></p>
 
-</div>
-<div class="aside aside-requires">
+</div><div class="aside aside-requires">
     <p class="aside-title">Requires</p>
     <p><code>index &lt; self.columnCount</code></p>
 
-</div>
-<div class="aside aside-throws">
+</div><div class="aside aside-throws">
     <p class="aside-title">Throws</p>
     <p>An error if <code>index</code> is out of bounds</p>
 
@@ -527,9 +552,9 @@ silently discarded.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB9StatementC5indexSiSS8ofColumn_tKF"></a>
+                    <a name="/s:8FeistyDB9StatementC5index8ofColumnSiSS_tKF"></a>
                     <a name="//apple_ref/swift/Method/index(ofColumn:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB9StatementC5indexSiSS8ofColumn_tKF">index(ofColumn:)</a>
+                    <a class="token" href="#/s:8FeistyDB9StatementC5index8ofColumnSiSS_tKF">index(ofColumn:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -597,8 +622,7 @@ silently discarded.</p>
     <p class="aside-title">Requires</p>
     <p>The statement does not return any result rows</p>
 
-</div>
-<div class="aside aside-throws">
+</div><div class="aside aside-throws">
     <p class="aside-title">Throws</p>
     <p>An error if the statement returned any result rows or did not successfully run to completion</p>
 
@@ -619,9 +643,9 @@ silently discarded.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB9StatementC7resultsyyAA3RowCKcKF"></a>
+                    <a name="/s:8FeistyDB9StatementC7resultsyyyAA3RowVKXEKF"></a>
                     <a name="//apple_ref/swift/Method/results(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB9StatementC7resultsyyAA3RowCKcKF">results(_:)</a>
+                    <a class="token" href="#/s:8FeistyDB9StatementC7resultsyyyAA3RowVKXEKF">results(_:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -641,7 +665,7 @@ silently discarded.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">results</span><span class="p">(</span><span class="n">_</span> <span class="nv">block</span><span class="p">:</span> <span class="p">((</span><span class="n">_</span> <span class="nv">row</span><span class="p">:</span> <span class="kt"><a href="../Classes/Row.html">Row</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="p">()))</span> <span class="k">throws</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">results</span><span class="p">(</span><span class="n">_</span> <span class="nv">block</span><span class="p">:</span> <span class="p">((</span><span class="n">_</span> <span class="nv">row</span><span class="p">:</span> <span class="kt"><a href="../Structs/Row.html">Row</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="p">()))</span> <span class="k">throws</span></code></pre>
 
                         </div>
                       </div>
@@ -682,9 +706,9 @@ silently discarded.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB9StatementC7nextRowAA0E0CSgyKF"></a>
+                    <a name="/s:8FeistyDB9StatementC7nextRowAA0E0VSgyKF"></a>
                     <a name="//apple_ref/swift/Method/nextRow()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB9StatementC7nextRowAA0E0CSgyKF">nextRow()</a>
+                    <a class="token" href="#/s:8FeistyDB9StatementC7nextRowAA0E0VSgyKF">nextRow()</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -704,7 +728,7 @@ silently discarded.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">nextRow</span><span class="p">()</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/Row.html">Row</a></span><span class="p">?</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">nextRow</span><span class="p">()</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Structs/Row.html">Row</a></span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>
@@ -733,8 +757,7 @@ silently discarded.</p>
     <p class="aside-title">Note</p>
     <p>This function does not change the value of  any bound SQL parameters.</p>
 
-</div>
-<div class="aside aside-throws">
+</div><div class="aside aside-throws">
     <p class="aside-title">Throws</p>
     <p>An error if the statement could not be reset</p>
 
@@ -787,9 +810,9 @@ silently discarded.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB9StatementC019withUnsafeRawSQLiteC0xxs13OpaquePointerVKc5block_tKlF"></a>
+                    <a name="/s:8FeistyDB9StatementC019withUnsafeRawSQLiteC05blockxxs13OpaquePointerVKXE_tKlF"></a>
                     <a name="//apple_ref/swift/Method/withUnsafeRawSQLiteStatement(block:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB9StatementC019withUnsafeRawSQLiteC0xxs13OpaquePointerVKc5block_tKlF">withUnsafeRawSQLiteStatement(block:)</a>
+                    <a class="token" href="#/s:8FeistyDB9StatementC019withUnsafeRawSQLiteC05blockxxs13OpaquePointerVKXE_tKlF">withUnsafeRawSQLiteStatement(block:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -811,7 +834,7 @@ silently discarded.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">withUnsafeRawSQLiteStatement</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">block</span><span class="p">:</span> <span class="p">(</span><span class="n">_</span> <span class="nv">stmt</span><span class="p">:</span> <span class="kt"><a href="../Other Typealiases.html#/s:8FeistyDB23SQLitePreparedStatementa">SQLitePreparedStatement</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kt">T</span><span class="p">))</span> <span class="k">rethrows</span> <span class="o">-&gt;</span> <span class="kt">T</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">withUnsafeRawSQLiteStatement</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">block</span><span class="p">:</span> <span class="p">(</span><span class="n">_</span> <span class="nv">stmt</span><span class="p">:</span> <span class="kt"><a href="../Other%20Typealiases.html#/s:8FeistyDB23SQLitePreparedStatementa">SQLitePreparedStatement</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kt">T</span><span class="p">))</span> <span class="k">rethrows</span> <span class="o">-&gt;</span> <span class="kt">T</span></code></pre>
 
                         </div>
                       </div>
@@ -853,16 +876,12 @@ silently discarded.</p>
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB9StatementC8bindNullySi11toParameter_tKF"></a>
-                    <a name="//apple_ref/swift/Method/bindNull(toParameter:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB9StatementC8bindNullySi11toParameter_tKF">bindNull(toParameter:)</a>
+                    <a name="/s:8FeistyDB9StatementC14leftmostColumnSayxGyKAA0E11ConvertibleRzlF"></a>
+                    <a name="//apple_ref/swift/Method/leftmostColumn()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB9StatementC14leftmostColumnSayxGyKAA0E11ConvertibleRzlF">leftmostColumn()</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -870,25 +889,10 @@ silently discarded.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Binds database <code>NULL</code> to the SQL parameter at <code>index</code>.</p>
-<div class="aside aside-note">
-    <p class="aside-title">Note</p>
-    <p>Parameter indexes are 1-based.  The leftmost parameter in a statement has index 1.</p>
-
-</div>
-<div class="aside aside-requires">
-    <p class="aside-title">Requires</p>
-    <p><code>index &gt; 0</code></p>
-
-</div>
-<div class="aside aside-requires">
-    <p class="aside-title">Requires</p>
-    <p><code>index &lt; parameterCount</code></p>
-
-</div>
+                        <p>Returns the value of the leftmost column for each row in the result set.</p>
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
-    <p>An error if <code>NULL</code> couldn&rsquo;t be bound</p>
+    <p>An error if there are no columns</p>
 
 </div>
 
@@ -897,424 +901,13 @@ silently discarded.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">bindNull</span><span class="p">(</span><span class="n">toParameter</span> <span class="nv">index</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="k">throws</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">leftmostColumn</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">()</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="kt">T</span><span class="p">]</span> <span class="k">where</span> <span class="kt">T</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/ColumnConvertible.html">ColumnConvertible</a></span></code></pre>
 
                         </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>index</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The index of the SQL parameter to bind</p>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:8FeistyDB9StatementC8bindNullySS11toParameter_tKF"></a>
-                    <a name="//apple_ref/swift/Method/bindNull(toParameter:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB9StatementC8bindNullySS11toParameter_tKF">bindNull(toParameter:)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Binds database <code>NULL</code> to the SQL parameter <code>name</code>.</p>
-<div class="aside aside-throws">
-    <p class="aside-title">Throws</p>
-    <p>An error if the SQL parameter <code>name</code> doesn&rsquo;t exist or <code>NULL</code> couldn&rsquo;t be bound</p>
-
-</div>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">bindNull</span><span class="p">(</span><span class="n">toParameter</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="k">throws</span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>name</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The name of the SQL parameter to bind</p>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:8FeistyDB9StatementC4bindyx5value_Si11toParametertKAA0G8BindableRzlF"></a>
-                    <a name="//apple_ref/swift/Method/bind(value:toParameter:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB9StatementC4bindyx5value_Si11toParametertKAA0G8BindableRzlF">bind(value:toParameter:)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Binds <code>value</code> to the SQL parameter at <code>index</code>.</p>
-<div class="aside aside-note">
-    <p class="aside-title">Note</p>
-    <p>Parameter indexes are 1-based.  The leftmost parameter in a statement has index 1.</p>
-
-</div>
-<div class="aside aside-requires">
-    <p class="aside-title">Requires</p>
-    <p><code>index &gt; 0</code></p>
-
-</div>
-<div class="aside aside-requires">
-    <p class="aside-title">Requires</p>
-    <p><code>index &lt; parameterCount</code></p>
-
-</div>
-<div class="aside aside-throws">
-    <p class="aside-title">Throws</p>
-    <p>An error if <code>value</code> couldn&rsquo;t be bound</p>
-
-</div>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">bind</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">:</span> <span class="kt"><a href="../Protocols/ParameterBindable.html">ParameterBindable</a></span><span class="o">&gt;</span><span class="p">(</span><span class="nv">value</span><span class="p">:</span> <span class="kt">T</span><span class="p">,</span> <span class="n">toParameter</span> <span class="nv">index</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="k">throws</span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>value</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The desired value of the SQL parameter</p>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>index</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The index of the SQL parameter to bind</p>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:8FeistyDB9StatementC4bindyxSg5value_Si11toParametertKAA0G8BindableRzlF"></a>
-                    <a name="//apple_ref/swift/Method/bind(value:toParameter:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB9StatementC4bindyxSg5value_Si11toParametertKAA0G8BindableRzlF">bind(value:toParameter:)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Binds <code>value</code> to the SQL parameter at <code>index</code>.</p>
-<div class="aside aside-note">
-    <p class="aside-title">Note</p>
-    <p>Parameter indexes are 1-based.  The leftmost parameter in a statement has index 1.</p>
-
-</div>
-<div class="aside aside-requires">
-    <p class="aside-title">Requires</p>
-    <p><code>index &gt; 0</code></p>
-
-</div>
-<div class="aside aside-requires">
-    <p class="aside-title">Requires</p>
-    <p><code>index &lt; parameterCount</code></p>
-
-</div>
-<div class="aside aside-throws">
-    <p class="aside-title">Throws</p>
-    <p>An error if <code>value</code> couldn&rsquo;t be bound</p>
-
-</div>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">bind</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">:</span> <span class="kt"><a href="../Protocols/ParameterBindable.html">ParameterBindable</a></span><span class="o">&gt;</span><span class="p">(</span><span class="nv">value</span><span class="p">:</span> <span class="kt">T</span><span class="p">?,</span> <span class="n">toParameter</span> <span class="nv">index</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="k">throws</span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>value</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The desired value of the SQL parameter</p>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>index</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The index of the SQL parameter to bind</p>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:8FeistyDB9StatementC4bindyx5value_SS11toParametertKAA0G8BindableRzlF"></a>
-                    <a name="//apple_ref/swift/Method/bind(value:toParameter:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB9StatementC4bindyx5value_SS11toParametertKAA0G8BindableRzlF">bind(value:toParameter:)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Binds <code>value</code> to the SQL parameter <code>name</code>.</p>
-<div class="aside aside-throws">
-    <p class="aside-title">Throws</p>
-    <p>An error if the SQL parameter <code>name</code> doesn&rsquo;t exist or <code>value</code> couldn&rsquo;t be bound</p>
-
-</div>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">bind</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">:</span> <span class="kt"><a href="../Protocols/ParameterBindable.html">ParameterBindable</a></span><span class="o">&gt;</span><span class="p">(</span><span class="nv">value</span><span class="p">:</span> <span class="kt">T</span><span class="p">,</span> <span class="n">toParameter</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="k">throws</span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>value</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The desired value of the SQL parameter</p>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>name</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The name of the SQL parameter to bind</p>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:8FeistyDB9StatementC4bindyxSg5value_SS11toParametertKAA0G8BindableRzlF"></a>
-                    <a name="//apple_ref/swift/Method/bind(value:toParameter:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB9StatementC4bindyxSg5value_SS11toParametertKAA0G8BindableRzlF">bind(value:toParameter:)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Binds <code>value</code> to the SQL parameter <code>name</code>.</p>
-<div class="aside aside-throws">
-    <p class="aside-title">Throws</p>
-    <p>An error if the SQL parameter <code>name</code> doesn&rsquo;t exist or <code>value</code> couldn&rsquo;t be bound</p>
-
-</div>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">bind</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">:</span> <span class="kt"><a href="../Protocols/ParameterBindable.html">ParameterBindable</a></span><span class="o">&gt;</span><span class="p">(</span><span class="nv">value</span><span class="p">:</span> <span class="kt">T</span><span class="p">?,</span> <span class="n">toParameter</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="k">throws</span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>value</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The desired value of the SQL parameter</p>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>name</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The name of the SQL parameter to bind</p>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:8FeistyDB9StatementC4bindACx15parameterValues_tKs10CollectionRzAA17ParameterBindable7ElementRpzlF"></a>
-                    <a name="//apple_ref/swift/Method/bind(parameterValues:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB9StatementC4bindACx15parameterValues_tKs10CollectionRzAA17ParameterBindable7ElementRpzlF">bind(parameterValues:)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Binds the <em>n</em> parameters in <code>values</code> to the first <em>n</em> SQL parameters of <code>self</code>.</p>
-<div class="aside aside-throws">
-    <p class="aside-title">Throws</p>
-    <p>An error if one of <code>values</code> couldn&rsquo;t be bound</p>
-
-</div>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span> <span class="kd">public</span> <span class="kd">func</span> <span class="n">bind</span><span class="o">&lt;</span><span class="kt">C</span><span class="p">:</span> <span class="kt">Collection</span><span class="o">&gt;</span><span class="p">(</span><span class="n">parameterValues</span> <span class="nv">values</span><span class="p">:</span> <span class="kt">C</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">Statement</span> <span class="k">where</span> <span class="kt">C</span><span class="o">.</span><span class="kt">Element</span><span class="p">:</span> <span class="kt"><a href="../Protocols/ParameterBindable.html">ParameterBindable</a></span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>values</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>A collection of values to bind to SQL parameters</p>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
                       </div>
                       <div>
                         <h4>Return Value</h4>
-                        <p><code>self</code></p>
+                        <p>An array containing the leftmost column&rsquo;s values</p>
                       </div>
                     </section>
                   </div>
@@ -1322,9 +915,9 @@ silently discarded.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB9StatementC4bindACx10parameters_tKs10CollectionRzSS_AA17ParameterBindable_p1Vt7ElementRtzlF"></a>
-                    <a name="//apple_ref/swift/Method/bind(parameters:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB9StatementC4bindACx10parameters_tKs10CollectionRzSS_AA17ParameterBindable_p1Vt7ElementRtzlF">bind(parameters:)</a>
+                    <a name="/s:8FeistyDB9StatementC5frontxSgyKAA17ColumnConvertibleRzlF"></a>
+                    <a name="//apple_ref/swift/Method/front()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB9StatementC5frontxSgyKAA17ColumnConvertibleRzlF">front()</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1332,10 +925,10 @@ silently discarded.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Binds <em>value</em> to SQL parameter <em>name</em> for each (<em>name</em>, <em>value</em>) in <code>parameters</code>.</p>
+                        <p>Returns the value of the leftmost column in the first row.</p>
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
-    <p>An error if the SQL parameter <em>name</em> doesn&rsquo;t exist or <em>value</em> couldn&rsquo;t be bound</p>
+    <p>An error if there are no columns or the column contains an illegal value</p>
 
 </div>
 
@@ -1344,46 +937,23 @@ silently discarded.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span> <span class="kd">public</span> <span class="kd">func</span> <span class="n">bind</span><span class="o">&lt;</span><span class="kt">C</span><span class="p">:</span> <span class="kt">Collection</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">parameters</span><span class="p">:</span> <span class="kt">C</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">Statement</span> <span class="k">where</span> <span class="kt">C</span><span class="o">.</span><span class="kt">Element</span> <span class="o">==</span> <span class="p">(</span><span class="kt">String</span><span class="p">,</span> <span class="kt">V</span><span class="p">:</span> <span class="kt"><a href="../Protocols/ParameterBindable.html">ParameterBindable</a></span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">front</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">()</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">T</span><span class="p">?</span> <span class="k">where</span> <span class="kt">T</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/ColumnConvertible.html">ColumnConvertible</a></span></code></pre>
 
                         </div>
                       </div>
                       <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>parameters</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>A collection of name and value pairs to bind to SQL parameters</p>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <div>
                         <h4>Return Value</h4>
-                        <p><code>self</code></p>
+                        <p>The value of the leftmost column in the first row</p>
                       </div>
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB9StatementC4bindACSayAA17ParameterBindable_pSgG15parameterValues_tKF"></a>
-                    <a name="//apple_ref/swift/Method/bind(parameterValues:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB9StatementC4bindACSayAA17ParameterBindable_pSgG15parameterValues_tKF">bind(parameterValues:)</a>
+                    <a name="/s:8FeistyDB9StatementC5frontxyKAA17ColumnConvertibleRzlF"></a>
+                    <a name="//apple_ref/swift/Method/front()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB9StatementC5frontxyKAA17ColumnConvertibleRzlF">front()</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1391,15 +961,10 @@ silently discarded.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Binds the <em>n</em> parameters in <code>values</code> to the first <em>n</em> SQL parameters of <code>self</code>.</p>
-<div class="aside aside-requires">
-    <p class="aside-title">Requires</p>
-    <p><code>values.count &lt;= self.parameterCount</code></p>
-
-</div>
+                        <p>Returns the value of the leftmost column in the first row.</p>
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
-    <p>An error if one of <code>values</code> couldn&rsquo;t be bound</p>
+    <p>An error if there are no rows, no columns, or the column contains a null or illegal value</p>
 
 </div>
 
@@ -1408,32 +973,13 @@ silently discarded.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span> <span class="kd">public</span> <span class="kd">func</span> <span class="nf">bind</span><span class="p">(</span><span class="n">parameterValues</span> <span class="nv">values</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Protocols/ParameterBindable.html">ParameterBindable</a></span><span class="p">?])</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">Statement</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">front</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">()</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">T</span> <span class="k">where</span> <span class="kt">T</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/ColumnConvertible.html">ColumnConvertible</a></span></code></pre>
 
                         </div>
                       </div>
                       <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>values</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>A series of values to bind to SQL parameters</p>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <div>
                         <h4>Return Value</h4>
-                        <p><code>self</code></p>
+                        <p>The value of the leftmost column in the first row</p>
                       </div>
                     </section>
                   </div>
@@ -1441,9 +987,9 @@ silently discarded.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB9StatementC4bindACs10DictionaryVySSAA17ParameterBindable_pSgG10parameters_tKF"></a>
-                    <a name="//apple_ref/swift/Method/bind(parameters:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB9StatementC4bindACs10DictionaryVySSAA17ParameterBindable_pSgG10parameters_tKF">bind(parameters:)</a>
+                    <a name="/s:8FeistyDB9StatementC14leftmostColumnSayxGyKAA20DatabaseSerializableRzlF"></a>
+                    <a name="//apple_ref/swift/Method/leftmostColumn()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB9StatementC14leftmostColumnSayxGyKAA20DatabaseSerializableRzlF">leftmostColumn()</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1451,10 +997,10 @@ silently discarded.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Binds <em>value</em> to SQL parameter <em>name</em> for each (<em>name</em>, <em>value</em>) in <code>parameters</code>.</p>
+                        <p>Returns the value of the leftmost column for each row in the result set.</p>
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
-    <p>An error if the SQL parameter <em>name</em> doesn&rsquo;t exist or <em>value</em> couldn&rsquo;t be bound</p>
+    <p>An error if there are no columns</p>
 
 </div>
 
@@ -1463,40 +1009,125 @@ silently discarded.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span> <span class="kd">public</span> <span class="kd">func</span> <span class="nf">bind</span><span class="p">(</span><span class="nv">parameters</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">:</span> <span class="kt"><a href="../Protocols/ParameterBindable.html">ParameterBindable</a></span><span class="p">?])</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">Statement</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">leftmostColumn</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">()</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="kt">T</span><span class="p">]</span> <span class="k">where</span> <span class="kt">T</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/DatabaseSerializable.html">DatabaseSerializable</a></span></code></pre>
 
                         </div>
                       </div>
                       <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>parameters</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>A series of name and value pairs to bind to SQL parameters</p>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <div>
                         <h4>Return Value</h4>
-                        <p><code>self</code></p>
+                        <p>An array containing the leftmost column&rsquo;s values</p>
                       </div>
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB9StatementC5frontxSgyKAA20DatabaseSerializableRzlF"></a>
+                    <a name="//apple_ref/swift/Method/front()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB9StatementC5frontxSgyKAA20DatabaseSerializableRzlF">front()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns the value of the leftmost column in the first row.</p>
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <p>An error if there are no columns or the column contains an illegal value</p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">front</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">()</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">T</span><span class="p">?</span> <span class="k">where</span> <span class="kt">T</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/DatabaseSerializable.html">DatabaseSerializable</a></span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The value of the leftmost column in the first row</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB9StatementC5frontxyKAA20DatabaseSerializableRzlF"></a>
+                    <a name="//apple_ref/swift/Method/front()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB9StatementC5frontxyKAA20DatabaseSerializableRzlF">front()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns the value of the leftmost column in the first row.</p>
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <p>An error if there are no rows, no columns, or the column contains an illegal value</p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">front</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">()</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">T</span> <span class="k">where</span> <span class="kt">T</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/DatabaseSerializable.html">DatabaseSerializable</a></span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The value of the leftmost column in the first row</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB9StatementC14leftmostColumnSayAA13DatabaseValueOGyKF"></a>
+                    <a name="//apple_ref/swift/Method/leftmostColumn()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB9StatementC14leftmostColumnSayAA13DatabaseValueOGyKF">leftmostColumn()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns the value of the leftmost column for each row in the result set.</p>
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <p>An error if there are no columns</p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">leftmostColumn</span><span class="p">()</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="kt"><a href="../Enums/DatabaseValue.html">DatabaseValue</a></span><span class="p">]</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>An array containing the leftmost column&rsquo;s values</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
                 <li class="item">
                   <div>
                     <code>
@@ -1569,16 +1200,12 @@ silently discarded.</p>
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB9StatementC5frontxSgyKAA17ColumnConvertibleRzlF"></a>
-                    <a name="//apple_ref/swift/Method/front()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB9StatementC5frontxSgyKAA17ColumnConvertibleRzlF">front()</a>
+                    <a name="/s:8FeistyDB9StatementC8bindNull11toParameterySi_tKF"></a>
+                    <a name="//apple_ref/swift/Method/bindNull(toParameter:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB9StatementC8bindNull11toParameterySi_tKF">bindNull(toParameter:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1586,10 +1213,22 @@ silently discarded.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Returns the value of the leftmost column in the first row.</p>
-<div class="aside aside-throws">
+                        <p>Binds database <code>NULL</code> to the SQL parameter at <code>index</code>.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <p>Parameter indexes are 1-based.  The leftmost parameter in a statement has index 1.</p>
+
+</div><div class="aside aside-requires">
+    <p class="aside-title">Requires</p>
+    <p><code>index &gt; 0</code></p>
+
+</div><div class="aside aside-requires">
+    <p class="aside-title">Requires</p>
+    <p><code>index &lt; parameterCount</code></p>
+
+</div><div class="aside aside-throws">
     <p class="aside-title">Throws</p>
-    <p>An error if there are no columns or the column contains an illegal value</p>
+    <p>An error if <code>NULL</code> couldn&rsquo;t be bound</p>
 
 </div>
 
@@ -1598,13 +1237,28 @@ silently discarded.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">front</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">:</span> <span class="kt"><a href="../Protocols/ColumnConvertible.html">ColumnConvertible</a></span><span class="o">&gt;</span><span class="p">()</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">T</span><span class="p">?</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">bindNull</span><span class="p">(</span><span class="n">toParameter</span> <span class="nv">index</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="k">throws</span></code></pre>
 
                         </div>
                       </div>
                       <div>
-                        <h4>Return Value</h4>
-                        <p>The value of the leftmost column in the first row</p>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>index</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The index of the SQL parameter to bind</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -1612,9 +1266,9 @@ silently discarded.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB9StatementC5frontxyKAA17ColumnConvertibleRzlF"></a>
-                    <a name="//apple_ref/swift/Method/front()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB9StatementC5frontxyKAA17ColumnConvertibleRzlF">front()</a>
+                    <a name="/s:8FeistyDB9StatementC8bindNull11toParameterySS_tKF"></a>
+                    <a name="//apple_ref/swift/Method/bindNull(toParameter:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB9StatementC8bindNull11toParameterySS_tKF">bindNull(toParameter:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1622,10 +1276,10 @@ silently discarded.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Returns the value of the leftmost column in the first row.</p>
+                        <p>Binds database <code>NULL</code> to the SQL parameter <code>name</code>.</p>
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
-    <p>An error if there are no rows, no columns, or the column contains a null or illegal value</p>
+    <p>An error if the SQL parameter <code>name</code> doesn&rsquo;t exist or <code>NULL</code> couldn&rsquo;t be bound</p>
 
 </div>
 
@@ -1634,13 +1288,532 @@ silently discarded.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">front</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">:</span> <span class="kt"><a href="../Protocols/ColumnConvertible.html">ColumnConvertible</a></span><span class="o">&gt;</span><span class="p">()</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">T</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">bindNull</span><span class="p">(</span><span class="n">toParameter</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="k">throws</span></code></pre>
 
                         </div>
                       </div>
                       <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>name</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The name of the SQL parameter to bind</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB9StatementC4bind5value11toParameteryx_SitKAA0G8BindableRzlF"></a>
+                    <a name="//apple_ref/swift/Method/bind(value:toParameter:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB9StatementC4bind5value11toParameteryx_SitKAA0G8BindableRzlF">bind(value:<wbr>toParameter:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Binds <code>value</code> to the SQL parameter at <code>index</code>.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <p>Parameter indexes are 1-based.  The leftmost parameter in a statement has index 1.</p>
+
+</div><div class="aside aside-requires">
+    <p class="aside-title">Requires</p>
+    <p><code>index &gt; 0</code></p>
+
+</div><div class="aside aside-requires">
+    <p class="aside-title">Requires</p>
+    <p><code>index &lt; parameterCount</code></p>
+
+</div><div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <p>An error if <code>value</code> couldn&rsquo;t be bound</p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">bind</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">value</span><span class="p">:</span> <span class="kt">T</span><span class="p">,</span> <span class="n">toParameter</span> <span class="nv">index</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="k">throws</span> <span class="k">where</span> <span class="kt">T</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/ParameterBindable.html">ParameterBindable</a></span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>value</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The desired value of the SQL parameter</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>index</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The index of the SQL parameter to bind</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB9StatementC4bind5value11toParameteryxSg_SitKAA0G8BindableRzlF"></a>
+                    <a name="//apple_ref/swift/Method/bind(value:toParameter:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB9StatementC4bind5value11toParameteryxSg_SitKAA0G8BindableRzlF">bind(value:<wbr>toParameter:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Binds <code>value</code> to the SQL parameter at <code>index</code>.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <p>Parameter indexes are 1-based.  The leftmost parameter in a statement has index 1.</p>
+
+</div><div class="aside aside-requires">
+    <p class="aside-title">Requires</p>
+    <p><code>index &gt; 0</code></p>
+
+</div><div class="aside aside-requires">
+    <p class="aside-title">Requires</p>
+    <p><code>index &lt; parameterCount</code></p>
+
+</div><div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <p>An error if <code>value</code> couldn&rsquo;t be bound</p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">bind</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">value</span><span class="p">:</span> <span class="kt">T</span><span class="p">?,</span> <span class="n">toParameter</span> <span class="nv">index</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="k">throws</span> <span class="k">where</span> <span class="kt">T</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/ParameterBindable.html">ParameterBindable</a></span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>value</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The desired value of the SQL parameter</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>index</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The index of the SQL parameter to bind</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB9StatementC4bind5value11toParameteryx_SStKAA0G8BindableRzlF"></a>
+                    <a name="//apple_ref/swift/Method/bind(value:toParameter:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB9StatementC4bind5value11toParameteryx_SStKAA0G8BindableRzlF">bind(value:<wbr>toParameter:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Binds <code>value</code> to the SQL parameter <code>name</code>.</p>
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <p>An error if the SQL parameter <code>name</code> doesn&rsquo;t exist or <code>value</code> couldn&rsquo;t be bound</p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">bind</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">value</span><span class="p">:</span> <span class="kt">T</span><span class="p">,</span> <span class="n">toParameter</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="k">throws</span> <span class="k">where</span> <span class="kt">T</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/ParameterBindable.html">ParameterBindable</a></span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>value</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The desired value of the SQL parameter</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>name</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The name of the SQL parameter to bind</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB9StatementC4bind5value11toParameteryxSg_SStKAA0G8BindableRzlF"></a>
+                    <a name="//apple_ref/swift/Method/bind(value:toParameter:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB9StatementC4bind5value11toParameteryxSg_SStKAA0G8BindableRzlF">bind(value:<wbr>toParameter:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Binds <code>value</code> to the SQL parameter <code>name</code>.</p>
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <p>An error if the SQL parameter <code>name</code> doesn&rsquo;t exist or <code>value</code> couldn&rsquo;t be bound</p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">bind</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">value</span><span class="p">:</span> <span class="kt">T</span><span class="p">?,</span> <span class="n">toParameter</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="k">throws</span> <span class="k">where</span> <span class="kt">T</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/ParameterBindable.html">ParameterBindable</a></span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>value</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The desired value of the SQL parameter</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>name</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The name of the SQL parameter to bind</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB9StatementC4bind15parameterValuesACx_tKSlRzAA17ParameterBindable7ElementRpzlF"></a>
+                    <a name="//apple_ref/swift/Method/bind(parameterValues:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB9StatementC4bind15parameterValuesACx_tKSlRzAA17ParameterBindable7ElementRpzlF">bind(parameterValues:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Binds the <em>n</em> parameters in <code>values</code> to the first <em>n</em> SQL parameters of <code>self</code>.</p>
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <p>An error if one of <code>values</code> couldn&rsquo;t be bound</p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="n">bind</span><span class="o">&lt;</span><span class="kt">C</span><span class="o">&gt;</span><span class="p">(</span><span class="n">parameterValues</span> <span class="nv">values</span><span class="p">:</span> <span class="kt">C</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">Statement</span> <span class="k">where</span> <span class="kt">C</span> <span class="p">:</span> <span class="kt">Collection</span><span class="p">,</span> <span class="kt">C</span><span class="o">.</span><span class="kt">Element</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/ParameterBindable.html">ParameterBindable</a></span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>values</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A collection of values to bind to SQL parameters</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
                         <h4>Return Value</h4>
-                        <p>The value of the leftmost column in the first row</p>
+                        <p><code>self</code></p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB9StatementC4bind10parametersACx_tKSlRzSS_AA17ParameterBindable_p1Vt7ElementRtzlF"></a>
+                    <a name="//apple_ref/swift/Method/bind(parameters:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB9StatementC4bind10parametersACx_tKSlRzSS_AA17ParameterBindable_p1Vt7ElementRtzlF">bind(parameters:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Binds <em>value</em> to SQL parameter <em>name</em> for each (<em>name</em>, <em>value</em>) in <code>parameters</code>.</p>
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <p>An error if the SQL parameter <em>name</em> doesn&rsquo;t exist or <em>value</em> couldn&rsquo;t be bound</p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="n">bind</span><span class="o">&lt;</span><span class="kt">C</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">parameters</span><span class="p">:</span> <span class="kt">C</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">Statement</span> <span class="k">where</span> <span class="kt">C</span> <span class="p">:</span> <span class="kt">Collection</span><span class="p">,</span> <span class="kt">C</span><span class="o">.</span><span class="kt">Element</span> <span class="o">==</span> <span class="p">(</span><span class="kt">String</span><span class="p">,</span> <span class="kt">V</span><span class="p">:</span> <span class="kt"><a href="../Protocols/ParameterBindable.html">ParameterBindable</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>parameters</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A collection of name and value pairs to bind to SQL parameters</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p><code>self</code></p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB9StatementC4bind15parameterValuesACSayAA17ParameterBindable_pSgG_tKF"></a>
+                    <a name="//apple_ref/swift/Method/bind(parameterValues:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB9StatementC4bind15parameterValuesACSayAA17ParameterBindable_pSgG_tKF">bind(parameterValues:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Binds the <em>n</em> parameters in <code>values</code> to the first <em>n</em> SQL parameters of <code>self</code>.</p>
+<div class="aside aside-requires">
+    <p class="aside-title">Requires</p>
+    <p><code>values.count &lt;= self.parameterCount</code></p>
+
+</div><div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <p>An error if one of <code>values</code> couldn&rsquo;t be bound</p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">bind</span><span class="p">(</span><span class="n">parameterValues</span> <span class="nv">values</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Protocols/ParameterBindable.html">ParameterBindable</a></span><span class="p">?])</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">Statement</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>values</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A series of values to bind to SQL parameters</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p><code>self</code></p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB9StatementC4bind10parametersACSDySSAA17ParameterBindable_pSgG_tKF"></a>
+                    <a name="//apple_ref/swift/Method/bind(parameters:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB9StatementC4bind10parametersACSDySSAA17ParameterBindable_pSgG_tKF">bind(parameters:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Binds <em>value</em> to SQL parameter <em>name</em> for each (<em>name</em>, <em>value</em>) in <code>parameters</code>.</p>
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <p>An error if the SQL parameter <em>name</em> doesn&rsquo;t exist or <em>value</em> couldn&rsquo;t be bound</p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">bind</span><span class="p">(</span><span class="nv">parameters</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/ParameterBindable.html">ParameterBindable</a></span><span class="p">?])</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">Statement</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>parameters</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A series of name and value pairs to bind to SQL parameters</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p><code>self</code></p>
                       </div>
                     </section>
                   </div>
@@ -1648,13 +1821,701 @@ silently discarded.</p>
               </ul>
             </div>
             <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Int32"></a>
+                <a name="//apple_ref/swift/Section/Int32" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Int32"></a>
+                  <h3 class="section-name"><p>Int32</p>
+</h3>
+                </div>
+              </div>
               <ul>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB9StatementC8firstRowAA0E0CSgyKF"></a>
+                    <a name="/s:8FeistyDB9StatementC4bind5array11toParameteryx_SitKSlRzs5Int32V7ElementRtzlF"></a>
+                    <a name="//apple_ref/swift/Method/bind(array:toParameter:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB9StatementC4bind5array11toParameteryx_SitKSlRzs5Int32V7ElementRtzlF">bind(array:<wbr>toParameter:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Binds the values in <code>array</code> to the SQL parameter at <code>index</code> using the sqlite3 Carray extension</p>
+
+<p>When using the Carray extension in <code>FeistyDB</code> the number of array elements must be explicitly bound:</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">primes</span> <span class="o">=</span> <span class="p">[</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span> <span class="p">]</span>
+<span class="k">let</span> <span class="nv">statement</span> <span class="o">=</span> <span class="k">try</span> <span class="n">db</span><span class="o">.</span><span class="nf">prepare</span><span class="p">(</span><span class="nv">sql</span><span class="p">:</span> <span class="s">"SELECT * FROM numbers WHERE value IN carray(?1,?2,'int32');"</span><span class="p">)</span>
+<span class="k">try</span> <span class="n">statement</span><span class="o">.</span><span class="nf">bind</span><span class="p">(</span><span class="nv">array</span><span class="p">:</span> <span class="n">primes</span><span class="p">,</span> <span class="nv">toParameter</span><span class="p">:</span> <span class="mi">1</span><span class="p">)</span>
+<span class="k">try</span> <span class="n">statement</span><span class="o">.</span><span class="nf">bind</span><span class="p">(</span><span class="nv">value</span><span class="p">:</span> <span class="n">primes</span><span class="o">.</span><span class="n">count</span><span class="p">,</span> <span class="nv">toParameter</span><span class="p">:</span> <span class="mi">2</span><span class="p">)</span>
+</code></pre>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <p>Parameter indexes are 1-based.  The leftmost parameter in a statement has index 1.</p>
+
+</div><div class="aside aside-requires">
+    <p class="aside-title">Requires</p>
+    <p><code>index &gt; 0</code></p>
+
+</div><div class="aside aside-requires">
+    <p class="aside-title">Requires</p>
+    <p><code>index &lt; parameterCount</code></p>
+
+</div><div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <p>An error if <code>array</code> couldn&rsquo;t be bound</p>
+
+</div><div class="aside aside-seealso">
+    <p class="aside-title">Seealso</p>
+    <p><a href="https://www.sqlite.org/carray.html">The Carray() Table-Valued Function</a></p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">bind</span><span class="o">&lt;</span><span class="kt">S</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">array</span><span class="p">:</span> <span class="kt">S</span><span class="p">,</span> <span class="n">toParameter</span> <span class="nv">index</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="k">throws</span> <span class="k">where</span> <span class="kt">S</span> <span class="p">:</span> <span class="kt">Collection</span><span class="p">,</span> <span class="kt">S</span><span class="o">.</span><span class="kt">Element</span> <span class="o">==</span> <span class="kt">Int32</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>array</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An array of values to bind to the SQL parameter</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>index</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The index of the SQL parameter to bind</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB9StatementC4bind5array11toParameteryx_SStKSlRzs5Int32V7ElementRtzlF"></a>
+                    <a name="//apple_ref/swift/Method/bind(array:toParameter:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB9StatementC4bind5array11toParameteryx_SStKSlRzs5Int32V7ElementRtzlF">bind(array:<wbr>toParameter:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Binds the values in <code>array</code> to SQL parameter <code>name</code> using the sqlite3 Carray extension</p>
+
+<p>When using the Carray extension in <code>FeistyDB</code> the number of array elements must be explicitly bound:</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">primes</span> <span class="o">=</span> <span class="p">[</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span> <span class="p">]</span>
+<span class="k">let</span> <span class="nv">statement</span> <span class="o">=</span> <span class="k">try</span> <span class="n">db</span><span class="o">.</span><span class="nf">prepare</span><span class="p">(</span><span class="nv">sql</span><span class="p">:</span> <span class="s">"SELECT * FROM numbers WHERE value IN carray(:primes,?2,'int32');"</span><span class="p">)</span>
+<span class="k">try</span> <span class="n">statement</span><span class="o">.</span><span class="nf">bind</span><span class="p">(</span><span class="nv">array</span><span class="p">:</span> <span class="n">primes</span><span class="p">,</span> <span class="nv">toParameter</span><span class="p">:</span> <span class="s">":primes"</span><span class="p">)</span>
+<span class="k">try</span> <span class="n">statement</span><span class="o">.</span><span class="nf">bind</span><span class="p">(</span><span class="nv">value</span><span class="p">:</span> <span class="n">primes</span><span class="o">.</span><span class="n">count</span><span class="p">,</span> <span class="nv">toParameter</span><span class="p">:</span> <span class="mi">2</span><span class="p">)</span>
+</code></pre>
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <p>An error if the SQL parameter <code>name</code> doesn&rsquo;t exist or <code>array</code> couldn&rsquo;t be bound</p>
+
+</div><div class="aside aside-seealso">
+    <p class="aside-title">Seealso</p>
+    <p><a href="https://www.sqlite.org/carray.html">The Carray() Table-Valued Function</a></p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">bind</span><span class="o">&lt;</span><span class="kt">S</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">array</span><span class="p">:</span> <span class="kt">S</span><span class="p">,</span> <span class="n">toParameter</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="k">throws</span> <span class="k">where</span> <span class="kt">S</span> <span class="p">:</span> <span class="kt">Collection</span><span class="p">,</span> <span class="kt">S</span><span class="o">.</span><span class="kt">Element</span> <span class="o">==</span> <span class="kt">Int32</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>array</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An array of values to bind to the SQL parameter</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>name</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The name of the SQL parameter to bind</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Int64"></a>
+                <a name="//apple_ref/swift/Section/Int64" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Int64"></a>
+                  <h3 class="section-name"><p>Int64</p>
+</h3>
+                </div>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB9StatementC4bind5array11toParameteryx_SitKSlRzs5Int64V7ElementRtzlF"></a>
+                    <a name="//apple_ref/swift/Method/bind(array:toParameter:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB9StatementC4bind5array11toParameteryx_SitKSlRzs5Int64V7ElementRtzlF">bind(array:<wbr>toParameter:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Binds the values in <code>array</code> to the SQL parameter at <code>index</code> using the sqlite3 Carray extension</p>
+
+<p>When using the Carray extension in <code>FeistyDB</code> the number of array elements must be explicitly bound:</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">primes</span> <span class="o">=</span> <span class="p">[</span> <span class="mi">87178291199</span><span class="p">,</span> <span class="mi">99194853094755497</span> <span class="p">]</span>
+<span class="k">let</span> <span class="nv">statement</span> <span class="o">=</span> <span class="k">try</span> <span class="n">db</span><span class="o">.</span><span class="nf">prepare</span><span class="p">(</span><span class="nv">sql</span><span class="p">:</span> <span class="s">"SELECT * FROM numbers WHERE value IN carray(?1,?2,'int64');"</span><span class="p">)</span>
+<span class="k">try</span> <span class="n">statement</span><span class="o">.</span><span class="nf">bind</span><span class="p">(</span><span class="nv">array</span><span class="p">:</span> <span class="n">primes</span><span class="p">,</span> <span class="nv">toParameter</span><span class="p">:</span> <span class="mi">1</span><span class="p">)</span>
+<span class="k">try</span> <span class="n">statement</span><span class="o">.</span><span class="nf">bind</span><span class="p">(</span><span class="nv">value</span><span class="p">:</span> <span class="n">primes</span><span class="o">.</span><span class="n">count</span><span class="p">,</span> <span class="nv">toParameter</span><span class="p">:</span> <span class="mi">2</span><span class="p">)</span>
+</code></pre>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <p>Parameter indexes are 1-based.  The leftmost parameter in a statement has index 1.</p>
+
+</div><div class="aside aside-requires">
+    <p class="aside-title">Requires</p>
+    <p><code>index &gt; 0</code></p>
+
+</div><div class="aside aside-requires">
+    <p class="aside-title">Requires</p>
+    <p><code>index &lt; parameterCount</code></p>
+
+</div><div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <p>An error if <code>array</code> couldn&rsquo;t be bound</p>
+
+</div><div class="aside aside-seealso">
+    <p class="aside-title">Seealso</p>
+    <p><a href="https://www.sqlite.org/carray.html">The Carray() Table-Valued Function</a></p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">bind</span><span class="o">&lt;</span><span class="kt">S</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">array</span><span class="p">:</span> <span class="kt">S</span><span class="p">,</span> <span class="n">toParameter</span> <span class="nv">index</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="k">throws</span> <span class="k">where</span> <span class="kt">S</span> <span class="p">:</span> <span class="kt">Collection</span><span class="p">,</span> <span class="kt">S</span><span class="o">.</span><span class="kt">Element</span> <span class="o">==</span> <span class="kt">Int64</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>array</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An array of values to bind to the SQL parameter</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>index</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The index of the SQL parameter to bind</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB9StatementC4bind5array11toParameteryx_SStKSlRzs5Int64V7ElementRtzlF"></a>
+                    <a name="//apple_ref/swift/Method/bind(array:toParameter:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB9StatementC4bind5array11toParameteryx_SStKSlRzs5Int64V7ElementRtzlF">bind(array:<wbr>toParameter:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Binds the values in <code>array</code> to SQL parameter <code>name</code> using the sqlite3 Carray extension</p>
+
+<p>When using the Carray extension in <code>FeistyDB</code> the number of array elements must be explicitly bound:</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">primes</span> <span class="o">=</span> <span class="p">[</span> <span class="mi">87178291199</span><span class="p">,</span> <span class="mi">99194853094755497</span> <span class="p">]</span>
+<span class="k">let</span> <span class="nv">statement</span> <span class="o">=</span> <span class="k">try</span> <span class="n">db</span><span class="o">.</span><span class="nf">prepare</span><span class="p">(</span><span class="nv">sql</span><span class="p">:</span> <span class="s">"SELECT * FROM numbers WHERE value IN carray(:primes,?2,'int64');"</span><span class="p">)</span>
+<span class="k">try</span> <span class="n">statement</span><span class="o">.</span><span class="nf">bind</span><span class="p">(</span><span class="nv">array</span><span class="p">:</span> <span class="n">primes</span><span class="p">,</span> <span class="nv">toParameter</span><span class="p">:</span> <span class="s">":primes"</span><span class="p">)</span>
+<span class="k">try</span> <span class="n">statement</span><span class="o">.</span><span class="nf">bind</span><span class="p">(</span><span class="nv">value</span><span class="p">:</span> <span class="n">primes</span><span class="o">.</span><span class="n">count</span><span class="p">,</span> <span class="nv">toParameter</span><span class="p">:</span> <span class="mi">2</span><span class="p">)</span>
+</code></pre>
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <p>An error if the SQL parameter <code>name</code> doesn&rsquo;t exist or <code>array</code> couldn&rsquo;t be bound</p>
+
+</div><div class="aside aside-seealso">
+    <p class="aside-title">Seealso</p>
+    <p><a href="https://www.sqlite.org/carray.html">The Carray() Table-Valued Function</a></p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">bind</span><span class="o">&lt;</span><span class="kt">S</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">array</span><span class="p">:</span> <span class="kt">S</span><span class="p">,</span> <span class="n">toParameter</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="k">throws</span> <span class="k">where</span> <span class="kt">S</span> <span class="p">:</span> <span class="kt">Collection</span><span class="p">,</span> <span class="kt">S</span><span class="o">.</span><span class="kt">Element</span> <span class="o">==</span> <span class="kt">Int64</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>array</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An array of values to bind to the SQL parameter</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>name</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The name of the SQL parameter to bind</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Double"></a>
+                <a name="//apple_ref/swift/Section/Double" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Double"></a>
+                  <h3 class="section-name"><p>Double</p>
+</h3>
+                </div>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB9StatementC4bind5array11toParameteryx_SitKSlRzSd7ElementRtzlF"></a>
+                    <a name="//apple_ref/swift/Method/bind(array:toParameter:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB9StatementC4bind5array11toParameteryx_SitKSlRzSd7ElementRtzlF">bind(array:<wbr>toParameter:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Binds the values in <code>array</code> to the SQL parameter at <code>index</code> using the sqlite3 Carray extension</p>
+
+<p>When using the Carray extension in <code>FeistyDB</code> the number of array elements must be explicitly bound:</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">specials</span> <span class="o">=</span> <span class="p">[</span> <span class="kt">Double</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="kt">Double</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="kt">Double</span><span class="o">.</span><span class="n">infinity</span> <span class="p">]</span>
+<span class="k">let</span> <span class="nv">statement</span> <span class="o">=</span> <span class="k">try</span> <span class="n">db</span><span class="o">.</span><span class="nf">prepare</span><span class="p">(</span><span class="nv">sql</span><span class="p">:</span> <span class="s">"SELECT * FROM numbers WHERE value IN carray(?1,?2,'double');"</span><span class="p">)</span>
+<span class="k">try</span> <span class="n">statement</span><span class="o">.</span><span class="nf">bind</span><span class="p">(</span><span class="nv">array</span><span class="p">:</span> <span class="n">specials</span><span class="p">,</span> <span class="nv">toParameter</span><span class="p">:</span> <span class="mi">1</span><span class="p">)</span>
+<span class="k">try</span> <span class="n">statement</span><span class="o">.</span><span class="nf">bind</span><span class="p">(</span><span class="nv">value</span><span class="p">:</span> <span class="n">specials</span><span class="o">.</span><span class="n">count</span><span class="p">,</span> <span class="nv">toParameter</span><span class="p">:</span> <span class="mi">2</span><span class="p">)</span>
+</code></pre>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <p>Parameter indexes are 1-based.  The leftmost parameter in a statement has index 1.</p>
+
+</div><div class="aside aside-requires">
+    <p class="aside-title">Requires</p>
+    <p><code>index &gt; 0</code></p>
+
+</div><div class="aside aside-requires">
+    <p class="aside-title">Requires</p>
+    <p><code>index &lt; parameterCount</code></p>
+
+</div><div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <p>An error if <code>array</code> couldn&rsquo;t be bound</p>
+
+</div><div class="aside aside-seealso">
+    <p class="aside-title">Seealso</p>
+    <p><a href="https://www.sqlite.org/carray.html">The Carray() Table-Valued Function</a></p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">bind</span><span class="o">&lt;</span><span class="kt">S</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">array</span><span class="p">:</span> <span class="kt">S</span><span class="p">,</span> <span class="n">toParameter</span> <span class="nv">index</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="k">throws</span> <span class="k">where</span> <span class="kt">S</span> <span class="p">:</span> <span class="kt">Collection</span><span class="p">,</span> <span class="kt">S</span><span class="o">.</span><span class="kt">Element</span> <span class="o">==</span> <span class="kt">Double</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>array</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An array of values to bind to the SQL parameter</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>index</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The index of the SQL parameter to bind</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB9StatementC4bind5array11toParameteryx_SStKSlRzSd7ElementRtzlF"></a>
+                    <a name="//apple_ref/swift/Method/bind(array:toParameter:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB9StatementC4bind5array11toParameteryx_SStKSlRzSd7ElementRtzlF">bind(array:<wbr>toParameter:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Binds the values in <code>array</code> to SQL parameter <code>name</code> using the sqlite3 Carray extension</p>
+
+<p>When using the Carray extension in <code>FeistyDB</code> the number of array elements must be explicitly bound:</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">specials</span> <span class="o">=</span> <span class="p">[</span> <span class="kt">Double</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="kt">Double</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="kt">Double</span><span class="o">.</span><span class="n">infinity</span> <span class="p">]</span>
+<span class="k">let</span> <span class="nv">statement</span> <span class="o">=</span> <span class="k">try</span> <span class="n">db</span><span class="o">.</span><span class="nf">prepare</span><span class="p">(</span><span class="nv">sql</span><span class="p">:</span> <span class="s">"SELECT * FROM numbers WHERE value IN carray(:specials,?2,'double');"</span><span class="p">)</span>
+<span class="k">try</span> <span class="n">statement</span><span class="o">.</span><span class="nf">bind</span><span class="p">(</span><span class="nv">array</span><span class="p">:</span> <span class="n">specials</span><span class="p">,</span> <span class="nv">toParameter</span><span class="p">:</span> <span class="s">":specials"</span><span class="p">)</span>
+<span class="k">try</span> <span class="n">statement</span><span class="o">.</span><span class="nf">bind</span><span class="p">(</span><span class="nv">value</span><span class="p">:</span> <span class="n">specials</span><span class="o">.</span><span class="n">count</span><span class="p">,</span> <span class="nv">toParameter</span><span class="p">:</span> <span class="mi">2</span><span class="p">)</span>
+</code></pre>
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <p>An error if the SQL parameter <code>name</code> doesn&rsquo;t exist or <code>array</code> couldn&rsquo;t be bound</p>
+
+</div><div class="aside aside-seealso">
+    <p class="aside-title">Seealso</p>
+    <p><a href="https://www.sqlite.org/carray.html">The Carray() Table-Valued Function</a></p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">bind</span><span class="o">&lt;</span><span class="kt">S</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">array</span><span class="p">:</span> <span class="kt">S</span><span class="p">,</span> <span class="n">toParameter</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="k">throws</span> <span class="k">where</span> <span class="kt">S</span> <span class="p">:</span> <span class="kt">Collection</span><span class="p">,</span> <span class="kt">S</span><span class="o">.</span><span class="kt">Element</span> <span class="o">==</span> <span class="kt">Double</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>array</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An array of values to bind to the SQL parameter</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>name</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The name of the SQL parameter to bind</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/String"></a>
+                <a name="//apple_ref/swift/Section/String" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/String"></a>
+                  <h3 class="section-name"><p>String</p>
+</h3>
+                </div>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB9StatementC4bind5array11toParameteryx_SitKSlRzSS7ElementRtzlF"></a>
+                    <a name="//apple_ref/swift/Method/bind(array:toParameter:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB9StatementC4bind5array11toParameteryx_SitKSlRzSS7ElementRtzlF">bind(array:<wbr>toParameter:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Binds the values in <code>array</code> to the SQL parameter at <code>index</code> using the sqlite3 Carray extension</p>
+
+<p>When using the Carray extension in <code>FeistyDB</code> the number of array elements must be explicitly bound:</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">pets</span> <span class="o">=</span> <span class="p">[</span> <span class="s">"dog"</span><span class="p">,</span> <span class="s">"dragon"</span><span class="p">,</span> <span class="s">"hedgehog"</span> <span class="p">]</span>
+<span class="k">let</span> <span class="nv">statement</span> <span class="o">=</span> <span class="k">try</span> <span class="n">db</span><span class="o">.</span><span class="nf">prepare</span><span class="p">(</span><span class="nv">sql</span><span class="p">:</span> <span class="s">"SELECT * FROM animals WHERE kind IN carray(?1,?2,'char*');"</span><span class="p">)</span>
+<span class="k">try</span> <span class="n">statement</span><span class="o">.</span><span class="nf">bind</span><span class="p">(</span><span class="nv">array</span><span class="p">:</span> <span class="n">pets</span><span class="p">,</span> <span class="nv">toParameter</span><span class="p">:</span> <span class="mi">1</span><span class="p">)</span>
+<span class="k">try</span> <span class="n">statement</span><span class="o">.</span><span class="nf">bind</span><span class="p">(</span><span class="nv">value</span><span class="p">:</span> <span class="n">pets</span><span class="o">.</span><span class="n">count</span><span class="p">,</span> <span class="nv">toParameter</span><span class="p">:</span> <span class="mi">2</span><span class="p">)</span>
+</code></pre>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <p>Parameter indexes are 1-based.  The leftmost parameter in a statement has index 1.</p>
+
+</div><div class="aside aside-requires">
+    <p class="aside-title">Requires</p>
+    <p><code>index &gt; 0</code></p>
+
+</div><div class="aside aside-requires">
+    <p class="aside-title">Requires</p>
+    <p><code>index &lt; parameterCount</code></p>
+
+</div><div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <p>An error if <code>array</code> couldn&rsquo;t be bound</p>
+
+</div><div class="aside aside-seealso">
+    <p class="aside-title">Seealso</p>
+    <p><a href="https://www.sqlite.org/carray.html">The Carray() Table-Valued Function</a></p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">bind</span><span class="o">&lt;</span><span class="kt">S</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">array</span><span class="p">:</span> <span class="kt">S</span><span class="p">,</span> <span class="n">toParameter</span> <span class="nv">index</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="k">throws</span> <span class="k">where</span> <span class="kt">S</span> <span class="p">:</span> <span class="kt">Collection</span><span class="p">,</span> <span class="kt">S</span><span class="o">.</span><span class="kt">Element</span> <span class="o">==</span> <span class="kt">String</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>array</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An array of values to bind to the SQL parameter</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>index</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The index of the SQL parameter to bind</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB9StatementC4bind5array11toParameteryx_SStKSlRzSS7ElementRtzlF"></a>
+                    <a name="//apple_ref/swift/Method/bind(array:toParameter:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB9StatementC4bind5array11toParameteryx_SStKSlRzSS7ElementRtzlF">bind(array:<wbr>toParameter:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Binds the values in <code>array</code> to SQL parameter <code>name</code> using the sqlite3 Carray extension</p>
+
+<p>When using the Carray extension in <code>FeistyDB</code> the number of array elements must be explicitly bound:</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">pets</span> <span class="o">=</span> <span class="p">[</span> <span class="s">"dog"</span><span class="p">,</span> <span class="s">"dragon"</span><span class="p">,</span> <span class="s">"hedgehog"</span> <span class="p">]</span>
+<span class="k">let</span> <span class="nv">statement</span> <span class="o">=</span> <span class="k">try</span> <span class="n">db</span><span class="o">.</span><span class="nf">prepare</span><span class="p">(</span><span class="nv">sql</span><span class="p">:</span> <span class="s">"SELECT * FROM animals WHERE kind IN carray(:pets,?2,'char*');"</span><span class="p">)</span>
+<span class="k">try</span> <span class="n">statement</span><span class="o">.</span><span class="nf">bind</span><span class="p">(</span><span class="nv">array</span><span class="p">:</span> <span class="n">pets</span><span class="p">,</span> <span class="nv">toParameter</span><span class="p">:</span> <span class="s">":pets"</span><span class="p">)</span>
+<span class="k">try</span> <span class="n">statement</span><span class="o">.</span><span class="nf">bind</span><span class="p">(</span><span class="nv">value</span><span class="p">:</span> <span class="n">pets</span><span class="o">.</span><span class="n">count</span><span class="p">,</span> <span class="nv">toParameter</span><span class="p">:</span> <span class="mi">2</span><span class="p">)</span>
+</code></pre>
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <p>An error if the SQL parameter <code>name</code> doesn&rsquo;t exist or <code>array</code> couldn&rsquo;t be bound</p>
+
+</div><div class="aside aside-seealso">
+    <p class="aside-title">Seealso</p>
+    <p><a href="https://www.sqlite.org/carray.html">The Carray() Table-Valued Function</a></p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">bind</span><span class="o">&lt;</span><span class="kt">S</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">array</span><span class="p">:</span> <span class="kt">S</span><span class="p">,</span> <span class="n">toParameter</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="k">throws</span> <span class="k">where</span> <span class="kt">S</span> <span class="p">:</span> <span class="kt">Collection</span><span class="p">,</span> <span class="kt">S</span><span class="o">.</span><span class="kt">Element</span> <span class="o">==</span> <span class="kt">String</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>array</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An array of values to bind to the SQL parameter</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>name</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The name of the SQL parameter to bind</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB9StatementC8firstRowAA0E0VSgyKF"></a>
                     <a name="//apple_ref/swift/Method/firstRow()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB9StatementC8firstRowAA0E0CSgyKF">firstRow()</a>
+                    <a class="token" href="#/s:8FeistyDB9StatementC8firstRowAA0E0VSgyKF">firstRow()</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1674,7 +2535,7 @@ silently discarded.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">firstRow</span><span class="p">()</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/Row.html">Row</a></span><span class="p">?</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">firstRow</span><span class="p">()</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Structs/Row.html">Row</a></span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>
@@ -1685,10 +2546,6 @@ silently discarded.</p>
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
                 <li class="item">
                   <div>
                     <code>
@@ -1705,7 +2562,7 @@ silently discarded.</p>
                         <p>Returns an iterator for accessing the result rows.</p>
 
 <p>Because the iterator discards errors, the preferred way of accessing result rows
-is via <code><a href="../Classes/Statement.html#/s:8FeistyDB9StatementC7nextRowAA0E0CSgyKF">nextRow()</a></code> or <code><a href="../Classes/Statement.html#/s:8FeistyDB9StatementC7resultsyyAA3RowCKcKF">results(_:)</a></code></p>
+is via <code><a href="../Classes/Statement.html#/s:8FeistyDB9StatementC7nextRowAA0E0VSgyKF">nextRow()</a></code> or <code><a href="../Classes/Statement.html#/s:8FeistyDB9StatementC7resultsyyyAA3RowVKXEKF">results(_:)</a></code></p>
 
                       </div>
                       <div class="declaration">
@@ -1723,16 +2580,12 @@ is via <code><a href="../Classes/Statement.html#/s:8FeistyDB9StatementC7nextRowA
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB9StatementC4nextAA3RowCSgyF"></a>
+                    <a name="/s:8FeistyDB9StatementC4nextAA3RowVSgyF"></a>
                     <a name="//apple_ref/swift/Method/next()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB9StatementC4nextAA3RowCSgyF">next()</a>
+                    <a class="token" href="#/s:8FeistyDB9StatementC4nextAA3RowVSgyF">next()</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1743,14 +2596,14 @@ is via <code><a href="../Classes/Statement.html#/s:8FeistyDB9StatementC7nextRowA
                         <p>Returns the next result row or <code>nil</code> if none.</p>
 
 <p>Because the iterator discards errors, the preferred way of accessing result rows
-is via <code><a href="../Classes/Statement.html#/s:8FeistyDB9StatementC7nextRowAA0E0CSgyKF">nextRow()</a></code> or <code><a href="../Classes/Statement.html#/s:8FeistyDB9StatementC7resultsyyAA3RowCKcKF">results(_:)</a></code></p>
+is via <code><a href="../Classes/Statement.html#/s:8FeistyDB9StatementC7nextRowAA0E0VSgyKF">nextRow()</a></code> or <code><a href="../Classes/Statement.html#/s:8FeistyDB9StatementC7resultsyyyAA3RowVKXEKF">results(_:)</a></code></p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">next</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/Row.html">Row</a></span><span class="p">?</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">next</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Structs/Row.html">Row</a></span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>
@@ -1761,10 +2614,6 @@ is via <code><a href="../Classes/Statement.html#/s:8FeistyDB9StatementC7nextRowA
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
                 <li class="item">
                   <div>
                     <code>
@@ -1791,7 +2640,7 @@ is via <code><a href="../Classes/Statement.html#/s:8FeistyDB9StatementC7nextRowA
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span>	<span class="kt">Counter</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">Counter</span></code></pre>
 
                         </div>
                       </div>
@@ -1801,9 +2650,9 @@ is via <code><a href="../Classes/Statement.html#/s:8FeistyDB9StatementC7nextRowA
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB9StatementC5countSiAC7CounterO2of_Sb5resettF"></a>
+                    <a name="/s:8FeistyDB9StatementC5count2of5resetSiAC7CounterO_SbtF"></a>
                     <a name="//apple_ref/swift/Method/count(of:reset:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB9StatementC5countSiAC7CounterO2of_Sb5resettF">count(of:reset:)</a>
+                    <a class="token" href="#/s:8FeistyDB9StatementC5count2of5resetSiAC7CounterO_SbtF">count(of:<wbr>reset:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1867,87 +2716,11 @@ is via <code><a href="../Classes/Statement.html#/s:8FeistyDB9StatementC7nextRowA
                 </li>
               </ul>
             </div>
-            <div class="task-group">
-              <ul>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:8FeistyDB9StatementC5frontxSgyKAA20DatabaseSerializableRzlF"></a>
-                    <a name="//apple_ref/swift/Method/front()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB9StatementC5frontxSgyKAA20DatabaseSerializableRzlF">front()</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Returns the value of the leftmost column in the first row.</p>
-<div class="aside aside-throws">
-    <p class="aside-title">Throws</p>
-    <p>An error if there are no columns or the column contains an illegal value</p>
-
-</div>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">front</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">:</span> <span class="kt"><a href="../Protocols/DatabaseSerializable.html">DatabaseSerializable</a></span><span class="o">&gt;</span><span class="p">()</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">T</span><span class="p">?</span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Return Value</h4>
-                        <p>The value of the leftmost column in the first row</p>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:8FeistyDB9StatementC5frontxyKAA20DatabaseSerializableRzlF"></a>
-                    <a name="//apple_ref/swift/Method/front()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB9StatementC5frontxyKAA20DatabaseSerializableRzlF">front()</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Returns the value of the leftmost column in the first row.</p>
-<div class="aside aside-throws">
-    <p class="aside-title">Throws</p>
-    <p>An error if there are no rows, no columns, or the column contains an illegal value</p>
-
-</div>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">front</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">:</span> <span class="kt"><a href="../Protocols/DatabaseSerializable.html">DatabaseSerializable</a></span><span class="o">&gt;</span><span class="p">()</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">T</span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Return Value</h4>
-                        <p>The value of the leftmost column in the first row</p>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
           </section>
         </section>
         <section id="footer">
-          <p>© 2015 - 2018 <a class="link" href="https://www.feisty-dog.com" target="_blank" rel="external">Feisty Dog, LLC</a> under the <a class="link" href="https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt" target="_blank" rel="external">MIT License</a>.</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+          <p>© 2015 - 2020 <a class="link" href="https://www.feisty-dog.com" target="_blank" rel="external">Feisty Dog, LLC</a> under the <a class="link" href="https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt" target="_blank" rel="external">MIT License</a>.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
     </div>

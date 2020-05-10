@@ -37,6 +37,18 @@
                 <a href="Classes/Database/TransactionType.html">– TransactionType</a>
               </li>
               <li class="nav-group-task">
+                <a href="Classes/Database/TransactionCompletion.html">– TransactionCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/Database/SavepointCompletion.html">– SavepointCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/Database/WALCheckpointType.html">– WALCheckpointType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/Database/SQLFunctionFlags.html">– SQLFunctionFlags</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="Classes/Database/RowChangeType.html">– RowChangeType</a>
               </li>
               <li class="nav-group-task">
@@ -52,7 +64,7 @@
                 <a href="Classes/Statement/Counter.html">– Counter</a>
               </li>
               <li class="nav-group-task">
-                <a href="Classes/Row.html">Row</a>
+                <a href="Structs/Row.html">Row</a>
               </li>
             </ul>
           </li>
@@ -80,18 +92,20 @@
                 <a href="Classes/DatabaseQueue.html">DatabaseQueue</a>
               </li>
               <li class="nav-group-task">
-                <a href="Classes/DatabaseQueue/TransactionCompletion.html">– TransactionCompletion</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Classes/DatabaseQueue/SavepointCompletion.html">– SavepointCompletion</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Classes/ConcurrentDatabaseQueue.html">ConcurrentDatabaseQueue</a>
+                <a href="Classes/DatabaseReadQueue.html">DatabaseReadQueue</a>
               </li>
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="Other Enums.html">Other Enumerations</a>
+            <a href="Other%20Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Classes/Snapshot.html">Snapshot</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Other%20Enums.html">Other Enumerations</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="Enums/SQLiteResultCode.html">SQLiteResultCode</a>
@@ -135,7 +149,7 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="Other Extensions.html">Other Extensions</a>
+            <a href="Other%20Extensions.html">Other Extensions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="Extensions/Bool.html">Bool</a>
@@ -200,7 +214,7 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="Other Protocols.html">Other Protocols</a>
+            <a href="Other%20Protocols.html">Other Protocols</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="Protocols/Error.html">Error</a>
@@ -208,13 +222,22 @@
               <li class="nav-group-task">
                 <a href="Protocols/FTS5Tokenizer.html">FTS5Tokenizer</a>
               </li>
+              <li class="nav-group-task">
+                <a href="Protocols/SQLAggregateFunction.html">SQLAggregateFunction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/SQLAggregateWindowFunction.html">SQLAggregateWindowFunction</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="Other Structs.html">Other Structures</a>
+            <a href="Other%20Structs.html">Other Structures</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="Structs/DatabaseError.html">DatabaseError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Other%20Structs.html#/s:8FeistyDB6SQLiteV">SQLite</a>
               </li>
               <li class="nav-group-task">
                 <a href="Structs/SQLiteError.html">SQLiteError</a>
@@ -222,13 +245,16 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="Other Typealiases.html">Other Type Aliases</a>
+            <a href="Other%20Typealiases.html">Other Type Aliases</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="Other Typealiases.html#/s:8FeistyDB24SQLiteDatabaseConnectiona">SQLiteDatabaseConnection</a>
+                <a href="Other%20Typealiases.html#/s:8FeistyDB24SQLiteDatabaseConnectiona">SQLiteDatabaseConnection</a>
               </li>
               <li class="nav-group-task">
-                <a href="Other Typealiases.html#/s:8FeistyDB23SQLitePreparedStatementa">SQLitePreparedStatement</a>
+                <a href="Other%20Typealiases.html#/s:8FeistyDB23SQLitePreparedStatementa">SQLitePreparedStatement</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Other%20Typealiases.html#/s:8FeistyDB14SQLiteSnapshota">SQLiteSnapshot</a>
               </li>
             </ul>
           </li>
@@ -246,7 +272,7 @@
 
 <ul>
 <li>Type-safe and type-agnostic database values.</li>
-<li>Thread-safe wrappers for serialized and concurrent database access.</li>
+<li>Thread-safe database access.</li>
 <li>Full support for transactions and savepoints, custom collation sequences, and custom SQL functions.</li>
 </ul>
 
@@ -255,7 +281,7 @@
 
 <ol>
 <li>Clone the <a href="https://github.com/feistydog/FeistyDB">FeistyDB</a> repository.</li>
-<li>Run <code>./get-sqlite.sh</code> to get the latest <a href="https://sqlite.org/amalgamation.html">SQLite amalgamation</a> source code.</li>
+<li>Run <code>./get-sqlite.sh</code> to download the latest SQLite source tree and build the <a href="https://sqlite.org/amalgamation.html">amalgamation</a> with the <code>uuid</code> and <code>carray</code> extensions added.</li>
 <li>Open the project, build, and get started in the playground!</li>
 </ol>
 <h2 id='quick-start' class='heading'>Quick Start</h2>
@@ -276,7 +302,7 @@
 <span class="p">}</span>
 </code></pre>
 
-<p>Most applications should not create a <code><a href="Classes/Database.html">Database</a></code> directly but instead should use the thread-safe <code><a href="Classes/DatabaseQueue.html">DatabaseQueue</a></code> wrapper.</p>
+<p>Most applications should not create a <code><a href="Classes/Database.html">Database</a></code> directly but instead should use a thread-safe <code><a href="Classes/DatabaseQueue.html">DatabaseQueue</a></code>.</p>
 <pre class="highlight swift"><code><span class="c1">// Create a queue serializing access to an in-memory database</span>
 <span class="k">let</span> <span class="nv">dbQ</span> <span class="o">=</span> <span class="k">try</span> <span class="kt">DatabaseQueue</span><span class="p">()</span>
 
@@ -285,14 +311,16 @@
     <span class="c1">// Do something with `db`</span>
 <span class="p">}</span>
 </code></pre>
+
+<p>For databases using <a href="https://www.sqlite.org/wal.html">Write-Ahead Logging</a> concurrent reading and writing is supported. Multiple read operations may be performed simultaneously using more than one <code><a href="Classes/DatabaseReadQueue.html">DatabaseReadQueue</a></code> instance.  Write operations must always be confined to a single <code><a href="Classes/DatabaseQueue.html">DatabaseQueue</a></code>.  A typical usage pattern is one global <code><a href="Classes/DatabaseQueue.html">DatabaseQueue</a></code> instance used for writing located in the application&rsquo;s delegate, with <code><a href="Classes/DatabaseReadQueue.html">DatabaseReadQueue</a></code> instances located in individual window or view controllers.  When used with long-running read transactions each <code><a href="Classes/DatabaseReadQueue.html">DatabaseReadQueue</a></code> maintains a separate, consistent snapshot of the database that may be updated in response to database changes.</p>
 <h2 id='design' class='heading'>Design</h2>
 
-<p>The core of FeistyDB is the types <code><a href="Classes/Database.html">Database</a></code>, <code><a href="Classes/Statement.html">Statement</a></code>, and <code><a href="Classes/Row.html">Row</a></code>.</p>
+<p>The core of FeistyDB is the types <code><a href="Classes/Database.html">Database</a></code>, <code><a href="Classes/Statement.html">Statement</a></code>, and <code><a href="Structs/Row.html">Row</a></code>.</p>
 
 <ul>
 <li><p><code><a href="Classes/Database.html">Database</a></code> is an SQLite database.</p></li>
 <li><p><code><a href="Classes/Statement.html">Statement</a></code> is a compiled SQL statement.</p></li>
-<li><p><code><a href="Classes/Row.html">Row</a></code> is a single result row.</p></li>
+<li><p><code><a href="Structs/Row.html">Row</a></code> is a single result row.</p></li>
 </ul>
 
 <p>The fundamental type for native database values is <code><a href="Enums/DatabaseValue.html">DatabaseValue</a></code>.</p>
@@ -319,11 +347,11 @@
 <li><code><a href="Protocols/DatabaseSerializable.html">DatabaseSerializable</a></code> is a type that can be serialized to and deserialized from a database column.</li>
 </ul>
 
-<p>Thread-safe access to a database is provided by <code><a href="Classes/DatabaseQueue.html">DatabaseQueue</a></code> and <code><a href="Classes/ConcurrentDatabaseQueue.html">ConcurrentDatabaseQueue</a></code>.</p>
+<p>Thread-safe access to a database is provided by <code><a href="Classes/DatabaseQueue.html">DatabaseQueue</a></code>.</p>
 
 <ul>
-<li><p><code><a href="Classes/DatabaseQueue.html">DatabaseQueue</a></code> serializes work items on a database.</p></li>
-<li><p><code><a href="Classes/ConcurrentDatabaseQueue.html">ConcurrentDatabaseQueue</a></code> serializes write access to a database but allows concurrent reads.</p></li>
+<li><code><a href="Classes/DatabaseQueue.html">DatabaseQueue</a></code> serializes work items on a database.</li>
+<li><code><a href="Classes/DatabaseReadQueue.html">DatabaseReadQueue</a></code> serializes read operations on a database.</li>
 </ul>
 <h2 id='examples' class='heading'>Examples</h2>
 <h3 id='create-an-in-memory-database' class='heading'>Create an in-memory database</h3>
@@ -367,7 +395,7 @@
 <span class="p">}</span>
 </code></pre>
 
-<p><code>row</code> is a <code><a href="Classes/Row.html">Row</a></code> instance.</p>
+<p><code>row</code> is a <code><a href="Structs/Row.html">Row</a></code> instance.</p>
 <h3 id='custom-sql-functions' class='heading'>Custom SQL Functions</h3>
 <pre class="highlight swift"><code><span class="k">let</span> <span class="nv">rot13Mapping</span><span class="p">:</span> <span class="p">[</span><span class="kt">Character</span><span class="p">:</span> <span class="kt">Character</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s">"A"</span><span class="p">:</span> <span class="s">"N"</span><span class="p">,</span> <span class="s">"B"</span><span class="p">:</span> <span class="s">"O"</span><span class="p">,</span> <span class="s">"C"</span><span class="p">:</span> <span class="s">"P"</span><span class="p">,</span> <span class="s">"D"</span><span class="p">:</span> <span class="s">"Q"</span><span class="p">,</span> <span class="s">"E"</span><span class="p">:</span> <span class="s">"R"</span><span class="p">,</span> <span class="s">"F"</span><span class="p">:</span> <span class="s">"S"</span><span class="p">,</span> <span class="s">"G"</span><span class="p">:</span> <span class="s">"T"</span><span class="p">,</span> <span class="s">"H"</span><span class="p">:</span> <span class="s">"U"</span><span class="p">,</span> <span class="s">"I"</span><span class="p">:</span> <span class="s">"V"</span><span class="p">,</span> <span class="s">"J"</span><span class="p">:</span> <span class="s">"W"</span><span class="p">,</span> <span class="s">"K"</span><span class="p">:</span> <span class="s">"X"</span><span class="p">,</span> <span class="s">"L"</span><span class="p">:</span> <span class="s">"Y"</span><span class="p">,</span> <span class="s">"M"</span><span class="p">:</span> <span class="s">"Z"</span><span class="p">,</span>
@@ -410,8 +438,8 @@
           </section>
         </section>
         <section id="footer">
-          <p>© 2015 - 2018 <a class="link" href="https://www.feisty-dog.com" target="_blank" rel="external">Feisty Dog, LLC</a> under the <a class="link" href="https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt" target="_blank" rel="external">MIT License</a>.</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+          <p>© 2015 - 2020 <a class="link" href="https://www.feisty-dog.com" target="_blank" rel="external">Feisty Dog, LLC</a> under the <a class="link" href="https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt" target="_blank" rel="external">MIT License</a>.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
     </div>

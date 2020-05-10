@@ -38,6 +38,18 @@
                 <a href="../Classes/Database/TransactionType.html">– TransactionType</a>
               </li>
               <li class="nav-group-task">
+                <a href="../Classes/Database/TransactionCompletion.html">– TransactionCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Database/SavepointCompletion.html">– SavepointCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Database/WALCheckpointType.html">– WALCheckpointType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Database/SQLFunctionFlags.html">– SQLFunctionFlags</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Classes/Database/RowChangeType.html">– RowChangeType</a>
               </li>
               <li class="nav-group-task">
@@ -53,7 +65,7 @@
                 <a href="../Classes/Statement/Counter.html">– Counter</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/Row.html">Row</a>
+                <a href="../Structs/Row.html">Row</a>
               </li>
             </ul>
           </li>
@@ -81,18 +93,20 @@
                 <a href="../Classes/DatabaseQueue.html">DatabaseQueue</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/DatabaseQueue/TransactionCompletion.html">– TransactionCompletion</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/DatabaseQueue/SavepointCompletion.html">– SavepointCompletion</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/ConcurrentDatabaseQueue.html">ConcurrentDatabaseQueue</a>
+                <a href="../Classes/DatabaseReadQueue.html">DatabaseReadQueue</a>
               </li>
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="../Other Enums.html">Other Enumerations</a>
+            <a href="../Other%20Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/Snapshot.html">Snapshot</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other%20Enums.html">Other Enumerations</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="../Enums/SQLiteResultCode.html">SQLiteResultCode</a>
@@ -136,7 +150,7 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="../Other Extensions.html">Other Extensions</a>
+            <a href="../Other%20Extensions.html">Other Extensions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="../Extensions/Bool.html">Bool</a>
@@ -201,7 +215,7 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="../Other Protocols.html">Other Protocols</a>
+            <a href="../Other%20Protocols.html">Other Protocols</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="../Protocols/Error.html">Error</a>
@@ -209,13 +223,22 @@
               <li class="nav-group-task">
                 <a href="../Protocols/FTS5Tokenizer.html">FTS5Tokenizer</a>
               </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/SQLAggregateFunction.html">SQLAggregateFunction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/SQLAggregateWindowFunction.html">SQLAggregateWindowFunction</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="../Other Structs.html">Other Structures</a>
+            <a href="../Other%20Structs.html">Other Structures</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="../Structs/DatabaseError.html">DatabaseError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Other%20Structs.html#/s:8FeistyDB6SQLiteV">SQLite</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Structs/SQLiteError.html">SQLiteError</a>
@@ -223,13 +246,16 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="../Other Typealiases.html">Other Type Aliases</a>
+            <a href="../Other%20Typealiases.html">Other Type Aliases</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="../Other Typealiases.html#/s:8FeistyDB24SQLiteDatabaseConnectiona">SQLiteDatabaseConnection</a>
+                <a href="../Other%20Typealiases.html#/s:8FeistyDB24SQLiteDatabaseConnectiona">SQLiteDatabaseConnection</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Other Typealiases.html#/s:8FeistyDB23SQLitePreparedStatementa">SQLitePreparedStatement</a>
+                <a href="../Other%20Typealiases.html#/s:8FeistyDB23SQLitePreparedStatementa">SQLitePreparedStatement</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Other%20Typealiases.html#/s:8FeistyDB14SQLiteSnapshota">SQLiteSnapshot</a>
               </li>
             </ul>
           </li>
@@ -262,9 +288,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB8DatabaseCACyKcfc"></a>
-                    <a name="//apple_ref/swift/Method/init()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB8DatabaseCACyKcfc">init()</a>
+                    <a name="/s:8FeistyDB8DatabaseC8inMemoryACSb_tKcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(inMemory:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC8inMemoryACSb_tKcfc">init(inMemory:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -272,10 +298,10 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Creates an in-memory database.</p>
+                        <p>Creates a temporary database.</p>
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
-    An error if the database could not be created
+    <p>An error if the database could not be created</p>
 
 </div>
 
@@ -284,9 +310,28 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">()</span> <span class="k">throws</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">inMemory</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">true</span><span class="p">)</span> <span class="k">throws</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>inMemory</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Whether the temporary database should be created in-memory or on-disk</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -294,9 +339,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB8DatabaseCAC10Foundation3URLV3url_Sb8readOnlySb6createtKcfc"></a>
-                    <a name="//apple_ref/swift/Method/init(url:readOnly:create:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB8DatabaseCAC10Foundation3URLV3url_Sb8readOnlySb6createtKcfc">init(url:readOnly:create:)</a>
+                    <a name="/s:8FeistyDB8DatabaseC11readingFromAC10Foundation3URLV_tKcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(readingFrom:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC11readingFromAC10Foundation3URLV_tKcfc">init(readingFrom:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -304,7 +349,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Creates a database from a file.</p>
+                        <p>Creates a read-only database from a file.</p>
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
     <p>An error if the database could not be opened</p>
@@ -316,7 +361,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="kt">URL</span><span class="p">,</span> <span class="nv">readOnly</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">false</span><span class="p">,</span> <span class="nv">create</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">true</span><span class="p">)</span> <span class="k">throws</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="n">readingFrom</span> <span class="nv">url</span><span class="p">:</span> <span class="kt">URL</span><span class="p">)</span> <span class="k">throws</span></code></pre>
 
                         </div>
                       </div>
@@ -336,15 +381,54 @@
                                 </div>
                               </td>
                             </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB8DatabaseC3url6createAC10Foundation3URLV_SbtKcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(url:create:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC3url6createAC10Foundation3URLV_SbtKcfc">init(url:<wbr>create:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates a read-write database from a file.</p>
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <p>An error if the database could not be opened</p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="kt">URL</span><span class="p">,</span> <span class="nv">create</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">true</span><span class="p">)</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
                             <tr>
                               <td>
                                 <code>
-                                <em>readOnly</em>
+                                <em>url</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>Whether to open the database in read-only mode</p>
+                                  <p>The location of the SQLite database</p>
                                 </div>
                               </td>
                             </tr>
@@ -369,9 +453,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB8DatabaseCACs13OpaquePointerV09rawSQLiteC0_tcfc"></a>
+                    <a name="/s:8FeistyDB8DatabaseC09rawSQLiteC0ACs13OpaquePointerV_tcfc"></a>
                     <a name="//apple_ref/swift/Method/init(rawSQLiteDatabase:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB8DatabaseCACs13OpaquePointerV09rawSQLiteC0_tcfc">init(rawSQLiteDatabase:)</a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC09rawSQLiteC0ACs13OpaquePointerV_tcfc">init(rawSQLiteDatabase:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -391,7 +475,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="n">rawSQLiteDatabase</span> <span class="nv">db</span><span class="p">:</span> <span class="kt"><a href="../Other Typealiases.html#/s:8FeistyDB24SQLiteDatabaseConnectiona">SQLiteDatabaseConnection</a></span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="n">rawSQLiteDatabase</span> <span class="nv">db</span><span class="p">:</span> <span class="kt"><a href="../Other%20Typealiases.html#/s:8FeistyDB24SQLiteDatabaseConnectiona">SQLiteDatabaseConnection</a></span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -437,7 +521,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">lazy</span> <span class="k">var</span> <span class="nv">isReadOnly</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">lazy</span> <span class="k">var</span> <span class="nv">isReadOnly</span><span class="p">:</span> <span class="kt">Bool</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -464,7 +548,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">lastInsertRowid</span><span class="p">:</span> <span class="kt">Int64</span><span class="p">?</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">lastInsertRowid</span><span class="p">:</span> <span class="kt">Int64</span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -491,7 +575,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">changes</span><span class="p">:</span> <span class="kt">Int</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">changes</span><span class="p">:</span> <span class="kt">Int</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -518,7 +602,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">totalChanges</span><span class="p">:</span> <span class="kt">Int</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">totalChanges</span><span class="p">:</span> <span class="kt">Int</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -555,9 +639,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB8DatabaseC10memoryUseds5Int64VvpZ"></a>
-                    <a name="//apple_ref/swift/Variable/memoryUsed" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB8DatabaseC10memoryUseds5Int64VvpZ">memoryUsed</a>
+                    <a name="/s:8FeistyDB8DatabaseC3url03forC010Foundation3URLVSS_tKF"></a>
+                    <a name="//apple_ref/swift/Method/url(forDatabase:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC3url03forC010Foundation3URLVSS_tKF">url(forDatabase:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -565,41 +649,23 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The number of bytes of memory <code>malloc</code>ed but not yet <code>free</code>d by SQLite</p>
+                        <p>Returns the location of the file associated with database <code>name</code>.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <p>The main database file has the name <em>main</em></p>
+
+</div><div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <p>An error if there is no attached database with the specified name, or if <code>name</code> is a temporary or in-memory database</p>
+
+</div>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="k">var</span> <span class="nv">memoryUsed</span><span class="p">:</span> <span class="kt">Int64</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:8FeistyDB8DatabaseC15memoryHighwaters5Int64VSb5reset_tFZ"></a>
-                    <a name="//apple_ref/swift/Method/memoryHighwater(reset:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB8DatabaseC15memoryHighwaters5Int64VSb5reset_tFZ">memoryHighwater(reset:)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Returns the maximum amount of memory used by SQLite since the memory highwater mark was last reset.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kd">func</span> <span class="nf">memoryHighwater</span><span class="p">(</span><span class="nv">reset</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">false</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Int64</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">url</span><span class="p">(</span><span class="n">forDatabase</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">"main"</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">URL</span></code></pre>
 
                         </div>
                       </div>
@@ -610,17 +676,21 @@
                             <tr>
                               <td>
                                 <code>
-                                <em>reset</em>
+                                <em>name</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>If <code>true</code> the memory highwater mark is reset to the value of <code><a href="../Classes/Database.html#/s:8FeistyDB8DatabaseC10memoryUseds5Int64VvpZ">memoryUsed</a></code></p>
+                                  <p>The name of the attached database whose location is desired</p>
                                 </div>
                               </td>
                             </tr>
                           </tbody>
                         </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The URL for the file associated with database <code>name</code></p>
                       </div>
                     </section>
                   </div>
@@ -628,9 +698,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB8DatabaseC019withUnsafeRawSQLiteC0xxs13OpaquePointerVKc5block_tKlF"></a>
+                    <a name="/s:8FeistyDB8DatabaseC019withUnsafeRawSQLiteC05blockxxs13OpaquePointerVKXE_tKlF"></a>
                     <a name="//apple_ref/swift/Method/withUnsafeRawSQLiteDatabase(block:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB8DatabaseC019withUnsafeRawSQLiteC0xxs13OpaquePointerVKc5block_tKlF">withUnsafeRawSQLiteDatabase(block:)</a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC019withUnsafeRawSQLiteC05blockxxs13OpaquePointerVKXE_tKlF">withUnsafeRawSQLiteDatabase(block:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -652,7 +722,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">withUnsafeRawSQLiteDatabase</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">block</span><span class="p">:</span> <span class="p">(</span><span class="n">_</span> <span class="nv">db</span><span class="p">:</span> <span class="kt"><a href="../Other Typealiases.html#/s:8FeistyDB24SQLiteDatabaseConnectiona">SQLiteDatabaseConnection</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kt">T</span><span class="p">))</span> <span class="k">rethrows</span> <span class="o">-&gt;</span> <span class="kt">T</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">withUnsafeRawSQLiteDatabase</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">block</span><span class="p">:</span> <span class="p">(</span><span class="n">_</span> <span class="nv">db</span><span class="p">:</span> <span class="kt"><a href="../Other%20Typealiases.html#/s:8FeistyDB24SQLiteDatabaseConnectiona">SQLiteDatabaseConnection</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kt">T</span><span class="p">))</span> <span class="k">rethrows</span> <span class="o">-&gt;</span> <span class="kt">T</span></code></pre>
 
                         </div>
                       </div>
@@ -694,16 +764,12 @@
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB8DatabaseC7prepareAA9StatementCSS3sql_tKF"></a>
+                    <a name="/s:8FeistyDB8DatabaseC7prepare3sqlAA9StatementCSS_tKF"></a>
                     <a name="//apple_ref/swift/Method/prepare(sql:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB8DatabaseC7prepareAA9StatementCSS3sql_tKF">prepare(sql:)</a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC7prepare3sqlAA9StatementCSS_tKF">prepare(sql:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -756,9 +822,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB8DatabaseC7executeySS3sql_tKF"></a>
+                    <a name="/s:8FeistyDB8DatabaseC7execute3sqlySS_tKF"></a>
                     <a name="//apple_ref/swift/Method/execute(sql:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB8DatabaseC7executeySS3sql_tKF">execute(sql:)</a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC7execute3sqlySS_tKF">execute(sql:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -773,8 +839,7 @@
     <p class="aside-title">Requires</p>
     <p><code>sql</code> does not return any result rows</p>
 
-</div>
-<div class="aside aside-throws">
+</div><div class="aside aside-throws">
     <p class="aside-title">Throws</p>
     <p>An error if <code>sql</code> returned any result rows or could not be compiled or executed</p>
 
@@ -814,9 +879,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB8DatabaseC7resultsySS3sql_yAA3RowCKctKF"></a>
+                    <a name="/s:8FeistyDB8DatabaseC7results3sql_ySS_yAA3RowVKXEtKF"></a>
                     <a name="//apple_ref/swift/Method/results(sql:_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB8DatabaseC7resultsySS3sql_yAA3RowCKctKF">results(sql:_:)</a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC7results3sql_ySS_yAA3RowVKXEtKF">results(sql:<wbr>_:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -838,7 +903,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">results</span><span class="p">(</span><span class="nv">sql</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">_</span> <span class="nv">block</span><span class="p">:</span> <span class="p">((</span><span class="n">_</span> <span class="nv">row</span><span class="p">:</span> <span class="kt"><a href="../Classes/Row.html">Row</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="p">()))</span> <span class="k">throws</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">results</span><span class="p">(</span><span class="nv">sql</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">_</span> <span class="nv">block</span><span class="p">:</span> <span class="p">((</span><span class="n">_</span> <span class="nv">row</span><span class="p">:</span> <span class="kt"><a href="../Structs/Row.html">Row</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="p">()))</span> <span class="k">throws</span></code></pre>
 
                         </div>
                       </div>
@@ -888,10 +953,83 @@
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB8DatabaseC5batch3sql_ySS_ySDyS2SGcSgtKF"></a>
+                    <a name="//apple_ref/swift/Method/batch(sql:_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC5batch3sql_ySS_ySDyS2SGcSgtKF">batch(sql:<wbr>_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Executes one or more SQL statements and optionally applies <code>block</code> to each result row.</p>
+
+<p>Multiple SQL statements are separated with a semicolon (<code>;</code>)</p>
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <p>An error if <code>sql</code> could not be compiled or executed</p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">batch</span><span class="p">(</span><span class="nv">sql</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">_</span> <span class="nv">block</span><span class="p">:</span> <span class="p">((</span><span class="n">_</span> <span class="nv">row</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span> <span class="p">:</span> <span class="kt">String</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>sql</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The SQL statement or statements to execute</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>block</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An optional closure applied to each result row</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>row</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A dictionary of returned data keyed by column name</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
                 <li class="item">
                   <div>
                     <code>
@@ -928,9 +1066,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB8DatabaseC5beginyAC15TransactionTypeO4type_tKF"></a>
+                    <a name="/s:8FeistyDB8DatabaseC5begin4typeyAC15TransactionTypeO_tKF"></a>
                     <a name="//apple_ref/swift/Method/begin(type:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB8DatabaseC5beginyAC15TransactionTypeO4type_tKF">begin(type:)</a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC5begin4typeyAC15TransactionTypeO_tKF">begin(type:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -943,13 +1081,11 @@
     <p class="aside-title">Note</p>
     <p>Database transactions may not be nested.</p>
 
-</div>
-<div class="aside aside-throws">
+</div><div class="aside aside-throws">
     <p class="aside-title">Throws</p>
     <p>An error if the transaction couldn&rsquo;t be started</p>
 
-</div>
-<div class="aside aside-seealso">
+</div><div class="aside aside-seealso">
     <p class="aside-title">Seealso</p>
     <p><a href="https://sqlite.org/lang_transaction.html">BEGIN TRANSACTION</a></p>
 
@@ -1075,23 +1211,168 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">isInAutocommitMode</span><span class="p">:</span> <span class="kt">Bool</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">isInAutocommitMode</span><span class="p">:</span> <span class="kt">Bool</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB8DatabaseC5beginySS9savepoint_tKF"></a>
+                    <a name="/s:8FeistyDB8DatabaseC21TransactionCompletionO"></a>
+                    <a name="//apple_ref/swift/Enum/TransactionCompletion" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC21TransactionCompletionO">TransactionCompletion</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Possible ways to complete a transaction</p>
+
+                        <a href="../Classes/Database/TransactionCompletion.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">TransactionCompletion</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB8DatabaseC16TransactionBlocka"></a>
+                    <a name="//apple_ref/swift/Alias/TransactionBlock" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC16TransactionBlocka">TransactionBlock</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A series of database actions grouped into a transaction</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">TransactionBlock</span> <span class="o">=</span> <span class="p">(</span><span class="n">_</span> <span class="nv">database</span><span class="p">:</span> <span class="kt">Database</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/Database/TransactionCompletion.html">TransactionCompletion</a></span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>database</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A <code>Database</code> used for database access within the block</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p><code>.commit</code> if the transaction should be committed or <code>.rollback</code> if the transaction should be rolled back</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB8DatabaseC11transaction4type_yAC15TransactionTypeO_AC0F10CompletionOACKXEtKF"></a>
+                    <a name="//apple_ref/swift/Method/transaction(type:_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC11transaction4type_yAC15TransactionTypeO_AC0F10CompletionOACKXEtKF">transaction(type:<wbr>_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Performs a transaction on the database.</p>
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <p>Any error thrown in <code>block</code> or an error if the transaction could not be started, rolled back, or committed</p>
+
+</div><div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <p>If <code>block</code> throws an error the transaction will be rolled back and the error will be re-thrown</p>
+
+</div><div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <p>If an error occurs committing the transaction a rollback will be attempted and the error will be re-thrown</p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">transaction</span><span class="p">(</span><span class="nv">type</span><span class="p">:</span> <span class="kt">Database</span><span class="o">.</span><span class="kt"><a href="../Classes/Database/TransactionType.html">TransactionType</a></span> <span class="o">=</span> <span class="o">.</span><span class="n">deferred</span><span class="p">,</span> <span class="n">_</span> <span class="nv">block</span><span class="p">:</span> <span class="kt"><a href="../Classes/Database.html#/s:8FeistyDB8DatabaseC16TransactionBlocka">TransactionBlock</a></span><span class="p">)</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>type</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The type of transaction to perform</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>block</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A closure performing the database operation</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB8DatabaseC5begin9savepointySS_tKF"></a>
                     <a name="//apple_ref/swift/Method/begin(savepoint:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB8DatabaseC5beginySS9savepoint_tKF">begin(savepoint:)</a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC5begin9savepointySS_tKF">begin(savepoint:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1104,13 +1385,11 @@
     <p class="aside-title">Note</p>
     <p>Savepoint transactions may be nested.</p>
 
-</div>
-<div class="aside aside-throws">
+</div><div class="aside aside-throws">
     <p class="aside-title">Throws</p>
     <p>An error if the savepoint transaction couldn&rsquo;t be started</p>
 
-</div>
-<div class="aside aside-seealso">
+</div><div class="aside aside-seealso">
     <p class="aside-title">Seealso</p>
     <p><a href="https://sqlite.org/lang_savepoint.html">SAVEPOINT</a></p>
 
@@ -1150,9 +1429,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB8DatabaseC8rollbackySS2to_tKF"></a>
+                    <a name="/s:8FeistyDB8DatabaseC8rollback2toySS_tKF"></a>
                     <a name="//apple_ref/swift/Method/rollback(to:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB8DatabaseC8rollbackySS2to_tKF">rollback(to:)</a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC8rollback2toySS_tKF">rollback(to:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1201,9 +1480,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB8DatabaseC7releaseySS9savepoint_tKF"></a>
+                    <a name="/s:8FeistyDB8DatabaseC7release9savepointySS_tKF"></a>
                     <a name="//apple_ref/swift/Method/release(savepoint:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB8DatabaseC7releaseySS9savepoint_tKF">release(savepoint:)</a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC7release9savepointySS_tKF">release(savepoint:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1216,8 +1495,7 @@
     <p class="aside-title">Note</p>
     <p>Changes are not saved until the outermost transaction is released or committed.</p>
 
-</div>
-<div class="aside aside-throws">
+</div><div class="aside aside-throws">
     <p class="aside-title">Throws</p>
     <p>An error if the savepoint transaction couldn&rsquo;t be committed or doesn&rsquo;t exist</p>
 
@@ -1254,16 +1532,245 @@
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB8DatabaseC16prepareStatementySS3sql_SS6forKeytKF"></a>
+                    <a name="/s:8FeistyDB8DatabaseC19SavepointCompletionO"></a>
+                    <a name="//apple_ref/swift/Enum/SavepointCompletion" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC19SavepointCompletionO">SavepointCompletion</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Possible ways to complete a savepoint</p>
+
+                        <a href="../Classes/Database/SavepointCompletion.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">SavepointCompletion</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB8DatabaseC14SavepointBlocka"></a>
+                    <a name="//apple_ref/swift/Alias/SavepointBlock" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC14SavepointBlocka">SavepointBlock</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A series of database actions grouped into a savepoint transaction</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">SavepointBlock</span> <span class="o">=</span> <span class="p">(</span><span class="n">_</span> <span class="nv">database</span><span class="p">:</span> <span class="kt">Database</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/Database/SavepointCompletion.html">SavepointCompletion</a></span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>database</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A <code>Database</code> used for database access within the block</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p><code>.release</code> if the savepoint should be released or <code>.rollback</code> if the savepoint should be rolled back</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB8DatabaseC9savepoint5blockyAC19SavepointCompletionOACKXE_tKF"></a>
+                    <a name="//apple_ref/swift/Method/savepoint(block:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC9savepoint5blockyAC19SavepointCompletionOACKXE_tKF">savepoint(block:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Performs a savepoint transaction on the database.</p>
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <p>Any error thrown in <code>block</code> or an error if the savepoint could not be started, rolled back, or released</p>
+
+</div><div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <p>If <code>block</code> throws an error the savepoint will be rolled back and the error will be re-thrown</p>
+
+</div><div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <p>If an error occurs releasing the savepoint a rollback will be attempted and the error will be re-thrown</p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">savepoint</span><span class="p">(</span><span class="nv">block</span><span class="p">:</span> <span class="kt"><a href="../Classes/Database.html#/s:8FeistyDB8DatabaseC14SavepointBlocka">SavepointBlock</a></span><span class="p">)</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>block</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A closure performing the database operation</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB8DatabaseC17WALCheckpointTypeO"></a>
+                    <a name="//apple_ref/swift/Enum/WALCheckpointType" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC17WALCheckpointTypeO">WALCheckpointType</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Possible write-ahead log (WAL) checkpoint types.</p>
+<div class="aside aside-seealso">
+    <p class="aside-title">Seealso</p>
+    <a href="https://www.sqlite.org/wal.html">Write-Ahead Logging</a>
+
+</div>
+
+                        <a href="../Classes/Database/WALCheckpointType.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">WALCheckpointType</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB8DatabaseC13walCheckpoint4typeyAC17WALCheckpointTypeO_tKF"></a>
+                    <a name="//apple_ref/swift/Method/walCheckpoint(type:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC13walCheckpoint4typeyAC17WALCheckpointTypeO_tKF">walCheckpoint(type:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Perform a write-ahead log checkpoint on the database.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <p>Checkpoints are only valid for databases using write-ahead logging (WAL) mode.</p>
+
+</div><div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <p>An error if the checkpoint failed or if the database isn&rsquo;t in WAL mode</p>
+
+</div><div class="aside aside-seealso">
+    <p class="aside-title">Seealso</p>
+    <p><a href="https://www.sqlite.org/c3ref/wal_checkpoint_v2.html">Checkpoint a database</a></p>
+
+</div><div class="aside aside-seealso">
+    <p class="aside-title">Seealso</p>
+    <p><a href="https://www.sqlite.org/pragma.html#pragma_wal_checkpoint">PRAGMA wal_checkpoint</a></p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">walCheckpoint</span><span class="p">(</span><span class="nv">type</span><span class="p">:</span> <span class="kt"><a href="../Classes/Database/WALCheckpointType.html">WALCheckpointType</a></span> <span class="o">=</span> <span class="o">.</span><span class="n">passive</span><span class="p">)</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>type</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The type of checkpoint to perform</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB8DatabaseC16prepareStatement3sql6forKeyySS_s11AnyHashableVtKF"></a>
                     <a name="//apple_ref/swift/Method/prepareStatement(sql:forKey:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB8DatabaseC16prepareStatementySS3sql_SS6forKeytKF">prepareStatement(sql:forKey:)</a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC16prepareStatement3sql6forKeyySS_s11AnyHashableVtKF">prepareStatement(sql:<wbr>forKey:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1283,7 +1790,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">prepareStatement</span><span class="p">(</span><span class="nv">sql</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">forKey</span> <span class="nv">key</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="k">throws</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">prepareStatement</span><span class="p">(</span><span class="nv">sql</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">forKey</span> <span class="nv">key</span><span class="p">:</span> <span class="kt">AnyHashable</span><span class="p">)</span> <span class="k">throws</span></code></pre>
 
                         </div>
                       </div>
@@ -1328,9 +1835,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB8DatabaseC17preparedStatementAA0E0CSgSS6forKey_tF"></a>
+                    <a name="/s:8FeistyDB8DatabaseC17preparedStatement6forKeyAA0E0CSgs11AnyHashableV_tF"></a>
                     <a name="//apple_ref/swift/Method/preparedStatement(forKey:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB8DatabaseC17preparedStatementAA0E0CSgSS6forKey_tF">preparedStatement(forKey:)</a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC17preparedStatement6forKeyAA0E0CSgs11AnyHashableV_tF">preparedStatement(forKey:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1345,7 +1852,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">preparedStatement</span><span class="p">(</span><span class="n">forKey</span> <span class="nv">key</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/Statement.html">Statement</a></span><span class="p">?</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">preparedStatement</span><span class="p">(</span><span class="n">forKey</span> <span class="nv">key</span><span class="p">:</span> <span class="kt">AnyHashable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/Statement.html">Statement</a></span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>
@@ -1378,9 +1885,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB8DatabaseC20setPreparedStatementyAA0F0C_SS6forKeytF"></a>
+                    <a name="/s:8FeistyDB8DatabaseC20setPreparedStatement_6forKeyyAA0F0C_s11AnyHashableVtF"></a>
                     <a name="//apple_ref/swift/Method/setPreparedStatement(_:forKey:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB8DatabaseC20setPreparedStatementyAA0F0C_SS6forKeytF">setPreparedStatement(_:forKey:)</a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC20setPreparedStatement_6forKeyyAA0F0C_s11AnyHashableVtF">setPreparedStatement(_:<wbr>forKey:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1395,7 +1902,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">setPreparedStatement</span><span class="p">(</span><span class="n">_</span> <span class="nv">statement</span><span class="p">:</span> <span class="kt"><a href="../Classes/Statement.html">Statement</a></span><span class="p">,</span> <span class="n">forKey</span> <span class="nv">key</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">setPreparedStatement</span><span class="p">(</span><span class="n">_</span> <span class="nv">statement</span><span class="p">:</span> <span class="kt"><a href="../Classes/Statement.html">Statement</a></span><span class="p">,</span> <span class="n">forKey</span> <span class="nv">key</span><span class="p">:</span> <span class="kt">AnyHashable</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -1436,9 +1943,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB8DatabaseC23removePreparedStatementAA0F0CSgSS6forKey_tF"></a>
+                    <a name="/s:8FeistyDB8DatabaseC23removePreparedStatement6forKeyAA0F0CSgs11AnyHashableV_tF"></a>
                     <a name="//apple_ref/swift/Method/removePreparedStatement(forKey:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB8DatabaseC23removePreparedStatementAA0F0CSgSS6forKey_tF">removePreparedStatement(forKey:)</a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC23removePreparedStatement6forKeyAA0F0CSgs11AnyHashableV_tF">removePreparedStatement(forKey:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1453,7 +1960,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">removePreparedStatement</span><span class="p">(</span><span class="n">forKey</span> <span class="nv">key</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/Statement.html">Statement</a></span><span class="p">?</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">removePreparedStatement</span><span class="p">(</span><span class="n">forKey</span> <span class="nv">key</span><span class="p">:</span> <span class="kt">AnyHashable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/Statement.html">Statement</a></span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>
@@ -1486,9 +1993,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB8DatabaseC21withPreparedStatementxSS6forKey_xAA0F0CKctKlF"></a>
+                    <a name="/s:8FeistyDB8DatabaseC21withPreparedStatement6forKey_xs11AnyHashableV_xAA0F0CKXEtKlF"></a>
                     <a name="//apple_ref/swift/Method/withPreparedStatement(forKey:_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB8DatabaseC21withPreparedStatementxSS6forKey_xAA0F0CKctKlF">withPreparedStatement(forKey:_:)</a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC21withPreparedStatement6forKey_xs11AnyHashableV_xAA0F0CKXEtKlF">withPreparedStatement(forKey:<wbr>_:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1510,7 +2017,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">withPreparedStatement</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">forKey</span> <span class="nv">key</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">_</span> <span class="nv">block</span><span class="p">:</span> <span class="p">(</span><span class="n">_</span> <span class="nv">statement</span><span class="p">:</span> <span class="kt"><a href="../Classes/Statement.html">Statement</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">T</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">T</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">withPreparedStatement</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">forKey</span> <span class="nv">key</span><span class="p">:</span> <span class="kt">AnyHashable</span><span class="p">,</span> <span class="n">_</span> <span class="nv">block</span><span class="p">:</span> <span class="p">(</span><span class="n">_</span> <span class="nv">statement</span><span class="p">:</span> <span class="kt"><a href="../Classes/Statement.html">Statement</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">T</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">T</span></code></pre>
 
                         </div>
                       </div>
@@ -1567,9 +2074,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB8DatabaseCAA9StatementCSgSScip"></a>
+                    <a name="/s:8FeistyDB8DatabaseCyAA9StatementCSgs11AnyHashableVcip"></a>
                     <a name="//apple_ref/swift/Method/subscript(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB8DatabaseCAA9StatementCSgSScip">subscript(_:)</a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseCyAA9StatementCSgs11AnyHashableVcip">subscript(_:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1584,7 +2091,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">subscript</span><span class="p">(</span><span class="nv">key</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/Statement.html">Statement</a></span><span class="p">?</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">subscript</span><span class="p">(</span><span class="nv">key</span><span class="p">:</span> <span class="kt">AnyHashable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/Statement.html">Statement</a></span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -1610,10 +2117,6 @@
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
                 <li class="item">
                   <div>
                     <code>
@@ -1675,9 +2178,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB8DatabaseC6backupy10Foundation3URLV2to_ySi_SitcSg8progresstKF"></a>
+                    <a name="/s:8FeistyDB8DatabaseC6backup2to8progressy10Foundation3URLV_ySi_SitcSgtKF"></a>
                     <a name="//apple_ref/swift/Method/backup(to:progress:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB8DatabaseC6backupy10Foundation3URLV2to_ySi_SitcSg8progresstKF">backup(to:progress:)</a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC6backup2to8progressy10Foundation3URLV_ySi_SitcSgtKF">backup(to:<wbr>progress:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1690,13 +2193,11 @@
     <p class="aside-title">Throws</p>
     <p>An error if the backup could not be completed</p>
 
-</div>
-<div class="aside aside-seealso">
+</div><div class="aside aside-seealso">
     <p class="aside-title">Seealso</p>
     <p><a href="http://www.sqlite.org/c3ref/backup_finish.html">Online Backup API</a></p>
 
-</div>
-<div class="aside aside-seealso">
+</div><div class="aside aside-seealso">
     <p class="aside-title">Seealso</p>
     <p><a href="http://www.sqlite.org/backup.html">Using the SQLite Online Backup API</a></p>
 
@@ -1745,10 +2246,6 @@
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
                 <li class="item">
                   <div>
                     <code>
@@ -1814,9 +2311,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB8DatabaseC12addCollationySS_SC16ComparisonResultOSS_SStctKF"></a>
+                    <a name="/s:8FeistyDB8DatabaseC12addCollationyySS_So18NSComparisonResultVSS_SStctKF"></a>
                     <a name="//apple_ref/swift/Method/addCollation(_:_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB8DatabaseC12addCollationySS_SC16ComparisonResultOSS_SStctKF">addCollation(_:_:)</a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC12addCollationyySS_So18NSComparisonResultVSS_SStctKF">addCollation(_:<wbr>_:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1881,9 +2378,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB8DatabaseC15removeCollationySSKF"></a>
+                    <a name="/s:8FeistyDB8DatabaseC15removeCollationyySSKF"></a>
                     <a name="//apple_ref/swift/Method/removeCollation(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB8DatabaseC15removeCollationySSKF">removeCollation(_:)</a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC15removeCollationyySSKF">removeCollation(_:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1929,10 +2426,6 @@
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
                 <li class="item">
                   <div>
                     <code>
@@ -1991,9 +2484,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB8DatabaseC11addFunctionySS_Si5arityAA0C5ValueOSayAGGKctKF"></a>
-                    <a name="//apple_ref/swift/Method/addFunction(_:arity:_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB8DatabaseC11addFunctionySS_Si5arityAA0C5ValueOSayAGGKctKF">addFunction(_:arity:_:)</a>
+                    <a name="/s:8FeistyDB8DatabaseC16SQLFunctionFlagsV"></a>
+                    <a name="//apple_ref/swift/Struct/SQLFunctionFlags" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC16SQLFunctionFlagsV">SQLFunctionFlags</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -2001,7 +2494,42 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Adds a custom SQL function.</p>
+                        <p>Custom SQL function flags</p>
+<div class="aside aside-seealso">
+    <p class="aside-title">Seealso</p>
+    <a href="https://www.sqlite.org/c3ref/c_deterministic.html">Function Flags</a>
+
+</div>
+
+                        <a href="../Classes/Database/SQLFunctionFlags.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">SQLFunctionFlags</span> <span class="p">:</span> <span class="kt">OptionSet</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB8DatabaseC11addFunction_5arity5flags_ySS_SiAC16SQLFunctionFlagsVAA0C5ValueOSayAJGKctKF"></a>
+                    <a name="//apple_ref/swift/Method/addFunction(_:arity:flags:_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC11addFunction_5arity5flags_ySS_SiAC16SQLFunctionFlagsVAA0C5ValueOSayAJGKctKF">addFunction(_:<wbr>arity:<wbr>flags:<wbr>_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Adds a custom SQL scalar function.</p>
+
+<p>For example, a localized uppercase scalar function could be implemented as:</p>
 <pre class="highlight swift"><code><span class="k">try</span> <span class="n">db</span><span class="o">.</span><span class="nf">addFunction</span><span class="p">(</span><span class="s">"localizedUppercase"</span><span class="p">,</span> <span class="nv">arity</span><span class="p">:</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span> <span class="n">values</span> <span class="k">in</span>
     <span class="k">let</span> <span class="nv">value</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">unsafelyUnwrapped</span>
     <span class="k">switch</span> <span class="n">value</span> <span class="p">{</span>
@@ -2014,10 +2542,9 @@
 </code></pre>
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
-    <p>An error if the SQL function couldn&rsquo;t be added</p>
+    <p>An error if the SQL scalar function couldn&rsquo;t be added</p>
 
-</div>
-<div class="aside aside-seealso">
+</div><div class="aside aside-seealso">
     <p class="aside-title">Seealso</p>
     <p><a href="https://sqlite.org/c3ref/create_function.html">Create Or Redefine SQL Functions</a></p>
 
@@ -2028,7 +2555,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">addFunction</span><span class="p">(</span><span class="n">_</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">arity</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">_</span> <span class="nv">block</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Classes/Database.html#/s:8FeistyDB8DatabaseC11SQLFunctiona">SQLFunction</a></span><span class="p">)</span> <span class="k">throws</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">addFunction</span><span class="p">(</span><span class="n">_</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">arity</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nv">flags</span><span class="p">:</span> <span class="kt"><a href="../Classes/Database/SQLFunctionFlags.html">SQLFunctionFlags</a></span> <span class="o">=</span> <span class="p">[</span><span class="o">.</span><span class="n">deterministic</span><span class="p">,</span> <span class="o">.</span><span class="n">directOnly</span><span class="p">],</span> <span class="n">_</span> <span class="nv">block</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Classes/Database.html#/s:8FeistyDB8DatabaseC11SQLFunctiona">SQLFunction</a></span><span class="p">)</span> <span class="k">throws</span></code></pre>
 
                         </div>
                       </div>
@@ -2063,6 +2590,18 @@
                             <tr>
                               <td>
                                 <code>
+                                <em>flags</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Flags affecting the function&rsquo;s use by SQLite</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
                                 <em>block</em>
                                 </code>
                               </td>
@@ -2081,9 +2620,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB8DatabaseC14removeFunctionySS_Si5aritytKF"></a>
-                    <a name="//apple_ref/swift/Method/removeFunction(_:arity:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB8DatabaseC14removeFunctionySS_Si5aritytKF">removeFunction(_:arity:)</a>
+                    <a name="/s:8FeistyDB8DatabaseC20addAggregateFunction_5arity5flags_ySS_SiAC16SQLFunctionFlagsVAA012SQLAggregateF0_ptKF"></a>
+                    <a name="//apple_ref/swift/Method/addAggregateFunction(_:arity:flags:_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC20addAggregateFunction_5arity5flags_ySS_SiAC16SQLFunctionFlagsVAA012SQLAggregateF0_ptKF">addAggregateFunction(_:<wbr>arity:<wbr>flags:<wbr>_:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -2091,7 +2630,249 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Removes a custom SQL function.</p>
+                        <p>Adds a custom SQL aggregate function.</p>
+
+<p>For example, an integer sum aggregate function could be implemented as:</p>
+<pre class="highlight swift"><code><span class="kd">class</span> <span class="kt">IntegerSumAggregateFunction</span><span class="p">:</span> <span class="kt">SQLAggregateFunction</span> <span class="p">{</span>
+    <span class="kd">func</span> <span class="nf">step</span><span class="p">(</span><span class="n">_</span> <span class="nv">values</span><span class="p">:</span> <span class="p">[</span><span class="kt">DatabaseValue</span><span class="p">])</span> <span class="k">throws</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="nv">value</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">unsafelyUnwrapped</span>
+        <span class="k">switch</span> <span class="n">value</span> <span class="p">{</span>
+            <span class="k">case</span> <span class="o">.</span><span class="nf">integer</span><span class="p">(</span><span class="k">let</span> <span class="nv">i</span><span class="p">):</span>
+                <span class="n">sum</span> <span class="o">+=</span> <span class="n">i</span>
+            <span class="k">default</span><span class="p">:</span>
+                <span class="k">throw</span> <span class="kt">DatabaseError</span><span class="p">(</span><span class="s">"Only integer values supported"</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kd">func</span> <span class="nf">final</span><span class="p">()</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">DatabaseValue</span> <span class="p">{</span>
+        <span class="k">defer</span> <span class="p">{</span>
+            <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="kt">DatabaseValue</span><span class="p">(</span><span class="n">sum</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="k">var</span> <span class="nv">sum</span><span class="p">:</span> <span class="kt">Int64</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="p">}</span>
+</code></pre>
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <p>An error if the SQL aggregate function can&rsquo;t be added</p>
+
+</div><div class="aside aside-seealso">
+    <p class="aside-title">Seealso</p>
+    <p><a href="https://sqlite.org/c3ref/create_function.html">Create Or Redefine SQL Functions</a></p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">addAggregateFunction</span><span class="p">(</span><span class="n">_</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">arity</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nv">flags</span><span class="p">:</span> <span class="kt"><a href="../Classes/Database/SQLFunctionFlags.html">SQLFunctionFlags</a></span> <span class="o">=</span> <span class="p">[</span><span class="o">.</span><span class="n">deterministic</span><span class="p">,</span> <span class="o">.</span><span class="n">directOnly</span><span class="p">],</span> <span class="n">_</span> <span class="nv">function</span><span class="p">:</span> <span class="kt"><a href="../Protocols/SQLAggregateFunction.html">SQLAggregateFunction</a></span><span class="p">)</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>name</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The name of the aggregate function</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>arity</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The number of arguments the function accepts</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>flags</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Flags affecting the function&rsquo;s use by SQLite</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>aggregateFunction</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An object defining the aggregate function</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB8DatabaseC26addAggregateWindowFunction_5arity5flags_ySS_SiAC16SQLFunctionFlagsVAA012SQLAggregatefG0_ptKF"></a>
+                    <a name="//apple_ref/swift/Method/addAggregateWindowFunction(_:arity:flags:_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC26addAggregateWindowFunction_5arity5flags_ySS_SiAC16SQLFunctionFlagsVAA012SQLAggregatefG0_ptKF">addAggregateWindowFunction(_:<wbr>arity:<wbr>flags:<wbr>_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Adds a custom SQL aggregate window function.</p>
+
+<p>For example, an integer sum aggregate window function could be implemented as:</p>
+<pre class="highlight swift"><code><span class="kd">class</span> <span class="kt">IntegerSumAggregateWindowFunction</span><span class="p">:</span> <span class="kt">SQLAggregateWindowFunction</span> <span class="p">{</span>
+    <span class="kd">func</span> <span class="nf">step</span><span class="p">(</span><span class="n">_</span> <span class="nv">values</span><span class="p">:</span> <span class="p">[</span><span class="kt">DatabaseValue</span><span class="p">])</span> <span class="k">throws</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="nv">value</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">unsafelyUnwrapped</span>
+        <span class="k">switch</span> <span class="n">value</span> <span class="p">{</span>
+            <span class="k">case</span> <span class="o">.</span><span class="nf">integer</span><span class="p">(</span><span class="k">let</span> <span class="nv">i</span><span class="p">):</span>
+                <span class="n">sum</span> <span class="o">+=</span> <span class="n">i</span>
+            <span class="k">default</span><span class="p">:</span>
+                <span class="k">throw</span> <span class="kt">DatabaseError</span><span class="p">(</span><span class="s">"Only integer values supported"</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kd">func</span> <span class="nf">inverse</span><span class="p">(</span><span class="n">_</span> <span class="nv">values</span><span class="p">:</span> <span class="p">[</span><span class="kt">DatabaseValue</span><span class="p">])</span> <span class="k">throws</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="nv">value</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">unsafelyUnwrapped</span>
+        <span class="k">switch</span> <span class="n">value</span> <span class="p">{</span>
+            <span class="k">case</span> <span class="o">.</span><span class="nf">integer</span><span class="p">(</span><span class="k">let</span> <span class="nv">i</span><span class="p">):</span>
+                <span class="n">sum</span> <span class="o">-=</span> <span class="n">i</span>
+            <span class="k">default</span><span class="p">:</span>
+                <span class="k">throw</span> <span class="kt">DatabaseError</span><span class="p">(</span><span class="s">"Only integer values supported"</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kd">func</span> <span class="nf">value</span><span class="p">()</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">DatabaseValue</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kt">DatabaseValue</span><span class="p">(</span><span class="n">sum</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="kd">func</span> <span class="nf">final</span><span class="p">()</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">DatabaseValue</span> <span class="p">{</span>
+        <span class="k">defer</span> <span class="p">{</span>
+            <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="kt">DatabaseValue</span><span class="p">(</span><span class="n">sum</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="k">var</span> <span class="nv">sum</span><span class="p">:</span> <span class="kt">Int64</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="p">}</span>
+</code></pre>
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <p>An error if the SQL aggregate window function can&rsquo;t be added</p>
+
+</div><div class="aside aside-seealso">
+    <p class="aside-title">Seealso</p>
+    <p><a href="https://sqlite.org/windowfunctions.html#udfwinfunc">User-Defined Aggregate Window Functions</a></p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">addAggregateWindowFunction</span><span class="p">(</span><span class="n">_</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">arity</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nv">flags</span><span class="p">:</span> <span class="kt"><a href="../Classes/Database/SQLFunctionFlags.html">SQLFunctionFlags</a></span> <span class="o">=</span> <span class="p">[</span><span class="o">.</span><span class="n">deterministic</span><span class="p">,</span> <span class="o">.</span><span class="n">directOnly</span><span class="p">],</span> <span class="n">_</span> <span class="nv">function</span><span class="p">:</span> <span class="kt"><a href="../Protocols/SQLAggregateWindowFunction.html">SQLAggregateWindowFunction</a></span><span class="p">)</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>name</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The name of the aggregate window function</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>arity</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The number of arguments the function accepts</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>flags</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Flags affecting the function&rsquo;s use by SQLite</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>aggregateWindowFunction</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An object defining the aggregate window function</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB8DatabaseC14removeFunction_5arityySS_SitKF"></a>
+                    <a name="//apple_ref/swift/Method/removeFunction(_:arity:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC14removeFunction_5arityySS_SitKF">removeFunction(_:<wbr>arity:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Removes a custom SQL scalar, aggregate, or window function.</p>
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
     <p>An error if the SQL function couldn&rsquo;t be removed</p>
@@ -2131,7 +2912,7 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>The number of arguments the custom SQL functions accepts</p>
+                                  <p>The number of arguments the custom SQL function accepts</p>
                                 </div>
                               </td>
                             </tr>
@@ -2141,10 +2922,6 @@
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
                 <li class="item">
                   <div>
                     <code>
@@ -2184,9 +2961,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB8DatabaseC13setCommitHookySbycF"></a>
+                    <a name="/s:8FeistyDB8DatabaseC13setCommitHookyySbycF"></a>
                     <a name="//apple_ref/swift/Method/setCommitHook(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB8DatabaseC13setCommitHookySbycF">setCommitHook(_:)</a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC13setCommitHookyySbycF">setCommitHook(_:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -2289,9 +3066,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB8DatabaseC15setRollbackHookyyycF"></a>
+                    <a name="/s:8FeistyDB8DatabaseC15setRollbackHookyyyycF"></a>
                     <a name="//apple_ref/swift/Method/setRollbackHook(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB8DatabaseC15setRollbackHookyyycF">setRollbackHook(_:)</a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC15setRollbackHookyyyycF">setRollbackHook(_:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -2359,10 +3136,6 @@
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
                 <li class="item">
                   <div>
                     <code>
@@ -2433,9 +3206,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB8DatabaseC16setWALCommitHookys5Int32VSS_SitcF"></a>
+                    <a name="/s:8FeistyDB8DatabaseC16setWALCommitHookyys5Int32VSS_SitcF"></a>
                     <a name="//apple_ref/swift/Method/setWALCommitHook(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB8DatabaseC16setWALCommitHookys5Int32VSS_SitcF">setWALCommitHook(_:)</a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC16setWALCommitHookyys5Int32VSS_SitcF">setWALCommitHook(_:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -2503,10 +3276,6 @@
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
                 <li class="item">
                   <div>
                     <code>
@@ -2528,7 +3297,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span>	<span class="kt">RowChangeType</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">RowChangeType</span></code></pre>
 
                         </div>
                       </div>
@@ -2553,8 +3322,7 @@
     <p class="aside-title">Seealso</p>
     <p><a href="http://www.sqlite.org/c3ref/commit_hook.html">Commit And Rollback Notification Callbacks</a></p>
 
-</div>
-<div class="aside aside-seealso">
+</div><div class="aside aside-seealso">
     <p class="aside-title">Seealso</p>
     <p><a href="http://www.sqlite.org/rowidtable.html">Rowid Tables</a></p>
 
@@ -2630,9 +3398,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB8DatabaseC13setUpdateHookyyAC13RowChangeTypeO_S2Ss5Int64VtcF"></a>
+                    <a name="/s:8FeistyDB8DatabaseC13setUpdateHookyyyAC13RowChangeTypeO_S2Ss5Int64VtcF"></a>
                     <a name="//apple_ref/swift/Method/setUpdateHook(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB8DatabaseC13setUpdateHookyyAC13RowChangeTypeO_S2Ss5Int64VtcF">setUpdateHook(_:)</a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC13setUpdateHookyyyAC13RowChangeTypeO_S2Ss5Int64VtcF">setUpdateHook(_:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -2700,10 +3468,6 @@
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
                 <li class="item">
                   <div>
                     <code>
@@ -2762,9 +3526,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB8DatabaseC14setBusyHandlerySbSicKF"></a>
+                    <a name="/s:8FeistyDB8DatabaseC14setBusyHandleryySbSicKF"></a>
                     <a name="//apple_ref/swift/Method/setBusyHandler(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB8DatabaseC14setBusyHandlerySbSicKF">setBusyHandler(_:)</a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC14setBusyHandleryySbSicKF">setBusyHandler(_:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -2845,9 +3609,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB8DatabaseC14setBusyTimeoutySiKF"></a>
+                    <a name="/s:8FeistyDB8DatabaseC14setBusyTimeoutyySiKF"></a>
                     <a name="//apple_ref/swift/Method/setBusyTimeout(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB8DatabaseC14setBusyTimeoutySiKF">setBusyTimeout(_:)</a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC14setBusyTimeoutyySiKF">setBusyTimeout(_:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -2860,8 +3624,7 @@
     <p class="aside-title">Throws</p>
     <p>An error if the busy timeout couldn&rsquo;t be set</p>
 
-</div>
-<div class="aside aside-seealso">
+</div><div class="aside aside-seealso">
     <p class="aside-title">Seealso</p>
     <p><a href="http://www.sqlite.org/c3ref/busy_timeout.html">Set A Busy Timeout</a></p>
 
@@ -2898,10 +3661,6 @@
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
                 <li class="item">
                   <div>
                     <code>
@@ -2928,7 +3687,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span>	<span class="kt">StatusParameter</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">StatusParameter</span></code></pre>
 
                         </div>
                       </div>
@@ -2938,9 +3697,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB8DatabaseC6statusSi_SitAC15StatusParameterO02ofF0_Sb14resetHighwatertKF"></a>
+                    <a name="/s:8FeistyDB8DatabaseC6status11ofParameter14resetHighwaterSi_SitAC06StatusF0O_SbtKF"></a>
                     <a name="//apple_ref/swift/Method/status(ofParameter:resetHighwater:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB8DatabaseC6statusSi_SitAC15StatusParameterO02ofF0_Sb14resetHighwatertKF">status(ofParameter:resetHighwater:)</a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC6status11ofParameter14resetHighwaterSi_SitAC06StatusF0O_SbtKF">status(ofParameter:<wbr>resetHighwater:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -3004,10 +3763,6 @@
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
                 <li class="item">
                   <div>
                     <code>
@@ -3039,9 +3794,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB8DatabaseC12addTokenizerySS_xm4typetKAA04FTS5E0RzlF"></a>
+                    <a name="/s:8FeistyDB8DatabaseC12addTokenizer_4typeySS_xmtKAA04FTS5E0RzlF"></a>
                     <a name="//apple_ref/swift/Method/addTokenizer(_:type:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB8DatabaseC12addTokenizerySS_xm4typetKAA04FTS5E0RzlF">addTokenizer(_:type:)</a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC12addTokenizer_4typeySS_xmtKAA04FTS5E0RzlF">addTokenizer(_:<wbr>type:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -3097,8 +3852,7 @@
     <p class="aside-title">Throws</p>
     <p>An error if the tokenizer can&rsquo;t be added</p>
 
-</div>
-<div class="aside aside-seealso">
+</div><div class="aside aside-seealso">
     <p class="aside-title">Seealso</p>
     <p><a href="http://www.sqlite.org/fts5.html#custom_tokenizers">Custom Tokenizers</a></p>
 
@@ -3109,7 +3863,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">addTokenizer</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">:</span> <span class="kt"><a href="../Protocols/FTS5Tokenizer.html">FTS5Tokenizer</a></span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">type</span><span class="p">:</span> <span class="kt">T</span><span class="o">.</span><span class="k">Type</span><span class="p">)</span> <span class="k">throws</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">addTokenizer</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">type</span><span class="p">:</span> <span class="kt">T</span><span class="o">.</span><span class="k">Type</span><span class="p">)</span> <span class="k">throws</span> <span class="k">where</span> <span class="kt">T</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/FTS5Tokenizer.html">FTS5Tokenizer</a></span></code></pre>
 
                         </div>
                       </div>
@@ -3147,16 +3901,114 @@
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB8DatabaseC7executeySS3sql_x15parameterValuesyAA3RowCKcSgtKs10CollectionRzAA17ParameterBindable7ElementRpzlF"></a>
+                    <a name="/s:8FeistyDB8DatabaseC20beginReadTransactionyyKF"></a>
+                    <a name="//apple_ref/swift/Method/beginReadTransaction()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC20beginReadTransactionyyKF">beginReadTransaction()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Begins a long-running read transaction on the database.</p>
+
+<p>This is equivalent to the SQL <code>BEGIN DEFERRED TRANSACTION;</code></p>
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    An error if the transaction could not be started
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">beginReadTransaction</span><span class="p">()</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB8DatabaseC18endReadTransactionyyKF"></a>
+                    <a name="//apple_ref/swift/Method/endReadTransaction()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC18endReadTransactionyyKF">endReadTransaction()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Ends a long-running read transaction on the database.</p>
+
+<p>This is equivalent to the SQL <code>ROLLBACK;</code></p>
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    An error if the transaction could not be rolled back
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">endReadTransaction</span><span class="p">()</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB8DatabaseC21updateReadTransactionyyKF"></a>
+                    <a name="//apple_ref/swift/Method/updateReadTransaction()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC21updateReadTransactionyyKF">updateReadTransaction()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Updates a long-running read transaction to make the latest database changes visible.</p>
+
+<p>If there is an active read transaction it is ended before beginning a new read transaction.</p>
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    An error if the transaction could not be started
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">updateReadTransaction</span><span class="p">()</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB8DatabaseC7execute3sql15parameterValues_ySS_xyAA3RowVKcSgtKSlRzAA17ParameterBindable7ElementRpzlF"></a>
                     <a name="//apple_ref/swift/Method/execute(sql:parameterValues:_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB8DatabaseC7executeySS3sql_x15parameterValuesyAA3RowCKcSgtKs10CollectionRzAA17ParameterBindable7ElementRpzlF">execute(sql:parameterValues:_:)</a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC7execute3sql15parameterValues_ySS_xyAA3RowVKcSgtKSlRzAA17ParameterBindable7ElementRpzlF">execute(sql:<wbr>parameterValues:<wbr>_:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -3176,7 +4028,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">execute</span><span class="o">&lt;</span><span class="kt">C</span><span class="p">:</span> <span class="kt">Collection</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">sql</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">parameterValues</span> <span class="nv">values</span><span class="p">:</span> <span class="kt">C</span><span class="p">,</span> <span class="n">_</span> <span class="nv">block</span><span class="p">:</span> <span class="p">((</span><span class="n">_</span> <span class="nv">row</span><span class="p">:</span> <span class="kt"><a href="../Classes/Row.html">Row</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="p">())?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="k">throws</span> <span class="k">where</span> <span class="kt">C</span><span class="o">.</span><span class="kt">Element</span><span class="p">:</span> <span class="kt"><a href="../Protocols/ParameterBindable.html">ParameterBindable</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">execute</span><span class="o">&lt;</span><span class="kt">C</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">sql</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">parameterValues</span> <span class="nv">values</span><span class="p">:</span> <span class="kt">C</span><span class="p">,</span> <span class="n">_</span> <span class="nv">block</span><span class="p">:</span> <span class="p">((</span><span class="n">_</span> <span class="nv">row</span><span class="p">:</span> <span class="kt"><a href="../Structs/Row.html">Row</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="p">())?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="k">throws</span> <span class="k">where</span> <span class="kt">C</span> <span class="p">:</span> <span class="kt">Collection</span><span class="p">,</span> <span class="kt">C</span><span class="o">.</span><span class="kt">Element</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/ParameterBindable.html">ParameterBindable</a></span></code></pre>
 
                         </div>
                       </div>
@@ -3241,9 +4093,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB8DatabaseC7executeySS3sql_x10parametersyAA3RowCKcSgtKs10CollectionRzSS_AA17ParameterBindable_p1Vt7ElementRtzlF"></a>
+                    <a name="/s:8FeistyDB8DatabaseC7execute3sql10parameters_ySS_xyAA3RowVKcSgtKSlRzSS_AA17ParameterBindable_p1Vt7ElementRtzlF"></a>
                     <a name="//apple_ref/swift/Method/execute(sql:parameters:_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB8DatabaseC7executeySS3sql_x10parametersyAA3RowCKcSgtKs10CollectionRzSS_AA17ParameterBindable_p1Vt7ElementRtzlF">execute(sql:parameters:_:)</a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC7execute3sql10parameters_ySS_xyAA3RowVKcSgtKSlRzSS_AA17ParameterBindable_p1Vt7ElementRtzlF">execute(sql:<wbr>parameters:<wbr>_:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -3263,7 +4115,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">execute</span><span class="o">&lt;</span><span class="kt">C</span><span class="p">:</span> <span class="kt">Collection</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">sql</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">parameters</span><span class="p">:</span> <span class="kt">C</span><span class="p">,</span> <span class="n">_</span> <span class="nv">block</span><span class="p">:</span> <span class="p">((</span><span class="n">_</span> <span class="nv">row</span><span class="p">:</span> <span class="kt"><a href="../Classes/Row.html">Row</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="p">())?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="k">throws</span> <span class="k">where</span> <span class="kt">C</span><span class="o">.</span><span class="kt">Element</span> <span class="o">==</span> <span class="p">(</span><span class="kt">String</span><span class="p">,</span> <span class="kt">V</span><span class="p">:</span> <span class="kt"><a href="../Protocols/ParameterBindable.html">ParameterBindable</a></span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">execute</span><span class="o">&lt;</span><span class="kt">C</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">sql</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">parameters</span><span class="p">:</span> <span class="kt">C</span><span class="p">,</span> <span class="n">_</span> <span class="nv">block</span><span class="p">:</span> <span class="p">((</span><span class="n">_</span> <span class="nv">row</span><span class="p">:</span> <span class="kt"><a href="../Structs/Row.html">Row</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="p">())?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="k">throws</span> <span class="k">where</span> <span class="kt">C</span> <span class="p">:</span> <span class="kt">Collection</span><span class="p">,</span> <span class="kt">C</span><span class="o">.</span><span class="kt">Element</span> <span class="o">==</span> <span class="p">(</span><span class="kt">String</span><span class="p">,</span> <span class="kt">V</span><span class="p">:</span> <span class="kt"><a href="../Protocols/ParameterBindable.html">ParameterBindable</a></span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -3325,16 +4177,12 @@
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB8DatabaseC7executeySS3sql_SayAA17ParameterBindable_pSgG15parameterValuesyAA3RowCKcSgtKF"></a>
+                    <a name="/s:8FeistyDB8DatabaseC7execute3sql15parameterValues_ySS_SayAA17ParameterBindable_pSgGyAA3RowVKcSgtKF"></a>
                     <a name="//apple_ref/swift/Method/execute(sql:parameterValues:_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB8DatabaseC7executeySS3sql_SayAA17ParameterBindable_pSgG15parameterValuesyAA3RowCKcSgtKF">execute(sql:parameterValues:_:)</a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC7execute3sql15parameterValues_ySS_SayAA17ParameterBindable_pSgGyAA3RowVKcSgtKF">execute(sql:<wbr>parameterValues:<wbr>_:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -3354,7 +4202,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">execute</span><span class="p">(</span><span class="nv">sql</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">parameterValues</span> <span class="nv">values</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Protocols/ParameterBindable.html">ParameterBindable</a></span><span class="p">?],</span> <span class="n">_</span> <span class="nv">block</span><span class="p">:</span> <span class="p">((</span><span class="n">_</span> <span class="nv">row</span><span class="p">:</span> <span class="kt"><a href="../Classes/Row.html">Row</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="p">())?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="k">throws</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">execute</span><span class="p">(</span><span class="nv">sql</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">parameterValues</span> <span class="nv">values</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Protocols/ParameterBindable.html">ParameterBindable</a></span><span class="p">?],</span> <span class="n">_</span> <span class="nv">block</span><span class="p">:</span> <span class="p">((</span><span class="n">_</span> <span class="nv">row</span><span class="p">:</span> <span class="kt"><a href="../Structs/Row.html">Row</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="p">())?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="k">throws</span></code></pre>
 
                         </div>
                       </div>
@@ -3419,9 +4267,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB8DatabaseC7executeySS3sql_s10DictionaryVySSAA17ParameterBindable_pSgG10parametersyAA3RowCKcSgtKF"></a>
+                    <a name="/s:8FeistyDB8DatabaseC7execute3sql10parameters_ySS_SDySSAA17ParameterBindable_pSgGyAA3RowVKcSgtKF"></a>
                     <a name="//apple_ref/swift/Method/execute(sql:parameters:_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB8DatabaseC7executeySS3sql_s10DictionaryVySSAA17ParameterBindable_pSgG10parametersyAA3RowCKcSgtKF">execute(sql:parameters:_:)</a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC7execute3sql10parameters_ySS_SDySSAA17ParameterBindable_pSgGyAA3RowVKcSgtKF">execute(sql:<wbr>parameters:<wbr>_:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -3441,7 +4289,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">execute</span><span class="p">(</span><span class="nv">sql</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">parameters</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">:</span> <span class="kt"><a href="../Protocols/ParameterBindable.html">ParameterBindable</a></span><span class="p">?],</span> <span class="n">_</span> <span class="nv">block</span><span class="p">:</span> <span class="p">((</span><span class="n">_</span> <span class="nv">row</span><span class="p">:</span> <span class="kt"><a href="../Classes/Row.html">Row</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="p">())?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="k">throws</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">execute</span><span class="p">(</span><span class="nv">sql</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">parameters</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/ParameterBindable.html">ParameterBindable</a></span><span class="p">?],</span> <span class="n">_</span> <span class="nv">block</span><span class="p">:</span> <span class="p">((</span><span class="n">_</span> <span class="nv">row</span><span class="p">:</span> <span class="kt"><a href="../Structs/Row.html">Row</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="p">())?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="k">throws</span></code></pre>
 
                         </div>
                       </div>
@@ -3503,13 +4351,135 @@
                     </section>
                   </div>
                 </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB8DatabaseC12takeSnapshot6schemaAA0E0CSS_tKF"></a>
+                    <a name="//apple_ref/swift/Method/takeSnapshot(schema:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC12takeSnapshot6schemaAA0E0CSS_tKF">takeSnapshot(schema:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Records a snapshot of the current state of a database schema.</p>
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <p>An error if the snapshot could not be recorded</p>
+
+</div><div class="aside aside-seealso">
+    <p class="aside-title">Seealso</p>
+    <p><a href="https://www.sqlite.org/c3ref/snapshot_get.html">Record A Database Snapshot</a></p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">takeSnapshot</span><span class="p">(</span><span class="nv">schema</span><span class="p">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">"main"</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/Snapshot.html">Snapshot</a></span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>schema</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The database schema to snapshot</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB8DatabaseC12openSnapshot_6schemayAA0E0C_SStKF"></a>
+                    <a name="//apple_ref/swift/Method/openSnapshot(_:schema:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB8DatabaseC12openSnapshot_6schemayAA0E0C_SStKF">openSnapshot(_:<wbr>schema:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Starts or upgrades a read transaction for a database schema to a specific snapshot.</p>
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <p>An error if the snapshot could not be opened</p>
+
+</div><div class="aside aside-seealso">
+    <p class="aside-title">Seealso</p>
+    <p><a href="https://www.sqlite.org/c3ref/snapshot_open.html">Start a read transaction on an historical snapshot</a></p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">openSnapshot</span><span class="p">(</span><span class="n">_</span> <span class="nv">snapshot</span><span class="p">:</span> <span class="kt"><a href="../Classes/Snapshot.html">Snapshot</a></span><span class="p">,</span> <span class="nv">schema</span><span class="p">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">"main"</span><span class="p">)</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>snapshot</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The desired historical snapshot</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>schema</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The desired database schema</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
               </ul>
             </div>
           </section>
         </section>
         <section id="footer">
-          <p>© 2015 - 2018 <a class="link" href="https://www.feisty-dog.com" target="_blank" rel="external">Feisty Dog, LLC</a> under the <a class="link" href="https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt" target="_blank" rel="external">MIT License</a>.</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+          <p>© 2015 - 2020 <a class="link" href="https://www.feisty-dog.com" target="_blank" rel="external">Feisty Dog, LLC</a> under the <a class="link" href="https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt" target="_blank" rel="external">MIT License</a>.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
     </div>

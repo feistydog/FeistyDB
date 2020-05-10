@@ -10,6 +10,7 @@
     
   </head>
   <body>
+    <a name="//apple_ref/swift/Section/Other Extensions" class="dashAnchor"></a>
     <a title="Other Extensions  Reference"></a>
     <header>
       <div class="content-wrapper">
@@ -37,6 +38,18 @@
                 <a href="Classes/Database/TransactionType.html">– TransactionType</a>
               </li>
               <li class="nav-group-task">
+                <a href="Classes/Database/TransactionCompletion.html">– TransactionCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/Database/SavepointCompletion.html">– SavepointCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/Database/WALCheckpointType.html">– WALCheckpointType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/Database/SQLFunctionFlags.html">– SQLFunctionFlags</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="Classes/Database/RowChangeType.html">– RowChangeType</a>
               </li>
               <li class="nav-group-task">
@@ -52,7 +65,7 @@
                 <a href="Classes/Statement/Counter.html">– Counter</a>
               </li>
               <li class="nav-group-task">
-                <a href="Classes/Row.html">Row</a>
+                <a href="Structs/Row.html">Row</a>
               </li>
             </ul>
           </li>
@@ -80,18 +93,20 @@
                 <a href="Classes/DatabaseQueue.html">DatabaseQueue</a>
               </li>
               <li class="nav-group-task">
-                <a href="Classes/DatabaseQueue/TransactionCompletion.html">– TransactionCompletion</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Classes/DatabaseQueue/SavepointCompletion.html">– SavepointCompletion</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Classes/ConcurrentDatabaseQueue.html">ConcurrentDatabaseQueue</a>
+                <a href="Classes/DatabaseReadQueue.html">DatabaseReadQueue</a>
               </li>
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="Other Enums.html">Other Enumerations</a>
+            <a href="Other%20Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Classes/Snapshot.html">Snapshot</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Other%20Enums.html">Other Enumerations</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="Enums/SQLiteResultCode.html">SQLiteResultCode</a>
@@ -135,7 +150,7 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="Other Extensions.html">Other Extensions</a>
+            <a href="Other%20Extensions.html">Other Extensions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="Extensions/Bool.html">Bool</a>
@@ -200,7 +215,7 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="Other Protocols.html">Other Protocols</a>
+            <a href="Other%20Protocols.html">Other Protocols</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="Protocols/Error.html">Error</a>
@@ -208,13 +223,22 @@
               <li class="nav-group-task">
                 <a href="Protocols/FTS5Tokenizer.html">FTS5Tokenizer</a>
               </li>
+              <li class="nav-group-task">
+                <a href="Protocols/SQLAggregateFunction.html">SQLAggregateFunction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/SQLAggregateWindowFunction.html">SQLAggregateWindowFunction</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="Other Structs.html">Other Structures</a>
+            <a href="Other%20Structs.html">Other Structures</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="Structs/DatabaseError.html">DatabaseError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Other%20Structs.html#/s:8FeistyDB6SQLiteV">SQLite</a>
               </li>
               <li class="nav-group-task">
                 <a href="Structs/SQLiteError.html">SQLiteError</a>
@@ -222,13 +246,16 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="Other Typealiases.html">Other Type Aliases</a>
+            <a href="Other%20Typealiases.html">Other Type Aliases</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="Other Typealiases.html#/s:8FeistyDB24SQLiteDatabaseConnectiona">SQLiteDatabaseConnection</a>
+                <a href="Other%20Typealiases.html#/s:8FeistyDB24SQLiteDatabaseConnectiona">SQLiteDatabaseConnection</a>
               </li>
               <li class="nav-group-task">
-                <a href="Other Typealiases.html#/s:8FeistyDB23SQLitePreparedStatementa">SQLitePreparedStatement</a>
+                <a href="Other%20Typealiases.html#/s:8FeistyDB23SQLitePreparedStatementa">SQLitePreparedStatement</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Other%20Typealiases.html#/s:8FeistyDB14SQLiteSnapshota">SQLiteSnapshot</a>
               </li>
             </ul>
           </li>
@@ -264,7 +291,8 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">String</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">String</span><span class="p">:</span> <span class="kt"><a href="Protocols/ColumnConvertible.html">ColumnConvertible</a></span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">String</span><span class="p">:</span> <span class="kt"><a href="Protocols/ParameterBindable.html">ParameterBindable</a></span></code></pre>
 
                         </div>
                       </div>
@@ -286,6 +314,15 @@
                       <div class="abstract">
                         
                         <a href="Extensions/Data.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Data</span><span class="p">:</span> <span class="kt"><a href="Protocols/ColumnConvertible.html">ColumnConvertible</a></span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Data</span><span class="p">:</span> <span class="kt"><a href="Protocols/ParameterBindable.html">ParameterBindable</a></span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -310,7 +347,8 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">Int</span> <span class="p">:</span> <span class="kt">FixedWidthInteger</span><span class="p">,</span> <span class="kt">SignedInteger</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Int</span><span class="p">:</span> <span class="kt"><a href="Protocols/ColumnConvertible.html">ColumnConvertible</a></span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Int</span><span class="p">:</span> <span class="kt"><a href="Protocols/ParameterBindable.html">ParameterBindable</a></span></code></pre>
 
                         </div>
                       </div>
@@ -337,7 +375,8 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">UInt</span> <span class="p">:</span> <span class="kt">FixedWidthInteger</span><span class="p">,</span> <span class="kt">UnsignedInteger</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">UInt</span><span class="p">:</span> <span class="kt"><a href="Protocols/ColumnConvertible.html">ColumnConvertible</a></span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">UInt</span><span class="p">:</span> <span class="kt"><a href="Protocols/ParameterBindable.html">ParameterBindable</a></span></code></pre>
 
                         </div>
                       </div>
@@ -364,7 +403,8 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">Int8</span> <span class="p">:</span> <span class="kt">FixedWidthInteger</span><span class="p">,</span> <span class="kt">SignedInteger</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Int8</span><span class="p">:</span> <span class="kt"><a href="Protocols/ColumnConvertible.html">ColumnConvertible</a></span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Int8</span><span class="p">:</span> <span class="kt"><a href="Protocols/ParameterBindable.html">ParameterBindable</a></span></code></pre>
 
                         </div>
                       </div>
@@ -391,7 +431,8 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">UInt8</span> <span class="p">:</span> <span class="kt">FixedWidthInteger</span><span class="p">,</span> <span class="kt">UnsignedInteger</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">UInt8</span><span class="p">:</span> <span class="kt"><a href="Protocols/ColumnConvertible.html">ColumnConvertible</a></span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">UInt8</span><span class="p">:</span> <span class="kt"><a href="Protocols/ParameterBindable.html">ParameterBindable</a></span></code></pre>
 
                         </div>
                       </div>
@@ -418,7 +459,8 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">Int16</span> <span class="p">:</span> <span class="kt">FixedWidthInteger</span><span class="p">,</span> <span class="kt">SignedInteger</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Int16</span><span class="p">:</span> <span class="kt"><a href="Protocols/ColumnConvertible.html">ColumnConvertible</a></span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Int16</span><span class="p">:</span> <span class="kt"><a href="Protocols/ParameterBindable.html">ParameterBindable</a></span></code></pre>
 
                         </div>
                       </div>
@@ -445,7 +487,8 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">UInt16</span> <span class="p">:</span> <span class="kt">FixedWidthInteger</span><span class="p">,</span> <span class="kt">UnsignedInteger</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">UInt16</span><span class="p">:</span> <span class="kt"><a href="Protocols/ColumnConvertible.html">ColumnConvertible</a></span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">UInt16</span><span class="p">:</span> <span class="kt"><a href="Protocols/ParameterBindable.html">ParameterBindable</a></span></code></pre>
 
                         </div>
                       </div>
@@ -472,7 +515,8 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">Int32</span> <span class="p">:</span> <span class="kt">FixedWidthInteger</span><span class="p">,</span> <span class="kt">SignedInteger</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Int32</span><span class="p">:</span> <span class="kt"><a href="Protocols/ColumnConvertible.html">ColumnConvertible</a></span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Int32</span><span class="p">:</span> <span class="kt"><a href="Protocols/ParameterBindable.html">ParameterBindable</a></span></code></pre>
 
                         </div>
                       </div>
@@ -499,7 +543,8 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">UInt32</span> <span class="p">:</span> <span class="kt">FixedWidthInteger</span><span class="p">,</span> <span class="kt">UnsignedInteger</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">UInt32</span><span class="p">:</span> <span class="kt"><a href="Protocols/ColumnConvertible.html">ColumnConvertible</a></span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">UInt32</span><span class="p">:</span> <span class="kt"><a href="Protocols/ParameterBindable.html">ParameterBindable</a></span></code></pre>
 
                         </div>
                       </div>
@@ -526,7 +571,8 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">Int64</span> <span class="p">:</span> <span class="kt">FixedWidthInteger</span><span class="p">,</span> <span class="kt">SignedInteger</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Int64</span><span class="p">:</span> <span class="kt"><a href="Protocols/ColumnConvertible.html">ColumnConvertible</a></span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Int64</span><span class="p">:</span> <span class="kt"><a href="Protocols/ParameterBindable.html">ParameterBindable</a></span></code></pre>
 
                         </div>
                       </div>
@@ -553,7 +599,8 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">UInt64</span> <span class="p">:</span> <span class="kt">FixedWidthInteger</span><span class="p">,</span> <span class="kt">UnsignedInteger</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">UInt64</span><span class="p">:</span> <span class="kt"><a href="Protocols/ColumnConvertible.html">ColumnConvertible</a></span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">UInt64</span><span class="p">:</span> <span class="kt"><a href="Protocols/ParameterBindable.html">ParameterBindable</a></span></code></pre>
 
                         </div>
                       </div>
@@ -580,7 +627,8 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">Float</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Float</span><span class="p">:</span> <span class="kt"><a href="Protocols/ColumnConvertible.html">ColumnConvertible</a></span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Float</span><span class="p">:</span> <span class="kt"><a href="Protocols/ParameterBindable.html">ParameterBindable</a></span></code></pre>
 
                         </div>
                       </div>
@@ -607,7 +655,8 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">Double</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Double</span><span class="p">:</span> <span class="kt"><a href="Protocols/ColumnConvertible.html">ColumnConvertible</a></span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Double</span><span class="p">:</span> <span class="kt"><a href="Protocols/ParameterBindable.html">ParameterBindable</a></span></code></pre>
 
                         </div>
                       </div>
@@ -634,7 +683,8 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">Bool</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Bool</span><span class="p">:</span> <span class="kt"><a href="Protocols/ColumnConvertible.html">ColumnConvertible</a></span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Bool</span><span class="p">:</span> <span class="kt"><a href="Protocols/ParameterBindable.html">ParameterBindable</a></span></code></pre>
 
                         </div>
                       </div>
@@ -661,8 +711,8 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">@available(OSX 10.8, iOS 6.0, *)</span>
-<span class="kd">struct</span> <span class="kt">UUID</span> <span class="p">:</span> <span class="kt">ReferenceConvertible</span><span class="p">,</span> <span class="kt">Hashable</span><span class="p">,</span> <span class="kt">Equatable</span><span class="p">,</span> <span class="kt">CustomStringConvertible</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">UUID</span><span class="p">:</span> <span class="kt"><a href="Protocols/ColumnConvertible.html">ColumnConvertible</a></span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">UUID</span><span class="p">:</span> <span class="kt"><a href="Protocols/ParameterBindable.html">ParameterBindable</a></span></code></pre>
 
                         </div>
                       </div>
@@ -689,7 +739,8 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">URL</span> <span class="p">:</span> <span class="kt">ReferenceConvertible</span><span class="p">,</span> <span class="kt">Equatable</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">URL</span><span class="p">:</span> <span class="kt"><a href="Protocols/ColumnConvertible.html">ColumnConvertible</a></span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">URL</span><span class="p">:</span> <span class="kt"><a href="Protocols/ParameterBindable.html">ParameterBindable</a></span></code></pre>
 
                         </div>
                       </div>
@@ -716,17 +767,14 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">Date</span> <span class="p">:</span> <span class="kt">ReferenceConvertible</span><span class="p">,</span> <span class="kt">Comparable</span><span class="p">,</span> <span class="kt">Equatable</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Date</span><span class="p">:</span> <span class="kt"><a href="Protocols/ColumnConvertible.html">ColumnConvertible</a></span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Date</span><span class="p">:</span> <span class="kt"><a href="Protocols/ParameterBindable.html">ParameterBindable</a></span></code></pre>
 
                         </div>
                       </div>
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
                 <li class="item">
                   <div>
                     <code>
@@ -742,6 +790,14 @@
                       <div class="abstract">
                         
                         <a href="Extensions/NSNumber.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">NSNumber</span><span class="p">:</span> <span class="kt"><a href="Protocols/DatabaseSerializable.html">DatabaseSerializable</a></span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -762,6 +818,14 @@
                         
                         <a href="Extensions/NSNull.html" class="slightly-smaller">See more</a>
                       </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">NSNull</span><span class="p">:</span> <span class="kt"><a href="Protocols/DatabaseSerializable.html">DatabaseSerializable</a></span></code></pre>
+
+                        </div>
+                      </div>
                     </section>
                   </div>
                 </li>
@@ -770,8 +834,8 @@
           </section>
         </section>
         <section id="footer">
-          <p>© 2015 - 2018 <a class="link" href="https://www.feisty-dog.com" target="_blank" rel="external">Feisty Dog, LLC</a> under the <a class="link" href="https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt" target="_blank" rel="external">MIT License</a>.</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+          <p>© 2015 - 2020 <a class="link" href="https://www.feisty-dog.com" target="_blank" rel="external">Feisty Dog, LLC</a> under the <a class="link" href="https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt" target="_blank" rel="external">MIT License</a>.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
     </div>

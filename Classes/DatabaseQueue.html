@@ -38,6 +38,18 @@
                 <a href="../Classes/Database/TransactionType.html">– TransactionType</a>
               </li>
               <li class="nav-group-task">
+                <a href="../Classes/Database/TransactionCompletion.html">– TransactionCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Database/SavepointCompletion.html">– SavepointCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Database/WALCheckpointType.html">– WALCheckpointType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Database/SQLFunctionFlags.html">– SQLFunctionFlags</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Classes/Database/RowChangeType.html">– RowChangeType</a>
               </li>
               <li class="nav-group-task">
@@ -53,7 +65,7 @@
                 <a href="../Classes/Statement/Counter.html">– Counter</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/Row.html">Row</a>
+                <a href="../Structs/Row.html">Row</a>
               </li>
             </ul>
           </li>
@@ -81,18 +93,20 @@
                 <a href="../Classes/DatabaseQueue.html">DatabaseQueue</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/DatabaseQueue/TransactionCompletion.html">– TransactionCompletion</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/DatabaseQueue/SavepointCompletion.html">– SavepointCompletion</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/ConcurrentDatabaseQueue.html">ConcurrentDatabaseQueue</a>
+                <a href="../Classes/DatabaseReadQueue.html">DatabaseReadQueue</a>
               </li>
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="../Other Enums.html">Other Enumerations</a>
+            <a href="../Other%20Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/Snapshot.html">Snapshot</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other%20Enums.html">Other Enumerations</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="../Enums/SQLiteResultCode.html">SQLiteResultCode</a>
@@ -136,7 +150,7 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="../Other Extensions.html">Other Extensions</a>
+            <a href="../Other%20Extensions.html">Other Extensions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="../Extensions/Bool.html">Bool</a>
@@ -201,7 +215,7 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="../Other Protocols.html">Other Protocols</a>
+            <a href="../Other%20Protocols.html">Other Protocols</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="../Protocols/Error.html">Error</a>
@@ -209,13 +223,22 @@
               <li class="nav-group-task">
                 <a href="../Protocols/FTS5Tokenizer.html">FTS5Tokenizer</a>
               </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/SQLAggregateFunction.html">SQLAggregateFunction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/SQLAggregateWindowFunction.html">SQLAggregateWindowFunction</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="../Other Structs.html">Other Structures</a>
+            <a href="../Other%20Structs.html">Other Structures</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="../Structs/DatabaseError.html">DatabaseError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Other%20Structs.html#/s:8FeistyDB6SQLiteV">SQLite</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Structs/SQLiteError.html">SQLiteError</a>
@@ -223,13 +246,16 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="../Other Typealiases.html">Other Type Aliases</a>
+            <a href="../Other%20Typealiases.html">Other Type Aliases</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="../Other Typealiases.html#/s:8FeistyDB24SQLiteDatabaseConnectiona">SQLiteDatabaseConnection</a>
+                <a href="../Other%20Typealiases.html#/s:8FeistyDB24SQLiteDatabaseConnectiona">SQLiteDatabaseConnection</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Other Typealiases.html#/s:8FeistyDB23SQLitePreparedStatementa">SQLitePreparedStatement</a>
+                <a href="../Other%20Typealiases.html#/s:8FeistyDB23SQLitePreparedStatementa">SQLitePreparedStatement</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Other%20Typealiases.html#/s:8FeistyDB14SQLiteSnapshota">SQLiteSnapshot</a>
               </li>
             </ul>
           </li>
@@ -254,8 +280,8 @@ occur one at a time in FIFO order.  This provides thread-safe database access.</
 
 <p>The interface is similar to <code>DispatchQueue</code> and a dispatch queue is used
 internally for work item management.</p>
-<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">dbQueue</span> <span class="o">=</span> <span class="kt">DatabaseQueue</span><span class="p">()</span>
-<span class="n">dbQueue</span><span class="o">.</span><span class="n">sync</span> <span class="p">{</span> <span class="n">db</span> <span class="k">in</span>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">dbQueue</span> <span class="o">=</span> <span class="k">try</span> <span class="kt">DatabaseQueue</span><span class="p">()</span>
+<span class="k">try</span> <span class="n">dbQueue</span><span class="o">.</span><span class="n">sync</span> <span class="p">{</span> <span class="n">db</span> <span class="k">in</span>
     <span class="c1">// Do something with `db`</span>
 <span class="p">}</span>
 </code></pre>
@@ -263,6 +289,7 @@ internally for work item management.</p>
 <p>A database queue also supports transactions and savepoints:</p>
 <pre class="highlight swift"><code><span class="n">dbQueue</span><span class="o">.</span><span class="n">transaction</span> <span class="p">{</span> <span class="n">db</span> <span class="k">in</span>
     <span class="c1">// All database operations here are contained within a transaction</span>
+    <span class="k">return</span> <span class="o">.</span><span class="n">commit</span>
 <span class="p">}</span>
 </code></pre>
 
@@ -273,9 +300,36 @@ internally for work item management.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB13DatabaseQueueCACyKcfc"></a>
-                    <a name="//apple_ref/swift/Method/init()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB13DatabaseQueueCACyKcfc">init()</a>
+                    <a name="/s:8FeistyDB13DatabaseQueueC5queueSo012OS_dispatch_E0Cvp"></a>
+                    <a name="//apple_ref/swift/Property/queue" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB13DatabaseQueueC5queueSo012OS_dispatch_E0Cvp">queue</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The dispatch queue used to serialize access to the underlying database connection</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">queue</span><span class="p">:</span> <span class="kt">DispatchQueue</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB13DatabaseQueueC3qosAC8Dispatch0F3QoSV_tKcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(qos:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB13DatabaseQueueC3qosAC8Dispatch0F3QoSV_tKcfc">init(qos:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -286,7 +340,7 @@ internally for work item management.</p>
                         <p>Creates a database queue for serialized access to an in-memory database.</p>
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
-    An error if the database could not be created
+    <p>An error if the database could not be created</p>
 
 </div>
 
@@ -295,9 +349,28 @@ internally for work item management.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">()</span> <span class="k">throws</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">qos</span><span class="p">:</span> <span class="kt">DispatchQoS</span> <span class="o">=</span> <span class="o">.</span><span class="k">default</span><span class="p">)</span> <span class="k">throws</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>qos</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The quality of service class for the work performed by the database queue</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -305,9 +378,9 @@ internally for work item management.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB13DatabaseQueueCAC10Foundation3URLV3url_tKcfc"></a>
-                    <a name="//apple_ref/swift/Method/init(url:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB13DatabaseQueueCAC10Foundation3URLV3url_tKcfc">init(url:)</a>
+                    <a name="/s:8FeistyDB13DatabaseQueueC3url3qosAC10Foundation3URLV_8Dispatch0I3QoSVtKcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(url:qos:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB13DatabaseQueueC3url3qosAC10Foundation3URLV_8Dispatch0I3QoSVtKcfc">init(url:<wbr>qos:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -327,7 +400,7 @@ internally for work item management.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="kt">URL</span><span class="p">)</span> <span class="k">throws</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="kt">URL</span><span class="p">,</span> <span class="nv">qos</span><span class="p">:</span> <span class="kt">DispatchQoS</span> <span class="o">=</span> <span class="o">.</span><span class="k">default</span><span class="p">)</span> <span class="k">throws</span></code></pre>
 
                         </div>
                       </div>
@@ -347,6 +420,18 @@ internally for work item management.</p>
                                 </div>
                               </td>
                             </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>qos</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The quality of service class for the work performed by the database queue</p>
+                                </div>
+                              </td>
+                            </tr>
                           </tbody>
                         </table>
                       </div>
@@ -356,9 +441,9 @@ internally for work item management.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB13DatabaseQueueCAcA0C0C8database_tcfc"></a>
-                    <a name="//apple_ref/swift/Method/init(database:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB13DatabaseQueueCAcA0C0C8database_tcfc">init(database:)</a>
+                    <a name="/s:8FeistyDB13DatabaseQueueC8database3qosAcA0C0C_8Dispatch0G3QoSVtcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(database:qos:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB13DatabaseQueueC8database3qosAcA0C0C_8Dispatch0G3QoSVtcfc">init(database:<wbr>qos:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -378,7 +463,7 @@ internally for work item management.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">database</span><span class="p">:</span> <span class="kt"><a href="../Classes/Database.html">Database</a></span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">database</span><span class="p">:</span> <span class="kt"><a href="../Classes/Database.html">Database</a></span><span class="p">,</span> <span class="nv">qos</span><span class="p">:</span> <span class="kt">DispatchQoS</span> <span class="o">=</span> <span class="o">.</span><span class="k">default</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -398,6 +483,18 @@ internally for work item management.</p>
                                 </div>
                               </td>
                             </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>qos</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The quality of service class for the work performed by the database queue</p>
+                                </div>
+                              </td>
+                            </tr>
                           </tbody>
                         </table>
                       </div>
@@ -407,9 +504,9 @@ internally for work item management.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB13DatabaseQueueC4syncxxAA0C0CKc5block_tKlF"></a>
+                    <a name="/s:8FeistyDB13DatabaseQueueC4sync5blockxxAA0C0CKXE_tKlF"></a>
                     <a name="//apple_ref/swift/Method/sync(block:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB13DatabaseQueueC4syncxxAA0C0CKc5block_tKlF">sync(block:)</a>
+                    <a class="token" href="#/s:8FeistyDB13DatabaseQueueC4sync5blockxxAA0C0CKXE_tKlF">sync(block:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -474,9 +571,9 @@ internally for work item management.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB13DatabaseQueueC5asyncySo13DispatchGroupCSg5group_0F00F3QoSV3qosyAA0C0Cc5blocktF"></a>
+                    <a name="/s:8FeistyDB13DatabaseQueueC5async5group3qos5blockySo012OS_dispatch_F0CSg_8Dispatch0K3QoSVyAA0C0CctF"></a>
                     <a name="//apple_ref/swift/Method/async(group:qos:block:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB13DatabaseQueueC5asyncySo13DispatchGroupCSg5group_0F00F3QoSV3qosyAA0C0Cc5blocktF">async(group:qos:block:)</a>
+                    <a class="token" href="#/s:8FeistyDB13DatabaseQueueC5async5group3qos5blockySo012OS_dispatch_F0CSg_8Dispatch0K3QoSVyAA0C0CctF">async(group:<wbr>qos:<wbr>block:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -491,7 +588,7 @@ internally for work item management.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">async</span><span class="p">(</span><span class="nv">group</span><span class="p">:</span> <span class="kt">DispatchGroup</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">qos</span><span class="p">:</span> <span class="kt">DispatchQoS</span> <span class="o">=</span> <span class="o">.</span><span class="n">unspecified</span><span class="p">,</span> <span class="nv">block</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="n">_</span> <span class="nv">database</span><span class="p">:</span> <span class="kt"><a href="../Classes/Database.html">Database</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kt">Void</span><span class="p">))</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">async</span><span class="p">(</span><span class="nv">group</span><span class="p">:</span> <span class="kt">DispatchGroup</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">qos</span><span class="p">:</span> <span class="kt">DispatchQoS</span> <span class="o">=</span> <span class="o">.</span><span class="k">default</span><span class="p">,</span> <span class="nv">block</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="n">_</span> <span class="nv">database</span><span class="p">:</span> <span class="kt"><a href="../Classes/Database.html">Database</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kt">Void</span><span class="p">))</span></code></pre>
 
                         </div>
                       </div>
@@ -556,87 +653,9 @@ internally for work item management.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB13DatabaseQueueC21TransactionCompletionO"></a>
-                    <a name="//apple_ref/swift/Enum/TransactionCompletion" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB13DatabaseQueueC21TransactionCompletionO">TransactionCompletion</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Possible ways to complete a transaction</p>
-
-                        <a href="../Classes/DatabaseQueue/TransactionCompletion.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">TransactionCompletion</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:8FeistyDB13DatabaseQueueC16TransactionBlocka"></a>
-                    <a name="//apple_ref/swift/Alias/TransactionBlock" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB13DatabaseQueueC16TransactionBlocka">TransactionBlock</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>A series of database actions grouped into a transaction</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">TransactionBlock</span> <span class="o">=</span> <span class="p">(</span><span class="n">_</span> <span class="nv">database</span><span class="p">:</span> <span class="kt"><a href="../Classes/Database.html">Database</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/DatabaseQueue/TransactionCompletion.html">TransactionCompletion</a></span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>database</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>A <code><a href="../Classes/Database.html">Database</a></code> used for database access within the block</p>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <div>
-                        <h4>Return Value</h4>
-                        <p><code>.commit</code> if the transaction should be committed or <code>.rollback</code> if the transaction should be rolled back</p>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:8FeistyDB13DatabaseQueueC11transactionyAA0C0C15TransactionTypeO4type_AC0F10CompletionOAFKctKF"></a>
+                    <a name="/s:8FeistyDB13DatabaseQueueC11transaction4type_yAA0C0C15TransactionTypeO_AG0G10CompletionOAGKXEtKF"></a>
                     <a name="//apple_ref/swift/Method/transaction(type:_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB13DatabaseQueueC11transactionyAA0C0C15TransactionTypeO4type_AC0F10CompletionOAFKctKF">transaction(type:_:)</a>
+                    <a class="token" href="#/s:8FeistyDB13DatabaseQueueC11transaction4type_yAA0C0C15TransactionTypeO_AG0G10CompletionOAGKXEtKF">transaction(type:<wbr>_:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -649,13 +668,11 @@ internally for work item management.</p>
     <p class="aside-title">Throws</p>
     <p>Any error thrown in <code>block</code> or an error if the transaction could not be started, rolled back, or committed</p>
 
-</div>
-<div class="aside aside-note">
+</div><div class="aside aside-note">
     <p class="aside-title">Note</p>
     <p>If <code>block</code> throws an error the transaction will be rolled back and the error will be re-thrown</p>
 
-</div>
-<div class="aside aside-note">
+</div><div class="aside aside-note">
     <p class="aside-title">Note</p>
     <p>If an error occurs committing the transaction a rollback will be attempted and the error will be re-thrown</p>
 
@@ -666,7 +683,7 @@ internally for work item management.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">transaction</span><span class="p">(</span><span class="nv">type</span><span class="p">:</span> <span class="kt"><a href="../Classes/Database.html">Database</a></span><span class="o">.</span><span class="kt">TransactionType</span> <span class="o">=</span> <span class="o">.</span><span class="n">deferred</span><span class="p">,</span> <span class="n">_</span> <span class="nv">block</span><span class="p">:</span> <span class="kt"><a href="../Classes/DatabaseQueue.html#/s:8FeistyDB13DatabaseQueueC16TransactionBlocka">TransactionBlock</a></span><span class="p">)</span> <span class="k">throws</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">transaction</span><span class="p">(</span><span class="nv">type</span><span class="p">:</span> <span class="kt"><a href="../Classes/Database.html">Database</a></span><span class="o">.</span><span class="kt">TransactionType</span> <span class="o">=</span> <span class="o">.</span><span class="n">deferred</span><span class="p">,</span> <span class="n">_</span> <span class="nv">block</span><span class="p">:</span> <span class="kt"><a href="../Classes/Database.html">Database</a></span><span class="o">.</span><span class="kt">TransactionBlock</span><span class="p">)</span> <span class="k">throws</span></code></pre>
 
                         </div>
                       </div>
@@ -707,9 +724,9 @@ internally for work item management.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB13DatabaseQueueC17transaction_asyncyAA0C0C15TransactionTypeO4type_So13DispatchGroupCSg5group0J00J3QoSV3qosAC0G10CompletionOAFKctF"></a>
-                    <a name="//apple_ref/swift/Method/transaction_async(type:group:qos:_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB13DatabaseQueueC17transaction_asyncyAA0C0C15TransactionTypeO4type_So13DispatchGroupCSg5group0J00J3QoSV3qosAC0G10CompletionOAFKctF">transaction_async(type:group:qos:_:)</a>
+                    <a name="/s:8FeistyDB13DatabaseQueueC16asyncTransaction4type5group3qos_yAA0C0C0F4TypeO_So012OS_dispatch_H0CSg8Dispatch0M3QoSVAI0F10CompletionOAIKctF"></a>
+                    <a name="//apple_ref/swift/Method/asyncTransaction(type:group:qos:_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB13DatabaseQueueC16asyncTransaction4type5group3qos_yAA0C0C0F4TypeO_So012OS_dispatch_H0CSg8Dispatch0M3QoSVAI0F10CompletionOAIKctF">asyncTransaction(type:<wbr>group:<wbr>qos:<wbr>_:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -724,7 +741,7 @@ internally for work item management.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">transaction_async</span><span class="p">(</span><span class="nv">type</span><span class="p">:</span> <span class="kt"><a href="../Classes/Database.html">Database</a></span><span class="o">.</span><span class="kt">TransactionType</span> <span class="o">=</span> <span class="o">.</span><span class="n">deferred</span><span class="p">,</span> <span class="nv">group</span><span class="p">:</span> <span class="kt">DispatchGroup</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">qos</span><span class="p">:</span> <span class="kt">DispatchQoS</span> <span class="o">=</span> <span class="o">.</span><span class="n">unspecified</span><span class="p">,</span> <span class="n">_</span> <span class="nv">block</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Classes/DatabaseQueue.html#/s:8FeistyDB13DatabaseQueueC16TransactionBlocka">TransactionBlock</a></span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">asyncTransaction</span><span class="p">(</span><span class="nv">type</span><span class="p">:</span> <span class="kt"><a href="../Classes/Database.html">Database</a></span><span class="o">.</span><span class="kt">TransactionType</span> <span class="o">=</span> <span class="o">.</span><span class="n">deferred</span><span class="p">,</span> <span class="nv">group</span><span class="p">:</span> <span class="kt">DispatchGroup</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">qos</span><span class="p">:</span> <span class="kt">DispatchQoS</span> <span class="o">=</span> <span class="o">.</span><span class="k">default</span><span class="p">,</span> <span class="n">_</span> <span class="nv">block</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Classes/Database.html">Database</a></span><span class="o">.</span><span class="kt">TransactionBlock</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -789,87 +806,9 @@ internally for work item management.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB13DatabaseQueueC19SavepointCompletionO"></a>
-                    <a name="//apple_ref/swift/Enum/SavepointCompletion" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB13DatabaseQueueC19SavepointCompletionO">SavepointCompletion</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Possible ways to complete a savepoint</p>
-
-                        <a href="../Classes/DatabaseQueue/SavepointCompletion.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">SavepointCompletion</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:8FeistyDB13DatabaseQueueC14SavepointBlocka"></a>
-                    <a name="//apple_ref/swift/Alias/SavepointBlock" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB13DatabaseQueueC14SavepointBlocka">SavepointBlock</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>A series of database actions grouped into a savepoint</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">SavepointBlock</span> <span class="o">=</span> <span class="p">(</span><span class="n">_</span> <span class="nv">database</span><span class="p">:</span> <span class="kt"><a href="../Classes/Database.html">Database</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/DatabaseQueue/SavepointCompletion.html">SavepointCompletion</a></span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>database</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>A <code><a href="../Classes/Database.html">Database</a></code> used for database access within the block</p>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <div>
-                        <h4>Return Value</h4>
-                        <p><code>.release</code> if the savepoint should be released or <code>.rollback</code> if the savepoint should be rolled back</p>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:8FeistyDB13DatabaseQueueC9savepointyAC19SavepointCompletionOAA0C0CKc5block_tKF"></a>
+                    <a name="/s:8FeistyDB13DatabaseQueueC9savepoint5blockyAA0C0C19SavepointCompletionOAGKXE_tKF"></a>
                     <a name="//apple_ref/swift/Method/savepoint(block:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB13DatabaseQueueC9savepointyAC19SavepointCompletionOAA0C0CKc5block_tKF">savepoint(block:)</a>
+                    <a class="token" href="#/s:8FeistyDB13DatabaseQueueC9savepoint5blockyAA0C0C19SavepointCompletionOAGKXE_tKF">savepoint(block:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -877,18 +816,16 @@ internally for work item management.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Performs a synchronous savepoint on the database.</p>
+                        <p>Performs a synchronous savepoint transaction on the database.</p>
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
     <p>Any error thrown in <code>block</code> or an error if the savepoint could not be started, rolled back, or released</p>
 
-</div>
-<div class="aside aside-note">
+</div><div class="aside aside-note">
     <p class="aside-title">Note</p>
     <p>If <code>block</code> throws an error the savepoint will be rolled back and the error will be re-thrown</p>
 
-</div>
-<div class="aside aside-note">
+</div><div class="aside aside-note">
     <p class="aside-title">Note</p>
     <p>If an error occurs releasing the savepoint a rollback will be attempted and the error will be re-thrown</p>
 
@@ -899,7 +836,7 @@ internally for work item management.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">savepoint</span><span class="p">(</span><span class="nv">block</span><span class="p">:</span> <span class="kt"><a href="../Classes/DatabaseQueue.html#/s:8FeistyDB13DatabaseQueueC14SavepointBlocka">SavepointBlock</a></span><span class="p">)</span> <span class="k">throws</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">savepoint</span><span class="p">(</span><span class="nv">block</span><span class="p">:</span> <span class="kt"><a href="../Classes/Database.html">Database</a></span><span class="o">.</span><span class="kt">SavepointBlock</span><span class="p">)</span> <span class="k">throws</span></code></pre>
 
                         </div>
                       </div>
@@ -928,9 +865,9 @@ internally for work item management.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB13DatabaseQueueC15savepoint_asyncySo13DispatchGroupCSg5group_0G00G3QoSV3qosAC19SavepointCompletionOAA0C0CKc5blocktF"></a>
-                    <a name="//apple_ref/swift/Method/savepoint_async(group:qos:block:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB13DatabaseQueueC15savepoint_asyncySo13DispatchGroupCSg5group_0G00G3QoSV3qosAC19SavepointCompletionOAA0C0CKc5blocktF">savepoint_async(group:qos:block:)</a>
+                    <a name="/s:8FeistyDB13DatabaseQueueC14asyncSavepoint5group3qos5blockySo012OS_dispatch_G0CSg_8Dispatch0L3QoSVAA0C0C0F10CompletionOAOKctF"></a>
+                    <a name="//apple_ref/swift/Method/asyncSavepoint(group:qos:block:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB13DatabaseQueueC14asyncSavepoint5group3qos5blockySo012OS_dispatch_G0CSg_8Dispatch0L3QoSVAA0C0C0F10CompletionOAOKctF">asyncSavepoint(group:<wbr>qos:<wbr>block:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -938,14 +875,14 @@ internally for work item management.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Submits an asynchronous savepoint to the database queue.</p>
+                        <p>Submits an asynchronous savepoint transaction to the database queue.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">savepoint_async</span><span class="p">(</span><span class="nv">group</span><span class="p">:</span> <span class="kt">DispatchGroup</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">qos</span><span class="p">:</span> <span class="kt">DispatchQoS</span> <span class="o">=</span> <span class="o">.</span><span class="n">unspecified</span><span class="p">,</span> <span class="nv">block</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Classes/DatabaseQueue.html#/s:8FeistyDB13DatabaseQueueC14SavepointBlocka">SavepointBlock</a></span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">asyncSavepoint</span><span class="p">(</span><span class="nv">group</span><span class="p">:</span> <span class="kt">DispatchGroup</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">qos</span><span class="p">:</span> <span class="kt">DispatchQoS</span> <span class="o">=</span> <span class="o">.</span><span class="k">default</span><span class="p">,</span> <span class="nv">block</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Classes/Database.html">Database</a></span><span class="o">.</span><span class="kt">SavepointBlock</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -989,18 +926,6 @@ internally for work item management.</p>
                                 </div>
                               </td>
                             </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>database</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>A <code><a href="../Classes/Database.html">Database</a></code> used for database access within <code>block</code></p>
-                                </div>
-                              </td>
-                            </tr>
                           </tbody>
                         </table>
                       </div>
@@ -1012,8 +937,8 @@ internally for work item management.</p>
           </section>
         </section>
         <section id="footer">
-          <p>© 2015 - 2018 <a class="link" href="https://www.feisty-dog.com" target="_blank" rel="external">Feisty Dog, LLC</a> under the <a class="link" href="https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt" target="_blank" rel="external">MIT License</a>.</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+          <p>© 2015 - 2020 <a class="link" href="https://www.feisty-dog.com" target="_blank" rel="external">Feisty Dog, LLC</a> under the <a class="link" href="https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt" target="_blank" rel="external">MIT License</a>.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
     </div>

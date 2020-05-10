@@ -38,6 +38,18 @@
                 <a href="../Classes/Database/TransactionType.html">– TransactionType</a>
               </li>
               <li class="nav-group-task">
+                <a href="../Classes/Database/TransactionCompletion.html">– TransactionCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Database/SavepointCompletion.html">– SavepointCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Database/WALCheckpointType.html">– WALCheckpointType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Database/SQLFunctionFlags.html">– SQLFunctionFlags</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Classes/Database/RowChangeType.html">– RowChangeType</a>
               </li>
               <li class="nav-group-task">
@@ -53,7 +65,7 @@
                 <a href="../Classes/Statement/Counter.html">– Counter</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/Row.html">Row</a>
+                <a href="../Structs/Row.html">Row</a>
               </li>
             </ul>
           </li>
@@ -81,18 +93,20 @@
                 <a href="../Classes/DatabaseQueue.html">DatabaseQueue</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/DatabaseQueue/TransactionCompletion.html">– TransactionCompletion</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/DatabaseQueue/SavepointCompletion.html">– SavepointCompletion</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/ConcurrentDatabaseQueue.html">ConcurrentDatabaseQueue</a>
+                <a href="../Classes/DatabaseReadQueue.html">DatabaseReadQueue</a>
               </li>
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="../Other Enums.html">Other Enumerations</a>
+            <a href="../Other%20Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/Snapshot.html">Snapshot</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other%20Enums.html">Other Enumerations</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="../Enums/SQLiteResultCode.html">SQLiteResultCode</a>
@@ -136,7 +150,7 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="../Other Extensions.html">Other Extensions</a>
+            <a href="../Other%20Extensions.html">Other Extensions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="../Extensions/Bool.html">Bool</a>
@@ -201,7 +215,7 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="../Other Protocols.html">Other Protocols</a>
+            <a href="../Other%20Protocols.html">Other Protocols</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="../Protocols/Error.html">Error</a>
@@ -209,13 +223,22 @@
               <li class="nav-group-task">
                 <a href="../Protocols/FTS5Tokenizer.html">FTS5Tokenizer</a>
               </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/SQLAggregateFunction.html">SQLAggregateFunction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/SQLAggregateWindowFunction.html">SQLAggregateWindowFunction</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="../Other Structs.html">Other Structures</a>
+            <a href="../Other%20Structs.html">Other Structures</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="../Structs/DatabaseError.html">DatabaseError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Other%20Structs.html#/s:8FeistyDB6SQLiteV">SQLite</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Structs/SQLiteError.html">SQLiteError</a>
@@ -223,13 +246,16 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="../Other Typealiases.html">Other Type Aliases</a>
+            <a href="../Other%20Typealiases.html">Other Type Aliases</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="../Other Typealiases.html#/s:8FeistyDB24SQLiteDatabaseConnectiona">SQLiteDatabaseConnection</a>
+                <a href="../Other%20Typealiases.html#/s:8FeistyDB24SQLiteDatabaseConnectiona">SQLiteDatabaseConnection</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Other Typealiases.html#/s:8FeistyDB23SQLitePreparedStatementa">SQLitePreparedStatement</a>
+                <a href="../Other%20Typealiases.html#/s:8FeistyDB23SQLitePreparedStatementa">SQLitePreparedStatement</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Other%20Typealiases.html#/s:8FeistyDB14SQLiteSnapshota">SQLiteSnapshot</a>
               </li>
             </ul>
           </li>
@@ -242,6 +268,9 @@
               <div class="declaration">
                 <div class="language">
                   <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">DatabaseValue</span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">DatabaseValue</span><span class="p">:</span> <span class="kt">Equatable</span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">DatabaseValue</span><span class="p">:</span> <span class="kt">CustomStringConvertible</span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">DatabaseValue</span><span class="p">:</span> <span class="kt"><a href="../Protocols/ParameterBindable.html">ParameterBindable</a></span></code></pre>
 
                 </div>
               </div>
@@ -259,9 +288,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB13DatabaseValueO7integerACs5Int64VcACmF"></a>
-                    <a name="//apple_ref/swift/Element/integer" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB13DatabaseValueO7integerACs5Int64VcACmF">integer</a>
+                    <a name="/s:8FeistyDB13DatabaseValueO7integeryACs5Int64VcACmF"></a>
+                    <a name="//apple_ref/swift/Element/integer(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB13DatabaseValueO7integeryACs5Int64VcACmF">integer(_:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -283,16 +312,12 @@
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB13DatabaseValueO5floatACSdcACmF"></a>
-                    <a name="//apple_ref/swift/Element/float" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB13DatabaseValueO5floatACSdcACmF">float</a>
+                    <a name="/s:8FeistyDB13DatabaseValueO5floatyACSdcACmF"></a>
+                    <a name="//apple_ref/swift/Element/float(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB13DatabaseValueO5floatyACSdcACmF">float(_:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -314,16 +339,12 @@
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB13DatabaseValueO4textACSScACmF"></a>
-                    <a name="//apple_ref/swift/Element/text" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB13DatabaseValueO4textACSScACmF">text</a>
+                    <a name="/s:8FeistyDB13DatabaseValueO4textyACSScACmF"></a>
+                    <a name="//apple_ref/swift/Element/text(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB13DatabaseValueO4textyACSScACmF">text(_:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -345,16 +366,12 @@
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB13DatabaseValueO4blobAC10Foundation4DataVcACmF"></a>
-                    <a name="//apple_ref/swift/Element/blob" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB13DatabaseValueO4blobAC10Foundation4DataVcACmF">blob</a>
+                    <a name="/s:8FeistyDB13DatabaseValueO4blobyAC10Foundation4DataVcACmF"></a>
+                    <a name="//apple_ref/swift/Element/blob(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB13DatabaseValueO4blobyAC10Foundation4DataVcACmF">blob(_:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -376,16 +393,12 @@
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB13DatabaseValueO4nullA2CmF"></a>
+                    <a name="/s:8FeistyDB13DatabaseValueO4nullyA2CmF"></a>
                     <a name="//apple_ref/swift/Element/null" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB13DatabaseValueO4nullA2CmF">null</a>
+                    <a class="token" href="#/s:8FeistyDB13DatabaseValueO4nullyA2CmF">null</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -407,46 +420,12 @@
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8FeistyDB17ParameterBindableP4bindys13OpaquePointerV2to_s5Int32V9parametertKF"></a>
-                    <a name="//apple_ref/swift/Method/bind(to:parameter:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8FeistyDB17ParameterBindableP4bindys13OpaquePointerV2to_s5Int32V9parametertKF">bind(to:parameter:)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">bind</span><span class="p">(</span><span class="n">to</span> <span class="nv">stmt</span><span class="p">:</span> <span class="kt"><a href="../Other Typealiases.html#/s:8FeistyDB23SQLitePreparedStatementa">SQLitePreparedStatement</a></span><span class="p">,</span> <span class="n">parameter</span> <span class="nv">idx</span><span class="p">:</span> <span class="kt">Int32</span><span class="p">)</span> <span class="k">throws</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:s9EquatableP2eeoiSbx_xtFZ"></a>
+                    <a name="/s:SQ2eeoiySbx_xtFZ"></a>
                     <a name="//apple_ref/swift/Method/==(_:_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:s9EquatableP2eeoiSbx_xtFZ">==(_:_:)</a>
+                    <a class="token" href="#/s:SQ2eeoiySbx_xtFZ">==(_:<wbr>_:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -460,17 +439,13 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="o">==</span><span class="p">(</span><span class="nv">lhs</span><span class="p">:</span> <span class="kt">DatabaseValue</span><span class="p">,</span> <span class="nv">rhs</span><span class="p">:</span> <span class="kt">DatabaseValue</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="o">==</span> <span class="p">(</span><span class="nv">lhs</span><span class="p">:</span> <span class="kt">DatabaseValue</span><span class="p">,</span> <span class="nv">rhs</span><span class="p">:</span> <span class="kt">DatabaseValue</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
 
                         </div>
                       </div>
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
                 <li class="item">
                   <div>
                     <code>
@@ -491,7 +466,33 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">description</span><span class="p">:</span> <span class="kt">String</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">description</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB17ParameterBindableP4bind2to9parameterys13OpaquePointerV_s5Int32VtKF"></a>
+                    <a name="//apple_ref/swift/Method/bind(to:parameter:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB17ParameterBindableP4bind2to9parameterys13OpaquePointerV_s5Int32VtKF">bind(to:<wbr>parameter:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">bind</span><span class="p">(</span><span class="n">to</span> <span class="nv">stmt</span><span class="p">:</span> <span class="kt"><a href="../Other%20Typealiases.html#/s:8FeistyDB23SQLitePreparedStatementa">SQLitePreparedStatement</a></span><span class="p">,</span> <span class="n">parameter</span> <span class="nv">idx</span><span class="p">:</span> <span class="kt">Int32</span><span class="p">)</span> <span class="k">throws</span></code></pre>
 
                         </div>
                       </div>
@@ -503,8 +504,8 @@
           </section>
         </section>
         <section id="footer">
-          <p>© 2015 - 2018 <a class="link" href="https://www.feisty-dog.com" target="_blank" rel="external">Feisty Dog, LLC</a> under the <a class="link" href="https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt" target="_blank" rel="external">MIT License</a>.</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+          <p>© 2015 - 2020 <a class="link" href="https://www.feisty-dog.com" target="_blank" rel="external">Feisty Dog, LLC</a> under the <a class="link" href="https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt" target="_blank" rel="external">MIT License</a>.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
     </div>
