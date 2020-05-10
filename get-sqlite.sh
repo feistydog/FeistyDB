@@ -36,8 +36,8 @@ elif [ $STATUS -eq 1 ]; then
 /*
 ** Include the uuid and carray sqlite extensions.
 **
-** To omit the uuid extension define FEISTYDB_OMIT_UUID.
-** To omit the carray extension define FEISTYDB_OMIT_CARRAY.
+** To omit the uuid extension define FEISTY_DB_OMIT_UUID.
+** To omit the carray extension define FEISTY_DB_OMIT_CARRAY.
 **
 ** To automatically make the extensions available to every sqlite
 ** connection, add "-DSQLITE_EXTRA_INIT=feisty_db_init" to this
@@ -45,11 +45,11 @@ elif [ $STATUS -eq 1 ]; then
 **
 */
 
-#ifndef FEISTYDB_OMIT_UUID
+#ifndef FEISTY_DB_OMIT_UUID
 #include "ext/misc/uuid.c"
 #endif
 
-#ifndef FEISTYDB_OMIT_CARRAY
+#ifndef FEISTY_DB_OMIT_CARRAY
 #include "ext/misc/carray.c"
 #endif
 
@@ -57,11 +57,11 @@ int feisty_db_init(const char *dummy)
 {
 	int nErr = 0;
 
-#ifndef FEISTYDB_OMIT_UUID
+#ifndef FEISTY_DB_OMIT_UUID
 	nErr += sqlite3_auto_extension((void *)sqlite3_uuid_init);
 #endif
 
-#ifndef FEISTYDB_OMIT_CARRAY
+#ifndef FEISTY_DB_OMIT_CARRAY
 	nErr += sqlite3_auto_extension((void *)sqlite3_carray_init);
 #endif
 
@@ -69,7 +69,6 @@ int feisty_db_init(const char *dummy)
 }
 
 /************************** End of FeistyDB additions *********************/
-
 EOF
 fi
 
