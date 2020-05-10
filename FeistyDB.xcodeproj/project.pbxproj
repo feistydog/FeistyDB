@@ -12,7 +12,9 @@
 		3236FD871DC6EF420057703E /* FeistyDBTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3236FD851DC6EDF90057703E /* FeistyDBTests.swift */; };
 		3245A5D2246822E300E51635 /* SQLiteCArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3245A5D1246822E300E51635 /* SQLiteCArray.swift */; };
 		3245A5D3246822E300E51635 /* SQLiteCArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3245A5D1246822E300E51635 /* SQLiteCArray.swift */; };
-		324CAE05207461E0007B5E43 /* FeistyDB_iOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 324CAE03207461E0007B5E43 /* FeistyDB_iOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3245A5D7246866D500E51635 /* DatabaseReadQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32702D3A2340F93900A9A53E /* DatabaseReadQueue.swift */; };
+		3245A5D82468670200E51635 /* Snapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FFA0AA21987258000EE1C6 /* Snapshot.swift */; };
+		3245A5D92468671F00E51635 /* FeistyDB.h in Headers */ = {isa = PBXBuildFile; fileRef = 3236FD831DC6EDE50057703E /* FeistyDB.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		324CAE0920746247007B5E43 /* sqlite3.h in Headers */ = {isa = PBXBuildFile; fileRef = 324CCF481DC61F020056935B /* sqlite3.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		324CAE0A2074624D007B5E43 /* sqlite3.c in Sources */ = {isa = PBXBuildFile; fileRef = 324CCF471DC61F020056935B /* sqlite3.c */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks -DSQLITE_DQS=0 -DSQLITE_THREADSAFE=0 -DSQLITE_DEFAULT_MEMSTATUS=0 -DSQLITE_DEFAULT_WAL_SYNCHRONOUS=1 -DSQLITE_LIKE_DOESNT_MATCH_BLOBS -DSQLITE_MAX_EXPR_DEPTH=0 -DSQLITE_OMIT_DECLTYPE -DSQLITE_OMIT_DEPRECATED -DSQLITE_OMIT_PROGRESS_CALLBACK -DSQLITE_OMIT_SHARED_CACHE -DSQLITE_USE_ALLOCA=1 -DSQLITE_ENABLE_FTS5 -DSQLITE_ENABLE_RTREE -DSQLITE_ENABLE_STAT4 -DSQLITE_ENABLE_SNAPSHOT -DSQLITE_ENABLE_JSON1 -DSQLITE_EXTRA_INIT=feisty_db_init"; }; };
 		324CAE0B20746250007B5E43 /* sqlite3ext.h in Headers */ = {isa = PBXBuildFile; fileRef = 324CCF491DC61F020056935B /* sqlite3ext.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -61,9 +63,7 @@
 		3236FD851DC6EDF90057703E /* FeistyDBTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeistyDBTests.swift; sourceTree = "<group>"; };
 		3245A5D1246822E300E51635 /* SQLiteCArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLiteCArray.swift; sourceTree = "<group>"; };
 		324819B21DD7C29E0023632D /* FeistyDB.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = FeistyDB.playground; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		324CAE01207461E0007B5E43 /* FeistyDB_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FeistyDB_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		324CAE03207461E0007B5E43 /* FeistyDB_iOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FeistyDB_iOS.h; sourceTree = "<group>"; };
-		324CAE04207461E0007B5E43 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		324CAE01207461E0007B5E43 /* FeistyDB.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FeistyDB.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		324CCF141DC61C0E0056935B /* FeistyDB.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FeistyDB.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		324CCF181DC61C0E0056935B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		324CCF1D1DC61C0E0056935B /* FeistyDBTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FeistyDBTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -113,15 +113,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		324CAE02207461E0007B5E43 /* FeistyDB-iOS */ = {
-			isa = PBXGroup;
-			children = (
-				324CAE03207461E0007B5E43 /* FeistyDB_iOS.h */,
-				324CAE04207461E0007B5E43 /* Info.plist */,
-			);
-			path = "FeistyDB-iOS";
-			sourceTree = "<group>";
-		};
 		324CCF0A1DC61C0E0056935B = {
 			isa = PBXGroup;
 			children = (
@@ -131,7 +122,6 @@
 				324CCF161DC61C0E0056935B /* FeistyDB */,
 				324CCF211DC61C0E0056935B /* FeistyDBTests */,
 				324CCF451DC61F020056935B /* sqlite */,
-				324CAE02207461E0007B5E43 /* FeistyDB-iOS */,
 				324CCF151DC61C0E0056935B /* Products */,
 			);
 			sourceTree = "<group>";
@@ -141,7 +131,7 @@
 			children = (
 				324CCF141DC61C0E0056935B /* FeistyDB.framework */,
 				324CCF1D1DC61C0E0056935B /* FeistyDBTests.xctest */,
-				324CAE01207461E0007B5E43 /* FeistyDB_iOS.framework */,
+				324CAE01207461E0007B5E43 /* FeistyDB.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -195,8 +185,8 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3245A5D92468671F00E51635 /* FeistyDB.h in Headers */,
 				324CAE0920746247007B5E43 /* sqlite3.h in Headers */,
-				324CAE05207461E0007B5E43 /* FeistyDB_iOS.h in Headers */,
 				324CAE0B20746250007B5E43 /* sqlite3ext.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -229,7 +219,7 @@
 			);
 			name = "FeistyDB-iOS";
 			productName = "FeistyDB-iOS";
-			productReference = 324CAE01207461E0007B5E43 /* FeistyDB_iOS.framework */;
+			productReference = 324CAE01207461E0007B5E43 /* FeistyDB.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		324CCF131DC61C0E0056935B /* FeistyDB */ = {
@@ -344,19 +334,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				324CAE0A2074624D007B5E43 /* sqlite3.c in Sources */,
-				324CAE0F2074626D007B5E43 /* Database.swift in Sources */,
-				324CAE152074626D007B5E43 /* DatabaseQueue.swift in Sources */,
 				324CAE112074626D007B5E43 /* Row.swift in Sources */,
+				324CAE0F2074626D007B5E43 /* Database.swift in Sources */,
 				324CAE182074626D007B5E43 /* ParameterBindable.swift in Sources */,
-				324CAE132074626D007B5E43 /* DatabaseError.swift in Sources */,
-				324CAE102074626D007B5E43 /* Statement.swift in Sources */,
-				324CAE172074626D007B5E43 /* ColumnConvertible.swift in Sources */,
-				32FFA0A521967870000EE1C6 /* SQLite.swift in Sources */,
-				324CAE192074626D007B5E43 /* DatabaseSerializable.swift in Sources */,
-				3245A5D3246822E300E51635 /* SQLiteCArray.swift in Sources */,
-				324CAE142074626D007B5E43 /* SQLiteError.swift in Sources */,
 				324CAE122074626D007B5E43 /* DatabaseValue.swift in Sources */,
+				324CAE172074626D007B5E43 /* ColumnConvertible.swift in Sources */,
+				324CAE132074626D007B5E43 /* DatabaseError.swift in Sources */,
+				3245A5D7246866D500E51635 /* DatabaseReadQueue.swift in Sources */,
+				324CAE102074626D007B5E43 /* Statement.swift in Sources */,
+				324CAE152074626D007B5E43 /* DatabaseQueue.swift in Sources */,
+				3245A5D82468670200E51635 /* Snapshot.swift in Sources */,
+				324CAE142074626D007B5E43 /* SQLiteError.swift in Sources */,
+				3245A5D3246822E300E51635 /* SQLiteCArray.swift in Sources */,
+				324CAE192074626D007B5E43 /* DatabaseSerializable.swift in Sources */,
+				32FFA0A521967870000EE1C6 /* SQLite.swift in Sources */,
+				324CAE0A2074624D007B5E43 /* sqlite3.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -377,8 +369,8 @@
 				3245A5D2246822E300E51635 /* SQLiteCArray.swift in Sources */,
 				32D3CF941DCD5A8B00BB53C6 /* DatabaseSerializable.swift in Sources */,
 				32FFA0A4219609EC000EE1C6 /* SQLite.swift in Sources */,
-				324CCF4C1DC61F020056935B /* sqlite3.c in Sources */,
 				32FFA0AB21987258000EE1C6 /* Snapshot.swift in Sources */,
+				324CCF4C1DC61F020056935B /* sqlite3.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -404,10 +396,6 @@
 		324CAE06207461E0007B5E43 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
@@ -415,8 +403,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = "FeistyDB-iOS/Info.plist";
+				INFOPLIST_FILE = FeistyDB/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -425,10 +412,11 @@
 					"@loader_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.feisty-dog.FeistyDB";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = FeistyDB;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -436,10 +424,6 @@
 		324CAE07207461E0007B5E43 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
@@ -447,8 +431,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = "FeistyDB-iOS/Info.plist";
+				INFOPLIST_FILE = FeistyDB/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -457,10 +440,11 @@
 					"@loader_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.feisty-dog.FeistyDB";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = FeistyDB;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
