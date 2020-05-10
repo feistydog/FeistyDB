@@ -13,7 +13,7 @@ FeistyDB allows fast, easy database access with robust error handling.  It is no
 ## Installation
 
 1. Clone the [FeistyDB](https://github.com/feistydog/FeistyDB) repository.
-2. Run `./get-sqlite.sh` to get the latest [SQLite amalgamation](https://sqlite.org/amalgamation.html) source code.
+2. Run `./get-sqlite.sh` to download the latest SQLite source tree and build the [amalgamation](https://sqlite.org/amalgamation.html) with the `uuid` and `carray` extensions added.
 3. Open the project, build, and get started in the playground!
 
 ## Quick Start

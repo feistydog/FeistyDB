@@ -6,7 +6,7 @@
 
 import Foundation
 
-// MARK: Int32
+// MARK: - Int32
 extension Statement {
 	/// Binds the values in `array` to the SQL parameter at `index` using the sqlite3 Carray extension
 	///
@@ -70,7 +70,7 @@ extension Statement {
 	}
 }
 
-// MARK: Int64
+// MARK: - Int64
 extension Statement {
 	/// Binds the values in `array` to the SQL parameter at `index` using the sqlite3 Carray extension
 	///
