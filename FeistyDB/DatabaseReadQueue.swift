@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2018 - 2019 Feisty Dog, LLC
+// Copyright (c) 2018 - 2020 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
@@ -31,12 +31,14 @@ public final class DatabaseReadQueue {
 	/// Creates a database read queue for serialized read access to a database from a file.
 	///
 	/// - parameter url: The location of the SQLite database
+	/// - parameter label: The label to attach to the queue
 	/// - parameter qos: The quality of service class for the work performed by the database queue
+	/// - parameter target: The target dispatch queue on which to execute blocks
 	///
 	/// - throws: An error if the database could not be opened
-	public init(url: URL, qos: DispatchQoS = .default) throws {
+	public init(url: URL, label: String, qos: DispatchQoS = .default, target: DispatchQueue? = nil) throws {
 		self.database = try Database(readingFrom: url)
-		self.queue = DispatchQueue(label: "com.feisty-dog.FeistyDB.DatabaseReadQueue", qos: qos)
+		self.queue = DispatchQueue(label: label, qos: qos, target: target)
 	}
 
 	/// Creates a database read queue for serialized read access to an existing database.
@@ -44,10 +46,12 @@ public final class DatabaseReadQueue {
 	/// - attention: The database queue takes ownership of `database`.  The result of further use of `database` is undefined.
 	///
 	/// - parameter database: The database to be serialized
+	/// - parameter label: The label to attach to the queue
 	/// - parameter qos: The quality of service class for the work performed by the database queue
-	public init(database: Database, qos: DispatchQoS = .default) {
+	/// - parameter target: The target dispatch queue on which to execute blocks
+	public init(database: Database, label: String, qos: DispatchQoS = .default, target: DispatchQueue? = nil) {
 		self.database = database
-		self.queue = DispatchQueue(label: "com.feisty-dog.FeistyDB.DatabaseReadQueue", qos: qos)
+		self.queue = DispatchQueue(label: label, qos: qos, target: target)
 	}
 
 	/// Begins a long-running read transaction on the database.
@@ -112,23 +116,26 @@ extension DatabaseReadQueue {
 	/// - note: The QoS for the database queue is set to the QoS of `writeQueue`
 	///
 	/// - parameter writeQueue: A database queue for the SQLite database
+	/// - parameter label: The label to attach to the queue
 	///
 	/// - throws: An error if the database could not be opened
-	public convenience init(writeQueue: DatabaseQueue) throws {
-		try self.init(writeQueue: writeQueue, qos: writeQueue.queue.qos)
+	public convenience init(writeQueue: DatabaseQueue, label: String) throws {
+		try self.init(writeQueue: writeQueue, label: label, qos: writeQueue.queue.qos)
 	}
 
 	/// Creates a database read queue for serialized read access to a database from the file corresponding to the database *main* on a write queue.
 	///
 	/// - parameter writeQueue: A database queue for the SQLite database
+	/// - parameter label: The label to attach to the queue
 	/// - parameter qos: The quality of service class for the work performed by the database queue
+	/// - parameter target: The target dispatch queue on which to execute blocks
 	///
 	/// - throws: An error if the database could not be opened
-	public convenience init(writeQueue: DatabaseQueue, qos: DispatchQoS) throws {
+	public convenience init(writeQueue: DatabaseQueue, label: String, qos: DispatchQoS, target: DispatchQueue? = nil) throws {
 		let url = try writeQueue.sync { db in
 			return try db.url(forDatabase: "main")
 		}
-		try self.init(url: url, qos: qos)
+		try self.init(url: url, label: label, qos: qos, target: target)
 	}
 }
 

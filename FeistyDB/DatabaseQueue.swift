@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015 - 2018 Feisty Dog, LLC
+// Copyright (c) 2015 - 2020 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
@@ -40,23 +40,27 @@ public final class DatabaseQueue {
 
 	/// Creates a database queue for serialized access to an in-memory database.
 	///
+	/// - parameter label: The label to attach to the queue
 	/// - parameter qos: The quality of service class for the work performed by the database queue
+	/// - parameter target: The target dispatch queue on which to execute blocks
 	///
 	/// - throws: An error if the database could not be created
-	public init(qos: DispatchQoS = .default) throws {
+	public init(label: String, qos: DispatchQoS = .default, target: DispatchQueue? = nil) throws {
 		self.database = try Database()
-		self.queue = DispatchQueue(label: "com.feisty-dog.FeistyDB.DatabaseQueue", qos: qos)
+		self.queue = DispatchQueue(label: label, qos: qos, target: target)
 	}
 
 	/// Creates a database queue for serialized access to a database from a file.
 	///
 	/// - parameter url: The location of the SQLite database
+	/// - parameter label: The label to attach to the queue
 	/// - parameter qos: The quality of service class for the work performed by the database queue
+	/// - parameter target: The target dispatch queue on which to execute blocks
 	///
 	/// - throws: An error if the database could not be opened
-	public init(url: URL, qos: DispatchQoS = .default) throws {
+	public init(url: URL, label: String, qos: DispatchQoS = .default, target: DispatchQueue? = nil) throws {
 		self.database = try Database(url: url)
-		self.queue = DispatchQueue(label: "com.feisty-dog.FeistyDB.DatabaseQueue", qos: qos)
+		self.queue = DispatchQueue(label: label, qos: qos, target: target)
 	}
 
 	/// Creates a database queue for serialized access to an existing database.
@@ -64,10 +68,12 @@ public final class DatabaseQueue {
 	/// - attention: The database queue takes ownership of `database`.  The result of further use of `database` is undefined.
 	///
 	/// - parameter database: The database to be serialized
+	/// - parameter label: The label to attach to the queue
 	/// - parameter qos: The quality of service class for the work performed by the database queue
-	public init(database: Database, qos: DispatchQoS = .default) {
+	/// - parameter target: The target dispatch queue on which to execute blocks
+	public init(database: Database, label: String, qos: DispatchQoS = .default, target: DispatchQueue? = nil) {
 		self.database = database
-		self.queue = DispatchQueue(label: "com.feisty-dog.FeistyDB.DatabaseQueue", qos: qos)
+		self.queue = DispatchQueue(label: label, qos: qos, target: target)
 	}
 
 	/// Performs a synchronous operation on the database.
