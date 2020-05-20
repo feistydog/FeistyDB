@@ -40,7 +40,7 @@ Most applications should not create a `Database` directly but instead should use
 
 ```swift
 // Create a queue serializing access to an in-memory database
-let dbQ = try DatabaseQueue()
+let dbQ = try DatabaseQueue("myapp.dbQ")
 
 // Perform a synchronous database operation
 try dbQ.sync { db in
@@ -170,7 +170,7 @@ let s = try db.prepare(sql: "insert into t1(a) values (rot13(?));")
 ### Create a queue for serialized database access
 
 ```swift
-let dbQ = try DatabaseQueue()
+let dbQ = try DatabaseQueue("myapp.dbQ")
 ```
 
 This creates a queue which may be used from multiple threads safely.  The queue serializes access to the database ensuring only a single operation occurs at a time.
