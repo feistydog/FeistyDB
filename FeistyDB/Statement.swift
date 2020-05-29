@@ -54,7 +54,7 @@ public typealias SQLitePreparedStatement = OpaquePointer
 ///
 /// It is generally preferred to use the block-based method because any errors may be explicitly handled instead of
 /// silently discarded.
-final public class Statement {
+public final class Statement {
 	/// The owning database
 	public let database: Database
 

@@ -27,7 +27,7 @@ public typealias SQLiteDatabaseConnection = OpaquePointer
 /// let rowCount: Int = db.prepare(sql: "select count(*) from t1;").front()
 /// print("t1 has \(rowCount) rows")
 /// ```
-final public class Database {
+public final class Database {
 	/// The underlying `sqlite3 *` database
 	var db: SQLiteDatabaseConnection
 
