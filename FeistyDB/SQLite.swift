@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2018 - 2019 Feisty Dog, LLC
+// Copyright (c) 2018 - 2020 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
@@ -11,24 +11,24 @@ public struct SQLite {
 	/// The version of SQLite in the format *X.Y.Z*, for example `3.25.3`
 	///
 	/// - seealso: [Run-Time Library Version Numbers](https://www.sqlite.org/c3ref/libversion.html)
-	static let version = String(cString: sqlite3_libversion())
+	public static let version = String(cString: sqlite3_libversion())
 
 	/// The version of SQLite in the format *(X\*1000000 + Y\*1000 + Z)*, such as `3025003`
 	///
 	/// - seealso: [Run-Time Library Version Numbers](https://www.sqlite.org/c3ref/libversion.html)
-	static let versionNumber = Int(sqlite3_libversion_number())
+	public static let versionNumber = Int(sqlite3_libversion_number())
 
 	/// The identifier of the SQLite source tree, for example `89e099fbe5e13c33e683bef07361231ca525b88f7907be7092058007b75036f2`
 	///
 	/// - seealso: [Run-Time Library Version Numbers](https://www.sqlite.org/c3ref/libversion.html)
-	static let sourceID = String(cString: sqlite3_sourceid())
+	public static let sourceID = String(cString: sqlite3_sourceid())
 
 	/// Initializes the SQLite library
 	///
 	/// - note: This function is automatically invoked by SQLite and is not normally called directly
 	///
 	/// - throws:  An error if SQLite initialization fails
-	static func initialize() throws {
+	public static func initialize() throws {
 		let rc = sqlite3_initialize()
 		guard rc == SQLITE_OK else {
 			throw SQLiteError("Error initializing sqlite3", code: rc)
@@ -42,7 +42,7 @@ public struct SQLite {
 	/// - note: This function is automatically invoked by SQLite and is not normally called directly
 	///
 	/// - throws:  An error if SQLite shutdown fails
-	static func shutdown() throws {
+	public static func shutdown() throws {
 		let rc = sqlite3_shutdown()
 		guard rc == SQLITE_OK else {
 			throw SQLiteError("Error shutting down sqlite3", code: rc)
@@ -50,14 +50,14 @@ public struct SQLite {
 	}
 
 	/// The number of bytes of memory `malloc`ed but not yet `free`d by SQLite
-	static var memoryUsed: Int64 {
+	public static var memoryUsed: Int64 {
 		return sqlite3_memory_used()
 	}
 
 	/// Returns the maximum amount of memory used by SQLite since the memory highwater mark was last reset.
 	///
 	/// - parameter reset: If `true` the memory highwater mark is reset to the value of `memoryUsed`
-	static func memoryHighwater(reset: Bool = false) -> Int64 {
+	public static func memoryHighwater(reset: Bool = false) -> Int64 {
 		return sqlite3_memory_highwater(reset ? 1 : 0)
 	}
 
@@ -66,7 +66,7 @@ public struct SQLite {
 	/// - note: Keywords in SQLite are not case sensitive.
 	///
 	/// - seealso: [SQL Keyword Checking](https://www.sqlite.org/c3ref/keyword_check.html)
-	static let keywords: Set<String> = {
+	public static let keywords: Set<String> = {
 		var keywords = Set<String>()
 		for i in 0 ..< sqlite3_keyword_count() {
 			var chars: UnsafePointer<Int8>?
@@ -91,7 +91,7 @@ public struct SQLite {
 	/// - returns: `True` if `identifier` is an SQLite keyword, `False` otherwise
 	///
 	/// - seealso: [SQL Keyword Checking](https://www.sqlite.org/c3ref/keyword_check.html)
-	static func isKeyword(_ identifier: String) -> Bool {
+	public static func isKeyword(_ identifier: String) -> Bool {
 		return identifier.withCString {
 			return sqlite3_keyword_check($0, Int32(strlen($0)))
 		} != 0
@@ -104,7 +104,7 @@ public struct SQLite {
 	/// - returns: A `Data` object containing `count` bytes of randomness
 	///
 	/// - seealso: [Pseudo-Random Number Generator](https://www.sqlite.org/c3ref/randomness.html)
-	static func randomness(_ count: Int) -> Data {
+	public static func randomness(_ count: Int) -> Data {
 		var data = Data(count: count)
 		data.withUnsafeMutableBytes {
 			sqlite3_randomness(Int32(count), $0.baseAddress)
