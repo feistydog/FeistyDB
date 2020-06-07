@@ -72,7 +72,7 @@ int feisty_db_init(const char *dummy)
 EOF
 fi
 
-if [ -d ./sqlite ]; then
+if [ -h ./sqlite ]; then
 	/bin/rm ./sqlite
 fi
 
