@@ -120,6 +120,27 @@ extension Row {
 }
 
 extension Statement {
+	/// Returns the values of the columns at `indexes` for each row in the result set.
+	///
+	/// - note: Column indexes are 0-based.  The leftmost column in a row has index 0.
+	///
+	/// - requires: `indexes.startIndex >= 0`
+	/// - requires: `indexes.endIndex < self.columnCount`
+	///
+	/// - parameter indexes: The indexes of the desired column
+	///
+	/// - throws: An error if any element of `indexes` is out of bounds
+	public func columns<T: ColumnConvertible>(_ indexes: IndexSet) throws -> [[T]] {
+		var values = [[T]](repeating: [], count: indexes.count)
+		let sequence = indexes.enumerated()
+		try results { row in
+			for (n, x) in sequence {
+				values[n].append(try row.value(at: x))
+			}
+		}
+		return values
+	}
+
 	/// Returns the value of the column at `index` for each row in the result set.
 	///
 	/// - note: Column indexes are 0-based.  The leftmost column in a row has index 0.
