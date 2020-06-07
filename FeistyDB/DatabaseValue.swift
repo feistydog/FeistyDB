@@ -174,17 +174,33 @@ extension Row {
 }
 
 extension Statement {
+	/// Returns the value of the column at `index` for each row in the result set.
+	///
+	/// - note: Column indexes are 0-based.  The leftmost column in a row has index 0.
+	///
+	/// - requires: `index >= 0`
+	/// - requires: `index < self.columnCount`
+	///
+	/// - parameter index: The index of the desired column
+	///
+	/// - throws: An error if `index` is out of bounds
+	public func column(_ index: Int) throws -> [DatabaseValue] {
+		var values = [DatabaseValue]()
+		try results { row in
+			values.append(try row.value(at: index))
+		}
+		return values
+	}
+
 	/// Returns the value of the leftmost column for each row in the result set.
+	///
+	/// This is a shortcut for `column(0)`.
 	///
 	/// - throws: An error if there are no columns
 	///
 	/// - returns: An array containing the leftmost column's values
 	public func leftmostColumn() throws -> [DatabaseValue] {
-		var values = [DatabaseValue]()
-		try results { row in
-			values.append(try row.value(at: 0))
-		}
-		return values
+		return try column(0)
 	}
 }
 
