@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015 - 2019 Feisty Dog, LLC
+// Copyright (c) 2015 - 2020 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
@@ -425,6 +425,21 @@ class FeistyDBTests: XCTestCase {
 			XCTAssertEqual(x, 5)
 			XCTAssertEqual(y, nil)
 		}
+	}
+
+	func testStatementColumns() {
+		let db = try! Database()
+
+		try! db.execute(sql: "create table t1(a, b, c);")
+
+		for i in 0..<3 {
+			try! db.prepare(sql: "insert into t1(a, b, c) values (?,?,?);").bind(parameterValues: [i, i * 3, i * 5]).execute()
+		}
+
+		let statement = try! db.prepare(sql: "select * from t1")
+		let cols: [[Int]] = try! statement.columns([0,2])
+		XCTAssertEqual(cols[0], [0,1,2])
+		XCTAssertEqual(cols[1], [0,5,10])
 	}
 
 	func testUUIDExtension() {
