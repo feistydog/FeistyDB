@@ -124,17 +124,16 @@ extension Statement {
 	///
 	/// - note: Column indexes are 0-based.  The leftmost column in a row has index 0.
 	///
-	/// - requires: `indexes.startIndex >= 0`
-	/// - requires: `indexes.endIndex < self.columnCount`
+	/// - requires: `indexes.min() >= 0`
+	/// - requires: `indexes.max() < self.columnCount`
 	///
 	/// - parameter indexes: The indexes of the desired column
 	///
 	/// - throws: An error if any element of `indexes` is out of bounds
-	public func columns<T: ColumnConvertible>(_ indexes: IndexSet) throws -> [[T]] {
+	public func columns<S: Collection, T: ColumnConvertible>(_ indexes: S) throws -> [[T]] where S.Element == Int {
 		var values = [[T]](repeating: [], count: indexes.count)
-		let sequence = indexes.enumerated()
 		try results { row in
-			for (n, x) in sequence {
+			for (n, x) in indexes.enumerated() {
 				values[n].append(try row.value(at: x))
 			}
 		}
