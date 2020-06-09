@@ -181,7 +181,7 @@ extension Statement {
 	/// - requires: `indexes.min() >= 0`
 	/// - requires: `indexes.max() < self.columnCount`
 	///
-	/// - parameter indexes: The indexes of the desired column
+	/// - parameter indexes: The indexes of the desired columns
 	///
 	/// - throws: An error if any element of `indexes` is out of bounds
 	public func columns<S: Collection>(_ indexes: S) throws -> [[DatabaseValue]] where S.Element == Int {

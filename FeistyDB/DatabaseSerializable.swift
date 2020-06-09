@@ -103,7 +103,7 @@ extension Statement {
 	/// - requires: `indexes.min() >= 0`
 	/// - requires: `indexes.max() < self.columnCount`
 	///
-	/// - parameter indexes: The indexes of the desired column
+	/// - parameter indexes: The indexes of the desired columns
 	///
 	/// - throws: An error if any element of `indexes` is out of bounds
 	public func columns<S: Collection, T: DatabaseSerializable>(_ indexes: S) throws -> [[T]] where S.Element == Int {
