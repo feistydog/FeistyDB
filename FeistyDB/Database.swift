@@ -29,7 +29,7 @@ public typealias SQLiteDatabaseConnection = OpaquePointer
 /// ```
 public final class Database {
 	/// The underlying `sqlite3 *` database
-	var db: SQLiteDatabaseConnection
+	let db: SQLiteDatabaseConnection
 
 	/// The database's custom busy handler
 	var busyHandler: UnsafeMutablePointer<BusyHandler>?

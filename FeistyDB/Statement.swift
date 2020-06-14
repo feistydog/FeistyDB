@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015 - 2018 Feisty Dog, LLC
+// Copyright (c) 2015 - 2020 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
@@ -59,7 +59,7 @@ public final class Statement {
 	public let database: Database
 
 	/// The underlying `sqlite3_stmt *` object
-	var stmt: SQLitePreparedStatement
+	let stmt: SQLitePreparedStatement
 
 	/// Creates a compiled SQL statement.
 	///
