@@ -325,7 +325,7 @@ extension Database {
 
 	/// `true` if this database is in autocommit mode, `false` otherwise
 	///
-	/// - seealso: [Test For Auto-Commit Mode](http://www.sqlite.org/c3ref/get_autocommit.html)
+	/// - seealso: [Test For Auto-Commit Mode](https://www.sqlite.org/c3ref/get_autocommit.html)
 	public var isInAutocommitMode: Bool {
 		return sqlite3_get_autocommit(db) != 0
 	}
@@ -589,8 +589,8 @@ extension Database {
 	///
 	/// - throws: An error if the backup could not be completed
 	///
-	/// - seealso: [Online Backup API](http://www.sqlite.org/c3ref/backup_finish.html)
-	/// - seealso: [Using the SQLite Online Backup API](http://www.sqlite.org/backup.html)
+	/// - seealso: [Online Backup API](https://www.sqlite.org/c3ref/backup_finish.html)
+	/// - seealso: [Using the SQLite Online Backup API](https://www.sqlite.org/backup.html)
 	public func backup(to url: URL, progress callback: BackupProgress? = nil) throws {
 		let destination = try Database(url: url)
 
@@ -671,7 +671,7 @@ extension Database {
 ///
 /// - parameter sqlite_context: An `sqlite3_context *` object
 /// - parameter value: The value to pass
-func set_sql_function_result(_ sqlite_context: OpaquePointer!, value: DatabaseValue) {
+func set_sqlite3_result(_ sqlite_context: OpaquePointer!, value: DatabaseValue) {
 	switch value {
 	case .integer(let i):
 		sqlite3_result_int64(sqlite_context, i)
@@ -816,7 +816,7 @@ extension Database {
 			let arguments = args.map { DatabaseValue($0.unsafelyUnwrapped) }
 
 			do {
-				set_sql_function_result(sqlite_context, value: try function_ptr.pointee(arguments))
+				set_sqlite3_result(sqlite_context, value: try function_ptr.pointee(arguments))
 			}
 
 			catch let error {
@@ -889,7 +889,7 @@ extension Database {
 			let function = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(context.unsafelyUnwrapped)).takeUnretainedValue() as! SQLAggregateFunction
 
 			do {
-				set_sql_function_result(sqlite_context, value: try function.final())
+				set_sqlite3_result(sqlite_context, value: try function.final())
 			}
 
 			catch let error {
@@ -975,7 +975,7 @@ extension Database {
 			let function = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(context.unsafelyUnwrapped)).takeUnretainedValue() as! SQLAggregateWindowFunction
 
 			do {
-				set_sql_function_result(sqlite_context, value: try function.final())
+				set_sqlite3_result(sqlite_context, value: try function.final())
 			}
 
 			catch let error {
@@ -986,7 +986,7 @@ extension Database {
 			let function = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(context.unsafelyUnwrapped)).takeUnretainedValue() as! SQLAggregateWindowFunction
 
 			do {
-				set_sql_function_result(sqlite_context, value: try function.value())
+				set_sqlite3_result(sqlite_context, value: try function.value())
 			}
 
 			catch let error {
@@ -1032,7 +1032,7 @@ extension Database {
 	///
 	/// - returns: `true` if the commit operation is allowed to proceed, `false` otherwise
 	///
-	/// - seealso: [Commit And Rollback Notification Callbacks](http://www.sqlite.org/c3ref/commit_hook.html)
+	/// - seealso: [Commit And Rollback Notification Callbacks](https://www.sqlite.org/c3ref/commit_hook.html)
 	public typealias CommitHook = () -> Bool
 
 	/// Sets the hook called when a database transaction is committed.
@@ -1062,7 +1062,7 @@ extension Database {
 
 	/// A hook called when a database transaction is rolled back.
 	///
-	/// - seealso: [Commit And Rollback Notification Callbacks](http://www.sqlite.org/c3ref/commit_hook.html)
+	/// - seealso: [Commit And Rollback Notification Callbacks](https://www.sqlite.org/c3ref/commit_hook.html)
 	public typealias RollbackHook = () -> Void
 
 	/// Sets the hook called when a database transaction is rolled back.
@@ -1099,7 +1099,7 @@ extension Database {
 	///
 	/// - returns: Normally `SQLITE_OK`
 	///
-	/// - seealso: [Write-Ahead Log Commit Hook](http://www.sqlite.org/c3ref/wal_hook.html)
+	/// - seealso: [Write-Ahead Log Commit Hook](https://www.sqlite.org/c3ref/wal_hook.html)
 	public typealias WALCommitHook = (_ databaseName: String, _ pageCount: Int) -> Int32
 
 	/// Sets the hook called when a database transaction is committed in write-ahead log mode.
@@ -1150,8 +1150,8 @@ extension Database {
 	/// - parameter table: The name of the table containing the affected row
 	/// - parameter rowid: The `rowid` of the affected row
 	///
-	/// - seealso: [Commit And Rollback Notification Callbacks](http://www.sqlite.org/c3ref/commit_hook.html)
-	/// - seealso: [Rowid Tables](http://www.sqlite.org/rowidtable.html)
+	/// - seealso: [Commit And Rollback Notification Callbacks](https://www.sqlite.org/c3ref/commit_hook.html)
+	/// - seealso: [Rowid Tables](https://www.sqlite.org/rowidtable.html)
 	public typealias UpdateHook = (_ change: RowChangeType, _ database: String, _ table: String, _ rowid: Int64) -> Void
 
 	/// Sets the hook called when a row is inserted, deleted, or updated in a rowid table.
@@ -1207,7 +1207,7 @@ extension Database {
 	///
 	/// - returns: `true` if the attempts to access the database should stop, `false` to continue
 	///
-	/// - seealso: [Register A Callback To Handle SQLITE_BUSY Errors](http://www.sqlite.org/c3ref/busy_handler.html)
+	/// - seealso: [Register A Callback To Handle SQLITE_BUSY Errors](https://www.sqlite.org/c3ref/busy_handler.html)
 	public typealias BusyHandler = (_ attempts: Int) -> Bool
 
 	/// Sets a callback that may be invoked when an attempt is made to access a locked database table.
@@ -1256,7 +1256,7 @@ extension Database {
 	///
 	/// - throws: An error if the busy timeout couldn't be set
 	///
-	/// - seealso: [Set A Busy Timeout](http://www.sqlite.org/c3ref/busy_timeout.html)
+	/// - seealso: [Set A Busy Timeout](https://www.sqlite.org/c3ref/busy_timeout.html)
 	public func setBusyTimeout(_ ms: Int) throws {
 		defer {
 			busyHandler?.deinitialize(count: 1)
@@ -1273,7 +1273,7 @@ extension Database {
 extension Database {
 	/// Available database status parameters.
 	///
-	/// - seealso: [Status Parameters for database connections](http://www.sqlite.org/c3ref/c_dbstatus_options.html)
+	/// - seealso: [Status Parameters for database connections](https://www.sqlite.org/c3ref/c_dbstatus_options.html)
 	public enum	StatusParameter {
 		/// The number of lookaside memory slots currently checked out
 		case lookasideUsed
@@ -1310,7 +1310,7 @@ extension Database {
 	///
 	/// - returns: A tuple containing the current and highwater values of the requested parameter, as applicable
 	///
-	/// - seealso: [Database Connection Status](http://www.sqlite.org/c3ref/db_status.html)
+	/// - seealso: [Database Connection Status](https://www.sqlite.org/c3ref/db_status.html)
 	public func status(ofParameter parameter: StatusParameter, resetHighwater: Bool = false) throws -> (Int, Int) {
 		let op: Int32
 		switch parameter {
@@ -1411,7 +1411,7 @@ public protocol FTS5Tokenizer {
 
 extension Database {
 	/// Glue for creating a generic Swift type in a C callback
-	class FTS5TokenizerCreator {
+	final class FTS5TokenizerCreator {
 		/// Creates a new FTS5TokenizerCreator.
 		///
 		/// - parameter construct: A closure that creates the tokenizer
@@ -1487,7 +1487,7 @@ extension Database {
 	///
 	/// - throws:  An error if the tokenizer can't be added
 	///
-	/// - seealso: [Custom Tokenizers](http://www.sqlite.org/fts5.html#custom_tokenizers)
+	/// - seealso: [Custom Tokenizers](https://www.sqlite.org/fts5.html#custom_tokenizers)
 	public func addTokenizer<T: FTS5Tokenizer>(_ name: String, type: T.Type) throws {
 		// Fail early if FTS5 isn't available
 		let api_ptr = try get_fts5_api(for: db)
@@ -1596,4 +1596,256 @@ extension Database.FTS5TokenizationReason {
 		default:											preconditionFailure("Unexpected FTS5 flag")
 		}
 	}
+}
+
+extension Database {
+	/// Glue for creating a generic Swift type in a C callback
+	final class ModuleClientData {
+		/// The constructor closure
+		let construct: (_ arguments : [String]) throws -> VirtualTable
+		/// Persistent sqlite3_module instance
+		let module: UnsafeMutablePointer<sqlite3_module>
+
+		/// Creates client data for a module
+		init(module: inout sqlite3_module, _ construct: @escaping (_ arguments: [String]) -> VirtualTable) {
+			let module_ptr = UnsafeMutablePointer<sqlite3_module>.allocate(capacity: 1)
+			module_ptr.assign(from: &module, count: 1)
+			self.module = module_ptr
+			self.construct = construct
+		}
+
+		deinit {
+			module.deallocate()
+		}
+	}
+
+	/// Adds a virtual table module to the database
+	///
+	/// - parameter name: The name of the virtual table
+	/// - parameter type: The class implementing the virtual table
+	///
+	/// - throws:  An error if the virtual table can't be added
+	///
+	/// - seealso: [The Virtual Table Mechanism Of SQLite](https://sqlite.org/vtab.html)
+	public func addModule<T: VirtualTable>(_ name: String, type: T.Type) throws {
+		// Flesh out the struct containing the virtual table functions used by SQLite
+		var module_struct = sqlite3_module(iVersion: 0, xCreate: nil, xConnect: { (db, pAux, argc, argv, ppVTab, pzErr) -> Int32 in
+			let args = UnsafeBufferPointer(start: argv, count: Int(argc))
+			let arguments = args.map { String(utf8String: $0.unsafelyUnwrapped).unsafelyUnwrapped }
+
+			let virtualTable: VirtualTable
+			do {
+				let clientData = Unmanaged<ModuleClientData>.fromOpaque(UnsafeRawPointer(pAux.unsafelyUnwrapped)).takeUnretainedValue()
+				virtualTable = try clientData.construct(arguments)
+			}
+
+			catch let error {
+				os_log("Error constructing virtual table: %{public}@", type: .info, error.localizedDescription)
+
+				let description = error.localizedDescription
+				let len = description.utf8.count + 1
+				let mem = sqlite3_malloc(Int32(len))
+				if mem != nil {
+					let str = mem!.assumingMemoryBound(to: Int8.self)
+					strncpy(str, description, len)
+					pzErr.unsafelyUnwrapped.pointee = str
+				}
+
+				return SQLITE_ERROR
+			}
+
+			let sql = virtualTable.declare()
+			let rc = sqlite3_declare_vtab(db, sql)
+			guard rc == SQLITE_OK else {
+				return rc
+			}
+
+			let vtab = sqlite3_malloc(Int32(MemoryLayout<feisty_db_sqlite3_vtab>.size))
+			guard vtab != nil else {
+				return SQLITE_NOMEM
+			}
+
+			// virtualTable must live until the xDisconnect function is invoked; store it as a +1 object in ptr
+			let ptr = Unmanaged.passRetained(virtualTable as AnyObject).toOpaque()
+
+			let vtab_ptr = vtab.unsafelyUnwrapped.bindMemory(to: feisty_db_sqlite3_vtab.self, capacity: 1)
+			vtab_ptr.pointee.vtab = ptr
+			vtab_ptr.withMemoryRebound(to: sqlite3_vtab.self, capacity: 1) {
+				ppVTab.unsafelyUnwrapped.pointee = $0
+			}
+
+			return SQLITE_OK
+		}, xBestIndex: { (pVTab, pIdxInfo) -> Int32 in
+			return pVTab.unsafelyUnwrapped.withMemoryRebound(to: feisty_db_sqlite3_vtab.self, capacity: 1) { vtab -> Int32 in
+				let virtualTable = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(vtab.pointee.vtab.unsafelyUnwrapped)).takeUnretainedValue() as! VirtualTable
+				do {
+					try virtualTable.bestIndex(pIdxInfo.unsafelyUnwrapped)
+					return SQLITE_OK
+				}
+				catch let error {
+					os_log("Error determining best index: %{public}@", type: .info, error.localizedDescription)
+					return SQLITE_ERROR
+				}
+			}
+		}, xDisconnect: { (pVTab) -> Int32 in
+			pVTab.unsafelyUnwrapped.withMemoryRebound(to: feisty_db_sqlite3_vtab.self, capacity: 1) { vtab in
+				// Balance the +1 retain above
+				Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(vtab.pointee.vtab)).release()
+			}
+			sqlite3_free(pVTab)
+			return SQLITE_OK
+		}, xDestroy: nil,
+		   xOpen: { (pVTab, ppCursor) -> Int32 in
+			return pVTab.unsafelyUnwrapped.withMemoryRebound(to: feisty_db_sqlite3_vtab.self, capacity: 1) { vtab -> Int32 in
+				let virtualTable = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(vtab.pointee.vtab.unsafelyUnwrapped)).takeUnretainedValue() as! VirtualTable
+
+				let cursor: Cursor
+				do {
+					cursor = try virtualTable.openCursor()
+				}
+
+				catch let error {
+					os_log("Error opening cursor: %{public}@", type: .info, error.localizedDescription)
+
+					let description = error.localizedDescription
+					let len = description.utf8.count + 1
+					let mem = sqlite3_malloc(Int32(len))
+					if mem != nil {
+						let str = mem!.assumingMemoryBound(to: Int8.self)
+						strncpy(str, description, len)
+						vtab.pointee.base.zErrMsg = str
+					}
+
+					return SQLITE_ERROR
+				}
+
+				let curs = sqlite3_malloc(Int32(MemoryLayout<feisty_db_sqlite3_vtab_cursor>.size))
+				guard curs != nil else {
+					return SQLITE_NOMEM
+				}
+
+				// cursor must live until the xClose function is invoked; store it as a +1 object in ptr
+				let ptr = Unmanaged.passRetained(cursor as AnyObject).toOpaque()
+
+				let curs_ptr = curs.unsafelyUnwrapped.bindMemory(to: feisty_db_sqlite3_vtab_cursor.self, capacity: 1)
+				curs_ptr.pointee.cursor = ptr
+				curs_ptr.withMemoryRebound(to: sqlite3_vtab_cursor.self, capacity: 1) {
+					ppCursor.unsafelyUnwrapped.pointee = $0
+				}
+
+				return SQLITE_OK
+			}
+		}, xClose: { (pCursor) -> Int32 in
+			pCursor.unsafelyUnwrapped.withMemoryRebound(to: feisty_db_sqlite3_vtab_cursor.self, capacity: 1) { curs in
+				// Balance the +1 retain above
+				Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(curs.pointee.cursor)).release()
+			}
+			sqlite3_free(pCursor)
+			return SQLITE_OK
+		}, xFilter: { (pCursor, idxNum, idxStr, argc, argv) -> Int32 in
+			let args = UnsafeBufferPointer(start: argv, count: Int(argc))
+			let arguments = args.map { DatabaseValue($0.unsafelyUnwrapped) }
+
+			return pCursor.unsafelyUnwrapped.withMemoryRebound(to: feisty_db_sqlite3_vtab_cursor.self, capacity: 1) { curs -> Int32 in
+				let cursor = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(curs.pointee.cursor.unsafelyUnwrapped)).takeUnretainedValue() as! Cursor
+				do {
+					try cursor.filter(arguments)
+					return SQLITE_OK
+				}
+				catch let error {
+					os_log("Error applying filter to cursor: %{public}@", type: .info, error.localizedDescription)
+					return SQLITE_ERROR
+				}
+			}
+		}, xNext: { (pCursor) -> Int32 in
+			return pCursor.unsafelyUnwrapped.withMemoryRebound(to: feisty_db_sqlite3_vtab_cursor.self, capacity: 1) { curs -> Int32 in
+				let cursor = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(curs.pointee.cursor.unsafelyUnwrapped)).takeUnretainedValue() as! Cursor
+				do {
+					try cursor.next()
+					return SQLITE_OK
+				}
+				catch let error {
+					os_log("Error advancing cursor: %{public}@", type: .info, error.localizedDescription)
+					return SQLITE_ERROR
+				}
+			}
+		}, xEof: { (pCursor) -> Int32 in
+			return pCursor.unsafelyUnwrapped.withMemoryRebound(to: feisty_db_sqlite3_vtab_cursor.self, capacity: 1) { curs -> Int32 in
+				let cursor = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(curs.pointee.cursor.unsafelyUnwrapped)).takeUnretainedValue() as! Cursor
+				do {
+					return try cursor.eof() ? 1 : 0
+				}
+				catch let error {
+					os_log("Error determining cursor eof: %{public}@", type: .info, error.localizedDescription)
+					return 1
+				}
+			}
+		}, xColumn: { (pCursor, pCtx, i) -> Int32 in
+			return pCursor.unsafelyUnwrapped.withMemoryRebound(to: feisty_db_sqlite3_vtab_cursor.self, capacity: 1) { curs -> Int32 in
+				let cursor = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(curs.pointee.cursor.unsafelyUnwrapped)).takeUnretainedValue() as! Cursor
+				do {
+					let value = try cursor.column(Int(i))
+					set_sqlite3_result(pCtx, value: value)
+					return SQLITE_OK
+				}
+				catch let error {
+					os_log("Error retrieving column: %{public}@", type: .info, error.localizedDescription)
+					return SQLITE_ERROR
+				}
+			}
+		}, xRowid: { (pCursor, pRowid) -> Int32 in
+			return pCursor.unsafelyUnwrapped.withMemoryRebound(to: feisty_db_sqlite3_vtab_cursor.self, capacity: 1) { curs -> Int32 in
+				let cursor = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(curs.pointee.cursor.unsafelyUnwrapped)).takeUnretainedValue() as! Cursor
+				do {
+					let rowid = try cursor.rowid()
+					pRowid.unsafelyUnwrapped.pointee = rowid
+					return SQLITE_OK
+				}
+				catch let error {
+					os_log("Error retrieving rowid: %{public}@", type: .info, error.localizedDescription)
+					return SQLITE_ERROR
+				}
+			}
+		}, xUpdate: nil, xBegin: nil, xSync: nil, xCommit: nil, xRollback: nil, xFindFunction: nil, xRename: nil, xSavepoint: nil, xRelease: nil, xRollbackTo: nil, xShadowName: nil)
+
+		// client_data must live until the xDestroy function is invoked; store it as a +1 object
+		let client_data = ModuleClientData(module: &module_struct) { args -> VirtualTable in
+			return T(arguments: args)
+		}
+		let client_data_ptr = Unmanaged.passRetained(client_data).toOpaque()
+
+		guard sqlite3_create_module_v2(db, name, client_data.module, client_data_ptr, { client_data in
+			// Balance the +1 retain above
+			Unmanaged<ModuleClientData>.fromOpaque(UnsafeRawPointer(client_data.unsafelyUnwrapped)).release()
+		}) == SQLITE_OK else {
+			throw SQLiteError("Error adding module \"\(name)\"", takingDescriptionFromDatabase: db)
+		}
+	}
+}
+
+/// A cursor for an SQLite virtual table
+public protocol Cursor {
+	init(_ table: VirtualTable)
+	func column(_ i: Int) throws -> DatabaseValue
+	func next() throws
+	func rowid() throws -> Int64
+	func filter(_ arguments: [DatabaseValue]) throws
+	func eof() throws -> Bool
+}
+
+/// An SQLite virtual table
+public protocol VirtualTable {
+	/// Initializes an SQLite virtual table.
+	///
+	/// - parameter arguments: The arguments used to create the virtual table.
+	init(arguments: [String])
+
+	/// Returns an SQL `CREATE TABLE` statement for the virtual table
+	func declare() -> String
+
+	///
+	func bestIndex(_ pIdxInfo: UnsafeMutablePointer<sqlite3_index_info>) throws
+
+	/// Opens and returns a cursor for the virtual table
+	func openCursor() throws -> Cursor
 }
