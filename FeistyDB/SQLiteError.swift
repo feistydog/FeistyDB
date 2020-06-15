@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015 - 2018 Feisty Dog, LLC
+// Copyright (c) 2015 - 2020 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
@@ -8,7 +8,7 @@ import Foundation
 
 /// A result code from SQLite
 ///
-/// - seealso: [Result and Error Codes](http://www.sqlite.org/rescode.html)
+/// - seealso: [Result and Error Codes](https://www.sqlite.org/rescode.html)
 public enum SQLiteResultCode {
 	/// Successful result
 	case ok(OKExtendedResultCode?)
@@ -387,7 +387,7 @@ public struct SQLiteError: Error {
 
 	/// A result code specifying the error
 	///
-	/// - seealso: [Result and Error Codes](http://www.sqlite.org/rescode.html)
+	/// - seealso: [Result and Error Codes](https://www.sqlite.org/rescode.html)
 	public let code: SQLiteResultCode
 
 	/// A more detailed description of the error's cause
