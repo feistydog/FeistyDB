@@ -1600,14 +1600,14 @@ extension Database.FTS5TokenizationReason {
 
 extension Database {
 	/// Glue for creating a generic Swift type in a C callback
-	final class ModuleClientData {
+	final class VirtualTableModuleClientData {
 		/// The constructor closure
-		let construct: (_ arguments : [String]) throws -> VirtualTable
+		let construct: (_ arguments : [String]) throws -> VirtualTableModule
 		/// Persistent sqlite3_module instance
 		let module: UnsafeMutablePointer<sqlite3_module>
 
 		/// Creates client data for a module
-		init(module: inout sqlite3_module, _ construct: @escaping (_ arguments: [String]) -> VirtualTable) {
+		init(module: inout sqlite3_module, _ construct: @escaping (_ arguments: [String]) -> VirtualTableModule) {
 			let module_ptr = UnsafeMutablePointer<sqlite3_module>.allocate(capacity: 1)
 			module_ptr.assign(from: &module, count: 1)
 			self.module = module_ptr
@@ -1621,21 +1621,22 @@ extension Database {
 
 	/// Adds a virtual table module to the database
 	///
-	/// - parameter name: The name of the virtual table
-	/// - parameter type: The class implementing the virtual table
+	/// - parameter name: The name of the virtual table module
+	/// - parameter type: The class implementing the virtual table module
 	///
-	/// - throws:  An error if the virtual table can't be added
+	/// - throws:  An error if the virtual table module can't be registered
 	///
+	/// - seealso: [Register A Virtual Table Implementation](https://www.sqlite.org/c3ref/create_module.html)
 	/// - seealso: [The Virtual Table Mechanism Of SQLite](https://sqlite.org/vtab.html)
-	public func addModule<T: VirtualTable>(_ name: String, type: T.Type) throws {
+	public func addModule<T: VirtualTableModule>(_ name: String, type: T.Type) throws {
 		// Flesh out the struct containing the virtual table functions used by SQLite
 		var module_struct = sqlite3_module(iVersion: 0, xCreate: nil, xConnect: { (db, pAux, argc, argv, ppVTab, pzErr) -> Int32 in
 			let args = UnsafeBufferPointer(start: argv, count: Int(argc))
 			let arguments = args.map { String(utf8String: $0.unsafelyUnwrapped).unsafelyUnwrapped }
 
-			let virtualTable: VirtualTable
+			let virtualTable: VirtualTableModule
 			do {
-				let clientData = Unmanaged<ModuleClientData>.fromOpaque(UnsafeRawPointer(pAux.unsafelyUnwrapped)).takeUnretainedValue()
+				let clientData = Unmanaged<VirtualTableModuleClientData>.fromOpaque(UnsafeRawPointer(pAux.unsafelyUnwrapped)).takeUnretainedValue()
 				virtualTable = try clientData.construct(arguments)
 			}
 
@@ -1654,8 +1655,7 @@ extension Database {
 				return SQLITE_ERROR
 			}
 
-			let sql = virtualTable.declare()
-			let rc = sqlite3_declare_vtab(db, sql)
+			let rc = sqlite3_declare_vtab(db, virtualTable.declaration)
 			guard rc == SQLITE_OK else {
 				return rc
 			}
@@ -1669,7 +1669,7 @@ extension Database {
 			let ptr = Unmanaged.passRetained(virtualTable as AnyObject).toOpaque()
 
 			let vtab_ptr = vtab.unsafelyUnwrapped.bindMemory(to: feisty_db_sqlite3_vtab.self, capacity: 1)
-			vtab_ptr.pointee.vtab = ptr
+			vtab_ptr.pointee.virtual_table_module_ptr = ptr
 			vtab_ptr.withMemoryRebound(to: sqlite3_vtab.self, capacity: 1) {
 				ppVTab.unsafelyUnwrapped.pointee = $0
 			}
@@ -1677,7 +1677,7 @@ extension Database {
 			return SQLITE_OK
 		}, xBestIndex: { (pVTab, pIdxInfo) -> Int32 in
 			return pVTab.unsafelyUnwrapped.withMemoryRebound(to: feisty_db_sqlite3_vtab.self, capacity: 1) { vtab -> Int32 in
-				let virtualTable = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(vtab.pointee.vtab.unsafelyUnwrapped)).takeUnretainedValue() as! VirtualTable
+				let virtualTable = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(vtab.pointee.virtual_table_module_ptr.unsafelyUnwrapped)).takeUnretainedValue() as! VirtualTableModule
 				do {
 					try virtualTable.bestIndex(pIdxInfo.unsafelyUnwrapped)
 					return SQLITE_OK
@@ -1690,16 +1690,16 @@ extension Database {
 		}, xDisconnect: { (pVTab) -> Int32 in
 			pVTab.unsafelyUnwrapped.withMemoryRebound(to: feisty_db_sqlite3_vtab.self, capacity: 1) { vtab in
 				// Balance the +1 retain above
-				Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(vtab.pointee.vtab)).release()
+				Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(vtab.pointee.virtual_table_module_ptr)).release()
 			}
 			sqlite3_free(pVTab)
 			return SQLITE_OK
 		}, xDestroy: nil,
 		   xOpen: { (pVTab, ppCursor) -> Int32 in
 			return pVTab.unsafelyUnwrapped.withMemoryRebound(to: feisty_db_sqlite3_vtab.self, capacity: 1) { vtab -> Int32 in
-				let virtualTable = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(vtab.pointee.vtab.unsafelyUnwrapped)).takeUnretainedValue() as! VirtualTable
+				let virtualTable = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(vtab.pointee.virtual_table_module_ptr.unsafelyUnwrapped)).takeUnretainedValue() as! VirtualTableModule
 
-				let cursor: Cursor
+				let cursor: VirtualTableCursor
 				do {
 					cursor = try virtualTable.openCursor()
 				}
@@ -1728,7 +1728,7 @@ extension Database {
 				let ptr = Unmanaged.passRetained(cursor as AnyObject).toOpaque()
 
 				let curs_ptr = curs.unsafelyUnwrapped.bindMemory(to: feisty_db_sqlite3_vtab_cursor.self, capacity: 1)
-				curs_ptr.pointee.cursor = ptr
+				curs_ptr.pointee.virtual_table_cursor_ptr = ptr
 				curs_ptr.withMemoryRebound(to: sqlite3_vtab_cursor.self, capacity: 1) {
 					ppCursor.unsafelyUnwrapped.pointee = $0
 				}
@@ -1738,7 +1738,7 @@ extension Database {
 		}, xClose: { (pCursor) -> Int32 in
 			pCursor.unsafelyUnwrapped.withMemoryRebound(to: feisty_db_sqlite3_vtab_cursor.self, capacity: 1) { curs in
 				// Balance the +1 retain above
-				Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(curs.pointee.cursor)).release()
+				Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(curs.pointee.virtual_table_cursor_ptr)).release()
 			}
 			sqlite3_free(pCursor)
 			return SQLITE_OK
@@ -1747,7 +1747,7 @@ extension Database {
 			let arguments = args.map { DatabaseValue($0.unsafelyUnwrapped) }
 
 			return pCursor.unsafelyUnwrapped.withMemoryRebound(to: feisty_db_sqlite3_vtab_cursor.self, capacity: 1) { curs -> Int32 in
-				let cursor = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(curs.pointee.cursor.unsafelyUnwrapped)).takeUnretainedValue() as! Cursor
+				let cursor = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(curs.pointee.virtual_table_cursor_ptr.unsafelyUnwrapped)).takeUnretainedValue() as! VirtualTableCursor
 				do {
 					var name: String? = nil
 					if idxStr != nil {
@@ -1763,7 +1763,7 @@ extension Database {
 			}
 		}, xNext: { (pCursor) -> Int32 in
 			return pCursor.unsafelyUnwrapped.withMemoryRebound(to: feisty_db_sqlite3_vtab_cursor.self, capacity: 1) { curs -> Int32 in
-				let cursor = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(curs.pointee.cursor.unsafelyUnwrapped)).takeUnretainedValue() as! Cursor
+				let cursor = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(curs.pointee.virtual_table_cursor_ptr.unsafelyUnwrapped)).takeUnretainedValue() as! VirtualTableCursor
 				do {
 					try cursor.next()
 					return SQLITE_OK
@@ -1775,7 +1775,7 @@ extension Database {
 			}
 		}, xEof: { (pCursor) -> Int32 in
 			return pCursor.unsafelyUnwrapped.withMemoryRebound(to: feisty_db_sqlite3_vtab_cursor.self, capacity: 1) { curs -> Int32 in
-				let cursor = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(curs.pointee.cursor.unsafelyUnwrapped)).takeUnretainedValue() as! Cursor
+				let cursor = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(curs.pointee.virtual_table_cursor_ptr.unsafelyUnwrapped)).takeUnretainedValue() as! VirtualTableCursor
 				do {
 					return try cursor.eof() ? 1 : 0
 				}
@@ -1786,7 +1786,7 @@ extension Database {
 			}
 		}, xColumn: { (pCursor, pCtx, i) -> Int32 in
 			return pCursor.unsafelyUnwrapped.withMemoryRebound(to: feisty_db_sqlite3_vtab_cursor.self, capacity: 1) { curs -> Int32 in
-				let cursor = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(curs.pointee.cursor.unsafelyUnwrapped)).takeUnretainedValue() as! Cursor
+				let cursor = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(curs.pointee.virtual_table_cursor_ptr.unsafelyUnwrapped)).takeUnretainedValue() as! VirtualTableCursor
 				do {
 					let value = try cursor.column(Int(i))
 					set_sqlite3_result(pCtx, value: value)
@@ -1799,7 +1799,7 @@ extension Database {
 			}
 		}, xRowid: { (pCursor, pRowid) -> Int32 in
 			return pCursor.unsafelyUnwrapped.withMemoryRebound(to: feisty_db_sqlite3_vtab_cursor.self, capacity: 1) { curs -> Int32 in
-				let cursor = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(curs.pointee.cursor.unsafelyUnwrapped)).takeUnretainedValue() as! Cursor
+				let cursor = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(curs.pointee.virtual_table_cursor_ptr.unsafelyUnwrapped)).takeUnretainedValue() as! VirtualTableCursor
 				do {
 					let rowid = try cursor.rowid()
 					pRowid.unsafelyUnwrapped.pointee = rowid
@@ -1813,14 +1813,14 @@ extension Database {
 		}, xUpdate: nil, xBegin: nil, xSync: nil, xCommit: nil, xRollback: nil, xFindFunction: nil, xRename: nil, xSavepoint: nil, xRelease: nil, xRollbackTo: nil, xShadowName: nil)
 
 		// client_data must live until the xDestroy function is invoked; store it as a +1 object
-		let client_data = ModuleClientData(module: &module_struct) { args -> VirtualTable in
+		let client_data = VirtualTableModuleClientData(module: &module_struct) { args -> VirtualTableModule in
 			return T(arguments: args)
 		}
 		let client_data_ptr = Unmanaged.passRetained(client_data).toOpaque()
 
 		guard sqlite3_create_module_v2(db, name, client_data.module, client_data_ptr, { client_data in
 			// Balance the +1 retain above
-			Unmanaged<ModuleClientData>.fromOpaque(UnsafeRawPointer(client_data.unsafelyUnwrapped)).release()
+			Unmanaged<VirtualTableModuleClientData>.fromOpaque(UnsafeRawPointer(client_data.unsafelyUnwrapped)).release()
 		}) == SQLITE_OK else {
 			throw SQLiteError("Error adding module \"\(name)\"", takingDescriptionFromDatabase: db)
 		}
@@ -1828,28 +1828,62 @@ extension Database {
 }
 
 /// A cursor for an SQLite virtual table
-public protocol Cursor {
-	init(_ table: VirtualTable)
+public protocol VirtualTableCursor {
+	/// The virtual table module to which this cursor belongs
+	var tableModule: VirtualTableModule { get }
+
+	/// Initializes a cursor for an SQLite virtual table module
+	///
+	/// - parameter tableModule: The virtual table module to which the cursor belongs
+	init(_ tableModule: VirtualTableModule)
+
+	/// Returns the value of  column `i` in the row at which the cursor is pointing
+	///
+	/// - note: Column indexes are 0-based
+	///
+	/// - parameter i: The desired column
+	///
+	/// - returns: The value of column `i` in the current row
 	func column(_ i: Int) throws -> DatabaseValue
+
+	/// Advances the cursor to the next row of output
+	///
+	/// - throws: An error if the cursor could not be advanced
 	func next() throws
+
+	/// Returns the rowid for the current row
+	///
+	/// - throws: An error if the rowid is unknown
 	func rowid() throws -> Int64
+
+	/// Applies a filter to the virtual table
 	func filter(_ arguments: [DatabaseValue], indexNumber: Int, indexName: String?) throws
+
+	/// Returns `true` if the cursor has been moved off the last row of output
 	func eof() throws -> Bool
 }
 
-/// An SQLite virtual table
-public protocol VirtualTable {
-	/// Initializes an SQLite virtual table.
+/// An SQLite virtual table module
+public protocol VirtualTableModule {
+	/// Initializes an SQLite virtual table module.
 	///
-	/// - parameter arguments: The arguments used to create the virtual table.
+	/// - parameter arguments: The arguments used to create the virtual table module.
 	init(arguments: [String])
 
-	/// Returns an SQL `CREATE TABLE` statement for the virtual table
-	func declare() -> String
-
+	/// The SQL `CREATE TABLE` statement used to tell SQLite about the virtual table's columns and datatypes.
 	///
-	func bestIndex(_ pIdxInfo: UnsafeMutablePointer<sqlite3_index_info>) throws
+	/// - note: The name of the table and any constraints are ignored.
+	var declaration: String { get }
+
+	/// Determines the best index to use
+	///
+	/// - parameter indexInfo: A pointer to an `sqlite3_index_info` struct containing information on the query
+	///
+	/// - throws: An error if the index could not be determined
+	func bestIndex(_ indexInfo: UnsafeMutablePointer<sqlite3_index_info>) throws
 
 	/// Opens and returns a cursor for the virtual table
-	func openCursor() throws -> Cursor
+	///
+	/// - throws: An error if the cursor could not be opened
+	func openCursor() throws -> VirtualTableCursor
 }

@@ -16,13 +16,17 @@ FOUNDATION_EXPORT const unsigned char FeistyDBVersionString[];
 #include "sqlite3ext.h"
 
 struct feisty_db_sqlite3_vtab {
-	sqlite3_vtab base;  /* Base class - must be first */
-	void *vtab;
+	/// sqlite3 required fields
+	sqlite3_vtab base;
+	/// `UnsafeMutablePointer<VirtualTableModule>`
+	void *virtual_table_module_ptr;
 };
 typedef struct feisty_db_sqlite3_vtab feisty_db_sqlite3_vtab;
 
 struct feisty_db_sqlite3_vtab_cursor {
-	sqlite3_vtab_cursor base;  /* Base class - must be first */
-	void *cursor;
+	/// sqlite3 required fields
+	sqlite3_vtab_cursor base;
+	/// `UnsafeMutablePointer<VirtualTableCursor>`
+	void *virtual_table_cursor_ptr;
 };
 typedef struct feisty_db_sqlite3_vtab_cursor feisty_db_sqlite3_vtab_cursor;

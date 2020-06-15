@@ -471,11 +471,13 @@ class FeistyDBTests: XCTestCase {
 	}
 
 	func testVirtualTable() {
-		class SequentialIntegerTable: VirtualTable {
-			class Cursor: FeistyDB.Cursor {
+		class SequentialIntegerTable: VirtualTableModule {
+			class Cursor: VirtualTableCursor {
+				let tableModule: VirtualTableModule
 				var _rowid: Int64 = 0
 
-				required init(_ table: VirtualTable) {
+				required init(_ tableModule: VirtualTableModule) {
+					self.tableModule = tableModule
 				}
 
 				func column(_ i: Int) throws -> DatabaseValue {
@@ -495,22 +497,21 @@ class FeistyDBTests: XCTestCase {
 				}
 
 				func eof() throws -> Bool {
-					return false
+					return _rowid > Int.max
 				}
 			}
 
 			required init(arguments: [String]) {
-
 			}
 
-			func declare() -> String {
+			var declaration: String {
 				"CREATE TABLE x(value INTEGER)"
 			}
 
 			func bestIndex(_ pIdxInfo: UnsafeMutablePointer<sqlite3_index_info>) throws {
 			}
 
-			func openCursor() throws -> FeistyDB.Cursor {
+			func openCursor() throws -> VirtualTableCursor {
 				return Cursor(self)
 			}
 		}
