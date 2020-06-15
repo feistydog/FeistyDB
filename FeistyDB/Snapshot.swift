@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2018 Feisty Dog, LLC
+// Copyright (c) 2018 - 2020 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
@@ -17,7 +17,7 @@ public final class Snapshot {
 	public let database: Database
 
 	/// The underlying `sqlite3_snapshot *` object
-	var snapshot: SQLiteSnapshot
+	let snapshot: SQLiteSnapshot
 
 	/// A snapshot of the current state of a database schema.
 	///
