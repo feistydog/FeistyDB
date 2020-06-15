@@ -1749,7 +1749,11 @@ extension Database {
 			return pCursor.unsafelyUnwrapped.withMemoryRebound(to: feisty_db_sqlite3_vtab_cursor.self, capacity: 1) { curs -> Int32 in
 				let cursor = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(curs.pointee.cursor.unsafelyUnwrapped)).takeUnretainedValue() as! Cursor
 				do {
-					try cursor.filter(arguments)
+					var name: String? = nil
+					if idxStr != nil {
+						name = String(utf8String: idxStr.unsafelyUnwrapped).unsafelyUnwrapped
+					}
+					try cursor.filter(arguments, indexNumber: Int(idxNum), indexName: name)
 					return SQLITE_OK
 				}
 				catch let error {
@@ -1829,7 +1833,7 @@ public protocol Cursor {
 	func column(_ i: Int) throws -> DatabaseValue
 	func next() throws
 	func rowid() throws -> Int64
-	func filter(_ arguments: [DatabaseValue]) throws
+	func filter(_ arguments: [DatabaseValue], indexNumber: Int, indexName: String?) throws
 	func eof() throws -> Bool
 }
 

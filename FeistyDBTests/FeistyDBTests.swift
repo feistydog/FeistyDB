@@ -490,7 +490,7 @@ class FeistyDBTests: XCTestCase {
 					return _rowid
 				}
 
-				func filter(_ arguments: [DatabaseValue]) throws {
+				func filter(_ arguments: [DatabaseValue], indexNumber: Int, indexName: String?) throws {
 					_rowid = 1
 				}
 
