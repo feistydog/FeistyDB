@@ -59,7 +59,7 @@ public final class Statement {
 	public let database: Database
 
 	/// The underlying `sqlite3_stmt *` object
-	var stmt: SQLitePreparedStatement
+	let stmt: SQLitePreparedStatement
 
 	/// Creates a compiled SQL statement.
 	///
