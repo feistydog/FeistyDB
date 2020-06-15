@@ -1641,7 +1641,7 @@ extension Database {
 			}
 
 			catch let error {
-				os_log("Error constructing virtual table: %{public}@", type: .info, error.localizedDescription)
+				os_log("Error connecting to virtual table module: %{public}@", type: .info, error.localizedDescription)
 
 				let description = error.localizedDescription
 				let len = description.utf8.count + 1
@@ -1757,7 +1757,7 @@ extension Database {
 					return SQLITE_OK
 				}
 				catch let error {
-					os_log("Error applying filter to cursor: %{public}@", type: .info, error.localizedDescription)
+					os_log("Error applying filter: %{public}@", type: .info, error.localizedDescription)
 					return SQLITE_ERROR
 				}
 			}
@@ -1780,7 +1780,7 @@ extension Database {
 					return try cursor.eof() ? 1 : 0
 				}
 				catch let error {
-					os_log("Error determining cursor eof: %{public}@", type: .info, error.localizedDescription)
+					os_log("Error determining cursor EOF: %{public}@", type: .info, error.localizedDescription)
 					return 1
 				}
 			}
@@ -1831,11 +1831,6 @@ extension Database {
 public protocol VirtualTableCursor {
 	/// The virtual table module to which this cursor belongs
 	var tableModule: VirtualTableModule { get }
-
-	/// Initializes a cursor for an SQLite virtual table module
-	///
-	/// - parameter tableModule: The virtual table module to which the cursor belongs
-	init(_ tableModule: VirtualTableModule)
 
 	/// Returns the value of  column `i` in the row at which the cursor is pointing
 	///

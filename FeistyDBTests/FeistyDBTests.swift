@@ -476,7 +476,7 @@ class FeistyDBTests: XCTestCase {
 				let tableModule: VirtualTableModule
 				var _rowid: Int64 = 0
 
-				required init(_ tableModule: VirtualTableModule) {
+				init(_ tableModule: VirtualTableModule) {
 					self.tableModule = tableModule
 				}
 
