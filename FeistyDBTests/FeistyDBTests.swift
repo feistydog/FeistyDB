@@ -470,6 +470,60 @@ class FeistyDBTests: XCTestCase {
 		XCTAssertEqual([ "dog", "hedgehog" ], results)
 	}
 
+	func testVirtualTable() {
+		class SequentialIntegerTable: VirtualTable {
+			class Cursor: FeistyDB.Cursor {
+				var _rowid: Int64 = 0
+
+				required init(_ table: VirtualTable) {
+				}
+
+				func column(_ i: Int) throws -> DatabaseValue {
+					return .integer(_rowid)
+				}
+
+				func next() throws {
+					_rowid += 1
+				}
+
+				func rowid() throws -> Int64 {
+					return _rowid
+				}
+
+				func filter(_ arguments: [DatabaseValue]) throws {
+					_rowid = 1
+				}
+
+				func eof() throws -> Bool {
+					return false
+				}
+			}
+
+			required init(arguments: [String]) {
+
+			}
+
+			func declare() -> String {
+				"CREATE TABLE x(value INTEGER)"
+			}
+
+			func bestIndex(_ pIdxInfo: UnsafeMutablePointer<sqlite3_index_info>) throws {
+			}
+
+			func openCursor() throws -> FeistyDB.Cursor {
+				return Cursor(self)
+			}
+		}
+
+		let db = try! Database()
+
+		try! db.addModule("sequential_integers", type: SequentialIntegerTable.self)
+		let statement = try! db.prepare(sql: "SELECT value FROM sequential_integers LIMIT 5;")
+
+		let results: [Int] = statement.map({try! $0.value(at: 0)})
+		XCTAssertEqual(results, [1,2,3,4,5])
+	}
+
 	func testDatabaseQueue() {
 	}
 
