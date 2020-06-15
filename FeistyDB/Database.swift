@@ -1679,7 +1679,7 @@ extension Database {
 			return pVTab.unsafelyUnwrapped.withMemoryRebound(to: feisty_db_sqlite3_vtab.self, capacity: 1) { vtab -> Int32 in
 				let virtualTable = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(vtab.pointee.virtual_table_module_ptr.unsafelyUnwrapped)).takeUnretainedValue() as! VirtualTableModule
 				do {
-					try virtualTable.bestIndex(pIdxInfo.unsafelyUnwrapped)
+					try virtualTable.bestIndex(&pIdxInfo.unsafelyUnwrapped.pointee)
 					return SQLITE_OK
 				}
 				catch let error {
@@ -1880,7 +1880,7 @@ public protocol VirtualTableModule {
 	/// - parameter indexInfo: A pointer to an `sqlite3_index_info` struct containing information on the query
 	///
 	/// - throws: An error if the index could not be determined
-	func bestIndex(_ indexInfo: UnsafeMutablePointer<sqlite3_index_info>) throws
+	func bestIndex(_ indexInfo: inout sqlite3_index_info) throws
 
 	/// Opens and returns a cursor for the virtual table
 	///

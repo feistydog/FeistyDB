@@ -508,7 +508,7 @@ class FeistyDBTests: XCTestCase {
 				"CREATE TABLE x(value INTEGER)"
 			}
 
-			func bestIndex(_ pIdxInfo: UnsafeMutablePointer<sqlite3_index_info>) throws {
+			func bestIndex(_ indexInfo: inout sqlite3_index_info) throws {
 			}
 
 			func openCursor() throws -> VirtualTableCursor {
