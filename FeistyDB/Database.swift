@@ -1412,6 +1412,9 @@ public protocol FTS5Tokenizer {
 extension Database {
 	/// Glue for creating a generic Swift type in a C callback
 	final class FTS5TokenizerCreator {
+		/// The constructor closure
+		let construct: (_ arguments : [String]) throws -> FTS5Tokenizer
+
 		/// Creates a new FTS5TokenizerCreator.
 		///
 		/// - parameter construct: A closure that creates the tokenizer
@@ -1419,9 +1422,6 @@ extension Database {
 		{
 			self.construct = construct
 		}
-
-		/// The constructor closure
-		let construct: (_ arguments : [String]) throws -> FTS5Tokenizer
 	}
 
 	/// The reasons FTS5 will request tokenization
@@ -1603,6 +1603,7 @@ extension Database {
 	final class VirtualTableModuleClientData {
 		/// The constructor closure
 		let construct: (_ arguments : [String]) throws -> VirtualTableModule
+
 		/// Persistent sqlite3_module instance
 		let module: UnsafeMutablePointer<sqlite3_module>
 
@@ -1829,9 +1830,6 @@ extension Database {
 
 /// A cursor for an SQLite virtual table
 public protocol VirtualTableCursor {
-	/// The virtual table module to which this cursor belongs
-	var tableModule: VirtualTableModule { get }
-
 	/// Returns the value of  column `i` in the row at which the cursor is pointing
 	///
 	/// - note: Column indexes are 0-based

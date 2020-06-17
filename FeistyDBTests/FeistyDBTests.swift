@@ -471,13 +471,13 @@ class FeistyDBTests: XCTestCase {
 	}
 
 	func testVirtualTable() {
-		class SequentialIntegerTable: VirtualTableModule {
-			class Cursor: VirtualTableCursor {
-				let tableModule: VirtualTableModule
+		final class SequentialIntegerModule: VirtualTableModule {
+			final class Cursor: VirtualTableCursor {
+				let module: SequentialIntegerModule
 				var _rowid: Int64 = 0
 
-				init(_ tableModule: VirtualTableModule) {
-					self.tableModule = tableModule
+				init(_ module: SequentialIntegerModule) {
+					self.module = module
 				}
 
 				func column(_ i: Int) throws -> DatabaseValue {
@@ -518,7 +518,7 @@ class FeistyDBTests: XCTestCase {
 
 		let db = try! Database()
 
-		try! db.addModule("sequential_integers", type: SequentialIntegerTable.self)
+		try! db.addModule("sequential_integers", type: SequentialIntegerModule.self)
 		let statement = try! db.prepare(sql: "SELECT value FROM sequential_integers LIMIT 5;")
 
 		let results: [Int] = statement.map({try! $0.value(at: 0)})
