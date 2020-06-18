@@ -1679,14 +1679,8 @@ extension Database {
 		}, xBestIndex: { (pVTab, pIdxInfo) -> Int32 in
 			return pVTab.unsafelyUnwrapped.withMemoryRebound(to: feisty_db_sqlite3_vtab.self, capacity: 1) { vtab -> Int32 in
 				let virtualTable = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(vtab.pointee.virtual_table_module_ptr.unsafelyUnwrapped)).takeUnretainedValue() as! VirtualTableModule
-				do {
-					try virtualTable.bestIndex(&pIdxInfo.unsafelyUnwrapped.pointee)
-					return SQLITE_OK
-				}
-				catch let error {
-					os_log("Error determining best index: %{public}@", type: .info, error.localizedDescription)
-					return SQLITE_ERROR
-				}
+				let result = virtualTable.bestIndex(&pIdxInfo.unsafelyUnwrapped.pointee)
+				return result.code
 			}
 		}, xDisconnect: { (pVTab) -> Int32 in
 			pVTab.unsafelyUnwrapped.withMemoryRebound(to: feisty_db_sqlite3_vtab.self, capacity: 1) { vtab in
@@ -1749,47 +1743,29 @@ extension Database {
 
 			return pCursor.unsafelyUnwrapped.withMemoryRebound(to: feisty_db_sqlite3_vtab_cursor.self, capacity: 1) { curs -> Int32 in
 				let cursor = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(curs.pointee.virtual_table_cursor_ptr.unsafelyUnwrapped)).takeUnretainedValue() as! VirtualTableCursor
-				do {
-					var name: String? = nil
-					if idxStr != nil {
-						name = String(utf8String: idxStr.unsafelyUnwrapped).unsafelyUnwrapped
-					}
-					try cursor.filter(arguments, indexNumber: Int(idxNum), indexName: name)
-					return SQLITE_OK
+				var name: String? = nil
+				if idxStr != nil {
+					name = String(utf8String: idxStr.unsafelyUnwrapped).unsafelyUnwrapped
 				}
-				catch let error {
-					os_log("Error applying filter: %{public}@", type: .info, error.localizedDescription)
-					return SQLITE_ERROR
-				}
+				let result = cursor.filter(arguments, indexNumber: idxNum, indexName: name)
+				return result.code
 			}
 		}, xNext: { (pCursor) -> Int32 in
 			return pCursor.unsafelyUnwrapped.withMemoryRebound(to: feisty_db_sqlite3_vtab_cursor.self, capacity: 1) { curs -> Int32 in
 				let cursor = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(curs.pointee.virtual_table_cursor_ptr.unsafelyUnwrapped)).takeUnretainedValue() as! VirtualTableCursor
-				do {
-					try cursor.next()
-					return SQLITE_OK
-				}
-				catch let error {
-					os_log("Error advancing cursor: %{public}@", type: .info, error.localizedDescription)
-					return SQLITE_ERROR
-				}
+				let result = cursor.next()
+				return result.code
 			}
 		}, xEof: { (pCursor) -> Int32 in
 			return pCursor.unsafelyUnwrapped.withMemoryRebound(to: feisty_db_sqlite3_vtab_cursor.self, capacity: 1) { curs -> Int32 in
 				let cursor = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(curs.pointee.virtual_table_cursor_ptr.unsafelyUnwrapped)).takeUnretainedValue() as! VirtualTableCursor
-				do {
-					return try cursor.eof() ? 1 : 0
-				}
-				catch let error {
-					os_log("Error determining cursor EOF: %{public}@", type: .info, error.localizedDescription)
-					return 1
-				}
+				return cursor.eof() ? 1 : 0
 			}
 		}, xColumn: { (pCursor, pCtx, i) -> Int32 in
 			return pCursor.unsafelyUnwrapped.withMemoryRebound(to: feisty_db_sqlite3_vtab_cursor.self, capacity: 1) { curs -> Int32 in
 				let cursor = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(curs.pointee.virtual_table_cursor_ptr.unsafelyUnwrapped)).takeUnretainedValue() as! VirtualTableCursor
 				do {
-					let value = try cursor.column(Int(i))
+					let value = try cursor.column(i)
 					set_sqlite3_result(pCtx, value: value)
 					return SQLITE_OK
 				}
@@ -1801,15 +1777,12 @@ extension Database {
 		}, xRowid: { (pCursor, pRowid) -> Int32 in
 			return pCursor.unsafelyUnwrapped.withMemoryRebound(to: feisty_db_sqlite3_vtab_cursor.self, capacity: 1) { curs -> Int32 in
 				let cursor = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(curs.pointee.virtual_table_cursor_ptr.unsafelyUnwrapped)).takeUnretainedValue() as! VirtualTableCursor
-				do {
-					let rowid = try cursor.rowid()
+				var rowid: Int64 = 0
+				let result = cursor.rowid(&rowid)
+				if case .ok(_) = result {
 					pRowid.unsafelyUnwrapped.pointee = rowid
-					return SQLITE_OK
 				}
-				catch let error {
-					os_log("Error retrieving rowid: %{public}@", type: .info, error.localizedDescription)
-					return SQLITE_ERROR
-				}
+				return result.code
 			}
 		}, xUpdate: nil, xBegin: nil, xSync: nil, xCommit: nil, xRollback: nil, xFindFunction: nil, xRename: nil, xSavepoint: nil, xRelease: nil, xRollbackTo: nil, xShadowName: nil)
 
@@ -1837,23 +1810,25 @@ public protocol VirtualTableCursor {
 	/// - parameter i: The desired column
 	///
 	/// - returns: The value of column `i` in the current row
-	func column(_ i: Int) throws -> DatabaseValue
+	func column(_ i: Int32) throws -> DatabaseValue
 
 	/// Advances the cursor to the next row of output
 	///
-	/// - throws: An error if the cursor could not be advanced
-	func next() throws
+	/// - returns: `.ok` on success or an appropriate error on failure
+	func next() -> SQLiteResult
 
-	/// Returns the rowid for the current row
+	/// Retrieves the rowid for the current row
 	///
-	/// - throws: An error if the rowid is unknown
-	func rowid() throws -> Int64
+	/// - returns: `.ok` on success or an appropriate error on failure
+	func rowid(_ rowid: inout Int64) -> SQLiteResult
 
 	/// Applies a filter to the virtual table
-	func filter(_ arguments: [DatabaseValue], indexNumber: Int, indexName: String?) throws
+	///
+	/// - returns: `.ok` on success or an appropriate error on failure
+	func filter(_ arguments: [DatabaseValue], indexNumber: Int32, indexName: String?) -> SQLiteResult
 
 	/// Returns `true` if the cursor has been moved off the last row of output
-	func eof() throws -> Bool
+	func eof() -> Bool
 }
 
 /// An SQLite virtual table module
@@ -1872,8 +1847,8 @@ public protocol VirtualTableModule {
 	///
 	/// - parameter indexInfo: A pointer to an `sqlite3_index_info` struct containing information on the query
 	///
-	/// - throws: An error if the index could not be determined
-	func bestIndex(_ indexInfo: inout sqlite3_index_info) throws
+	/// - returns: `.ok` on success or an appropriate error on failure
+	func bestIndex(_ indexInfo: inout sqlite3_index_info) -> SQLiteResult
 
 	/// Opens and returns a cursor for the virtual table
 	///
