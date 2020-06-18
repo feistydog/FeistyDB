@@ -11,35 +11,35 @@ import Foundation
 /// - seealso: [Result and Error Codes](https://www.sqlite.org/rescode.html)
 public enum SQLiteResult {
 	/// Successful result
-	case ok(OKExtendedResultCode? = nil)
+	case ok(OKExtendedResult? = nil)
 	/// Generic error
-	case error(ErrorExtendedResultCode? = nil)
+	case error(ErrorExtendedResult? = nil)
 	/// Internal logic error in SQLite
 	case `internal`
 	/// Access permission denied
 	case perm
 	/// Callback routine requested an abort
-	case abort(AbortExtendedResultCode? = nil)
+	case abort(AbortExtendedResult? = nil)
 	/// The database file is locked
-	case busy(BusyExtendedResultCode? = nil)
+	case busy(BusyExtendedResult? = nil)
 	/// A table in the database is locked
-	case locked(LockedExtendedResultCode? = nil)
+	case locked(LockedExtendedResult? = nil)
 	/// A malloc() failed
 	case noMem
 	/// Attempt to write a readonly database
-	case readOnly(ReadOnlyExtendedResultCode? = nil)
+	case readOnly(ReadOnlyExtendedResult? = nil)
 	/// Operation terminated by `sqlite3_interrupt()`
 	case interrupt
 	/// Some kind of disk I/O error occurred
-	case ioErr(IOErrExtendedResultCode? = nil)
+	case ioErr(IOErrExtendedResult? = nil)
 	/// The database disk image is malformed
-	case corrupt(CorruptExtendedResultCode? = nil)
+	case corrupt(CorruptExtendedResult? = nil)
 	/// Unknown opcode in `sqlite3_file_control()`
 	case notFound
 	/// Insertion failed because database is full
 	case full
 	/// Unable to open the database file
-	case cantOpen(CantOpenExtendedResultCode? = nil)
+	case cantOpen(CantOpenExtendedResult? = nil)
 	/// Database lock protocol error
 	case `protocol`
 	/// Internal use only
@@ -49,7 +49,7 @@ public enum SQLiteResult {
 	/// String or BLOB exceeds size limit
 	case tooBig
 	/// Abort due to constraint violation
-	case constraint(ConstraintExtendedResultCode? = nil)
+	case constraint(ConstraintExtendedResult? = nil)
 	/// Data type mismatch
 	case mismatch
 	/// Library used incorrectly
@@ -57,7 +57,7 @@ public enum SQLiteResult {
 	/// Uses OS features not supported on host
 	case noLFS
 	/// Authorization denied
-	case auth(AuthExtendedResultCode? = nil)
+	case auth(AuthExtendedResult? = nil)
 	/// Not used
 	case format
 	/// 2nd parameter to `sqlite3_bind()` out of range
@@ -65,9 +65,9 @@ public enum SQLiteResult {
 	/// File opened that is not a database file
 	case notADB
 	/// Notifications from `sqlite3_log()`
-	case notice(NoticeExtendedResultCode? = nil)
+	case notice(NoticeExtendedResult? = nil)
 	/// Warnings from sqlite3_log()
-	case warning(WarningExtendedResultCode? = nil)
+	case warning(WarningExtendedResult? = nil)
 	/// `sqlite3_step()` has another row ready
 	case row
 	/// `sqlite3_step()` has finished executing
@@ -76,7 +76,7 @@ public enum SQLiteResult {
 	// Extended result codes
 
 	/// SQLITE_OK_* extended result codes
-	public enum OKExtendedResultCode {
+	public enum OKExtendedResult {
 		/// SQLITE_OK_LOAD_PERMANENTLY
 		case loadPermanently
 		/// SQLITE_OK_LOAD_SYMLINK
@@ -84,7 +84,7 @@ public enum SQLiteResult {
 	}
 
 	/// SQLITE_ERROR_* extended result codes
-	public enum ErrorExtendedResultCode {
+	public enum ErrorExtendedResult {
 		/// SQLITE_ERROR_MISSING_COLLSEQ
 		case missingCollSeq
 		/// SQLITE_ERROR_RETRY
@@ -94,13 +94,13 @@ public enum SQLiteResult {
 	}
 
 	/// SQLITE_ABORT_* extended result codes
-	public enum AbortExtendedResultCode {
+	public enum AbortExtendedResult {
 		/// SQLITE_ABORT_ROLLBACK
 		case rollback
 	}
 
 	/// SQLITE_BUSY_* extended result codes
-	public enum BusyExtendedResultCode {
+	public enum BusyExtendedResult {
 		/// SQLITE_BUSY_RECOVERY
 		case recovery
 		/// SQLITE_BUSY_SNAPSHOT
@@ -110,7 +110,7 @@ public enum SQLiteResult {
 	}
 
 	/// SQLITE_LOCKED_* extended result codes
-	public enum LockedExtendedResultCode {
+	public enum LockedExtendedResult {
 		/// SQLITE_LOCKED_SHAREDCACHE
 		case sharedCache
 		/// SQLITE_LOCKED_VTAB
@@ -118,7 +118,7 @@ public enum SQLiteResult {
 	}
 
 	/// SQLITE_READONLY_* extended result codes
-	public enum ReadOnlyExtendedResultCode {
+	public enum ReadOnlyExtendedResult {
 		/// SQLITE_READONLY_RECOVERY
 		case recovery
 		/// SQLITE_READONLY_CANTLOCK
@@ -134,7 +134,7 @@ public enum SQLiteResult {
 	}
 
 	/// SQLITE_IOERR_* extended result codes
-	public enum IOErrExtendedResultCode {
+	public enum IOErrExtendedResult {
 		/// SQLITE_IOERR_READ
 		case read
 		/// SQLITE_IOERR_SHORT_READ
@@ -202,7 +202,7 @@ public enum SQLiteResult {
 	}
 
 	/// SQLITE_CORRUPT_* extended result codes
-	public enum CorruptExtendedResultCode {
+	public enum CorruptExtendedResult {
 		/// SQLITE_CORRUPT_VTAB
 		case vtab
 		/// SQLITE_CORRUPT_SEQUENCE
@@ -212,7 +212,7 @@ public enum SQLiteResult {
 	}
 
 	/// SQLITE_CANTOPEN_* extended result codes
-	public enum CantOpenExtendedResultCode {
+	public enum CantOpenExtendedResult {
 		/// SQLITE_CANTOPEN_NOTEMPDIR
 		case noTempDir
 		/// SQLITE_CANTOPEN_ISDIR
@@ -228,7 +228,7 @@ public enum SQLiteResult {
 	}
 
 	/// SQLITE_CONSTRAINT_* extended result codes
-	public enum ConstraintExtendedResultCode {
+	public enum ConstraintExtendedResult {
 		/// SQLITE_CONSTRAINT_CHECK
 		case check
 		/// SQLITE_CONSTRAINT_COMMITHOOK
@@ -254,13 +254,13 @@ public enum SQLiteResult {
 	}
 
 	/// SQLITE_AUTH_* extended result codes
-	public enum AuthExtendedResultCode {
+	public enum AuthExtendedResult {
 		/// SQLITE_AUTH_USER
 		case user
 	}
 
 	/// SQLITE_NOTICE_* extended result codes
-	public enum NoticeExtendedResultCode {
+	public enum NoticeExtendedResult {
 		/// SQLITE_NOTICE_RECOVER_WAL
 		case recoverWAL
 		/// SQLITE_NOTICE_RECOVER_ROLLBACK
@@ -268,7 +268,7 @@ public enum SQLiteResult {
 	}
 
 	/// SQLITE_WARNING_* extended result codes
-	public enum WarningExtendedResultCode {
+	public enum WarningExtendedResult {
 		/// SQLITE_WARNING_AUTOINDEX
 		case autoindex
 	}
