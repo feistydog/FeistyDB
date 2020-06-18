@@ -490,7 +490,7 @@ class FeistyDBTests: XCTestCase {
 					self.module = module
 				}
 
-				func column(_ i: Int32) throws -> DatabaseValue {
+				func column(_ i: Int32) -> DatabaseValue  {
 					switch i {
 					case SeriesModule.startColumn:
 						return .integer(_min)
@@ -503,7 +503,7 @@ class FeistyDBTests: XCTestCase {
 					}
 				}
 
-				func next() -> SQLiteResult {
+				func next() throws {
 					if _isDescending {
 						_value -= _step
 					}
@@ -511,15 +511,13 @@ class FeistyDBTests: XCTestCase {
 						_value += _step
 					}
 					_rowid += 1
-					return .ok()
 				}
 
-				func rowid(_ rowid: inout Int64) -> SQLiteResult {
-					rowid = _rowid
-					return .ok()
+				func rowid() throws -> Int64 {
+					return _rowid
 				}
 
-				func filter(_ arguments: [DatabaseValue], indexNumber: Int32, indexName: String?) -> SQLiteResult {
+				func filter(_ arguments: [DatabaseValue], indexNumber: Int32, indexName: String?) throws {
 					var argumentNumber = 0
 					if indexNumber & 1 == 1 {
 						if case let .integer(i) = arguments[argumentNumber] {
@@ -569,8 +567,6 @@ class FeistyDBTests: XCTestCase {
 					}
 
 					_rowid = 1
-
-					return .ok()
 				}
 
 				func eof() -> Bool {
@@ -590,7 +586,7 @@ class FeistyDBTests: XCTestCase {
 				"CREATE TABLE x(value,start hidden,stop hidden,step hidden)"
 			}
 
-			func bestIndex(_ indexInfo: inout sqlite3_index_info) -> SQLiteResult {
+			func bestIndex(_ indexInfo: inout sqlite3_index_info) throws {
 				// Inputs
 				let constraintCount = Int(indexInfo.nConstraint)
 				let constraints = UnsafeBufferPointer<sqlite3_index_constraint>(start: indexInfo.aConstraint, count: constraintCount)
@@ -633,7 +629,7 @@ class FeistyDBTests: XCTestCase {
 				}
 
 				if (unusableConstraintMask & ~queryPlanBitmask) != 0 {
-					return .constraint()
+					throw SQLiteError(message: "Invalid constraint", code: .constraint(), details: "")
 				}
 
 				if (queryPlanBitmask & 3) == 3 {
@@ -651,8 +647,6 @@ class FeistyDBTests: XCTestCase {
 				}
 
 				indexInfo.idxNum = queryPlanBitmask
-
-				return .ok()
 			}
 
 			func openCursor() throws -> VirtualTableCursor {
