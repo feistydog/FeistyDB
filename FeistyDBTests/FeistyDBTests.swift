@@ -731,6 +731,116 @@ class FeistyDBTests: XCTestCase {
 		XCTAssertEqual(results, [10,11,12,13,14])
 	}
 
+	func testVirtualTable3() {
+		// A virtual table module implementing a shuffled integer sequence
+		//
+		// Usage:
+		//   CREATE VIRTUAL TABLE temp.shuffled USING shuffled_sequence(count=10);
+		//   SELECT * from shuffled;
+		//
+		// Required parameter: count
+		// Optional parameter: start
+		final class ShuffledSequenceModule: VirtualTableModule {
+			final class Cursor: VirtualTableCursor {
+				let table: ShuffledSequenceModule
+				var _rowid: Int64 = 0
+
+				init(_ table: ShuffledSequenceModule) {
+					self.table = table
+				}
+
+				func column(_ index: Int32) -> DatabaseValue {
+					return .integer(Int64(table.values[Int(_rowid - 1)]))
+				}
+
+				func next() {
+					_rowid += 1
+				}
+
+				func rowid() -> Int64 {
+					_rowid
+				}
+
+				func filter(_ arguments: [DatabaseValue], indexNumber: Int32, indexName: String?) {
+					_rowid = 1
+				}
+
+				var eof: Bool {
+					_rowid > table.values.count
+				}
+			}
+
+			let values: [Int]
+
+			required init(arguments: [String]) throws {
+				var count = 0
+				var start = 1
+
+				for argument in arguments {
+					let scanner = Scanner(string: argument)
+					scanner.charactersToBeSkipped = .whitespaces
+					var token: NSString? = nil
+					guard scanner.scanUpTo("=", into: &token) else {
+						continue
+					}
+					if token == "count" {
+						guard scanner.scanString("=", into: nil) else {
+							throw SQLiteError("Missing value for count", code: SQLITE_ERROR)
+						}
+						guard scanner.scanInt(&count), count > 0 else {
+							throw SQLiteError("Invalid value for count", code: SQLITE_ERROR)
+						}
+					}
+					else if token == "start" {
+						guard scanner.scanString("=", into: nil) else {
+							throw SQLiteError("Missing value for start", code: SQLITE_ERROR)
+						}
+						guard scanner.scanInt(&start) else {
+							throw SQLiteError("Invalid value for start", code: SQLITE_ERROR)
+						}
+					}
+				}
+
+				guard count > 0 else {
+					throw SQLiteError("Invalid value for count", code: SQLITE_ERROR)
+				}
+
+				values = (start ..< start + count).shuffled()
+			}
+
+			var declaration: String {
+				"CREATE TABLE x(value)"
+			}
+
+			var options: Database.VirtualTableModuleOptions {
+				[.innocuous]
+			}
+
+			func bestIndex(_ indexInfo: inout sqlite3_index_info) -> VirtualTableModuleBestIndexResult {
+				.ok
+			}
+
+			func openCursor() -> VirtualTableCursor {
+				Cursor(self)
+			}
+		}
+
+		let db = try! Database()
+
+		try! db.addModule("shuffled_sequence", type: ShuffledSequenceModule.self, eponymousOnly: false)
+		try! db.execute(sql: "CREATE VIRTUAL TABLE temp.shuffled USING shuffled_sequence(count=5);")
+		var statement = try! db.prepare(sql: "SELECT value FROM shuffled;")
+
+		var results: [Int] = statement.map({try! $0.value(at: 0)})
+		XCTAssertEqual(results.sorted(), [1,2,3,4,5])
+
+		try! db.execute(sql: "CREATE VIRTUAL TABLE temp.shuffled2 USING shuffled_sequence(start=10,count=5);")
+		statement = try! db.prepare(sql: "SELECT value FROM shuffled2;")
+
+		results = statement.map({try! $0.value(at: 0)})
+		XCTAssertEqual(results.sorted(), [10,11,12,13,14])
+	}
+
 	func testDatabaseQueue() {
 	}
 
