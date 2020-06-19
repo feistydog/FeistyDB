@@ -710,7 +710,7 @@ extension Database {
 
 		/// The function gives the same output when the input parameters are the same
 		public static let deterministic = SQLFunctionFlags(rawValue: 1 << 0)
-		/// The function may only be invoked from top-level SQL, and cannot be used in `VIEW`s or `TRIGGER`s
+		/// The function may only be invoked from top-level SQL, and cannot be used in views or triggers
 		/// nor in schema structures such as `CHECK` constraints, `DEFAULT` clauses, expression indexes, partial indexes, or generated columns
 		public static let directOnly = SQLFunctionFlags(rawValue: 1 << 1)
 		/// Indicates to SQLite that a function may call `sqlite3_value_subtype() `to inspect the sub-types of its arguments
@@ -1599,24 +1599,6 @@ extension Database.FTS5TokenizationReason {
 }
 
 extension Database {
-	/// Virtual table module options
-	///
-	/// - seealso: [Virtual Table Configuration Options](https://sqlite.org/c3ref/c_vtab_constraint_support.html)
-	public struct VirtualTableModuleOptions: OptionSet {
-		public let rawValue: Int
-
-		public init(rawValue: Int) {
-			self.rawValue = rawValue
-		}
-
-		/// Indicates whether the virtual table module supports constraints
-		public static let constraintSupport = VirtualTableModuleOptions(rawValue: 1 << 0)
-		/// The virtual table module is unlikely to cause problems even if misused.
-		public static let innocuous = VirtualTableModuleOptions(rawValue: 1 << 2)
-		/// The virtual table module is prohibited from use in `TRIGGER`s or `VIEW`s
-		public static let directOnly = VirtualTableModuleOptions(rawValue: 1 << 3)
-	}
-
 	/// Glue for creating a generic Swift type in a C callback
 	final class VirtualTableModuleClientData {
 		/// The constructor closure
@@ -1638,7 +1620,74 @@ extension Database {
 		}
 	}
 
-	/// Adds a virtual table module to the database
+	/// Virtual table module options
+	///
+	/// - seealso: [Virtual Table Configuration Options](https://sqlite.org/c3ref/c_vtab_constraint_support.html)
+	public struct VirtualTableModuleOptions: OptionSet {
+		public let rawValue: Int
+
+		public init(rawValue: Int) {
+			self.rawValue = rawValue
+		}
+
+		/// Indicates whether the virtual table module supports constraints
+		public static let constraintSupport = VirtualTableModuleOptions(rawValue: 1 << 0)
+		/// The virtual table module is unlikely to cause problems even if misused.
+		public static let innocuous = VirtualTableModuleOptions(rawValue: 1 << 2)
+		/// The virtual table module is prohibited from use in triggers or views
+		public static let directOnly = VirtualTableModuleOptions(rawValue: 1 << 3)
+	}
+
+	/// Adds a virtual table module to the database.
+	///
+	/// For example, a virtual table module returning the natural numbers could be implemented as:
+	/// ```swift
+	/// class NaturalNumbersModule: VirtualTableModule {
+	/// 	class Cursor: VirtualTableCursor {
+	/// 		var _rowid: Int64 = 0
+	///
+	/// 		func column(_ index: Int32) -> DatabaseValue  {
+	/// 			.integer(_rowid)
+	/// 		}
+	///
+	/// 		func next() {
+	/// 			_rowid += 1
+	/// 		}
+	///
+	/// 		func rowid() -> Int64 {
+	/// 			_rowid
+	/// 		}
+	///
+	/// 		func filter(_ arguments: [DatabaseValue], indexNumber: Int32, indexName: String?) {
+	/// 			_rowid = 1
+	/// 		}
+	///
+	/// 		func eof() -> Bool {
+	/// 			_rowid > 2147483647
+	/// 		}
+	/// 	}
+	///
+	/// 	required init(arguments: [String]) {
+	/// 		// Arguments not used
+	/// 	}
+	///
+	/// 	var declaration: String {
+	/// 		"CREATE TABLE x(value)"
+	/// 	}
+	///
+	/// 	var options: Database.VirtualTableModuleOptions {
+	/// 		return [.innocuous]
+	/// 	}
+	///
+	/// 	func bestIndex(_ indexInfo: inout sqlite3_index_info) throws {
+	/// 		// not used
+	/// 	}
+	///
+	/// 	func openCursor() -> VirtualTableCursor {
+	/// 		Cursor()
+	/// 	}
+	/// }
+	/// ```
 	///
 	/// - parameter name: The name of the virtual table module
 	/// - parameter type: The class implementing the virtual table module
