@@ -507,7 +507,8 @@ class FeistyDBTests: XCTestCase {
 				[.innocuous]
 			}
 
-			func bestIndex(_ indexInfo: inout sqlite3_index_info) {
+			func bestIndex(_ indexInfo: inout sqlite3_index_info) -> VirtualTableModuleBestIndexResult {
+				.ok
 			}
 
 			func openCursor() -> VirtualTableCursor {
@@ -646,7 +647,7 @@ class FeistyDBTests: XCTestCase {
 				return [.innocuous]
 			}
 
-			func bestIndex(_ indexInfo: inout sqlite3_index_info) throws {
+			func bestIndex(_ indexInfo: inout sqlite3_index_info) -> VirtualTableModuleBestIndexResult {
 				// Inputs
 				let constraintCount = Int(indexInfo.nConstraint)
 				let constraints = UnsafeBufferPointer<sqlite3_index_constraint>(start: indexInfo.aConstraint, count: constraintCount)
@@ -689,7 +690,7 @@ class FeistyDBTests: XCTestCase {
 				}
 
 				if (unusableConstraintMask & ~queryPlanBitmask) != 0 {
-					throw SQLiteError(message: "Invalid constraint", code: .constraint(), details: "")
+					return .constraint
 				}
 
 				if queryPlanBitmask & 3 == 3 {
@@ -707,6 +708,8 @@ class FeistyDBTests: XCTestCase {
 				}
 
 				indexInfo.idxNum = queryPlanBitmask
+
+				return .ok
 			}
 
 			func openCursor() -> VirtualTableCursor {

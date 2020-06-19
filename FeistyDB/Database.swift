@@ -1676,11 +1676,11 @@ extension Database {
 	/// 	}
 	///
 	/// 	var options: Database.VirtualTableModuleOptions {
-	/// 		return [.innocuous]
+	/// 		[.innocuous]
 	/// 	}
 	///
-	/// 	func bestIndex(_ indexInfo: inout sqlite3_index_info) {
-	/// 		// not used
+	/// 	func bestIndex(_ indexInfo: inout sqlite3_index_info) -> VirtualTableModuleBestIndexResult {
+	/// 		.ok
 	/// 	}
 	///
 	/// 	func openCursor() -> VirtualTableCursor {
@@ -1753,8 +1753,11 @@ extension Database {
 			return pVTab.unsafelyUnwrapped.withMemoryRebound(to: feisty_db_sqlite3_vtab.self, capacity: 1) { vtab -> Int32 in
 				let virtualTable = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(vtab.pointee.virtual_table_module_ptr.unsafelyUnwrapped)).takeUnretainedValue() as! VirtualTableModule
 				do {
-					try virtualTable.bestIndex(&pIdxInfo.unsafelyUnwrapped.pointee)
-					return SQLITE_OK
+					let result = try virtualTable.bestIndex(&pIdxInfo.unsafelyUnwrapped.pointee)
+					switch result {
+					case .ok: 			return SQLITE_OK
+					case .constraint: 	return SQLITE_CONSTRAINT
+					}
 				}
 
 				catch let error as SQLiteError {
@@ -1973,11 +1976,23 @@ public protocol VirtualTableCursor {
 
 	/// Applies a filter to the virtual table
 	///
+	/// - parameter arguments: Arguments applicable to the query plan made in `VirtualTableModule.bestIndex()`
+	/// - parameter indexNumber: The index number returned by `VirtualTableModule.bestIndex()`
+	/// - parameter indexName: The index name returned by `VirtualTableModule.bestIndex()`
+	///
 	/// - throws: `SQLiteError` if an error occurs
 	func filter(_ arguments: [DatabaseValue], indexNumber: Int32, indexName: String?) throws
 
 	/// Returns `true` if the cursor has been moved off the last row of output
 	func eof() -> Bool
+}
+
+/// Possible results for the `VirtualTableModule.bestIndex()` function
+public enum VirtualTableModuleBestIndexResult {
+	/// Success
+	case ok
+	/// No usable query plan exists
+	case constraint
 }
 
 /// An SQLite virtual table module
@@ -1997,12 +2012,14 @@ public protocol VirtualTableModule {
 	/// - note: The name of the table and any constraints are ignored.
 	var declaration: String { get }
 
-	/// Determines the best index to use
+	/// Determines the query plan to use for a given query
 	///
-	/// - parameter indexInfo: A pointer to an `sqlite3_index_info` struct containing information on the query
+	/// - parameter indexInfo: An `sqlite3_index_info` struct containing information on the query
+	///
+	/// - returns: `.ok` on success or `.constraint` if the configuration of unusable flags in `indexInfo` cannot result in a usable query plan
 	///
 	/// - throws: `SQLiteError` if an error occurs
-	func bestIndex(_ indexInfo: inout sqlite3_index_info) throws
+	func bestIndex(_ indexInfo: inout sqlite3_index_info) throws -> VirtualTableModuleBestIndexResult
 
 	/// Opens and returns a cursor for the virtual table
 	///
