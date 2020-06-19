@@ -60,6 +60,36 @@ extension DatabaseValue: Equatable {
 	}
 }
 
+extension DatabaseValue: ExpressibleByNilLiteral {
+	public init(nilLiteral: ()) {
+		self = .null
+	}
+}
+
+extension DatabaseValue: ExpressibleByIntegerLiteral {
+	public init(integerLiteral value: IntegerLiteralType) {
+		self = .integer(Int64(value))
+	}
+}
+
+extension DatabaseValue: ExpressibleByFloatLiteral {
+	public init(floatLiteral value: FloatLiteralType) {
+		self = .float(value)
+	}
+}
+
+extension DatabaseValue: ExpressibleByStringLiteral {
+	public init(stringLiteral value: StringLiteralType) {
+		self = .text(value)
+	}
+}
+
+extension DatabaseValue: ExpressibleByBooleanLiteral {
+	public init(booleanLiteral value: BooleanLiteralType) {
+		self = .integer(value ? 1 : 0)
+	}
+}
+
 extension DatabaseValue {
 	/// Creates an instance containing the value of column `idx` in `stmt`.
 	///
