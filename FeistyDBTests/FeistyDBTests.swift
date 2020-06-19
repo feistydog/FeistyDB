@@ -471,6 +471,62 @@ class FeistyDBTests: XCTestCase {
 	}
 
 	func testVirtualTable() {
+		final class NaturalNumbersModule: VirtualTableModule {
+			final class Cursor: VirtualTableCursor {
+				var _rowid: Int64 = 0
+
+				func column(_ index: Int32) -> DatabaseValue {
+					.integer(_rowid)
+				}
+
+				func next() {
+					_rowid += 1
+				}
+
+				func rowid() -> Int64 {
+					_rowid
+				}
+
+				func filter(_ arguments: [DatabaseValue], indexNumber: Int32, indexName: String?) {
+					_rowid = 1
+				}
+
+				func eof() -> Bool {
+					_rowid > 2147483647
+				}
+			}
+
+			required init(arguments: [String]) {
+			}
+
+			var declaration: String {
+				"CREATE TABLE x(value)"
+			}
+
+			var options: Database.VirtualTableModuleOptions {
+				[.innocuous]
+			}
+
+			func bestIndex(_ indexInfo: inout sqlite3_index_info) throws {
+			}
+
+			func openCursor() -> VirtualTableCursor {
+				Cursor()
+			}
+		}
+
+		let db = try! Database()
+
+		try! db.addModule("natural_numbers", type: NaturalNumbersModule.self)
+		let statement = try! db.prepare(sql: "SELECT value FROM natural_numbers LIMIT 5;")
+
+		let results: [Int] = statement.map({try! $0.value(at: 0)})
+		XCTAssertEqual(results, [1,2,3,4,5])
+	}
+
+	func testVirtualTable2() {
+		/// A port of the `generate_series` sqlite3 module
+		/// - seealso: https://www.sqlite.org/src/file/ext/misc/series.c
 		final class SeriesModule: VirtualTableModule {
 			static let valueColumn: Int32 = 0
 			static let startColumn: Int32 = 1
@@ -490,7 +546,7 @@ class FeistyDBTests: XCTestCase {
 					self.module = module
 				}
 
-				func column(_ index: Int32) -> DatabaseValue  {
+				func column(_ index: Int32) -> DatabaseValue {
 					switch index {
 					case SeriesModule.startColumn:
 						return .integer(_min)
