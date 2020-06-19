@@ -1662,7 +1662,7 @@ extension Database {
 	/// 			_rowid = 1
 	/// 		}
 	///
-	/// 		func eof() -> Bool {
+	/// 		var eof: Bool {
 	/// 			_rowid > 2147483647
 	/// 		}
 	/// 	}
@@ -1884,7 +1884,7 @@ extension Database {
 		}, xEof: { (pCursor) -> Int32 in
 			return pCursor.unsafelyUnwrapped.withMemoryRebound(to: feisty_db_sqlite3_vtab_cursor.self, capacity: 1) { curs -> Int32 in
 				let cursor = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(curs.pointee.virtual_table_cursor_ptr.unsafelyUnwrapped)).takeUnretainedValue() as! VirtualTableCursor
-				return cursor.eof() ? 1 : 0
+				return cursor.eof ? 1 : 0
 			}
 		}, xColumn: { (pCursor, pCtx, i) -> Int32 in
 			return pCursor.unsafelyUnwrapped.withMemoryRebound(to: feisty_db_sqlite3_vtab_cursor.self, capacity: 1) { curs -> Int32 in
@@ -1983,8 +1983,8 @@ public protocol VirtualTableCursor {
 	/// - throws: `SQLiteError` if an error occurs
 	func filter(_ arguments: [DatabaseValue], indexNumber: Int32, indexName: String?) throws
 
-	/// Returns `true` if the cursor has been moved off the last row of output
-	func eof() -> Bool
+	/// `true` if the cursor has been moved off the last row of output
+	var eof: Bool { get }
 }
 
 /// Possible results for the `VirtualTableModule.bestIndex()` function

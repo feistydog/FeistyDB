@@ -491,7 +491,7 @@ class FeistyDBTests: XCTestCase {
 					_rowid = 1
 				}
 
-				func eof() -> Bool {
+				var eof: Bool {
 					_rowid > 2147483647
 				}
 			}
@@ -626,7 +626,7 @@ class FeistyDBTests: XCTestCase {
 					_rowid = 1
 				}
 
-				func eof() -> Bool {
+				var eof: Bool {
 					if _isDescending {
 						return _value < _min
 					}
