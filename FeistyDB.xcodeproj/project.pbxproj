@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		320C557D249D1F6500C9FEB6 /* Database+VirtualTableModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320C557C249D1F6500C9FEB6 /* Database+VirtualTableModule.swift */; };
-		320C557E249D1F6500C9FEB6 /* Database+VirtualTableModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320C557C249D1F6500C9FEB6 /* Database+VirtualTableModule.swift */; };
+		320C557D249D1F6500C9FEB6 /* Database+VirtualTables.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320C557C249D1F6500C9FEB6 /* Database+VirtualTables.swift */; };
+		320C557E249D1F6500C9FEB6 /* Database+VirtualTables.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320C557C249D1F6500C9FEB6 /* Database+VirtualTables.swift */; };
 		320C5580249D4FAC00C9FEB6 /* Database+FTS5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320C557F249D4FAC00C9FEB6 /* Database+FTS5.swift */; };
 		320C5581249D4FAC00C9FEB6 /* Database+FTS5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320C557F249D4FAC00C9FEB6 /* Database+FTS5.swift */; };
-		320C5583249D50D200C9FEB6 /* Database+SQLFunction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320C5582249D50D200C9FEB6 /* Database+SQLFunction.swift */; };
-		320C5584249D50D200C9FEB6 /* Database+SQLFunction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320C5582249D50D200C9FEB6 /* Database+SQLFunction.swift */; };
+		320C5583249D50D200C9FEB6 /* Database+SQLFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320C5582249D50D200C9FEB6 /* Database+SQLFunctions.swift */; };
+		320C5584249D50D200C9FEB6 /* Database+SQLFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320C5582249D50D200C9FEB6 /* Database+SQLFunctions.swift */; };
 		320C5586249D51CC00C9FEB6 /* Database+Collation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320C5585249D51CC00C9FEB6 /* Database+Collation.swift */; };
 		320C5587249D51CC00C9FEB6 /* Database+Collation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320C5585249D51CC00C9FEB6 /* Database+Collation.swift */; };
 		321AC9141DCA9D6D00FD8ECA /* ParameterBindable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321AC9131DCA9D6D00FD8ECA /* ParameterBindable.swift */; };
@@ -72,9 +72,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		320C557C249D1F6500C9FEB6 /* Database+VirtualTableModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Database+VirtualTableModule.swift"; sourceTree = "<group>"; };
+		320C557C249D1F6500C9FEB6 /* Database+VirtualTables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Database+VirtualTables.swift"; sourceTree = "<group>"; };
 		320C557F249D4FAC00C9FEB6 /* Database+FTS5.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Database+FTS5.swift"; sourceTree = "<group>"; };
-		320C5582249D50D200C9FEB6 /* Database+SQLFunction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Database+SQLFunction.swift"; sourceTree = "<group>"; };
+		320C5582249D50D200C9FEB6 /* Database+SQLFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Database+SQLFunctions.swift"; sourceTree = "<group>"; };
 		320C5585249D51CC00C9FEB6 /* Database+Collation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Database+Collation.swift"; sourceTree = "<group>"; };
 		321AC9131DCA9D6D00FD8ECA /* ParameterBindable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParameterBindable.swift; sourceTree = "<group>"; };
 		3236FD831DC6EDE50057703E /* FeistyDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeistyDB.h; sourceTree = "<group>"; };
@@ -165,8 +165,8 @@
 				324CCF331DC61D1F0056935B /* Database.swift */,
 				320C5585249D51CC00C9FEB6 /* Database+Collation.swift */,
 				320C557F249D4FAC00C9FEB6 /* Database+FTS5.swift */,
-				320C5582249D50D200C9FEB6 /* Database+SQLFunction.swift */,
-				320C557C249D1F6500C9FEB6 /* Database+VirtualTableModule.swift */,
+				320C5582249D50D200C9FEB6 /* Database+SQLFunctions.swift */,
+				320C557C249D1F6500C9FEB6 /* Database+VirtualTables.swift */,
 				32FFA0AA21987258000EE1C6 /* Snapshot.swift */,
 				324CCF3E1DC61DE90056935B /* Statement.swift */,
 				324CCF3A1DC61D640056935B /* Row.swift */,
@@ -381,10 +381,10 @@
 				3245A5D3246822E300E51635 /* SQLiteCArray.swift in Sources */,
 				324CAE192074626D007B5E43 /* DatabaseSerializable.swift in Sources */,
 				32FFA0A521967870000EE1C6 /* SQLite.swift in Sources */,
-				320C557E249D1F6500C9FEB6 /* Database+VirtualTableModule.swift in Sources */,
+				320C557E249D1F6500C9FEB6 /* Database+VirtualTables.swift in Sources */,
 				32C353C6249BC2CD006BB20F /* SQLiteResult.swift in Sources */,
 				324CAE0A2074624D007B5E43 /* sqlite3.c in Sources */,
-				320C5584249D50D200C9FEB6 /* Database+SQLFunction.swift in Sources */,
+				320C5584249D50D200C9FEB6 /* Database+SQLFunctions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -409,10 +409,10 @@
 				32D3CF941DCD5A8B00BB53C6 /* DatabaseSerializable.swift in Sources */,
 				32FFA0A4219609EC000EE1C6 /* SQLite.swift in Sources */,
 				32FFA0AB21987258000EE1C6 /* Snapshot.swift in Sources */,
-				320C557D249D1F6500C9FEB6 /* Database+VirtualTableModule.swift in Sources */,
+				320C557D249D1F6500C9FEB6 /* Database+VirtualTables.swift in Sources */,
 				32C353C5249BC2CD006BB20F /* SQLiteResult.swift in Sources */,
 				324CCF4C1DC61F020056935B /* sqlite3.c in Sources */,
-				320C5583249D50D200C9FEB6 /* Database+SQLFunction.swift in Sources */,
+				320C5583249D50D200C9FEB6 /* Database+SQLFunctions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
