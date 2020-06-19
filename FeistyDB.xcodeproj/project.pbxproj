@@ -9,6 +9,12 @@
 /* Begin PBXBuildFile section */
 		320C557D249D1F6500C9FEB6 /* Database+VirtualTableModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320C557C249D1F6500C9FEB6 /* Database+VirtualTableModule.swift */; };
 		320C557E249D1F6500C9FEB6 /* Database+VirtualTableModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320C557C249D1F6500C9FEB6 /* Database+VirtualTableModule.swift */; };
+		320C5580249D4FAC00C9FEB6 /* Database+FTS5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320C557F249D4FAC00C9FEB6 /* Database+FTS5.swift */; };
+		320C5581249D4FAC00C9FEB6 /* Database+FTS5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320C557F249D4FAC00C9FEB6 /* Database+FTS5.swift */; };
+		320C5583249D50D200C9FEB6 /* Database+SQLFunction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320C5582249D50D200C9FEB6 /* Database+SQLFunction.swift */; };
+		320C5584249D50D200C9FEB6 /* Database+SQLFunction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320C5582249D50D200C9FEB6 /* Database+SQLFunction.swift */; };
+		320C5586249D51CC00C9FEB6 /* Database+Collation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320C5585249D51CC00C9FEB6 /* Database+Collation.swift */; };
+		320C5587249D51CC00C9FEB6 /* Database+Collation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320C5585249D51CC00C9FEB6 /* Database+Collation.swift */; };
 		321AC9141DCA9D6D00FD8ECA /* ParameterBindable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321AC9131DCA9D6D00FD8ECA /* ParameterBindable.swift */; };
 		3236FD841DC6EDE50057703E /* FeistyDB.h in Headers */ = {isa = PBXBuildFile; fileRef = 3236FD831DC6EDE50057703E /* FeistyDB.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3236FD871DC6EF420057703E /* FeistyDBTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3236FD851DC6EDF90057703E /* FeistyDBTests.swift */; };
@@ -67,6 +73,9 @@
 
 /* Begin PBXFileReference section */
 		320C557C249D1F6500C9FEB6 /* Database+VirtualTableModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Database+VirtualTableModule.swift"; sourceTree = "<group>"; };
+		320C557F249D4FAC00C9FEB6 /* Database+FTS5.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Database+FTS5.swift"; sourceTree = "<group>"; };
+		320C5582249D50D200C9FEB6 /* Database+SQLFunction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Database+SQLFunction.swift"; sourceTree = "<group>"; };
+		320C5585249D51CC00C9FEB6 /* Database+Collation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Database+Collation.swift"; sourceTree = "<group>"; };
 		321AC9131DCA9D6D00FD8ECA /* ParameterBindable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParameterBindable.swift; sourceTree = "<group>"; };
 		3236FD831DC6EDE50057703E /* FeistyDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeistyDB.h; sourceTree = "<group>"; };
 		3236FD851DC6EDF90057703E /* FeistyDBTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeistyDBTests.swift; sourceTree = "<group>"; };
@@ -154,6 +163,9 @@
 				32FFA0A3219609EC000EE1C6 /* SQLite.swift */,
 				32C353C4249BC2CD006BB20F /* SQLiteResult.swift */,
 				324CCF331DC61D1F0056935B /* Database.swift */,
+				320C5585249D51CC00C9FEB6 /* Database+Collation.swift */,
+				320C557F249D4FAC00C9FEB6 /* Database+FTS5.swift */,
+				320C5582249D50D200C9FEB6 /* Database+SQLFunction.swift */,
 				320C557C249D1F6500C9FEB6 /* Database+VirtualTableModule.swift */,
 				32FFA0AA21987258000EE1C6 /* Snapshot.swift */,
 				324CCF3E1DC61DE90056935B /* Statement.swift */,
@@ -355,10 +367,12 @@
 				324CAE112074626D007B5E43 /* Row.swift in Sources */,
 				324CAE0F2074626D007B5E43 /* Database.swift in Sources */,
 				324CAE182074626D007B5E43 /* ParameterBindable.swift in Sources */,
+				320C5581249D4FAC00C9FEB6 /* Database+FTS5.swift in Sources */,
 				324CAE122074626D007B5E43 /* DatabaseValue.swift in Sources */,
 				324CAE172074626D007B5E43 /* ColumnConvertible.swift in Sources */,
 				324CAE132074626D007B5E43 /* DatabaseError.swift in Sources */,
 				3245A5D7246866D500E51635 /* DatabaseReadQueue.swift in Sources */,
+				320C5587249D51CC00C9FEB6 /* Database+Collation.swift in Sources */,
 				323F5431249CD90700FDF56E /* feisty_db_sqlite3_glue.c in Sources */,
 				324CAE102074626D007B5E43 /* Statement.swift in Sources */,
 				324CAE152074626D007B5E43 /* DatabaseQueue.swift in Sources */,
@@ -370,6 +384,7 @@
 				320C557E249D1F6500C9FEB6 /* Database+VirtualTableModule.swift in Sources */,
 				32C353C6249BC2CD006BB20F /* SQLiteResult.swift in Sources */,
 				324CAE0A2074624D007B5E43 /* sqlite3.c in Sources */,
+				320C5584249D50D200C9FEB6 /* Database+SQLFunction.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -380,10 +395,12 @@
 				324CCF3B1DC61D640056935B /* Row.swift in Sources */,
 				324CCF341DC61D1F0056935B /* Database.swift in Sources */,
 				321AC9141DCA9D6D00FD8ECA /* ParameterBindable.swift in Sources */,
+				320C5580249D4FAC00C9FEB6 /* Database+FTS5.swift in Sources */,
 				324CCF5A1DC623C20056935B /* DatabaseValue.swift in Sources */,
 				324CCF581DC6233E0056935B /* ColumnConvertible.swift in Sources */,
 				324CCF541DC621F00056935B /* DatabaseError.swift in Sources */,
 				32702D3B2340F93900A9A53E /* DatabaseReadQueue.swift in Sources */,
+				320C5586249D51CC00C9FEB6 /* Database+Collation.swift in Sources */,
 				323F542F249CD90000FDF56E /* feisty_db_sqlite3_glue.c in Sources */,
 				324CCF3F1DC61DE90056935B /* Statement.swift in Sources */,
 				324CCF5E1DC624950056935B /* DatabaseQueue.swift in Sources */,
@@ -395,6 +412,7 @@
 				320C557D249D1F6500C9FEB6 /* Database+VirtualTableModule.swift in Sources */,
 				32C353C5249BC2CD006BB20F /* SQLiteResult.swift in Sources */,
 				324CCF4C1DC61F020056935B /* sqlite3.c in Sources */,
+				320C5583249D50D200C9FEB6 /* Database+SQLFunction.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
