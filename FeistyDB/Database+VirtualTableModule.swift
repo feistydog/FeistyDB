@@ -199,6 +199,7 @@ extension Database {
 
 		if !eponymousOnly {
 			module_struct.xCreate = xCreate
+			module_struct.xDestroy = xDisconnect
 		}
 
 		// client_data must live until the xDestroy function is invoked; store it as a +1 object
