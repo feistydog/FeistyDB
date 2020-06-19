@@ -1679,7 +1679,7 @@ extension Database {
 	/// 		return [.innocuous]
 	/// 	}
 	///
-	/// 	func bestIndex(_ indexInfo: inout sqlite3_index_info) throws {
+	/// 	func bestIndex(_ indexInfo: inout sqlite3_index_info) {
 	/// 		// not used
 	/// 	}
 	///
