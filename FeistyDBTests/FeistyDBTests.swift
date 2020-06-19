@@ -490,8 +490,8 @@ class FeistyDBTests: XCTestCase {
 					self.module = module
 				}
 
-				func column(_ i: Int32) -> DatabaseValue  {
-					switch i {
+				func column(_ index: Int32) -> DatabaseValue  {
+					switch index {
 					case SeriesModule.startColumn:
 						return .integer(_min)
 					case SeriesModule.stopColumn:
@@ -503,7 +503,7 @@ class FeistyDBTests: XCTestCase {
 					}
 				}
 
-				func next() throws {
+				func next() {
 					if _isDescending {
 						_value -= _step
 					}
@@ -513,11 +513,11 @@ class FeistyDBTests: XCTestCase {
 					_rowid += 1
 				}
 
-				func rowid() throws -> Int64 {
+				func rowid() -> Int64 {
 					return _rowid
 				}
 
-				func filter(_ arguments: [DatabaseValue], indexNumber: Int32, indexName: String?) throws {
+				func filter(_ arguments: [DatabaseValue], indexNumber: Int32, indexName: String?) {
 					var argumentNumber = 0
 					if indexNumber & 1 == 1 {
 						if case let .integer(i) = arguments[argumentNumber] {
@@ -586,6 +586,10 @@ class FeistyDBTests: XCTestCase {
 				"CREATE TABLE x(value,start hidden,stop hidden,step hidden)"
 			}
 
+			var options: Database.VirtualTableModuleOptions {
+				return [.innocuous]
+			}
+
 			func bestIndex(_ indexInfo: inout sqlite3_index_info) throws {
 				// Inputs
 				let constraintCount = Int(indexInfo.nConstraint)
@@ -632,7 +636,7 @@ class FeistyDBTests: XCTestCase {
 					throw SQLiteError(message: "Invalid constraint", code: .constraint(), details: "")
 				}
 
-				if (queryPlanBitmask & 3) == 3 {
+				if queryPlanBitmask & 3 == 3 {
 					indexInfo.estimatedCost = 2  - ((queryPlanBitmask & 4) != 0 ? 1 : 0)
 					indexInfo.estimatedRows = 1000
 					if orderByCount == 1 {
@@ -649,7 +653,7 @@ class FeistyDBTests: XCTestCase {
 				indexInfo.idxNum = queryPlanBitmask
 			}
 
-			func openCursor() throws -> VirtualTableCursor {
+			func openCursor() -> VirtualTableCursor {
 				return Cursor(self)
 			}
 		}

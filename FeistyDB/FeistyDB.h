@@ -14,6 +14,7 @@ FOUNDATION_EXPORT const unsigned char FeistyDBVersionString[];
 
 #include "sqlite3.h"
 #include "sqlite3ext.h"
+#include "feisty_db_sqlite3_glue.h"
 
 struct feisty_db_sqlite3_vtab {
 	/// sqlite3 required fields

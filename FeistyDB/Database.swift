@@ -1598,21 +1598,25 @@ extension Database.FTS5TokenizationReason {
 	}
 }
 
-/// Duplicates `s` into a buffer allocated using `sqlite3_malloc()`
-func feisty_db_sqlite3_strdup(_ s: String) -> UnsafeMutablePointer<Int8>? {
-	// sqlite3_mprintf() isn't available from Swift since it is a variadic function
-//	return sqlite3_mprintf("%s", s)
-	let len = s.utf8.count + 1
-	let mem = sqlite3_malloc(Int32(len))
-	if mem != nil {
-		let str = mem!.assumingMemoryBound(to: Int8.self)
-		strncpy(str, s, len)
-		return str
-	}
-	return nil
-}
-
 extension Database {
+	/// Virtual table module options
+	///
+	/// - seealso: [Virtual Table Configuration Options](https://sqlite.org/c3ref/c_vtab_constraint_support.html)
+	public struct VirtualTableModuleOptions: OptionSet {
+		public let rawValue: Int
+
+		public init(rawValue: Int) {
+			self.rawValue = rawValue
+		}
+
+		/// Indicates whether the virtual table module supports constraints
+		public static let constraintSupport = VirtualTableModuleOptions(rawValue: 1 << 0)
+		/// The virtual table module is unlikely to cause problems even if misused.
+		public static let innocuous = VirtualTableModuleOptions(rawValue: 1 << 2)
+		/// The virtual table module is prohibited from use in `TRIGGER`s or `VIEW`s
+		public static let directOnly = VirtualTableModuleOptions(rawValue: 1 << 3)
+	}
+
 	/// Glue for creating a generic Swift type in a C callback
 	final class VirtualTableModuleClientData {
 		/// The constructor closure
@@ -1670,6 +1674,15 @@ extension Database {
 			let rc = sqlite3_declare_vtab(db, virtualTable.declaration)
 			guard rc == SQLITE_OK else {
 				return rc
+			}
+
+			let options = virtualTable.options
+			feisty_db_sqlite3_vtab_config_constraint_support(db, options.contains(.constraintSupport) ? 1 : 0)
+			if options.contains(.innocuous) {
+				feisty_db_sqlite3_vtab_config_innocuous(db)
+			}
+			if options.contains(.directOnly) {
+				feisty_db_sqlite3_vtab_config_directonly(db)
 			}
 
 			let vtab = sqlite3_malloc(Int32(MemoryLayout<feisty_db_sqlite3_vtab>.size))
@@ -1886,16 +1899,16 @@ extension Database {
 
 /// A cursor for an SQLite virtual table
 public protocol VirtualTableCursor {
-	/// Returns the value of  column `i` in the row at which the cursor is pointing
+	/// Returns the value of  column `index` in the row at which the cursor is pointing
 	///
 	/// - note: Column indexes are 0-based
 	///
-	/// - parameter i: The desired column
+	/// - parameter index: The desired column
 	///
-	/// - returns: The value of column `i` in the current row
+	/// - returns: The value of column `index` in the current row
 	///
 	/// - throws: `SQLiteError` if an error occurs
-	func column(_ i: Int32) throws -> DatabaseValue
+	func column(_ index: Int32) throws -> DatabaseValue
 
 	/// Advances the cursor to the next row of output
 	///
@@ -1927,6 +1940,9 @@ public protocol VirtualTableModule {
 	/// - throws: `SQLiteError` if the module could not be created
 	init(arguments: [String]) throws
 
+	/// The options supported by this virtual table module
+	var options: Database.VirtualTableModuleOptions { get }
+
 	/// The SQL `CREATE TABLE` statement used to tell SQLite about the virtual table's columns and datatypes.
 	///
 	/// - note: The name of the table and any constraints are ignored.
@@ -1945,4 +1961,10 @@ public protocol VirtualTableModule {
 	///
 	/// - throws: `SQLiteError` error if the cursor could not be created
 	func openCursor() throws -> VirtualTableCursor
+}
+
+extension VirtualTableModule {
+	var options: Database.VirtualTableModuleOptions {
+		return []
+	}
 }
