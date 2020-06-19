@@ -34,6 +34,16 @@ class FeistyDBTests: XCTestCase {
 		XCTAssertFalse(SQLite.isKeyword("BEGINNING"))
 	}
 
+	func testDatabaseValueLiterals() {
+		var v: DatabaseValue
+		v = nil
+		v = 100
+		v = 10.0
+		v = "lulu"
+		v = false
+		_ = v
+	}
+
 	func testDatabase() {
 		let db = try! Database()
 
