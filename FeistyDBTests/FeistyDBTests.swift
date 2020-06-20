@@ -53,7 +53,7 @@ final class ShuffledSequenceModule: VirtualTableModule {
 		var count = 0
 		var start = 1
 
-		for argument in arguments {
+		for argument in arguments.suffix(from: 3) {
 			let scanner = Scanner(string: argument)
 			scanner.charactersToBeSkipped = .whitespaces
 			var token: NSString? = nil
