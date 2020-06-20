@@ -246,8 +246,8 @@ extension Database {
 	/// 		}
 	/// 	}
 	///
-	/// 	required init(arguments: [String]) {
-	/// 		// Arguments not used
+	/// 	required init(database: Database, arguments: [String]) {
+	/// 		// database and arguments not used
 	/// 	}
 	///
 	/// 	var declaration: String {
