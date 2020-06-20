@@ -7,16 +7,6 @@
 import XCTest
 @testable import FeistyDB
 
-extension DatabaseValue {
-	init(_ i: Int64) {
-		self = .integer(i)
-	}
-
-	init(_ t: String) {
-		self = .text(t)
-	}
-}
-
 class FeistyDBTests: XCTestCase {
 
     override func setUp() {
@@ -246,7 +236,7 @@ class FeistyDBTests: XCTestCase {
 				defer {
 					sum = 0
 				}
-				return DatabaseValue(sum)
+				return .integer(sum)
 			}
 
 			var sum: Int64 = 0
@@ -295,14 +285,14 @@ class FeistyDBTests: XCTestCase {
 			}
 
 			func value() throws -> DatabaseValue {
-				return DatabaseValue(sum)
+				return .integer(sum)
 			}
 
 			func final() throws -> DatabaseValue {
 				defer {
 					sum = 0
 				}
-				return DatabaseValue(sum)
+				return .integer(sum)
 			}
 
 			var sum: Int64 = 0
