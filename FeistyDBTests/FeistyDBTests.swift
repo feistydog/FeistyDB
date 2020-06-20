@@ -730,15 +730,22 @@ class FeistyDBTests: XCTestCase {
 		let db = try! Database()
 
 		try! db.addModule("generate_series", type: SeriesModule.self)
-		var statement = try! db.prepare(sql: "SELECT value FROM generate_series LIMIT 5;")
 
+		var statement = try! db.prepare(sql: "SELECT value FROM generate_series LIMIT 5;")
 		var results: [Int] = statement.map({try! $0.value(at: 0)})
 		XCTAssertEqual(results, [0,1,2,3,4])
 
 		statement = try! db.prepare(sql: "SELECT value FROM generate_series(10) LIMIT 5;")
-
 		results = statement.map({try! $0.value(at: 0)})
 		XCTAssertEqual(results, [10,11,12,13,14])
+
+		statement = try! db.prepare(sql: "SELECT value FROM generate_series(10,20,1) ORDER BY value DESC LIMIT 5;")
+		results = statement.map({try! $0.value(at: 0)})
+		XCTAssertEqual(results, [20,19,18,17,16])
+
+		statement = try! db.prepare(sql: "SELECT value FROM generate_series(11,22,2) LIMIT 5;")
+		results = statement.map({try! $0.value(at: 0)})
+		XCTAssertEqual(results, [11,13,15,17,19])
 	}
 
 	func testVirtualTable3() {
@@ -842,12 +849,15 @@ class FeistyDBTests: XCTestCase {
 		var statement = try! db.prepare(sql: "SELECT value FROM shuffled;")
 
 		var results: [Int] = statement.map({try! $0.value(at: 0)})
+		// Probability of the shuffled sequence being the same as the original is 1/5! = 1/120 = 8% (?) so this isn't a good check
+//		XCTAssertNotEqual(results, [1,2,3,4,5])
 		XCTAssertEqual(results.sorted(), [1,2,3,4,5])
 
 		try! db.execute(sql: "CREATE VIRTUAL TABLE temp.shuffled2 USING shuffled_sequence(start=10,count=5);")
 		statement = try! db.prepare(sql: "SELECT value FROM shuffled2;")
 
 		results = statement.map({try! $0.value(at: 0)})
+//		XCTAssertNotEqual(results, [10,11,12,13,14])
 		XCTAssertEqual(results.sorted(), [10,11,12,13,14])
 	}
 
