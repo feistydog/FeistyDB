@@ -199,7 +199,7 @@ extension Database {
 
 		if !eponymousOnly {
 			module_struct.xCreate = xCreate
-			module_struct.xDestroy = xDisconnect
+			module_struct.xDestroy = xDestroy
 		}
 
 		// client_data must live until the xDestroy function is invoked; store it as a +1 object
@@ -222,6 +222,10 @@ extension Database {
 // xCreate() is the same functionally as xConnect() but must be a different pointer for non-eponymous tables
 func xCreate(_ db: OpaquePointer?, _ pAux: UnsafeMutableRawPointer?, _ argc: Int32, _ argv: UnsafePointer<UnsafePointer<Int8>?>?, _ ppVTab:UnsafeMutablePointer<UnsafeMutablePointer<sqlite3_vtab>?>?, _ pzErr: UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>?) -> Int32 {
 	return xConnect(db, pAux, argc, argv, ppVTab, pzErr)
+}
+
+func xDestroy(_ pVTab: UnsafeMutablePointer<sqlite3_vtab>?) -> Int32 {
+	return xDisconnect(pVTab)
 }
 
 func xConnect(_ db: OpaquePointer?, _ pAux: UnsafeMutableRawPointer?, _ argc: Int32, _ argv: UnsafePointer<UnsafePointer<Int8>?>?, _ ppVTab: UnsafeMutablePointer<UnsafeMutablePointer<sqlite3_vtab>?>?, _ pzErr: UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>?) -> Int32 {
@@ -277,6 +281,15 @@ func xConnect(_ db: OpaquePointer?, _ pAux: UnsafeMutableRawPointer?, _ argc: In
 	return SQLITE_OK
 }
 
+func xDisconnect(_ pVTab: UnsafeMutablePointer<sqlite3_vtab>?) -> Int32 {
+	pVTab.unsafelyUnwrapped.withMemoryRebound(to: feisty_db_sqlite3_vtab.self, capacity: 1) { vtab in
+		// Balance the +1 retain in xConnect()
+		Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(vtab.pointee.virtual_table_module_ptr)).release()
+	}
+	sqlite3_free(pVTab)
+	return SQLITE_OK
+}
+
 func xBestIndex(_ pVTab: UnsafeMutablePointer<sqlite3_vtab>?, _ pIdxInfo: UnsafeMutablePointer<sqlite3_index_info>?) -> Int32  {
 	return pVTab.unsafelyUnwrapped.withMemoryRebound(to: feisty_db_sqlite3_vtab.self, capacity: 1) { vtab -> Int32 in
 		let virtualTable = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(vtab.pointee.virtual_table_module_ptr.unsafelyUnwrapped)).takeUnretainedValue() as! VirtualTableModule
@@ -302,15 +315,6 @@ func xBestIndex(_ pVTab: UnsafeMutablePointer<sqlite3_vtab>?, _ pIdxInfo: Unsafe
 			return SQLITE_ERROR
 		}
 	}
-}
-
-func xDisconnect(_ pVTab: UnsafeMutablePointer<sqlite3_vtab>?) -> Int32 {
-	pVTab.unsafelyUnwrapped.withMemoryRebound(to: feisty_db_sqlite3_vtab.self, capacity: 1) { vtab in
-		// Balance the +1 retain in xConnect()
-		Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(vtab.pointee.virtual_table_module_ptr)).release()
-	}
-	sqlite3_free(pVTab)
-	return SQLITE_OK
 }
 
 func xOpen(_ pVTab: UnsafeMutablePointer<sqlite3_vtab>?, _ ppCursor: UnsafeMutablePointer<UnsafeMutablePointer<sqlite3_vtab_cursor>?>?) -> Int32 {
