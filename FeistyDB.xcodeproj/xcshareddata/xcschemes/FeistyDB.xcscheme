@@ -90,6 +90,9 @@
                <Test
                   Identifier = "FeistyDBTests/testSQLiteSelectPerformance()">
                </Test>
+               <Test
+                  Identifier = "FeistyDBTests/testVirtualTable4()">
+               </Test>
             </SkippedTests>
          </TestableReference>
          <TestableReference
