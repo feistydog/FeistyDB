@@ -471,7 +471,7 @@ class FeistyDBTests: XCTestCase {
 	}
 
 	func testVirtualTable() {
-		final class NaturalNumbersModule: VirtualTableModule {
+		final class NaturalNumbersModule: EponymousVirtualTableModule {
 			final class Cursor: VirtualTableCursor {
 				var _rowid: Int64 = 0
 
@@ -496,7 +496,7 @@ class FeistyDBTests: XCTestCase {
 				}
 			}
 
-			required init(arguments: [String]) {
+			required init(database: Database, arguments: [String]) {
 			}
 
 			var declaration: String {
@@ -528,7 +528,7 @@ class FeistyDBTests: XCTestCase {
 	func testVirtualTable2() {
 		/// A port of the `generate_series` sqlite3 module
 		/// - seealso: https://www.sqlite.org/src/file/ext/misc/series.c
-		final class SeriesModule: VirtualTableModule {
+		final class SeriesModule: EponymousVirtualTableModule {
 			static let valueColumn: Int32 = 0
 			static let startColumn: Int32 = 1
 			static let stopColumn: Int32 = 2
@@ -630,7 +630,7 @@ class FeistyDBTests: XCTestCase {
 				}
 			}
 
-			required init(arguments: [String]) {
+			required init(database: Database, arguments: [String]) {
 			}
 
 			var declaration: String {
@@ -783,7 +783,7 @@ class FeistyDBTests: XCTestCase {
 
 			let values: [Int]
 
-			required init(arguments: [String]) throws {
+			required init(database: Database, arguments: [String], create: Bool) throws {
 				var count = 0
 				var start = 1
 
@@ -838,7 +838,7 @@ class FeistyDBTests: XCTestCase {
 
 		let db = try! Database()
 
-		try! db.addModule("shuffled_sequence", type: ShuffledSequenceModule.self, eponymousOnly: false)
+		try! db.addModule("shuffled_sequence", type: ShuffledSequenceModule.self)
 		try! db.execute(sql: "CREATE VIRTUAL TABLE temp.shuffled USING shuffled_sequence(count=5);")
 		var statement = try! db.prepare(sql: "SELECT value FROM shuffled;")
 

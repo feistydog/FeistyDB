@@ -53,14 +53,27 @@ public enum VirtualTableModuleBestIndexResult {
 	case constraint
 }
 
-/// An SQLite virtual table module
+/// An SQLite virtual table module.
+///
+/// In the context of SQLite modules, `init(arguments:create:)` is conceptually equivalent
+/// to `xConnect` when `create` is `false` and to `xCreate` when `create` is true.
+/// That is, `create` is true if the module instance is being constructed as part of a `CREATE VIRTUAL TABLE` statement.
+///
+/// `deinit` is conceptually equivalent to `xDisconnect` while `destroy` is conceptually equivalent to `xDestroy`.
+/// `destroy()` is invoked by a `DROP TABLE` statement.
+///
+/// - seealso: [Register A Virtual Table Implementation](https://www.sqlite.org/c3ref/create_module.html)
+/// - seealso: [Virtual Table Object](https://www.sqlite.org/c3ref/module.html)
 public protocol VirtualTableModule {
-	/// Initializes an SQLite virtual table module.
+	/// Opens a connection to an SQLite virtual table module.
 	///
+	/// - parameter database: The database to which this virtual table module is being added.
 	/// - parameter arguments: The arguments used to create the virtual table module.
+	/// - parameter create: Whether the virtual table module is being initialized as the result of a `CREATE VIRTUAL TABLE` statement
+	/// and should create any persistent state.
 	///
 	/// - throws: `SQLiteError` if the module could not be created
-	init(arguments: [String]) throws
+	init(database: Database, arguments: [String], create: Bool) throws
 
 	/// The options supported by this virtual table module
 	var options: Database.VirtualTableModuleOptions { get }
@@ -69,6 +82,10 @@ public protocol VirtualTableModule {
 	///
 	/// - note: The name of the table and any constraints are ignored.
 	var declaration: String { get }
+
+	/// Destroys any persistent state associated with the virtual table module
+	/// - note: This is only called as the result of a `DROP TABLE` statement.
+	func destroy() throws;
 
 	/// Determines the query plan to use for a given query
 	///
@@ -91,23 +108,56 @@ extension VirtualTableModule {
 	var options: Database.VirtualTableModuleOptions {
 		return []
 	}
+
+	func destroy() {
+	}
+}
+
+/// An eponymous virtual table module.
+///
+/// An eponymous virtual table module presents a virtual table with the same name as the module and
+/// does not require a `CREATE VIRTUAL TABLE` statement to be available.
+public protocol EponymousVirtualTableModule: VirtualTableModule {
+	/// Opens a connection to an SQLite epnymous virtual table module.
+	///
+	/// - parameter database: The database to which this virtual table module is being added.
+	/// - parameter arguments: The arguments used to create the virtual table module.
+	///
+	/// - throws: `SQLiteError` if the module could not be created
+	init(database: Database, arguments: [String]) throws
+}
+
+extension VirtualTableModule where Self: EponymousVirtualTableModule {
+	init(database: Database, arguments: [String], create: Bool) throws {
+		precondition(create == false)
+		// Eponymous-only virtual tables have no state
+		try self.init(database: database, arguments: arguments)
+	}
 }
 
 extension Database {
 	/// Glue for creating a generic Swift type in a C callback
 	final class VirtualTableModuleClientData {
 		/// The constructor closure
-		let construct: (_ arguments : [String]) throws -> VirtualTableModule
+		let _construct: (_ database: Database, _ arguments : [String], _ create: Bool) throws -> VirtualTableModule
+
+		/// The database to which the virtual table module will belong
+		let database: Database
 
 		/// Persistent sqlite3_module instance
 		let module: UnsafeMutablePointer<sqlite3_module>
 
 		/// Creates client data for a module
-		init(module: inout sqlite3_module, _ construct: @escaping (_ arguments: [String]) throws -> VirtualTableModule) {
+		init(module: inout sqlite3_module, database: Database, _ construct: @escaping (_ database: Database, _ arguments: [String], _ create: Bool) throws -> VirtualTableModule) {
 			let module_ptr = UnsafeMutablePointer<sqlite3_module>.allocate(capacity: 1)
 			module_ptr.assign(from: &module, count: 1)
 			self.module = module_ptr
-			self.construct = construct
+			self.database = database
+			_construct = construct
+		}
+
+		func construct(_ arguments : [String], _ create: Bool) throws -> VirtualTableModule {
+			return try _construct(database, arguments, create)
 		}
 
 		deinit {
@@ -135,9 +185,43 @@ extension Database {
 
 	/// Adds a virtual table module to the database.
 	///
-	/// For example, a virtual table module returning the natural numbers could be implemented as:
+	/// - parameter name: The name of the virtual table module
+	/// - parameter type: The class implementing the virtual table module
+	///
+	/// - throws:  An error if the virtual table module can't be registered
+	///
+	/// - seealso: [Register A Virtual Table Implementation](https://www.sqlite.org/c3ref/create_module.html)
+	/// - seealso: [The Virtual Table Mechanism Of SQLite](https://sqlite.org/vtab.html)
+	public func addModule<T: VirtualTableModule>(_ name: String, type: T.Type) throws {
+		// Flesh out the struct containing the virtual table functions used by SQLite
+		var module_struct = sqlite3_module(iVersion: 0, xCreate: nil, xConnect: xConnect, xBestIndex: xBestIndex, xDisconnect: xDisconnect, xDestroy: nil,
+		   xOpen: xOpen, xClose: xClose, xFilter: xFilter, xNext: xNext, xEof: xEof, xColumn: xColumn, xRowid: xRowid, xUpdate: nil, xBegin: nil, xSync: nil, xCommit: nil, xRollback: nil, xFindFunction: nil, xRename: nil, xSavepoint: nil, xRelease: nil, xRollbackTo: nil, xShadowName: nil)
+
+		module_struct.xCreate = xCreate
+		module_struct.xDestroy = xDestroy
+
+		// client_data must live until the xDestroy function is invoked; store it as a +1 object
+		let client_data = VirtualTableModuleClientData(module: &module_struct, database: self) { database, args, create -> VirtualTableModule in
+			return try T(database: database, arguments: args, create: create)
+		}
+		let client_data_ptr = Unmanaged.passRetained(client_data).toOpaque()
+
+		guard sqlite3_create_module_v2(db, name, client_data.module, client_data_ptr, { client_data in
+			// Balance the +1 retain above
+			Unmanaged<VirtualTableModuleClientData>.fromOpaque(UnsafeRawPointer(client_data.unsafelyUnwrapped)).release()
+		}) == SQLITE_OK else {
+			throw SQLiteError("Error adding module \"\(name)\"", takingDescriptionFromDatabase: db)
+		}
+	}
+
+	/// Adds an epnymous virtual table module to the database.
+	///
+	/// An eponymous virtual table module presents a virtual table with the same name as the module and
+	/// does not require a `CREATE VIRTUAL TABLE` statement to be available.
+	///
+	/// For example, an eponymous virtual table module returning the natural numbers could be implemented as:
 	/// ```swift
-	/// class NaturalNumbersModule: VirtualTableModule {
+	/// class NaturalNumbersModule: EponymousVirtualTableModule {
 	/// 	class Cursor: VirtualTableCursor {
 	/// 		var _rowid: Int64 = 0
 	///
@@ -186,25 +270,19 @@ extension Database {
 	///
 	/// - parameter name: The name of the virtual table module
 	/// - parameter type: The class implementing the virtual table module
-	/// - parameter eponymousOnly: Whether the virtual table module is eponymous-only
 	///
 	/// - throws:  An error if the virtual table module can't be registered
 	///
 	/// - seealso: [Register A Virtual Table Implementation](https://www.sqlite.org/c3ref/create_module.html)
 	/// - seealso: [The Virtual Table Mechanism Of SQLite](https://sqlite.org/vtab.html)
-	public func addModule<T: VirtualTableModule>(_ name: String, type: T.Type, eponymousOnly: Bool = true) throws {
+	public func addModule<T: EponymousVirtualTableModule>(_ name: String, type: T.Type) throws {
 		// Flesh out the struct containing the virtual table functions used by SQLite
 		var module_struct = sqlite3_module(iVersion: 0, xCreate: nil, xConnect: xConnect, xBestIndex: xBestIndex, xDisconnect: xDisconnect, xDestroy: nil,
-		   xOpen: xOpen, xClose: xClose, xFilter: xFilter, xNext: xNext, xEof: xEof, xColumn: xColumn, xRowid: xRowid, xUpdate: nil, xBegin: nil, xSync: nil, xCommit: nil, xRollback: nil, xFindFunction: nil, xRename: nil, xSavepoint: nil, xRelease: nil, xRollbackTo: nil, xShadowName: nil)
-
-		if !eponymousOnly {
-			module_struct.xCreate = xCreate
-			module_struct.xDestroy = xDestroy
-		}
+										   xOpen: xOpen, xClose: xClose, xFilter: xFilter, xNext: xNext, xEof: xEof, xColumn: xColumn, xRowid: xRowid, xUpdate: nil, xBegin: nil, xSync: nil, xCommit: nil, xRollback: nil, xFindFunction: nil, xRename: nil, xSavepoint: nil, xRelease: nil, xRollbackTo: nil, xShadowName: nil)
 
 		// client_data must live until the xDestroy function is invoked; store it as a +1 object
-		let client_data = VirtualTableModuleClientData(module: &module_struct) { args -> VirtualTableModule in
-			return try T(arguments: args)
+		let client_data = VirtualTableModuleClientData(module: &module_struct, database: self) { database, args, _ -> VirtualTableModule in
+			return try T(database: database, arguments: args, create: false)
 		}
 		let client_data_ptr = Unmanaged.passRetained(client_data).toOpaque()
 
@@ -219,23 +297,53 @@ extension Database {
 
 // MARK: - Implementations
 
-// xCreate() is the same functionally as xConnect() but must be a different pointer for non-eponymous tables
 func xCreate(_ db: OpaquePointer?, _ pAux: UnsafeMutableRawPointer?, _ argc: Int32, _ argv: UnsafePointer<UnsafePointer<Int8>?>?, _ ppVTab:UnsafeMutablePointer<UnsafeMutablePointer<sqlite3_vtab>?>?, _ pzErr: UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>?) -> Int32 {
-	return xConnect(db, pAux, argc, argv, ppVTab, pzErr)
+	return init_vtab(db, pAux, argc, argv, ppVTab, pzErr, true)
 }
 
 func xDestroy(_ pVTab: UnsafeMutablePointer<sqlite3_vtab>?) -> Int32 {
+	let rc = pVTab.unsafelyUnwrapped.withMemoryRebound(to: feisty_db_sqlite3_vtab.self, capacity: 1) { vtab -> Int32 in
+		let virtualTable = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(vtab.pointee.virtual_table_module_ptr.unsafelyUnwrapped)).takeUnretainedValue() as! VirtualTableModule
+		do {
+			try virtualTable.destroy()
+		}
+
+		catch let error as SQLiteError {
+			os_log("Error in destroy(): %{public}@", type: .info, error.description)
+			sqlite3_free(vtab.pointee.base.zErrMsg)
+			vtab.pointee.base.zErrMsg = feisty_db_sqlite3_strdup(error.message)
+			return error.code.code
+		}
+
+		catch let error {
+			os_log("Error in destroy(): %{public}@", type: .info, error.localizedDescription)
+			sqlite3_free(vtab.pointee.base.zErrMsg)
+			vtab.pointee.base.zErrMsg = feisty_db_sqlite3_strdup(error.localizedDescription)
+			return SQLITE_ERROR
+		}
+
+		return SQLITE_OK
+	}
+
+	guard rc == SQLITE_OK else {
+		return rc
+	}
+
 	return xDisconnect(pVTab)
 }
 
 func xConnect(_ db: OpaquePointer?, _ pAux: UnsafeMutableRawPointer?, _ argc: Int32, _ argv: UnsafePointer<UnsafePointer<Int8>?>?, _ ppVTab: UnsafeMutablePointer<UnsafeMutablePointer<sqlite3_vtab>?>?, _ pzErr: UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>?) -> Int32 {
+	return init_vtab(db, pAux, argc, argv, ppVTab, pzErr, false)
+}
+
+func init_vtab(_ db: OpaquePointer?, _ pAux: UnsafeMutableRawPointer?, _ argc: Int32, _ argv: UnsafePointer<UnsafePointer<Int8>?>?, _ ppVTab: UnsafeMutablePointer<UnsafeMutablePointer<sqlite3_vtab>?>?, _ pzErr: UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>?, _ create: Bool) -> Int32 {
 	let args = UnsafeBufferPointer(start: argv, count: Int(argc))
 	let arguments = args.map { String(utf8String: $0.unsafelyUnwrapped).unsafelyUnwrapped }
 
 	let virtualTable: VirtualTableModule
 	do {
 		let clientData = Unmanaged<Database.VirtualTableModuleClientData>.fromOpaque(UnsafeRawPointer(pAux.unsafelyUnwrapped)).takeUnretainedValue()
-		virtualTable = try clientData.construct(arguments)
+		virtualTable = try clientData.construct(arguments, create)
 	}
 
 	catch let error as SQLiteError {
