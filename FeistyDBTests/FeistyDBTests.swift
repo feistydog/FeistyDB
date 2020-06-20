@@ -521,7 +521,7 @@ class FeistyDBTests: XCTestCase {
 		try! db.addModule("natural_numbers", type: NaturalNumbersModule.self)
 		let statement = try! db.prepare(sql: "SELECT value FROM natural_numbers LIMIT 5;")
 
-		let results: [Int] = statement.map({try! $0.value(at: 0)})
+		let results: [Int] = try! statement.column(0)
 		XCTAssertEqual(results, [1,2,3,4,5])
 	}
 
@@ -726,19 +726,19 @@ class FeistyDBTests: XCTestCase {
 		try! db.addModule("generate_series", type: SeriesModule.self)
 
 		var statement = try! db.prepare(sql: "SELECT value FROM generate_series LIMIT 5;")
-		var results: [Int] = statement.map({try! $0.value(at: 0)})
+		var results: [Int] = try! statement.column(0)
 		XCTAssertEqual(results, [0,1,2,3,4])
 
 		statement = try! db.prepare(sql: "SELECT value FROM generate_series(10) LIMIT 5;")
-		results = statement.map({try! $0.value(at: 0)})
+		results = try! statement.column(0)
 		XCTAssertEqual(results, [10,11,12,13,14])
 
 		statement = try! db.prepare(sql: "SELECT value FROM generate_series(10,20,1) ORDER BY value DESC LIMIT 5;")
-		results = statement.map({try! $0.value(at: 0)})
+		results = try! statement.column(0)
 		XCTAssertEqual(results, [20,19,18,17,16])
 
 		statement = try! db.prepare(sql: "SELECT value FROM generate_series(11,22,2) LIMIT 5;")
-		results = statement.map({try! $0.value(at: 0)})
+		results = try! statement.column(0)
 		XCTAssertEqual(results, [11,13,15,17,19])
 	}
 
