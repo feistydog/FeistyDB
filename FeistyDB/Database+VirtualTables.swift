@@ -68,7 +68,9 @@ public protocol VirtualTableModule {
 	/// Opens a connection to an SQLite virtual table module.
 	///
 	/// - parameter database: The database to which this virtual table module is being added.
-	/// - parameter arguments: The arguments used to create the virtual table module.
+	/// - parameter arguments: The arguments used to create the virtual table module. The first argument is the name of the module being invoked.
+	/// The second argument is the name of the database in which the virtual table is being created. The third argument is the name of the new virtual table.
+	/// Any additional arguments are those passed to the module name in the `CREATE VIRTUAL TABLE` statement.
 	/// - parameter create: Whether the virtual table module is being initialized as the result of a `CREATE VIRTUAL TABLE` statement
 	/// and should create any persistent state.
 	///
