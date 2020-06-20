@@ -725,6 +725,9 @@ class FeistyDBTests: XCTestCase {
 
 		try! db.addModule("generate_series", type: SeriesModule.self)
 
+		// Eponymous tables should not be available via `CREATE VIRTUAL TABLE`
+		XCTAssertThrowsError(try db.execute(sql: "CREATE VIRTUAL TABLE series USING generate_series;"))
+
 		var statement = try! db.prepare(sql: "SELECT value FROM generate_series LIMIT 5;")
 		var results: [Int] = try! statement.column(0)
 		XCTAssertEqual(results, [0,1,2,3,4])
@@ -839,6 +842,10 @@ class FeistyDBTests: XCTestCase {
 		let db = try! Database()
 
 		try! db.addModule("shuffled_sequence", type: ShuffledSequenceModule.self)
+
+		// Non-eponymous tables should not be available without `CREATE VIRTUAL TABLE`
+		XCTAssertThrowsError(try db.execute(sql: "SELECT value FROM shuffled_sequence LIMIT 5;"))
+
 		try! db.execute(sql: "CREATE VIRTUAL TABLE temp.shuffled USING shuffled_sequence(count=5);")
 		var statement = try! db.prepare(sql: "SELECT value FROM shuffled;")
 
