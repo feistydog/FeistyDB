@@ -544,14 +544,22 @@ class FeistyDBTests: XCTestCase {
 			static let stopColumn: Int32 = 2
 			static let stepColumn: Int32 = 3
 
+			struct QueryPlan: OptionSet {
+				let rawValue: Int32
+				static let start = QueryPlan(rawValue: 1 << 0)
+				static let stop = QueryPlan(rawValue: 1 << 1)
+				static let step = QueryPlan(rawValue: 1 << 2)
+				static let isDescending = QueryPlan(rawValue: 1 << 3)
+			}
+
 			final class Cursor: VirtualTableCursor {
 				let module: SeriesModule
-				var _isDescending = false
 				var _rowid: Int64 = 0
 				var _value: Int64 = 0
 				var _min: Int64 = 0
 				var _max: Int64 = 0
 				var _step: Int64 = 0
+				var _isDescending = false
 
 				init(_ module: SeriesModule) {
 					self.module = module
@@ -559,14 +567,11 @@ class FeistyDBTests: XCTestCase {
 
 				func column(_ index: Int32) -> DatabaseValue {
 					switch index {
-					case SeriesModule.startColumn:
-						return .integer(_min)
-					case SeriesModule.stopColumn:
-						return .integer(_max)
-					case SeriesModule.stepColumn:
-						return .integer(_step)
-					default:
-						return .integer(_value)
+					case SeriesModule.valueColumn:		return .integer(_value)
+					case SeriesModule.startColumn:		return .integer(_min)
+					case SeriesModule.stopColumn:		return .integer(_max)
+					case SeriesModule.stepColumn:		return .integer(_step)
+					default:							return nil
 					}
 				}
 
@@ -585,35 +590,32 @@ class FeistyDBTests: XCTestCase {
 				}
 
 				func filter(_ arguments: [DatabaseValue], indexNumber: Int32, indexName: String?) {
+					_rowid = 1
+					_min = 0
+					_max = 0xffffffff
+					_step = 1
+
+					let queryPlan = QueryPlan(rawValue: indexNumber)
 					var argumentNumber = 0
-					if indexNumber & 1 == 1 {
+					if queryPlan.contains(.start) {
 						if case let .integer(i) = arguments[argumentNumber] {
 							_min = i
 						}
 						argumentNumber += 1
 					}
-					else {
-						_min = 0
-					}
 
-					if indexNumber & 2 == 2 {
+					if queryPlan.contains(.stop) {
 						if case let .integer(i) = arguments[argumentNumber] {
 							_max = i
 						}
 						argumentNumber += 1
 					}
-					else {
-						_max = 0xffffffff
-					}
 
-					if indexNumber & 4 == 4 {
+					if queryPlan.contains(.step) {
 						if case let .integer(i) = arguments[argumentNumber] {
 							_step = max(i, 1)
 						}
 						argumentNumber += 1
-					}
-					else {
-						_step = 1
 					}
 
 					if arguments.contains(where: { return $0 == .null ? true : false }) {
@@ -621,19 +623,11 @@ class FeistyDBTests: XCTestCase {
 						_max = 0
 					}
 
-					if indexNumber & 8 == 8 {
-						_isDescending = true
-						_value = _max
-						if _step > 0 {
-							_value -= (_max - _min) % _step
-						}
+					_isDescending = queryPlan.contains(.isDescending)
+					_value = _isDescending ? _max : _min
+					if _isDescending && _step > 0 {
+						_value -= (_max - _min) % _step
 					}
-					else {
-						_isDescending = false
-						_value = _min
-					}
-
-					_rowid = 1
 				}
 
 				var eof: Bool {
@@ -668,47 +662,57 @@ class FeistyDBTests: XCTestCase {
 				// Outputs
 				let constraintUsage = UnsafeMutableBufferPointer<sqlite3_index_constraint_usage>(start: indexInfo.aConstraintUsage, count: constraintCount)
 
-				var unusableConstraintMask: Int32 = 0
-				var queryPlanBitmask: Int32 = 0
+				var queryPlan: QueryPlan = []
 
-				var constraintIndexes = [-1, -1, -1]
+				var filterArgumentCount: Int32 = 1
 				for i in 0 ..< constraintCount {
 					let constraint = constraints[i]
 
-					if constraint.iColumn < SeriesModule.startColumn {
-						continue
-					}
-
-					let column = constraint.iColumn - SeriesModule.startColumn
-					let mask: Int32 = 1 << column
-					if constraint.usable == 0 {
-						unusableConstraintMask |= mask
-						continue
-					}
-					else if constraint.op == SQLITE_INDEX_CONSTRAINT_EQ {
-						queryPlanBitmask |= mask
-						constraintIndexes[Int(column)] = i
-					}
-				}
-
-				var filterArgumentCount: Int32 = 0
-				for i in 0 ..< 3 {
-					if constraintIndexes[i] >= 0 {
-						filterArgumentCount += 1
+					switch constraint.iColumn {
+					case SeriesModule.startColumn:
+						guard constraint.usable != 0 else {
+							break
+						}
+						guard constraint.op == SQLITE_INDEX_CONSTRAINT_EQ else {
+							return .constraint
+						}
+						queryPlan.insert(.start)
 						constraintUsage[i].argvIndex = filterArgumentCount
+						filterArgumentCount += 1
+
+					case SeriesModule.stopColumn:
+						guard constraint.usable != 0 else {
+							break
+						}
+						guard constraint.op == SQLITE_INDEX_CONSTRAINT_EQ else {
+							return .constraint
+						}
+						queryPlan.insert(.stop)
+						constraintUsage[i].argvIndex = filterArgumentCount
+						filterArgumentCount += 1
+
+					case SeriesModule.stepColumn:
+						guard constraint.usable != 0 else {
+							break
+						}
+						guard constraint.op == SQLITE_INDEX_CONSTRAINT_EQ else {
+							return .constraint
+						}
+						queryPlan.insert(.step)
+						constraintUsage[i].argvIndex = filterArgumentCount
+						filterArgumentCount += 1
+
+					default:
+						break
 					}
 				}
 
-				if (unusableConstraintMask & ~queryPlanBitmask) != 0 {
-					return .constraint
-				}
-
-				if queryPlanBitmask & 3 == 3 {
-					indexInfo.estimatedCost = 2  - ((queryPlanBitmask & 4) != 0 ? 1 : 0)
+				if queryPlan.contains(.start) && queryPlan.contains(.stop) {
+					indexInfo.estimatedCost = 2  - (queryPlan.contains(.step) ? 1 : 0)
 					indexInfo.estimatedRows = 1000
 					if orderByCount == 1 {
 						if orderBy[0].desc == 1 {
-							queryPlanBitmask |= 8
+							queryPlan.insert(.isDescending)
 						}
 						indexInfo.orderByConsumed = 1
 					}
@@ -717,7 +721,7 @@ class FeistyDBTests: XCTestCase {
 					indexInfo.estimatedRows = 2147483647
 				}
 
-				indexInfo.idxNum = queryPlanBitmask
+				indexInfo.idxNum = queryPlan.rawValue
 
 				return .ok
 			}
