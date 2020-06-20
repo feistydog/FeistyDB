@@ -214,7 +214,7 @@ extension Database {
 		}
 	}
 
-	/// Adds an epnymous virtual table module to the database.
+	/// Adds an eponymous virtual table module to the database.
 	///
 	/// An eponymous virtual table module presents a virtual table with the same name as the module and
 	/// does not require a `CREATE VIRTUAL TABLE` statement to be available.
