@@ -57,7 +57,7 @@ public enum VirtualTableModuleBestIndexResult {
 ///
 /// In the context of SQLite modules, `init(arguments:create:)` is conceptually equivalent
 /// to `xConnect` when `create` is `false` and to `xCreate` when `create` is true.
-/// That is, `create` is true if the module instance is being constructed as part of a `CREATE VIRTUAL TABLE` statement.
+/// That is, `create` is `true` if the module instance is being constructed as part of a `CREATE VIRTUAL TABLE` statement.
 ///
 /// `deinit` is conceptually equivalent to `xDisconnect` while `destroy` is conceptually equivalent to `xDestroy`.
 /// `destroy()` is invoked by a `DROP TABLE` statement.
@@ -86,6 +86,7 @@ public protocol VirtualTableModule {
 	var declaration: String { get }
 
 	/// Destroys any persistent state associated with the virtual table module
+	///
 	/// - note: This is only called as the result of a `DROP TABLE` statement.
 	func destroy() throws;
 
@@ -123,7 +124,8 @@ public protocol EponymousVirtualTableModule: VirtualTableModule {
 	/// Opens a connection to an SQLite eponymous virtual table module.
 	///
 	/// - parameter database: The database to which this virtual table module is being added.
-	/// - parameter arguments: The arguments used to create the virtual table module.
+	/// - parameter arguments: The arguments used to create the virtual table module. The first argument is the name of the module being invoked.
+	/// The second argument is the name of the database in which the virtual table is being created. The third argument is the name of the new virtual table.
 	///
 	/// - throws: `SQLiteError` if the module could not be created
 	init(database: Database, arguments: [String]) throws
