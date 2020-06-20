@@ -120,7 +120,7 @@ extension VirtualTableModule {
 /// An eponymous virtual table module presents a virtual table with the same name as the module and
 /// does not require a `CREATE VIRTUAL TABLE` statement to be available.
 public protocol EponymousVirtualTableModule: VirtualTableModule {
-	/// Opens a connection to an SQLite epnymous virtual table module.
+	/// Opens a connection to an SQLite eponymous virtual table module.
 	///
 	/// - parameter database: The database to which this virtual table module is being added.
 	/// - parameter arguments: The arguments used to create the virtual table module.
