@@ -281,8 +281,8 @@ extension Database {
 										   xOpen: xOpen, xClose: xClose, xFilter: xFilter, xNext: xNext, xEof: xEof, xColumn: xColumn, xRowid: xRowid, xUpdate: nil, xBegin: nil, xSync: nil, xCommit: nil, xRollback: nil, xFindFunction: nil, xRename: nil, xSavepoint: nil, xRelease: nil, xRollbackTo: nil, xShadowName: nil)
 
 		// client_data must live until the xDestroy function is invoked; store it as a +1 object
-		let client_data = VirtualTableModuleClientData(module: &module_struct, database: self) { database, args, _ -> VirtualTableModule in
-			return try T(database: database, arguments: args, create: false)
+		let client_data = VirtualTableModuleClientData(module: &module_struct, database: self) { database, args, create -> VirtualTableModule in
+			return try T(database: database, arguments: args, create: create)
 		}
 		let client_data_ptr = Unmanaged.passRetained(client_data).toOpaque()
 
