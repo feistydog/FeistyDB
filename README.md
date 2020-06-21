@@ -5,15 +5,20 @@
 A powerful and performant Swift interface to [SQLite](https://sqlite.org) featuring:
 
 - Type-safe and type-agnostic database values.
-- Thread-safe database access.
--  Full support for transactions and savepoints, custom collation sequences, and custom SQL functions.
+- Thread-safe synchronous and asynchronous database access.
+-  Full support for [transactions](#perform-a-transaction) and savepoints.
+- [Custom SQL functions](#custom-sql-functions), including aggregate and window functions.
+- [Custom collating sequences](#custom-collating-sequences).
+- Custom commit, rollback, update, and busy handler hooks.
+- Custom virtual tables.
+- Custom FTS5 tokenizers.
 
 FeistyDB allows fast, easy database access with robust error handling.  It is not a general-purpose object-relational mapper.
 
 ## Installation
 
 1. Clone the [FeistyDB](https://github.com/feistydog/FeistyDB) repository.
-2. Run `./get-sqlite.sh` to download the latest SQLite source tree and build the [amalgamation](https://sqlite.org/amalgamation.html) with the `uuid` and `carray` extensions added.
+2. Run `./get-sqlite.sh` to download the latest SQLite source tree and build the [amalgamation](https://sqlite.org/amalgamation.html) with the [uuid](https://sqlite.org/src/file/ext/misc/uuid.c) and [carray](https://www.sqlite.org/carray.html) extensions added.
 3. Open the project, build, and get started in the playground!
 
 ## Quick Start
@@ -23,32 +28,50 @@ FeistyDB allows fast, easy database access with robust error handling.  It is no
 let db = try Database()
 
 // Create a table
-try db.execute(sql: "create table t1(a, b);")
+try db.execute(sql: "CREATE TABLE t1(a,b);")
 
 // Insert a row
-try db.execute(sql: "insert into t1(a, b) values (?, ?);", 
+try db.execute(sql: "INSERT INTO t1(a,b) VALUES (?,?);", 
                parameterValues: [33, "lulu"])
 
 // Retrieve the values
-try db.execute(sql: "select a, b from t1;") { row in
+try db.execute(sql: "SELECT a,b FROM t1;") { row in
     let a: Int = try row.value(at: 0)
     let b: String = try row.value(at: 1)
 }
 ```
+
+### Segue to Thread Safety
+
+FeistyDB compiles SQLite with thread safety disabled for improved performance. While this increases performance, it also means a `Database` instance may only be accessed from a single thread or dispatch queue at a time.
 
 Most applications should not create a `Database` directly but instead should use a thread-safe `DatabaseQueue`.
 
 ```swift
 // Create a queue serializing access to an in-memory database
 let dbQ = try DatabaseQueue("myapp.dbQ")
+```
 
-// Perform a synchronous database operation
+This creates a queue which may be used from multiple threads or dispatch queues safely.  The queue serializes access to the database ensuring only a single operation occurs at a time. Database operations may be performed synchronously or asynchronously.
+
+```swift
+// Perform a synchronous database access
 try dbQ.sync { db in
     // Do something with `db`
 }
+
+// Perform an asynchronous database access
+dbQ.async { db in
+    do {
+        // Do something with `db`
+    } 
+    catch let error {
+        // Handle any errors that occurred
+    }
+}
 ```
 
-For databases using [Write-Ahead Logging](https://www.sqlite.org/wal.html) concurrent reading and writing is supported. Multiple read operations may be performed simultaneously using more than one `DatabaseReadQueue` instance.  Write operations must always be confined to a single `DatabaseQueue`.  A typical usage pattern is one global `DatabaseQueue` instance used for writing located in the application's delegate, with `DatabaseReadQueue` instances located in individual window or view controllers.  When used with long-running read transactions each `DatabaseReadQueue` maintains a separate, consistent snapshot of the database that may be updated in response to database changes.
+For databases using [Write-Ahead Logging](https://www.sqlite.org/wal.html) concurrent reading and writing is supported. Multiple read operations may be performed simultaneously using more than one `DatabaseReadQueue` instance.  Write operations must always be confined to a single `DatabaseQueue`.  A typical usage pattern is one global `DatabaseQueue` instance used for writing located in the application's delegate, with `DatabaseReadQueue` instances located in individual view or window controllers.  When used with long-running read transactions each `DatabaseReadQueue` maintains a separate, consistent snapshot of the database that may be updated in response to database changes.
 
 ## Design
 
@@ -83,43 +106,43 @@ Thread-safe access to a database is provided by `DatabaseQueue`.
 
 ## Examples
 
-### Create an in-memory database
+### Create an In-Memory Database
 
 ```swift
 let db = try Database()
 ```
 
-This creates a database for use on a single thread or queue.
+This creates a database for use on a single thread or dispatch queue only. Most applications should not create a `Database` directly but instead should use a thread-safe `DatabaseQueue`.
 
-### Create a table
+### Create a Table
 
 ```swift
-try db.execute(sql: "create table t1(a, b);")
+try db.execute(sql: "CREATE TABLE t1(a,b);")
 ```
 
-The created table `t1` has two columns, `a` and `b`.
+The created table *t1* has two columns, *a* and *b*.
 
-### Insert data
+### Insert Data
 
 ```swift
 for i in 0..<5 {
-    try db.execute(sql: "insert into t1(a, b) values (?, ?);",
+    try db.execute(sql: "INSERT INTO t1(a,b) VALUES (?,?);",
                    parameterValues: [2*i, 2*i+1])
 }
 ```
 SQL parameters are passed as a sequence or series of values.  Named parameters are also supported.
 
 ```swift
-try db.execute(sql: "insert into t1(a, b) values (:a, :b);",
+try db.execute(sql: "INSERT INTO t1(a,b) VALUES (:a,:b);",
                parameters: [":a": 100, ":b": 404])
 ```
 
-### Insert data efficiently
+### Insert Data Efficiently
 
 Rather than parsing SQL each time a statement is executed, it is more efficient to prepare a statement and reuse it.
 
 ```swift
-let s = try db.prepare(sql: "insert into t1(a, b) values (?, ?);")
+let s = try db.prepare(sql: "INSERT INTO t1(a,b) VALUES (?,?);")
 for i in 0..<5 {
     try s.bind(parameterValues: [2*i, 2*i+1])
     try s.execute()
@@ -128,18 +151,36 @@ for i in 0..<5 {
 }
 ```
 
-### Fetch data
+### Fetch Data
 
 The closure passed to `execute()` will be called with each result row.
 
 ```swift
-try db.execute(sql: "select * from t1;") { row in
+try db.execute(sql: "SELECT * FROM t1;") { row in
     let x: Int = try row.value(at: 0)
     let y: Int? = try row.value(at: 1)
 }
 ```
 
-`row` is a `Row` instance.
+*row* is a `Row` instance.
+
+### Perform a Transaction
+
+```swift
+try db.transaction { db in
+    // Do something with `db`
+    return .commit
+}
+```
+
+Database transactions may also be performed asynchronously using `DatabaseQueue`.
+
+```swift
+dbQ.asyncTransaction { db in
+    // Do something with `db`
+    return .commit
+}
+```
 
 ### Custom SQL Functions
 
@@ -161,31 +202,25 @@ try db.addFunction("rot13", arity: 1) { values in
 }
 ```
 
-`rot13()` can now be used just like any other [SQL function](https://www.sqlite.org/lang_corefunc.html).
+*rot13* can now be used just like any other [SQL function](https://www.sqlite.org/lang_corefunc.html).
 
 ```swift
-let s = try db.prepare(sql: "insert into t1(a) values (rot13(?));")
+let s = try db.prepare(sql: "INSERT INTO t1(a) VALUES (rot13(?));")
 ```
 
-### Create a queue for serialized database access
+### Custom Collating Sequences
 
 ```swift
-let dbQ = try DatabaseQueue("myapp.dbQ")
+try db.addCollation("localized_compare", { (lhs, rhs) -> ComparisonResult in
+    return lhs.localizedCompare(rhs)
+})
 ```
 
-This creates a queue which may be used from multiple threads safely.  The queue serializes access to the database ensuring only a single operation occurs at a time.
-
-### Execute a synchronous database operation
-
-The closure passed to `sync()` will be executed synchronously.
+*localized_compare* is now available as a [collating sequence](https://www.sqlite.org/c3ref/create_collation.html).
 
 ```swift
-try dbQ.sync { db in
-    // Do something with db
-}
+let s = try db.prepare(sql: "SELECT * FROM t1 ORDER BY a COLLATE localized_compare;")
 ```
-
-`db` is a `Database` instance.
 
 ## License
 

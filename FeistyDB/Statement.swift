@@ -283,7 +283,7 @@ extension Statement: IteratorProtocol {
 extension Statement {
 	/// Available statement counters.
 	///
-	/// - seealso: [Status Parameters for prepared statements](http://www.sqlite.org/c3ref/c_stmtstatus_counter.html)
+	/// - seealso: [Status Parameters for prepared statements](https://www.sqlite.org/c3ref/c_stmtstatus_counter.html)
 	public enum	Counter {
 		/// The number of times that SQLite has stepped forward in a table as part of a full table scan
 		case fullscanStep
@@ -308,7 +308,7 @@ extension Statement {
 	///
 	/// - returns: The current value of the counter
 	///
-	/// - seealso: [Prepared Statement Status](http://www.sqlite.org/c3ref/stmt_status.html)
+	/// - seealso: [Prepared Statement Status](https://www.sqlite.org/c3ref/stmt_status.html)
 	public func count(of counter: Counter, reset: Bool = false) -> Int {
 		let op: Int32
 		switch counter {
