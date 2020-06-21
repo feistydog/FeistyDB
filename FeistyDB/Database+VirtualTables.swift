@@ -435,18 +435,17 @@ func xOpen(_ pVTab: UnsafeMutablePointer<sqlite3_vtab>?, _ ppCursor: UnsafeMutab
 			cursor = try virtualTable.openCursor()
 		}
 
+		catch let error as SQLiteError {
+			os_log("Error in openCursor(): %{public}@", type: .info, error.description)
+			sqlite3_free(vtab.pointee.base.zErrMsg)
+			vtab.pointee.base.zErrMsg = feisty_db_sqlite3_strdup(error.message)
+			return error.code.code
+		}
+
 		catch let error {
-			os_log("Error opening cursor: %{public}@", type: .info, error.localizedDescription)
-
-			let description = error.localizedDescription
-			let len = description.utf8.count + 1
-			let mem = sqlite3_malloc(Int32(len))
-			if mem != nil {
-				let str = mem!.assumingMemoryBound(to: Int8.self)
-				strncpy(str, description, len)
-				vtab.pointee.base.zErrMsg = str
-			}
-
+			os_log("Error in openCursor(): %{public}@", type: .info, error.localizedDescription)
+			sqlite3_free(vtab.pointee.base.zErrMsg)
+			vtab.pointee.base.zErrMsg = feisty_db_sqlite3_strdup(error.localizedDescription)
 			return SQLITE_ERROR
 		}
 
