@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>IOErrExtendedResult Enumeration Reference</title>
+    <link rel="stylesheet" type="text/css" href="../../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../../js/jquery.min.js" defer></script>
+    <script src="../../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Enum/IOErrExtendedResult" class="dashAnchor"></a>
+    <a title="IOErrExtendedResult Enumeration Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../../index.html">FeistyDB Docs</a> (99% documented)</p>
+        <p class="header-right"><a href="https://github.com/feistydog/FeistyDB"><img src="../../img/gh.png"/>View on GitHub</a></p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../../index.html">FeistyDB Reference</a>
+        <img id="carat" src="../../img/carat.png" />
+        IOErrExtendedResult Enumeration Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../../Core.html">Core</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../../Classes/Database.html">Database</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Classes/Database/FTS5TokenizationReason.html">– FTS5TokenizationReason</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Classes/Database/RowChangeType.html">– RowChangeType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Classes/Database/SQLFunctionFlags.html">– SQLFunctionFlags</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Classes/Database/VirtualTableModuleOptions.html">– VirtualTableModuleOptions</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Classes/Database/TransactionType.html">– TransactionType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Classes/Database/TransactionCompletion.html">– TransactionCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Classes/Database/SavepointCompletion.html">– SavepointCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Classes/Database/WALCheckpointType.html">– WALCheckpointType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Classes/Database/StatusParameter.html">– StatusParameter</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Classes/Statement.html">Statement</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Classes/Statement/Counter.html">– Counter</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Structs/Row.html">Row</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../../Values.html">Values</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../../Enums/DatabaseValue.html">DatabaseValue</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Protocols/ColumnConvertible.html">ColumnConvertible</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Protocols/ParameterBindable.html">ParameterBindable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Protocols/DatabaseSerializable.html">DatabaseSerializable</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../../Queues.html">Queues</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../../Classes/DatabaseQueue.html">DatabaseQueue</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Classes/DatabaseReadQueue.html">DatabaseReadQueue</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../../Other%20Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../../Classes/Snapshot.html">Snapshot</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../../Other%20Enums.html">Other Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../../Enums/SQLiteResult.html">SQLiteResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Enums/SQLiteResult/OKExtendedResult.html">– OKExtendedResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Enums/SQLiteResult/ErrorExtendedResult.html">– ErrorExtendedResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Enums/SQLiteResult/AbortExtendedResult.html">– AbortExtendedResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Enums/SQLiteResult/BusyExtendedResult.html">– BusyExtendedResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Enums/SQLiteResult/LockedExtendedResult.html">– LockedExtendedResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Enums/SQLiteResult/ReadOnlyExtendedResult.html">– ReadOnlyExtendedResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Enums/SQLiteResult/IOErrExtendedResult.html">– IOErrExtendedResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Enums/SQLiteResult/CorruptExtendedResult.html">– CorruptExtendedResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Enums/SQLiteResult/CantOpenExtendedResult.html">– CantOpenExtendedResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Enums/SQLiteResult/ConstraintExtendedResult.html">– ConstraintExtendedResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Enums/SQLiteResult/AuthExtendedResult.html">– AuthExtendedResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Enums/SQLiteResult/NoticeExtendedResult.html">– NoticeExtendedResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Enums/SQLiteResult/WarningExtendedResult.html">– WarningExtendedResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Enums/VirtualTableModuleBestIndexResult.html">VirtualTableModuleBestIndexResult</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../../Other%20Extensions.html">Other Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../../Extensions/Bool.html">Bool</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Extensions/Data.html">Data</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Extensions/Date.html">Date</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Extensions/Double.html">Double</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Extensions/Float.html">Float</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Extensions/Int.html">Int</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Extensions/Int16.html">Int16</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Extensions/Int32.html">Int32</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Extensions/Int64.html">Int64</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Extensions/Int8.html">Int8</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Extensions/NSNull.html">NSNull</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Extensions/NSNumber.html">NSNumber</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Extensions/String.html">String</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Extensions/UInt.html">UInt</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Extensions/UInt16.html">UInt16</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Extensions/UInt32.html">UInt32</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Extensions/UInt64.html">UInt64</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Extensions/UInt8.html">UInt8</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Extensions/URL.html">URL</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Extensions/UUID.html">UUID</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../../Other%20Protocols.html">Other Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../../Protocols/EponymousVirtualTableModule.html">EponymousVirtualTableModule</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Protocols/Error.html">Error</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Protocols/FTS5Tokenizer.html">FTS5Tokenizer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Protocols/SQLAggregateFunction.html">SQLAggregateFunction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Protocols/SQLAggregateWindowFunction.html">SQLAggregateWindowFunction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Protocols/VirtualTableCursor.html">VirtualTableCursor</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Protocols/VirtualTableModule.html">VirtualTableModule</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../../Other%20Structs.html">Other Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../../Structs/DatabaseError.html">DatabaseError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Structs/SQLite.html">SQLite</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Structs/SQLiteError.html">SQLiteError</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../../Other%20Typealiases.html">Other Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../../Other%20Typealiases.html#/s:8FeistyDB24SQLiteDatabaseConnectiona">SQLiteDatabaseConnection</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Other%20Typealiases.html#/s:8FeistyDB23SQLitePreparedStatementa">SQLitePreparedStatement</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Other%20Typealiases.html#/s:8FeistyDB14SQLiteSnapshota">SQLiteSnapshot</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>IOErrExtendedResult</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">IOErrExtendedResult</span></code></pre>
+
+                </div>
+              </div>
+            <p>SQLITE_IOERR_* extended result codes</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O4readyA2EmF"></a>
+                    <a name="//apple_ref/swift/Element/read" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O4readyA2EmF">read</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>SQLITE_IOERR_READ</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">read</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O9shortReadyA2EmF"></a>
+                    <a name="//apple_ref/swift/Element/shortRead" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O9shortReadyA2EmF">shortRead</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>SQLITE_IOERR_SHORT_READ</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">shortRead</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O5writeyA2EmF"></a>
+                    <a name="//apple_ref/swift/Element/write" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O5writeyA2EmF">write</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>SQLITE_IOERR_WRITE</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">write</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O5fSyncyA2EmF"></a>
+                    <a name="//apple_ref/swift/Element/fSync" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O5fSyncyA2EmF">fSync</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>SQLITE_IOERR_FSYNC</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">fSync</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O8dirFSyncyA2EmF"></a>
+                    <a name="//apple_ref/swift/Element/dirFSync" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O8dirFSyncyA2EmF">dirFSync</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>SQLITE_IOERR_DIR_FSYNC</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">dirFSync</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O8truncateyA2EmF"></a>
+                    <a name="//apple_ref/swift/Element/truncate" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O8truncateyA2EmF">truncate</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>SQLITE_IOERR_TRUNCATE</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">truncate</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O5fStatyA2EmF"></a>
+                    <a name="//apple_ref/swift/Element/fStat" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O5fStatyA2EmF">fStat</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>SQLITE_IOERR_FSTAT</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">fStat</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O6unlockyA2EmF"></a>
+                    <a name="//apple_ref/swift/Element/unlock" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O6unlockyA2EmF">unlock</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>SQLITE_IOERR_UNLOCK</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">unlock</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O6rdLockyA2EmF"></a>
+                    <a name="//apple_ref/swift/Element/rdLock" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O6rdLockyA2EmF">rdLock</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>SQLITE_IOERR_RDLOCK</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">rdLock</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O6deleteyA2EmF"></a>
+                    <a name="//apple_ref/swift/Element/delete" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O6deleteyA2EmF">delete</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>SQLITE_IOERR_DELETE</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">delete</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O7blockedyA2EmF"></a>
+                    <a name="//apple_ref/swift/Element/blocked" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O7blockedyA2EmF">blocked</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>SQLITE_IOERR_BLOCKED</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">blocked</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O5noMemyA2EmF"></a>
+                    <a name="//apple_ref/swift/Element/noMem" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O5noMemyA2EmF">noMem</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>SQLITE_IOERR_NOMEM</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">noMem</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O6accessyA2EmF"></a>
+                    <a name="//apple_ref/swift/Element/access" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O6accessyA2EmF">access</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>SQLITE_IOERR_ACCESS</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">access</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O17checkReservedLockyA2EmF"></a>
+                    <a name="//apple_ref/swift/Element/checkReservedLock" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O17checkReservedLockyA2EmF">checkReservedLock</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>SQLITE_IOERR_CHECKRESERVEDLOCK</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">checkReservedLock</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O4lockyA2EmF"></a>
+                    <a name="//apple_ref/swift/Element/lock" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O4lockyA2EmF">lock</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>SQLITE_IOERR_LOCK</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">lock</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O5closeyA2EmF"></a>
+                    <a name="//apple_ref/swift/Element/close" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O5closeyA2EmF">close</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>SQLITE_IOERR_CLOSE</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">close</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O8dirCloseyA2EmF"></a>
+                    <a name="//apple_ref/swift/Element/dirClose" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O8dirCloseyA2EmF">dirClose</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>SQLITE_IOERR_DIR_CLOSE</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">dirClose</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O7shmOpenyA2EmF"></a>
+                    <a name="//apple_ref/swift/Element/shmOpen" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O7shmOpenyA2EmF">shmOpen</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>SQLITE_IOERR_SHMOPEN</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">shmOpen</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O7shmSizeyA2EmF"></a>
+                    <a name="//apple_ref/swift/Element/shmSize" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O7shmSizeyA2EmF">shmSize</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>SQLITE_IOERR_SHMSIZE</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">shmSize</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O7shmLockyA2EmF"></a>
+                    <a name="//apple_ref/swift/Element/shmLock" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O7shmLockyA2EmF">shmLock</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>SQLITE_IOERR_SHMLOCK</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">shmLock</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O6shmMapyA2EmF"></a>
+                    <a name="//apple_ref/swift/Element/shmMap" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O6shmMapyA2EmF">shmMap</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>SQLITE_IOERR_SHMMAP</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">shmMap</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O4seekyA2EmF"></a>
+                    <a name="//apple_ref/swift/Element/seek" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O4seekyA2EmF">seek</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>SQLITE_IOERR_SEEK</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">seek</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O11deleteNoEntyA2EmF"></a>
+                    <a name="//apple_ref/swift/Element/deleteNoEnt" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O11deleteNoEntyA2EmF">deleteNoEnt</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>SQLITE_IOERR_DELETE_NOENT</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">deleteNoEnt</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O4mmapyA2EmF"></a>
+                    <a name="//apple_ref/swift/Element/mmap" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O4mmapyA2EmF">mmap</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>SQLITE_IOERR_MMAP</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">mmap</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O11getTempPathyA2EmF"></a>
+                    <a name="//apple_ref/swift/Element/getTempPath" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O11getTempPathyA2EmF">getTempPath</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>SQLITE_IOERR_GETTEMPPATH</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">getTempPath</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O8convPathyA2EmF"></a>
+                    <a name="//apple_ref/swift/Element/convPath" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O8convPathyA2EmF">convPath</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>SQLITE_IOERR_CONVPATH</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">convPath</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O5vnodeyA2EmF"></a>
+                    <a name="//apple_ref/swift/Element/vnode" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O5vnodeyA2EmF">vnode</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>SQLITE_IOERR_VNODE</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">vnode</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O4authyA2EmF"></a>
+                    <a name="//apple_ref/swift/Element/auth" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O4authyA2EmF">auth</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>SQLITE_IOERR_AUTH</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">auth</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O11beginAtomicyA2EmF"></a>
+                    <a name="//apple_ref/swift/Element/beginAtomic" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O11beginAtomicyA2EmF">beginAtomic</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>SQLITE_IOERR_BEGIN_ATOMIC</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">beginAtomic</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O12commitAtomicyA2EmF"></a>
+                    <a name="//apple_ref/swift/Element/commitAtomic" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O12commitAtomicyA2EmF">commitAtomic</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>SQLITE_IOERR_COMMIT_ATOMIC</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">commitAtomic</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O14rollbackAtomicyA2EmF"></a>
+                    <a name="//apple_ref/swift/Element/rollbackAtomic" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O14rollbackAtomicyA2EmF">rollbackAtomic</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>SQLITE_IOERR_ROLLBACK_ATOMIC</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">rollbackAtomic</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O4datayA2EmF"></a>
+                    <a name="//apple_ref/swift/Element/data" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB12SQLiteResultO013IOErrExtendedD0O4datayA2EmF">data</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>SQLITE_IOERR_ROLLBACK_DATA</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">data</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>© 2015 - 2020 <a class="link" href="https://www.feisty-dog.com" target="_blank" rel="external">Feisty Dog, LLC</a> under the <a class="link" href="https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt" target="_blank" rel="external">MIT License</a>.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

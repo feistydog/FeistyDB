@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>EponymousVirtualTableModule Protocol Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Protocol/EponymousVirtualTableModule" class="dashAnchor"></a>
+    <a title="EponymousVirtualTableModule Protocol Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html">FeistyDB Docs</a> (99% documented)</p>
+        <p class="header-right"><a href="https://github.com/feistydog/FeistyDB"><img src="../img/gh.png"/>View on GitHub</a></p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html">FeistyDB Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        EponymousVirtualTableModule Protocol Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Core.html">Core</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/Database.html">Database</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Database/FTS5TokenizationReason.html">– FTS5TokenizationReason</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Database/RowChangeType.html">– RowChangeType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Database/SQLFunctionFlags.html">– SQLFunctionFlags</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Database/VirtualTableModuleOptions.html">– VirtualTableModuleOptions</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Database/TransactionType.html">– TransactionType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Database/TransactionCompletion.html">– TransactionCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Database/SavepointCompletion.html">– SavepointCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Database/WALCheckpointType.html">– WALCheckpointType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Database/StatusParameter.html">– StatusParameter</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Statement.html">Statement</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Statement/Counter.html">– Counter</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Row.html">Row</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Values.html">Values</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/DatabaseValue.html">DatabaseValue</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ColumnConvertible.html">ColumnConvertible</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ParameterBindable.html">ParameterBindable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/DatabaseSerializable.html">DatabaseSerializable</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Queues.html">Queues</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/DatabaseQueue.html">DatabaseQueue</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DatabaseReadQueue.html">DatabaseReadQueue</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other%20Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/Snapshot.html">Snapshot</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other%20Enums.html">Other Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/SQLiteResult.html">SQLiteResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SQLiteResult/OKExtendedResult.html">– OKExtendedResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SQLiteResult/ErrorExtendedResult.html">– ErrorExtendedResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SQLiteResult/AbortExtendedResult.html">– AbortExtendedResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SQLiteResult/BusyExtendedResult.html">– BusyExtendedResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SQLiteResult/LockedExtendedResult.html">– LockedExtendedResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SQLiteResult/ReadOnlyExtendedResult.html">– ReadOnlyExtendedResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SQLiteResult/IOErrExtendedResult.html">– IOErrExtendedResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SQLiteResult/CorruptExtendedResult.html">– CorruptExtendedResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SQLiteResult/CantOpenExtendedResult.html">– CantOpenExtendedResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SQLiteResult/ConstraintExtendedResult.html">– ConstraintExtendedResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SQLiteResult/AuthExtendedResult.html">– AuthExtendedResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SQLiteResult/NoticeExtendedResult.html">– NoticeExtendedResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SQLiteResult/WarningExtendedResult.html">– WarningExtendedResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/VirtualTableModuleBestIndexResult.html">VirtualTableModuleBestIndexResult</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other%20Extensions.html">Other Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Extensions/Bool.html">Bool</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Data.html">Data</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Date.html">Date</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Double.html">Double</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Float.html">Float</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Int.html">Int</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Int16.html">Int16</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Int32.html">Int32</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Int64.html">Int64</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Int8.html">Int8</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/NSNull.html">NSNull</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/NSNumber.html">NSNumber</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/String.html">String</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UInt.html">UInt</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UInt16.html">UInt16</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UInt32.html">UInt32</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UInt64.html">UInt64</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UInt8.html">UInt8</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/URL.html">URL</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UUID.html">UUID</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other%20Protocols.html">Other Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/EponymousVirtualTableModule.html">EponymousVirtualTableModule</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Error.html">Error</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/FTS5Tokenizer.html">FTS5Tokenizer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/SQLAggregateFunction.html">SQLAggregateFunction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/SQLAggregateWindowFunction.html">SQLAggregateWindowFunction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/VirtualTableCursor.html">VirtualTableCursor</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/VirtualTableModule.html">VirtualTableModule</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other%20Structs.html">Other Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Structs/DatabaseError.html">DatabaseError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/SQLite.html">SQLite</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/SQLiteError.html">SQLiteError</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other%20Typealiases.html">Other Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Other%20Typealiases.html#/s:8FeistyDB24SQLiteDatabaseConnectiona">SQLiteDatabaseConnection</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Other%20Typealiases.html#/s:8FeistyDB23SQLitePreparedStatementa">SQLitePreparedStatement</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Other%20Typealiases.html#/s:8FeistyDB14SQLiteSnapshota">SQLiteSnapshot</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>EponymousVirtualTableModule</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">EponymousVirtualTableModule</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/VirtualTableModule.html">VirtualTableModule</a></span></code></pre>
+
+                </div>
+              </div>
+            <p>An eponymous virtual table module.</p>
+
+<p>An eponymous virtual table module presents a virtual table with the same name as the module and
+does not require a <code>CREATE VIRTUAL TABLE</code> statement to be available.</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB27EponymousVirtualTableModuleP8database9argumentsxAA8DatabaseC_SaySSGtKcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(database:arguments:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB27EponymousVirtualTableModuleP8database9argumentsxAA8DatabaseC_SaySSGtKcfc">init(database:<wbr>arguments:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Opens a connection to an SQLite eponymous virtual table module.</p>
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <p><code><a href="../Structs/SQLiteError.html">SQLiteError</a></code> if the module could not be created</p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="nf">init</span><span class="p">(</span><span class="nv">database</span><span class="p">:</span> <span class="kt"><a href="../Classes/Database.html">Database</a></span><span class="p">,</span> <span class="nv">arguments</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">])</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>database</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The database to which this virtual table module is being added.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>arguments</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The arguments used to create the virtual table module. The first argument is the name of the module being invoked.
+The second argument is the name of the database in which the virtual table is being created. The third argument is the name of the new virtual table.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>© 2015 - 2020 <a class="link" href="https://www.feisty-dog.com" target="_blank" rel="external">Feisty Dog, LLC</a> under the <a class="link" href="https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt" target="_blank" rel="external">MIT License</a>.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

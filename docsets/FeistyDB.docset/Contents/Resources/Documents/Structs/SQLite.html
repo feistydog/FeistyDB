@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>SQLite Structure Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Struct/SQLite" class="dashAnchor"></a>
+    <a title="SQLite Structure Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html">FeistyDB Docs</a> (99% documented)</p>
+        <p class="header-right"><a href="https://github.com/feistydog/FeistyDB"><img src="../img/gh.png"/>View on GitHub</a></p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html">FeistyDB Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        SQLite Structure Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Core.html">Core</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/Database.html">Database</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Database/FTS5TokenizationReason.html">– FTS5TokenizationReason</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Database/RowChangeType.html">– RowChangeType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Database/SQLFunctionFlags.html">– SQLFunctionFlags</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Database/VirtualTableModuleOptions.html">– VirtualTableModuleOptions</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Database/TransactionType.html">– TransactionType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Database/TransactionCompletion.html">– TransactionCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Database/SavepointCompletion.html">– SavepointCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Database/WALCheckpointType.html">– WALCheckpointType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Database/StatusParameter.html">– StatusParameter</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Statement.html">Statement</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Statement/Counter.html">– Counter</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Row.html">Row</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Values.html">Values</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/DatabaseValue.html">DatabaseValue</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ColumnConvertible.html">ColumnConvertible</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ParameterBindable.html">ParameterBindable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/DatabaseSerializable.html">DatabaseSerializable</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Queues.html">Queues</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/DatabaseQueue.html">DatabaseQueue</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DatabaseReadQueue.html">DatabaseReadQueue</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other%20Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/Snapshot.html">Snapshot</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other%20Enums.html">Other Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/SQLiteResult.html">SQLiteResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SQLiteResult/OKExtendedResult.html">– OKExtendedResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SQLiteResult/ErrorExtendedResult.html">– ErrorExtendedResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SQLiteResult/AbortExtendedResult.html">– AbortExtendedResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SQLiteResult/BusyExtendedResult.html">– BusyExtendedResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SQLiteResult/LockedExtendedResult.html">– LockedExtendedResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SQLiteResult/ReadOnlyExtendedResult.html">– ReadOnlyExtendedResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SQLiteResult/IOErrExtendedResult.html">– IOErrExtendedResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SQLiteResult/CorruptExtendedResult.html">– CorruptExtendedResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SQLiteResult/CantOpenExtendedResult.html">– CantOpenExtendedResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SQLiteResult/ConstraintExtendedResult.html">– ConstraintExtendedResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SQLiteResult/AuthExtendedResult.html">– AuthExtendedResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SQLiteResult/NoticeExtendedResult.html">– NoticeExtendedResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SQLiteResult/WarningExtendedResult.html">– WarningExtendedResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/VirtualTableModuleBestIndexResult.html">VirtualTableModuleBestIndexResult</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other%20Extensions.html">Other Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Extensions/Bool.html">Bool</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Data.html">Data</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Date.html">Date</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Double.html">Double</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Float.html">Float</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Int.html">Int</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Int16.html">Int16</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Int32.html">Int32</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Int64.html">Int64</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Int8.html">Int8</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/NSNull.html">NSNull</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/NSNumber.html">NSNumber</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/String.html">String</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UInt.html">UInt</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UInt16.html">UInt16</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UInt32.html">UInt32</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UInt64.html">UInt64</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UInt8.html">UInt8</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/URL.html">URL</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UUID.html">UUID</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other%20Protocols.html">Other Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/EponymousVirtualTableModule.html">EponymousVirtualTableModule</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Error.html">Error</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/FTS5Tokenizer.html">FTS5Tokenizer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/SQLAggregateFunction.html">SQLAggregateFunction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/SQLAggregateWindowFunction.html">SQLAggregateWindowFunction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/VirtualTableCursor.html">VirtualTableCursor</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/VirtualTableModule.html">VirtualTableModule</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other%20Structs.html">Other Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Structs/DatabaseError.html">DatabaseError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/SQLite.html">SQLite</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/SQLiteError.html">SQLiteError</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other%20Typealiases.html">Other Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Other%20Typealiases.html#/s:8FeistyDB24SQLiteDatabaseConnectiona">SQLiteDatabaseConnection</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Other%20Typealiases.html#/s:8FeistyDB23SQLitePreparedStatementa">SQLitePreparedStatement</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Other%20Typealiases.html#/s:8FeistyDB14SQLiteSnapshota">SQLiteSnapshot</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>SQLite</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">SQLite</span></code></pre>
+
+                </div>
+              </div>
+            <p>SQLite library information.</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB6SQLiteV7versionSSvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/version" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB6SQLiteV7versionSSvpZ">version</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The version of SQLite in the format <em>X.Y.Z</em>, for example <code>3.25.3</code></p>
+<div class="aside aside-seealso">
+    <p class="aside-title">Seealso</p>
+    <a href="https://www.sqlite.org/c3ref/libversion.html">Run-Time Library Version Numbers</a>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">version</span><span class="p">:</span> <span class="kt">String</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB6SQLiteV13versionNumberSivpZ"></a>
+                    <a name="//apple_ref/swift/Variable/versionNumber" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB6SQLiteV13versionNumberSivpZ">versionNumber</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The version of SQLite in the format <em>(X*1000000 + Y*1000 + Z)</em>, such as <code>3025003</code></p>
+<div class="aside aside-seealso">
+    <p class="aside-title">Seealso</p>
+    <a href="https://www.sqlite.org/c3ref/libversion.html">Run-Time Library Version Numbers</a>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">versionNumber</span><span class="p">:</span> <span class="kt">Int</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB6SQLiteV8sourceIDSSvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/sourceID" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB6SQLiteV8sourceIDSSvpZ">sourceID</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The identifier of the SQLite source tree, for example <code>89e099fbe5e13c33e683bef07361231ca525b88f7907be7092058007b75036f2</code></p>
+<div class="aside aside-seealso">
+    <p class="aside-title">Seealso</p>
+    <a href="https://www.sqlite.org/c3ref/libversion.html">Run-Time Library Version Numbers</a>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">sourceID</span><span class="p">:</span> <span class="kt">String</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB6SQLiteV10initializeyyKFZ"></a>
+                    <a name="//apple_ref/swift/Method/initialize()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB6SQLiteV10initializeyyKFZ">initialize()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Initializes the SQLite library</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <p>This function is automatically invoked by SQLite and is not normally called directly</p>
+
+</div><div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <p>An error if SQLite initialization fails</p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">initialize</span><span class="p">()</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB6SQLiteV8shutdownyyKFZ"></a>
+                    <a name="//apple_ref/swift/Method/shutdown()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB6SQLiteV8shutdownyyKFZ">shutdown()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Deallocates any resources allocated by <code><a href="../Structs/SQLite.html#/s:8FeistyDB6SQLiteV10initializeyyKFZ">initialize()</a></code></p>
+
+<p>All open database connections must be closed and all other SQLite resources must be deallocated prior to invoking this function.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <p>This function is automatically invoked by SQLite and is not normally called directly</p>
+
+</div><div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <p>An error if SQLite shutdown fails</p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">shutdown</span><span class="p">()</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB6SQLiteV10memoryUseds5Int64VvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/memoryUsed" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB6SQLiteV10memoryUseds5Int64VvpZ">memoryUsed</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The number of bytes of memory <code>malloc</code>ed but not yet <code>free</code>d by SQLite</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">var</span> <span class="nv">memoryUsed</span><span class="p">:</span> <span class="kt">Int64</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB6SQLiteV15memoryHighwater5resets5Int64VSb_tFZ"></a>
+                    <a name="//apple_ref/swift/Method/memoryHighwater(reset:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB6SQLiteV15memoryHighwater5resets5Int64VSb_tFZ">memoryHighwater(reset:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns the maximum amount of memory used by SQLite since the memory highwater mark was last reset.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">memoryHighwater</span><span class="p">(</span><span class="nv">reset</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">false</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Int64</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>reset</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>If <code>true</code> the memory highwater mark is reset to the value of <code><a href="../Structs/SQLite.html#/s:8FeistyDB6SQLiteV10memoryUseds5Int64VvpZ">memoryUsed</a></code></p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB6SQLiteV8keywordsShySSGvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/keywords" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB6SQLiteV8keywordsShySSGvpZ">keywords</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The keywords understood by SQLite.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <p>Keywords in SQLite are not case sensitive.</p>
+
+</div><div class="aside aside-seealso">
+    <p class="aside-title">Seealso</p>
+    <p><a href="https://www.sqlite.org/c3ref/keyword_check.html">SQL Keyword Checking</a></p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">keywords</span><span class="p">:</span> <span class="kt">Set</span><span class="o">&lt;</span><span class="kt">String</span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB6SQLiteV9isKeywordySbSSFZ"></a>
+                    <a name="//apple_ref/swift/Method/isKeyword(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB6SQLiteV9isKeywordySbSSFZ">isKeyword(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Tests whether <code>identifier</code> is an SQLite keyword.</p>
+<div class="aside aside-seealso">
+    <p class="aside-title">Seealso</p>
+    <p><a href="https://www.sqlite.org/c3ref/keyword_check.html">SQL Keyword Checking</a></p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">isKeyword</span><span class="p">(</span><span class="n">_</span> <span class="nv">identifier</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>identifier</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The string to check</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p><code>True</code> if <code>identifier</code> is an SQLite keyword, <code>False</code> otherwise</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8FeistyDB6SQLiteV10randomnessy10Foundation4DataVSiFZ"></a>
+                    <a name="//apple_ref/swift/Method/randomness(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8FeistyDB6SQLiteV10randomnessy10Foundation4DataVSiFZ">randomness(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Generates <code>count</code> bytes of randomness.</p>
+<div class="aside aside-seealso">
+    <p class="aside-title">Seealso</p>
+    <p><a href="https://www.sqlite.org/c3ref/randomness.html">Pseudo-Random Number Generator</a></p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">randomness</span><span class="p">(</span><span class="n">_</span> <span class="nv">count</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Data</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>count</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The number of random bytes to generate</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A <code>Data</code> object containing <code>count</code> bytes of randomness</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>© 2015 - 2020 <a class="link" href="https://www.feisty-dog.com" target="_blank" rel="external">Feisty Dog, LLC</a> under the <a class="link" href="https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt" target="_blank" rel="external">MIT License</a>.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>
