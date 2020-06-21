@@ -32,7 +32,7 @@ try db.execute(sql: "CREATE TABLE t1(a,b);")
 
 // Insert a row
 try db.execute(sql: "INSERT INTO t1(a,b) VALUES (?, ?);", 
-   parameterValues: [33, "lulu"])
+               parameterValues: [33, "lulu"])
 
 // Retrieve the values
 try db.execute(sql: "SELECT a,b FROM t1;") { row in
@@ -129,14 +129,14 @@ The created table `t1` has two columns, `a` and `b`.
 ```swift
 for i in 0..<5 {
     try db.execute(sql: "INSERT INTO t1(a,b) VALUES (?,?);",
-	   parameterValues: [2*i, 2*i+1])
+                   parameterValues: [2*i, 2*i+1])
 }
 ```
 SQL parameters are passed as a sequence or series of values.  Named parameters are also supported.
 
 ```swift
 try db.execute(sql: "INSERT INTO t1(a,b) VALUES (:a,:b);",
-		parameters: [":a": 100, ":b": 404])
+               parameters: [":a": 100, ":b": 404])
 ```
 
 ### Insert Data Efficiently
