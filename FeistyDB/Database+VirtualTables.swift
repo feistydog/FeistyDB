@@ -198,11 +198,8 @@ extension Database {
 	/// - seealso: [The Virtual Table Mechanism Of SQLite](https://sqlite.org/vtab.html)
 	public func addModule<T: VirtualTableModule>(_ name: String, type: T.Type) throws {
 		// Flesh out the struct containing the virtual table functions used by SQLite
-		var module_struct = sqlite3_module(iVersion: 0, xCreate: nil, xConnect: xConnect, xBestIndex: xBestIndex, xDisconnect: xDisconnect, xDestroy: nil,
+		var module_struct = sqlite3_module(iVersion: 0, xCreate: xCreate, xConnect: xConnect, xBestIndex: xBestIndex, xDisconnect: xDisconnect, xDestroy: xDestroy,
 		   xOpen: xOpen, xClose: xClose, xFilter: xFilter, xNext: xNext, xEof: xEof, xColumn: xColumn, xRowid: xRowid, xUpdate: nil, xBegin: nil, xSync: nil, xCommit: nil, xRollback: nil, xFindFunction: nil, xRename: nil, xSavepoint: nil, xRelease: nil, xRollbackTo: nil, xShadowName: nil)
-
-		module_struct.xCreate = xCreate
-		module_struct.xDestroy = xDestroy
 
 		// client_data must live until the xDestroy function is invoked; store it as a +1 object
 		let client_data = VirtualTableModuleClientData(module: &module_struct, database: self) { database, args, create -> VirtualTableModule in
