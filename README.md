@@ -43,7 +43,7 @@ try db.execute(sql: "SELECT a,b FROM t1;") { row in
 
 ### Segue to Thread-Safety
 
-`FeistyDB` compiles SQLite with thread safety disabled for improved performance. While this increases performance, it also means a `Database` instance may only be accessed from a single thread or dispatch queue at a time.
+FeistyDB compiles SQLite with thread safety disabled for improved performance. While this increases performance, it also means a `Database` instance may only be accessed from a single thread or dispatch queue at a time.
 
 Most applications should not create a `Database` directly but instead should use a thread-safe `DatabaseQueue`.
 
@@ -52,17 +52,15 @@ Most applications should not create a `Database` directly but instead should use
 let dbQ = try DatabaseQueue("myapp.dbQ")
 ```
 
-This creates a queue which may be used from multiple threads safely.  The queue serializes access to the database ensuring only a single operation occurs at a time. Database operations may be performed synchronously:
+This creates a queue which may be used from multiple threads safely.  The queue serializes access to the database ensuring only a single operation occurs at a time. Database operations may be performed synchronously or asynchronously.
 
 ```swift
+// Perform a synchronous database access
 try dbQ.sync { db in
     // Do something with `db`
 }
-```
 
-or asynchronously:
-
-```swift
+// Perform an asynchronous database access
 dbQ.async { db in
     do {
         // Do something with `db`
@@ -114,7 +112,7 @@ Thread-safe access to a database is provided by `DatabaseQueue`.
 let db = try Database()
 ```
 
-This creates a database for use on a single thread or queue only. Most applications should not create a `Database` directly but instead should use a thread-safe `DatabaseQueue`.
+This creates a database for use on a single thread or dispatch queue only. Most applications should not create a `Database` directly but instead should use a thread-safe `DatabaseQueue`.
 
 ### Create a Table
 
@@ -122,7 +120,7 @@ This creates a database for use on a single thread or queue only. Most applicati
 try db.execute(sql: "CREATE TABLE t1(a,b);")
 ```
 
-The created table `t1` has two columns, `a` and `b`.
+The created table *t1* has two columns, *a* and *b*.
 
 ### Insert Data
 
@@ -164,7 +162,7 @@ try db.execute(sql: "SELECT * FROM t1;") { row in
 }
 ```
 
-`row` is a `Row` instance.
+*row* is a `Row` instance.
 
 ### Perform a Transaction
 
@@ -204,7 +202,7 @@ try db.addFunction("rot13", arity: 1) { values in
 }
 ```
 
-`rot13()` can now be used just like any other [SQL function](https://www.sqlite.org/lang_corefunc.html).
+*rot13* can now be used just like any other [SQL function](https://www.sqlite.org/lang_corefunc.html).
 
 ```swift
 let s = try db.prepare(sql: "INSERT INTO t1(a) VALUES (rot13(?));")
@@ -218,7 +216,7 @@ try db.addCollation("localized_compare", { (lhs, rhs) -> ComparisonResult in
 })
 ```
 
-`localized_compare` is now available as a [collating sequence](https://www.sqlite.org/c3ref/create_collation.html).
+*localized_compare* is now available as a [collating sequence](https://www.sqlite.org/c3ref/create_collation.html).
 
 ```swift
 let s = try db.prepare(sql: "SELECT * FROM t1 ORDER BY a COLLATE localized_compare;")
