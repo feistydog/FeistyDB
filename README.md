@@ -18,7 +18,7 @@ FeistyDB allows fast, easy database access with robust error handling.  It is no
 ## Installation
 
 1. Clone the [FeistyDB](https://github.com/feistydog/FeistyDB) repository.
-2. Run `./get-sqlite.sh` to download the latest SQLite source tree and build the [amalgamation](https://sqlite.org/amalgamation.html) with the `uuid` and `carray` extensions added.
+2. Run `./get-sqlite.sh` to download the latest SQLite source tree and build the [amalgamation](https://sqlite.org/amalgamation.html) with the [uuid](https://sqlite.org/src/file/ext/misc/uuid.c) and [carray](https://www.sqlite.org/carray.html) extensions added.
 3. Open the project, build, and get started in the playground!
 
 ## Quick Start
@@ -31,7 +31,7 @@ let db = try Database()
 try db.execute(sql: "CREATE TABLE t1(a,b);")
 
 // Insert a row
-try db.execute(sql: "INSERT INTO t1(a,b) VALUES (?, ?);", 
+try db.execute(sql: "INSERT INTO t1(a,b) VALUES (?,?);", 
                parameterValues: [33, "lulu"])
 
 // Retrieve the values
@@ -41,7 +41,7 @@ try db.execute(sql: "SELECT a,b FROM t1;") { row in
 }
 ```
 
-### Segue to Thread-Safety
+### Segue to Thread Safety
 
 FeistyDB compiles SQLite with thread safety disabled for improved performance. While this increases performance, it also means a `Database` instance may only be accessed from a single thread or dispatch queue at a time.
 
@@ -52,7 +52,7 @@ Most applications should not create a `Database` directly but instead should use
 let dbQ = try DatabaseQueue("myapp.dbQ")
 ```
 
-This creates a queue which may be used from multiple threads safely.  The queue serializes access to the database ensuring only a single operation occurs at a time. Database operations may be performed synchronously or asynchronously.
+This creates a queue which may be used from multiple threads or dispatch queues safely.  The queue serializes access to the database ensuring only a single operation occurs at a time. Database operations may be performed synchronously or asynchronously.
 
 ```swift
 // Perform a synchronous database access
