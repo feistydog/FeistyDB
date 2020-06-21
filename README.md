@@ -168,7 +168,7 @@ try db.execute(sql: "SELECT * FROM t1;") { row in
 
 ```swift
 try db.transaction { db in
-    // do something with `db`
+    // Do something with `db`
     return .commit
 }
 ```
@@ -177,7 +177,7 @@ Database transactions may also be performed asynchronously using `DatabaseQueue`
 
 ```swift
 dbQ.asyncTransaction { db in
-    // do something with `db`
+    // Do something with `db`
     return .commit
 }
 ```
