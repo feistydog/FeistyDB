@@ -143,25 +143,17 @@ extension Database {
 	/// Glue for creating a generic Swift type in a C callback
 	final class VirtualTableModuleClientData {
 		/// The constructor closure
-		let _construct: (_ database: Database, _ arguments : [String], _ create: Bool) throws -> VirtualTableModule
-
-		/// The database to which the virtual table module will belong
-		let database: Database
+		let construct: (_ arguments : [String], _ create: Bool) throws -> VirtualTableModule
 
 		/// Persistent sqlite3_module instance
 		let module: UnsafeMutablePointer<sqlite3_module>
 
 		/// Creates client data for a module
-		init(module: inout sqlite3_module, database: Database, _ construct: @escaping (_ database: Database, _ arguments: [String], _ create: Bool) throws -> VirtualTableModule) {
+		init(module: inout sqlite3_module, _ construct: @escaping (_ arguments: [String], _ create: Bool) throws -> VirtualTableModule) {
 			let module_ptr = UnsafeMutablePointer<sqlite3_module>.allocate(capacity: 1)
 			module_ptr.assign(from: &module, count: 1)
 			self.module = module_ptr
-			self.database = database
-			_construct = construct
-		}
-
-		func construct(_ arguments : [String], _ create: Bool) throws -> VirtualTableModule {
-			return try _construct(database, arguments, create)
+			self.construct = construct
 		}
 
 		deinit {
@@ -202,7 +194,10 @@ extension Database {
 		   xOpen: xOpen, xClose: xClose, xFilter: xFilter, xNext: xNext, xEof: xEof, xColumn: xColumn, xRowid: xRowid, xUpdate: nil, xBegin: nil, xSync: nil, xCommit: nil, xRollback: nil, xFindFunction: nil, xRename: nil, xSavepoint: nil, xRelease: nil, xRollbackTo: nil, xShadowName: nil)
 
 		// client_data must live until the xDestroy function is invoked; store it as a +1 object
-		let client_data = VirtualTableModuleClientData(module: &module_struct, database: self) { database, args, create -> VirtualTableModule in
+		let client_data = VirtualTableModuleClientData(module: &module_struct) { [weak self] args, create -> VirtualTableModule in
+			guard let database = self else {
+				throw DatabaseError("Database instance missing (weak reference was set to nil)")
+			}
 			return try T(database: database, arguments: args, create: create)
 		}
 		let client_data_ptr = Unmanaged.passRetained(client_data).toOpaque()
@@ -282,7 +277,10 @@ extension Database {
 										   xOpen: xOpen, xClose: xClose, xFilter: xFilter, xNext: xNext, xEof: xEof, xColumn: xColumn, xRowid: xRowid, xUpdate: nil, xBegin: nil, xSync: nil, xCommit: nil, xRollback: nil, xFindFunction: nil, xRename: nil, xSavepoint: nil, xRelease: nil, xRollbackTo: nil, xShadowName: nil)
 
 		// client_data must live until the xDestroy function is invoked; store it as a +1 object
-		let client_data = VirtualTableModuleClientData(module: &module_struct, database: self) { database, args, create -> VirtualTableModule in
+		let client_data = VirtualTableModuleClientData(module: &module_struct) { [weak self] args, create -> VirtualTableModule in
+			guard let database = self else {
+				throw DatabaseError("Database instance missing (weak reference was set to nil)")
+			}
 			return try T(database: database, arguments: args, create: create)
 		}
 		let client_data_ptr = Unmanaged.passRetained(client_data).toOpaque()
