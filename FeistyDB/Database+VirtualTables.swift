@@ -294,6 +294,48 @@ extension Database {
 			throw SQLiteError("Error adding module \"\(name)\"", takingDescriptionFromDatabase: db)
 		}
 	}
+
+	/// Removes a virtual table module from the database.
+	///
+	/// - parameter name: The name of the virtual table module
+	///
+	/// - throws: An error if the virtual table module couldn't be removed
+	public func removeModule(_ name: String) throws {
+		guard sqlite3_create_module(db, name, nil, nil) == SQLITE_OK else {
+			throw SQLiteError("Error removing module \"\(name)\"", takingDescriptionFromDatabase: db)
+		}
+	}
+
+	/// Removes all virtual table modules from the database.
+	///
+	/// - parameter except: An array containing the names of virtual table modules to keep
+	///
+	/// - throws: An error if the virtual table modules couldn't be removed
+	public func removeAllModules(except: [String] = []) throws {
+		if except.isEmpty {
+			guard sqlite3_drop_modules(db, nil) == SQLITE_OK else {
+				throw SQLiteError("Error removing all modules", takingDescriptionFromDatabase: db)
+			}
+		}
+		else {
+			// This could be done more efficiently using something similar to
+			// https://github.com/apple/swift/blob/dc39fc9f244aeb883c26bcd043e895178637fdf8/stdlib/private/SwiftPrivate/SwiftPrivate.swift#L60
+			// to avoid multiple memory allocations
+			var array: [String?] = except
+			array.append(nil)
+
+			var module_names_to_keep = array.map { $0.flatMap { UnsafePointer<Int8>(strdup($0)) } }
+			defer {
+				for ptr in module_names_to_keep {
+					free(UnsafeMutablePointer(mutating: ptr))
+				}
+			}
+
+			guard sqlite3_drop_modules(db, &module_names_to_keep) == SQLITE_OK else {
+				throw SQLiteError("Error removing all modules except \"\(except)\"", takingDescriptionFromDatabase: db)
+			}
+		}
+	}
 }
 
 // MARK: - Implementations
