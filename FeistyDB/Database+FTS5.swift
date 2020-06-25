@@ -163,7 +163,7 @@ extension Database {
 
 			// Use a local buffer for token extraction if possible
 			let bufsize = 512
-			var buf = UnsafeMutablePointer<UInt8>.allocate(capacity: bufsize)
+			let buf = UnsafeMutablePointer<UInt8>.allocate(capacity: bufsize)
 
 			defer {
 				buf.deallocate()
