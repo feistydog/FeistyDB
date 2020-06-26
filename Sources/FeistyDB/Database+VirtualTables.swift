@@ -6,6 +6,7 @@
 
 import os.log
 import Foundation
+import CSQLite
 
 /// A cursor for an SQLite virtual table
 public protocol VirtualTableCursor {

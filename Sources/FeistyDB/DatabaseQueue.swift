@@ -6,6 +6,7 @@
 
 import Foundation
 import os.log
+import CSQLite
 
 /// A queue providing serialized execution of work items on a database.
 ///

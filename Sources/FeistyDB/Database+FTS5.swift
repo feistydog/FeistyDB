@@ -6,6 +6,7 @@
 
 import os.log
 import Foundation
+import CSQLite
 
 // Protocol declarations can't be nested, otherwise this would be inside Database
 

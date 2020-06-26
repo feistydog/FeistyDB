@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import CSQLite
 
 /// An error supplying a message, SQLite error code, and description.
 public struct SQLiteError: Error {

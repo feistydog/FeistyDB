@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import CSQLite
 
 /// A type that can be initialized directly from a column in an SQLite result row.
 ///

@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import CSQLite
 
 extension Database {
 	/// A comparator for `String` objects.

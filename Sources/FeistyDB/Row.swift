@@ -1,10 +1,11 @@
 //
-// Copyright (c) 2015 - 2019 Feisty Dog, LLC
+// Copyright (c) 2015 - 2020 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
 
 import Foundation
+import CSQLite
 
 /// A result row containing one or more columns with type-safe value access.
 ///

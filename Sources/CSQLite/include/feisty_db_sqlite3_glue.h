@@ -20,3 +20,19 @@ int feisty_db_sqlite3_vtab_config_constraint_support(sqlite3 *db, int x);
 int feisty_db_sqlite3_vtab_config_innocuous(sqlite3 *db);
 /// Equivalent to `sqlite3_vtab_config(db, SQLITE_VTAB_DIRECTONLY)`
 int feisty_db_sqlite3_vtab_config_directonly(sqlite3 *db);
+
+struct feisty_db_sqlite3_vtab {
+	/// sqlite3 required fields
+	sqlite3_vtab base;
+	/// `UnsafeMutablePointer<VirtualTableModule>`
+	void *virtual_table_module_ptr;
+};
+typedef struct feisty_db_sqlite3_vtab feisty_db_sqlite3_vtab;
+
+struct feisty_db_sqlite3_vtab_cursor {
+	/// sqlite3 required fields
+	sqlite3_vtab_cursor base;
+	/// `UnsafeMutablePointer<VirtualTableCursor>`
+	void *virtual_table_cursor_ptr;
+};
+typedef struct feisty_db_sqlite3_vtab_cursor feisty_db_sqlite3_vtab_cursor;

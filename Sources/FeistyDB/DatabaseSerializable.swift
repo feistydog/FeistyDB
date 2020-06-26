@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import CSQLite
 
 /// A type that may be serialized to and deserialized from a database.
 ///

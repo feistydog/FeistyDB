@@ -4,8 +4,9 @@
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
 
-import Foundation
 import os.log
+import Foundation
+import CSQLite
 
 /// A native data type that may be stored in an SQLite database.
 ///

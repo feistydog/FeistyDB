@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import CSQLite
 
 /// A type that can bind its value directly to a parameter in an SQLite statement.
 ///

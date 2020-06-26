@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import CSQLite
 
 /// A result code from SQLite
 ///

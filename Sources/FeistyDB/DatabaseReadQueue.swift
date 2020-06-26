@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import CSQLite
 
 /// A queue providing serialized execution of read operations on a database.
 ///

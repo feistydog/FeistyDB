@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import CSQLite
 
 // MARK: - Int32
 extension Statement {

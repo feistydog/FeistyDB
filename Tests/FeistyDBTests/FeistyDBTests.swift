@@ -5,6 +5,7 @@
 //
 
 import XCTest
+import CSQLite
 @testable import FeistyDB
 
 /// A virtual table module implementing a shuffled integer sequence

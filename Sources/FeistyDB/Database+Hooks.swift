@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import CSQLite
 
 extension Database {
 	/// A hook called when a database transaction is committed.
