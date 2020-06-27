@@ -26,7 +26,15 @@ let package = Package(
 		// Targets can depend on other targets in this package, and on products in packages which this package depends on.
 		.target(
 			name: "FeistyDB",
-			dependencies: ["CSQLite"]),
+			dependencies: ["CSQLite"],
+			cSettings: [
+				// If pre-update hook support is desired uncomment the following line
+//				.define("SQLITE_ENABLE_PREUPDATE_HOOK", to: "1"),
+			],
+			swiftSettings: [
+				// If pre-update hook support is desired uncomment the following line
+//				.define("SQLITE_ENABLE_PREUPDATE_HOOK")
+		]),
 		.target(
 			name: "CSQLite",
 			dependencies: [],
@@ -37,17 +45,19 @@ let package = Package(
 				.define("SQLITE_DEFAULT_WAL_SYNCHRONOUS", to: "1"),
 				.define("SQLITE_LIKE_DOESNT_MATCH_BLOBS"),
 				.define("SQLITE_MAX_EXPR_DEPTH", to: "0"),
-				.define("SQLITE_OMIT_DECLTYPE"),
-				.define("SQLITE_OMIT_DEPRECATED"),
-				.define("SQLITE_OMIT_PROGRESS_CALLBACK"),
-				.define("SQLITE_OMIT_SHARED_CACHE"),
+				.define("SQLITE_OMIT_DECLTYPE", to: "1"),
+				.define("SQLITE_OMIT_DEPRECATED", to: "1"),
+				.define("SQLITE_OMIT_PROGRESS_CALLBACK", to: "1"),
+				.define("SQLITE_OMIT_SHARED_CACHE", to: "1"),
 				.define("SQLITE_USE_ALLOCA", to: "1"),
-				.define("SQLITE_OMIT_DEPRECATED"),
-				.define("SQLITE_ENABLE_FTS5"),
-				.define("SQLITE_ENABLE_RTREE"),
-				.define("SQLITE_ENABLE_STAT4"),
-				.define("SQLITE_ENABLE_SNAPSHOT"),
-				.define("SQLITE_ENABLE_JSON1"),
+				.define("SQLITE_OMIT_DEPRECATED", to: "1"),
+				// If pre-update hook support is desired uncomment the following line
+//				.define("SQLITE_ENABLE_PREUPDATE_HOOK", to: "1"),
+				.define("SQLITE_ENABLE_FTS5", to: "1"),
+				.define("SQLITE_ENABLE_RTREE", to: "1"),
+				.define("SQLITE_ENABLE_STAT4", to: "1"),
+				.define("SQLITE_ENABLE_SNAPSHOT", to: "1"),
+				.define("SQLITE_ENABLE_JSON1", to: "1"),
 				.define("SQLITE_EXTRA_INIT", to: "feisty_db_init"),
 		]),
 		.testTarget(

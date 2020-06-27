@@ -249,3 +249,153 @@ extension Database {
 		}
 	}
 }
+
+// The pre-update hook is not compiled into FeistyDB by default
+// because it is not one of recommended SQLite compile-time options
+// https://www.sqlite.org/compile.html
+// To enable it uncomment the appropriate lines in Package.swift
+#if SQLITE_ENABLE_PREUPDATE_HOOK
+
+extension Database {
+	/// Possible types of pre-update changes with associated rowids.
+	///
+	/// - seealso: [The pre-update hook.](https://sqlite.org/c3ref/preupdate_count.html)
+	public enum	PreUpdateChangeType {
+		/// A row was inserted
+		case insert(Int64)
+		/// A row was deleted
+		case delete(Int64)
+		/// A row was updated
+		case update(Int64, Int64)
+	}
+
+	/// A pre-update hook context containing information on the insert, update, or delete operation
+	///
+	/// - seealso: [The pre-update hook.](https://sqlite.org/c3ref/preupdate_count.html)
+	public struct PreUpdateContext {
+		/// The underlying `sqlite3 *` database
+		let db: SQLiteDatabaseConnection
+
+		/// The type of pre-update change
+		public let change: Database.PreUpdateChangeType
+		/// The name of the database being changed
+		public let database: String
+		/// The name of the table being changed
+		public let table: String
+
+		/// Returns the number of columns in the row that is being inserted, updated, or deleted
+		public var count: Int {
+			Int(sqlite3_preupdate_count(db))
+		}
+
+		/// Returns 0 if the pre-update callback was invoked as a result of a direct insert, update, or delete operation; or 1 for inserts, updates, or deletes invoked by top-level triggers; or 2 for changes resulting from triggers called by top-level triggers; and so forth
+		public var depth: Int {
+			Int(sqlite3_preupdate_depth(db))
+		}
+
+		/// Returns the value for the column at `index` of the table row before it is updated
+		///
+		/// - note: Column indexes are 0-based.  The leftmost column in a row has index 0.
+		///
+		/// - requires: `index >= 0`
+		/// - requires: `index < self.count`
+		///
+		/// - note: This is only valid for `.update` and `.delete` row change types
+		///
+		/// - parameter index: The index of the desired column
+		///
+		/// - throws: An error if `index` is out of bounds or an other error occurs
+		public func oldValue(at index: Int) throws -> DatabaseValue {
+			if case .insert(_) = change {
+				throw DatabaseError("sqlite3_preupdate_old() is undefined for insertions")
+			}
+			var value: SQLiteValue?
+			guard sqlite3_preupdate_old(db, Int32(index), &value) == SQLITE_OK else {
+				throw SQLiteError("Unable to retrieve old value in pre-update hook", takingDescriptionFromDatabase: db)
+			}
+			return DatabaseValue(value.unsafelyUnwrapped)
+		}
+
+		/// Returns the value for the column at `index` of the table row after it is updated
+		///
+		/// - note: Column indexes are 0-based.  The leftmost column in a row has index 0.
+		///
+		/// - requires: `index >= 0`
+		/// - requires: `index < self.count`
+		///
+		/// - note: This is only valid for `.update` and `.insert` row change types
+		///
+		/// - parameter index: The index of the desired column
+		///
+		/// - throws: An error if `index` is out of bounds or an other error occurs
+		public func newValue(at index: Int) throws -> DatabaseValue {
+			if case .delete(_) = change {
+				throw DatabaseError("sqlite3_preupdate_new() is undefined for deletions")
+			}
+			var value: SQLiteValue?
+			guard sqlite3_preupdate_new(db, Int32(index), &value) == SQLITE_OK else {
+				throw SQLiteError("Unable to retrieve new value in pre-update hook", takingDescriptionFromDatabase: db)
+			}
+			return DatabaseValue(value.unsafelyUnwrapped)
+		}
+	}
+
+	/// A hook called before a row is inserted, deleted, or updated.
+	///
+	/// - parameter context: The change triggering the hook
+	///
+	/// - seealso: [The pre-update hook.](https://sqlite.org/c3ref/preupdate_count.html)
+	public typealias PreUpdateHook = (_ context: PreUpdateContext) -> Void
+
+	/// Sets the hook called before a row is inserted, deleted, or updated.
+	///
+	/// - parameter block: A closure called before a row is inserted, deleted, or updated
+	///
+	/// - seealso: [The pre-update hook.](https://sqlite.org/c3ref/preupdate_count.html)
+	public func setPreUpdateHook(_ block: @escaping PreUpdateHook) {
+		let context = UnsafeMutablePointer<PreUpdateHook>.allocate(capacity: 1)
+		context.initialize(to: block)
+
+		if let old = sqlite3_preupdate_hook(db, { context, db, op, db_name, table_name, old_rowid, new_rowid in
+			let function_ptr = context.unsafelyUnwrapped.assumingMemoryBound(to: PreUpdateHook.self)
+
+			let changeType = PreUpdateChangeType(op, old_rowid, new_rowid)
+			let database = String(utf8String: db_name.unsafelyUnwrapped).unsafelyUnwrapped
+			let table = String(utf8String: table_name.unsafelyUnwrapped).unsafelyUnwrapped
+
+			let update = PreUpdateContext(db: db!, change: changeType, database: database, table: table)
+			function_ptr.pointee(update)
+		}, context) {
+			let oldContext = old.assumingMemoryBound(to: PreUpdateHook.self)
+			oldContext.deinitialize(count: 1)
+			oldContext.deallocate()
+		}
+	}
+
+	/// Removes the pre-update hook.
+	public func removePreUpdateHook() {
+		if let old = sqlite3_preupdate_hook(db, nil, nil) {
+			let oldContext = old.assumingMemoryBound(to: PreUpdateHook.self)
+			oldContext.deinitialize(count: 1)
+			oldContext.deallocate()
+		}
+	}
+}
+
+extension Database.PreUpdateChangeType {
+	/// Convenience initializer for conversion of `SQLITE_` values and associated rowids
+	///
+	/// - parameter op: The third argument to the callback function passed to `sqlite3_preupdate_hook()`
+	/// - parameter iKey1: The sixth argument to the callback function passed to `sqlite3_preupdate_hook()`
+	/// - parameter iKey2: The seventh argument to the callback function passed to `sqlite3_preupdate_hook()`
+	init(_ op: Int32, _ iKey1: Int64, _ iKey2: Int64) {
+		switch op {
+		case SQLITE_INSERT: 	self = .insert(iKey2)
+		case SQLITE_DELETE: 	self = .delete(iKey1)
+		case SQLITE_UPDATE: 	self = .update(iKey1, iKey2)
+		default:				preconditionFailure("Unexpected row change type")
+		}
+	}
+}
+
+#endif
