@@ -49,13 +49,13 @@ elif [ $STATUS -eq 1 ]; then
 EOF
 	cat "$SQLITE_DIR/ext/misc/uuid.c" >> "$SQLITE_DIR/sqlite3.c"
 	cat <<EOF >> "$SQLITE_DIR/sqlite3.c"
-#endif
+#endif /* FEISTY_DB_OMIT_UUID */
 
 #ifndef FEISTY_DB_OMIT_CARRAY
 EOF
 	cat "$SQLITE_DIR/ext/misc/carray.c" >> "$SQLITE_DIR/sqlite3.c"
 	cat <<EOF >> "$SQLITE_DIR/sqlite3.c"
-#endif
+#endif /* FEISTY_DB_OMIT_CARRAY */
 
 int feisty_db_init(const char *dummy)
 {
@@ -63,11 +63,11 @@ int feisty_db_init(const char *dummy)
 
 #ifndef FEISTY_DB_OMIT_UUID
 	nErr += sqlite3_auto_extension((void *)sqlite3_uuid_init);
-#endif
+#endif /* FEISTY_DB_OMIT_UUID */
 
 #ifndef FEISTY_DB_OMIT_CARRAY
 	nErr += sqlite3_auto_extension((void *)sqlite3_carray_init);
-#endif
+#endif /* FEISTY_DB_OMIT_CARRAY */
 
 	return nErr ? SQLITE_ERROR : SQLITE_OK;
 }
