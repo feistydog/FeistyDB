@@ -27,7 +27,7 @@ Add a package dependency to https://github.com/feistydog/FeistyDB in Xcode.
 
 ### SQLite Build Options
 
-FeistyDB includes a custom version of the SQLite [amalgamation](https://sqlite.org/amalgamation.html) (built using [get-sqlite.sh](get-sqlite.sh)) with the [uuid](https://sqlite.org/src/file/ext/misc/uuid.c) and [carray](https://www.sqlite.org/carray.html) extensions added.
+FeistyDB includes a custom version of the SQLite [amalgamation](https://sqlite.org/amalgamation.html) with the [uuid](https://sqlite.org/src/file/ext/misc/uuid.c) and [carray](https://www.sqlite.org/carray.html) extensions added. The custom amalgamation is built using the [get-sqlite.sh](get-sqlite.sh) script.
 
 The build options to SQLite mostly follow the [recommendations](https://www.sqlite.org/compile.html) and are specified in [Package.swift](Package.swift).
 
