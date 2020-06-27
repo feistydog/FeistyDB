@@ -63,6 +63,12 @@ let package = Package(
 		.testTarget(
 			name: "FeistyDBTests",
 			dependencies: ["FeistyDB"]),
+		.testTarget(
+			name: "CSQLitePerformanceTests",
+			dependencies: ["CSQLite"]),
+		.testTarget(
+			name: "FeistyDBPerformanceTests",
+			dependencies: ["FeistyDB"]),
 	],
 	cLanguageStandard: .gnu11
 )
