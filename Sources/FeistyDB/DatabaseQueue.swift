@@ -4,8 +4,8 @@
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
 
-import Foundation
 import os.log
+import Foundation
 import CSQLite
 
 /// A queue providing serialized execution of work items on a database.
