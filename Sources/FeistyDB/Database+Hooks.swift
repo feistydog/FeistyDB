@@ -257,27 +257,27 @@ extension Database {
 #if SQLITE_ENABLE_PREUPDATE_HOOK
 
 extension Database {
-	/// Possible types of pre-update changes with associated rowids.
+	/// Information on an insert, update, or delete operation in a pre-update context
 	///
 	/// - seealso: [The pre-update hook.](https://sqlite.org/c3ref/preupdate_count.html)
-	public enum	PreUpdateChangeType {
-		/// A row was inserted
-		case insert(Int64)
-		/// A row was deleted
-		case delete(Int64)
-		/// A row was updated
-		case update(Int64, Int64)
-	}
+	public struct PreUpdateChange {
+		/// Possible types of pre-update changes with associated rowids.
+		///
+		/// - seealso: [The pre-update hook.](https://sqlite.org/c3ref/preupdate_count.html)
+		public enum	ChangeType {
+			/// A row was inserted
+			case insert(Int64)
+			/// A row was deleted
+			case delete(Int64)
+			/// A row was updated
+			case update(Int64, Int64)
+		}
 
-	/// A pre-update hook context containing information on the insert, update, or delete operation
-	///
-	/// - seealso: [The pre-update hook.](https://sqlite.org/c3ref/preupdate_count.html)
-	public struct PreUpdateContext {
 		/// The underlying `sqlite3 *` database
 		let db: SQLiteDatabaseConnection
 
 		/// The type of pre-update change
-		public let change: Database.PreUpdateChangeType
+		public let changeType: ChangeType
 		/// The name of the database being changed
 		public let database: String
 		/// The name of the table being changed
@@ -306,7 +306,7 @@ extension Database {
 		///
 		/// - throws: An error if `index` is out of bounds or an other error occurs
 		public func oldValue(at index: Int) throws -> DatabaseValue {
-			if case .insert(_) = change {
+			if case .insert(_) = changeType {
 				throw DatabaseError("sqlite3_preupdate_old() is undefined for insertions")
 			}
 			var value: SQLiteValue?
@@ -329,7 +329,7 @@ extension Database {
 		///
 		/// - throws: An error if `index` is out of bounds or an other error occurs
 		public func newValue(at index: Int) throws -> DatabaseValue {
-			if case .delete(_) = change {
+			if case .delete(_) = changeType {
 				throw DatabaseError("sqlite3_preupdate_new() is undefined for deletions")
 			}
 			var value: SQLiteValue?
@@ -342,10 +342,10 @@ extension Database {
 
 	/// A hook called before a row is inserted, deleted, or updated.
 	///
-	/// - parameter context: The change triggering the hook
+	/// - parameter change: The change triggering the pre-update hook
 	///
 	/// - seealso: [The pre-update hook.](https://sqlite.org/c3ref/preupdate_count.html)
-	public typealias PreUpdateHook = (_ context: PreUpdateContext) -> Void
+	public typealias PreUpdateHook = (_ context: PreUpdateChange) -> Void
 
 	/// Sets the hook called before a row is inserted, deleted, or updated.
 	///
@@ -359,11 +359,11 @@ extension Database {
 		if let old = sqlite3_preupdate_hook(db, { context, db, op, db_name, table_name, old_rowid, new_rowid in
 			let function_ptr = context.unsafelyUnwrapped.assumingMemoryBound(to: PreUpdateHook.self)
 
-			let changeType = PreUpdateChangeType(op, old_rowid, new_rowid)
+			let changeType = Database.PreUpdateChange.ChangeType(op, old_rowid, new_rowid)
 			let database = String(utf8String: db_name.unsafelyUnwrapped).unsafelyUnwrapped
 			let table = String(utf8String: table_name.unsafelyUnwrapped).unsafelyUnwrapped
 
-			let update = PreUpdateContext(db: db.unsafelyUnwrapped, change: changeType, database: database, table: table)
+			let update = PreUpdateChange(db: db.unsafelyUnwrapped, changeType: changeType, database: database, table: table)
 			function_ptr.pointee(update)
 		}, context) {
 			let oldContext = old.assumingMemoryBound(to: PreUpdateHook.self)
@@ -382,7 +382,7 @@ extension Database {
 	}
 }
 
-extension Database.PreUpdateChangeType {
+extension Database.PreUpdateChange.ChangeType {
 	/// Convenience initializer for conversion of `SQLITE_` values and associated rowids
 	///
 	/// - parameter op: The third argument to the callback function passed to `sqlite3_preupdate_hook()`
