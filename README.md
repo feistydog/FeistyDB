@@ -21,6 +21,10 @@ FeistyDB allows fast, easy database access with robust error handling.  It is no
 2. Run `./get-sqlite.sh` to download the latest SQLite source tree and build the [amalgamation](https://sqlite.org/amalgamation.html) with the [uuid](https://sqlite.org/src/file/ext/misc/uuid.c) and [carray](https://www.sqlite.org/carray.html) extensions added.
 3. Open the project, build, and get started in the playground!
 
+## SPM
+
+Add https://github.com/feistydog/FeistyDB as a Package for your project in Xcode.
+
 ## Quick Start
 
 ```swift
