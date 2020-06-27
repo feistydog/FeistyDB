@@ -10,18 +10,24 @@ A powerful and performant Swift interface to [SQLite](https://sqlite.org) featur
 - Custom commit, rollback, update, and busy handler hooks.
 - Custom virtual tables.
 - Custom FTS5 tokenizers.
+- Optional support for pre-update hooks
 
 FeistyDB allows fast, easy database access with robust error handling.  It is not a general-purpose object-relational mapper.
 
 ## Installation
 
+### Swift Package Manager
+
+Add a package dependency to https://github.com/feistydog/FeistyDB in Xcode.
+
+### Manual or Custom Build
+
 1. Clone the [FeistyDB](https://github.com/feistydog/FeistyDB) repository.
-2. Run `./get-sqlite.sh` to download the latest SQLite source tree and build the [amalgamation](https://sqlite.org/amalgamation.html) with the [uuid](https://sqlite.org/src/file/ext/misc/uuid.c) and [carray](https://www.sqlite.org/carray.html) extensions added.
-3. Open the project, build, and get started in the playground!
+2. `swift build`.
 
-## SPM
+### SQLite Build Options
 
-Add https://github.com/feistydog/FeistyDB as a Package for your project in Xcode.
+FeistyDB includes a custom version of the SQLite [amalgamation](https://sqlite.org/amalgamation.html) with the [uuid](https://sqlite.org/src/file/ext/misc/uuid.c) and [carray](https://www.sqlite.org/carray.html) extensions added. The build options to SQLite are specified in [Package.swift](Package.swift).
 
 ## Quick Start
 
@@ -226,4 +232,4 @@ let s = try db.prepare(sql: "SELECT * FROM t1 ORDER BY a COLLATE localized_compa
 
 ## License
 
-FeistyDB is released under the [MIT License](https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt).
+FeistyDB is released under the [MIT License](LICENSE.txt).
