@@ -363,7 +363,7 @@ extension Database {
 			let database = String(utf8String: db_name.unsafelyUnwrapped).unsafelyUnwrapped
 			let table = String(utf8String: table_name.unsafelyUnwrapped).unsafelyUnwrapped
 
-			let update = PreUpdateContext(db: db!, change: changeType, database: database, table: table)
+			let update = PreUpdateContext(db: db.unsafelyUnwrapped, change: changeType, database: database, table: table)
 			function_ptr.pointee(update)
 		}, context) {
 			let oldContext = old.assumingMemoryBound(to: PreUpdateHook.self)
