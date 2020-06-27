@@ -26,15 +26,15 @@ let package = Package(
 		// Targets can depend on other targets in this package, and on products in packages which this package depends on.
 		.target(
 			name: "FeistyDB",
-			dependencies: ["CSQLite"],
-			cSettings: [
-				// If pre-update hook support is desired uncomment the following line
+			dependencies: ["CSQLite"]
+			// If pre-update hook support is desired uncomment the following lines
+//			, cSettings: [
 //				.define("SQLITE_ENABLE_PREUPDATE_HOOK", to: "1"),
-			],
-			swiftSettings: [
-				// If pre-update hook support is desired uncomment the following line
+//			],
+//			swiftSettings: [
 //				.define("SQLITE_ENABLE_PREUPDATE_HOOK")
-		]),
+//			]
+		),
 		.target(
 			name: "CSQLite",
 			dependencies: [],
