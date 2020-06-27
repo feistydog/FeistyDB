@@ -1,7 +1,5 @@
 # FeistyDB
 
-[![Build Status](https://travis-ci.org/feistydog/FeistyDB.svg?branch=master)](https://travis-ci.org/feistydog/FeistyDB)
-
 A powerful and performant Swift interface to [SQLite](https://sqlite.org) featuring:
 
 - Type-safe and type-agnostic database values.
