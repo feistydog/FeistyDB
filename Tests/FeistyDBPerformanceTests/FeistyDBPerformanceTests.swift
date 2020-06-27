@@ -46,8 +46,6 @@ class FeistyDBPerformanceTests: XCTestCase {
 		}
 	}
 
-
-
 	func testFeistyDBInsertPerformance2() {
 		self.measureMetrics(XCTestCase.defaultPerformanceMetrics, automaticallyStartMeasuring: false) {
 			let db = try! Database()
