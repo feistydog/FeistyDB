@@ -111,10 +111,25 @@ extension Row {
 		return try value(at: statement.index(ofColumn: name))
 	}
 
+	/// Returns the value of the column at `index`.
+	///
+	/// - note: Column indexes are 0-based.  The leftmost column in a row has index 0.
+	///
+	/// - requires: `index >= 0`
+	/// - requires: `index < self.columnCount`
+	///
+	/// - parameter index: The index of the desired column
+	///
+	/// - returns: The column's value or `nil` if null, the column doesn't exist, or contains an illegal value
 	public subscript<T: ColumnConvertible>(at index: Int) -> T? {
 		return try? value(at: index)
 	}
 
+	/// Returns the value of the column with name `name`.
+	///
+	/// - parameter name: The name of the desired column
+	///
+	/// - returns: The column's value or `nil` if null, the column doesn't exist, or contains an illegal value
 	public subscript<T: ColumnConvertible>(named name: String) -> T? {
 		return try? value(named: name)
 	}
