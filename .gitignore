@@ -1,19 +1,11 @@
 .DS_Store
+/.build
+/Packages
+/*.xcodeproj
+xcuserdata/
+.swiftpm/
 
-## Build products
-build/
+/docs/
 
-## Project files
-*.xcodeproj/xcuserdata/
-*.xcodeproj/project.xcworkspace
-
-## Workspace files
-*.xcworkspace/xcuserdata/
-
-## jazzy-generated documentation
-docs/
-
-## SQLite source
-sqlite-src-*.zip
-sqlite-src-*/*
-sqlite
+/sqlite-src-*.zip
+/sqlite-src-*/*
