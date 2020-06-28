@@ -251,8 +251,8 @@ extension Database {
 }
 
 // The pre-update hook is not compiled into FeistyDB by default
-// because it is not one of recommended SQLite compile-time options
-// https://www.sqlite.org/compile.html
+// because it is not one of the recommended SQLite compile-time
+// options: https://www.sqlite.org/compile.html
 // To enable it uncomment the appropriate lines in Package.swift
 #if SQLITE_ENABLE_PREUPDATE_HOOK
 
