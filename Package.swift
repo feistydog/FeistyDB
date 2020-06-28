@@ -28,12 +28,12 @@ let package = Package(
 			name: "FeistyDB",
 			dependencies: ["CSQLite"]
 			// If pre-update hook support is desired uncomment the following lines
-//			, cSettings: [
-//				.define("SQLITE_ENABLE_PREUPDATE_HOOK", to: "1"),
-//			],
-//			swiftSettings: [
-//				.define("SQLITE_ENABLE_PREUPDATE_HOOK")
-//			]
+			, cSettings: [
+				.define("SQLITE_ENABLE_PREUPDATE_HOOK", to: "1"),
+			],
+			swiftSettings: [
+				.define("SQLITE_ENABLE_PREUPDATE_HOOK")
+			]
 		),
 		.target(
 			name: "CSQLite",
@@ -52,7 +52,7 @@ let package = Package(
 				.define("SQLITE_USE_ALLOCA", to: "1"),
 				.define("SQLITE_OMIT_DEPRECATED", to: "1"),
 				// If pre-update hook support is desired uncomment the following line
-//				.define("SQLITE_ENABLE_PREUPDATE_HOOK", to: "1"),
+				.define("SQLITE_ENABLE_PREUPDATE_HOOK", to: "1"),
 				.define("SQLITE_ENABLE_FTS5", to: "1"),
 				.define("SQLITE_ENABLE_RTREE", to: "1"),
 				.define("SQLITE_ENABLE_STAT4", to: "1"),
