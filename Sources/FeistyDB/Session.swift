@@ -382,6 +382,71 @@ extension ChangesetIterator: IteratorProtocol {
 	}
 }
 
+/// A changegroup object.
+//public typealias SQLiteChangegroup = UnsafeMutablePointer<sqlite3_changegroup>
+public typealias SQLiteChangegroup = OpaquePointer
+
+/// A mechanism for grouping changesets.
+///
+/// - seealso: [Create A New Changegroup Object](https://www.sqlite.org/session/sqlite3changegroup_new.html)
+public final class Changegroup {
+	/// The underlying `sqlite3_changegroup *` object
+	let changegroup: SQLiteChangegroup
+
+	/// Initializes a new changegroup
+	///
+	/// - throws: An error if the changegroup could not be created
+	init() throws {
+		var changegroup: SQLiteChangegroup? = nil
+		let rc = sqlite3changegroup_new(&changegroup)
+		guard rc == SQLITE_OK else {
+			throw SQLiteError("Error creating changegroup", code: rc)
+		}
+
+		self.changegroup = changegroup!
+	}
+
+	deinit {
+		sqlite3changegroup_delete(changegroup)
+	}
+
+	/// Adds the changes in `changeset` to `self`.
+	///
+	/// - parameter changeset: A changset containing the changes to add
+	///
+	/// - throws: An error if the changeset could not be added
+	///
+	/// - seealso: [Add A Changeset To A Changegroup](https://www.sqlite.org/session/sqlite3changegroup_add.html)
+	public func add(_ changeset: Changeset) throws  {
+		let rc = changeset.data.withUnsafeBytes { buf -> Int32 in
+			let ptr = UnsafeMutableRawPointer(mutating: buf.baseAddress)
+			return sqlite3changegroup_add(changegroup, Int32(changeset.data.count), ptr)
+		}
+		guard rc == SQLITE_OK else {
+			throw SQLiteError("Error adding changeset to changegroup", code: rc)
+		}
+	}
+
+	/// Creates and returns a changeset containing the changes in `self`.
+	///
+	/// - throws: An error if the changeset could not be created
+	func changeset() throws -> Changeset {
+		var changeset: SQLiteChangeset? = nil
+		var size: Int32 = 0
+		defer {
+			sqlite3_free(changeset)
+		}
+
+		let rc = sqlite3changegroup_output(changegroup, &size, &changeset)
+		guard rc == SQLITE_OK else {
+			throw SQLiteError("Error creating changeset for changegroup", code: rc)
+		}
+
+		let data = Data(bytes: changeset!, count: Int(size))
+		return Changeset(data: data)
+	}
+}
+
 /// A rebaser object.
 typealias SQLiteRebaser = UnsafeMutableRawPointer
 
