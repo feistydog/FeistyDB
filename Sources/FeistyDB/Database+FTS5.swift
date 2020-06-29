@@ -123,7 +123,7 @@ extension Database {
 	/// - throws:  An error if the tokenizer can't be added
 	///
 	/// - seealso: [Custom Tokenizers](https://www.sqlite.org/fts5.html#custom_tokenizers)
-	public func addTokenizer<T: FTS5Tokenizer>(_ name: String, type: T.Type) throws {
+	public func addTokenizer<T: FTS5Tokenizer>(_ name: String, type: T.Type) throws where T: AnyObject {
 		// Fail early if FTS5 isn't available
 		let api_ptr = try get_fts5_api(for: db)
 
