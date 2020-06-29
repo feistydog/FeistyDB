@@ -185,13 +185,15 @@ extension Database {
 	///
 	/// - seealso: [Create Or Redefine SQL Functions](https://sqlite.org/c3ref/create_function.html)
 	public func addAggregateFunction(_ name: String, arity: Int = -1, flags: SQLFunctionFlags = [.deterministic, .directOnly], _ function: SQLAggregateFunction) throws {
-		// function must live until the xDelete function is invoked; store it as a +1 object in context
-		let context = Unmanaged.passRetained(function as AnyObject).toOpaque()
+		// function must live until the xDelete function is invoked
+		let context_ptr = UnsafeMutablePointer<SQLAggregateFunction>.allocate(capacity: 1)
+		context_ptr.initialize(to: function)
 
 		let function_flags = SQLITE_UTF8 | flags.asSQLiteFlags()
-		guard sqlite3_create_function_v2(db, name, Int32(arity), function_flags, context, nil, { sqlite_context, argc, argv in
+		guard sqlite3_create_function_v2(db, name, Int32(arity), function_flags, context_ptr, nil, { sqlite_context, argc, argv in
 			let context = sqlite3_user_data(sqlite_context)
-			let function = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(context.unsafelyUnwrapped)).takeUnretainedValue() as! SQLAggregateFunction
+			let context_ptr = context.unsafelyUnwrapped.assumingMemoryBound(to: SQLAggregateFunction.self)
+			let function = context_ptr.pointee
 
 			let args = UnsafeBufferPointer(start: argv, count: Int(argc))
 			let arguments = args.map { DatabaseValue($0.unsafelyUnwrapped) }
@@ -205,7 +207,8 @@ extension Database {
 			}
 		}, { sqlite_context in
 			let context = sqlite3_user_data(sqlite_context)
-			let function = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(context.unsafelyUnwrapped)).takeUnretainedValue() as! SQLAggregateFunction
+			let context_ptr = context.unsafelyUnwrapped.assumingMemoryBound(to: SQLAggregateFunction.self)
+			let function = context_ptr.pointee
 
 			do {
 				set_sqlite3_result(sqlite_context, value: try function.final())
@@ -215,8 +218,9 @@ extension Database {
 				sqlite3_result_error(sqlite_context, "\(error)", -1)
 			}
 		}, { context in
-			// Balance the +1 retain above
-			Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(context.unsafelyUnwrapped)).release()
+			let context_ptr = context.unsafelyUnwrapped.assumingMemoryBound(to: SQLAggregateFunction.self)
+			context_ptr.deinitialize(count: 1)
+			context_ptr.deallocate()
 		}) == SQLITE_OK else {
 			throw SQLiteError("Error adding SQL aggregate function \"\(name)\"", takingDescriptionFromDatabase: db)
 		}
@@ -271,13 +275,14 @@ extension Database {
 	///
 	/// - seealso: [User-Defined Aggregate Window Functions](https://sqlite.org/windowfunctions.html#udfwinfunc)
 	public func addAggregateWindowFunction(_ name: String, arity: Int = -1, flags: SQLFunctionFlags = [.deterministic, .directOnly], _ function: SQLAggregateWindowFunction) throws {
-		// function must live until the xDelete function is invoked; store it as a +1 object in context
-		let context = Unmanaged.passRetained(function as AnyObject).toOpaque()
+		let context_ptr = UnsafeMutablePointer<SQLAggregateWindowFunction>.allocate(capacity: 1)
+		context_ptr.initialize(to: function)
 
 		let function_flags = SQLITE_UTF8 | flags.asSQLiteFlags()
-		guard sqlite3_create_window_function(db, name, Int32(arity), function_flags, context, { sqlite_context, argc, argv in
+		guard sqlite3_create_window_function(db, name, Int32(arity), function_flags, context_ptr, { sqlite_context, argc, argv in
 			let context = sqlite3_user_data(sqlite_context)
-			let function = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(context.unsafelyUnwrapped)).takeUnretainedValue() as! SQLAggregateWindowFunction
+			let context_ptr = context.unsafelyUnwrapped.assumingMemoryBound(to: SQLAggregateWindowFunction.self)
+			let function = context_ptr.pointee
 
 			let args = UnsafeBufferPointer(start: argv, count: Int(argc))
 			let arguments = args.map { DatabaseValue($0.unsafelyUnwrapped) }
@@ -291,7 +296,8 @@ extension Database {
 			}
 		}, { sqlite_context in
 			let context = sqlite3_user_data(sqlite_context)
-			let function = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(context.unsafelyUnwrapped)).takeUnretainedValue() as! SQLAggregateWindowFunction
+			let context_ptr = context.unsafelyUnwrapped.assumingMemoryBound(to: SQLAggregateWindowFunction.self)
+			let function = context_ptr.pointee
 
 			do {
 				set_sqlite3_result(sqlite_context, value: try function.final())
@@ -302,7 +308,8 @@ extension Database {
 			}
 		}, { sqlite_context in
 			let context = sqlite3_user_data(sqlite_context)
-			let function = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(context.unsafelyUnwrapped)).takeUnretainedValue() as! SQLAggregateWindowFunction
+			let context_ptr = context.unsafelyUnwrapped.assumingMemoryBound(to: SQLAggregateWindowFunction.self)
+			let function = context_ptr.pointee
 
 			do {
 				set_sqlite3_result(sqlite_context, value: try function.value())
@@ -313,7 +320,8 @@ extension Database {
 			}
 		}, { sqlite_context, argc, argv in
 			let context = sqlite3_user_data(sqlite_context)
-			let function = Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(context.unsafelyUnwrapped)).takeUnretainedValue() as! SQLAggregateWindowFunction
+			let context_ptr = context.unsafelyUnwrapped.assumingMemoryBound(to: SQLAggregateWindowFunction.self)
+			let function = context_ptr.pointee
 
 			let args = UnsafeBufferPointer(start: argv, count: Int(argc))
 			let arguments = args.map { DatabaseValue($0.unsafelyUnwrapped) }
@@ -326,8 +334,9 @@ extension Database {
 				sqlite3_result_error(sqlite_context, "\(error)", -1)
 			}
 		}, { context in
-			// Balance the +1 retain above
-			Unmanaged<AnyObject>.fromOpaque(UnsafeRawPointer(context.unsafelyUnwrapped)).release()
+			let context_ptr = context.unsafelyUnwrapped.assumingMemoryBound(to: SQLAggregateWindowFunction.self)
+			context_ptr.deinitialize(count: 1)
+			context_ptr.deallocate()
 		}) == SQLITE_OK else {
 			throw SQLiteError("Error adding SQL aggregate window function \"\(name)\"", takingDescriptionFromDatabase: db)
 		}
