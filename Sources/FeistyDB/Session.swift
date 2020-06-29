@@ -62,6 +62,13 @@ public final class Session {
 		}
 	}
 
+	/// Returns `true` if the session contains no changes.
+	///
+	/// - seealso: [Test if a changeset has recorded any changes.](https://www.sqlite.org/session/sqlite3session_isempty.html)
+	var isEmpty: Bool {
+		sqlite3session_isempty(session) != 0
+	}
+
 	/// Attaches a table to the session.
 	///
 	/// - parameter table: The name of the table to attach
