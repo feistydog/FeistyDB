@@ -10,7 +10,7 @@ A powerful and performant Swift interface to [SQLite](https://sqlite.org) featur
 - Custom commit, rollback, update, and busy handler hooks.
 - Custom virtual tables.
 - Custom FTS5 tokenizers.
-- Optional support for pre-update hooks
+- Optional support for pre-update hooks and [sessions](https://www.sqlite.org/sessionintro.html)
 
 FeistyDB allows fast, easy database access with robust error handling.  It is not a general-purpose object-relational mapper.
 
