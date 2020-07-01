@@ -110,7 +110,8 @@ public final class Session {
 			throw SQLiteError("Error creating changeset for database session", code: rc)
 		}
 
-		let data = Data(bytes: changeset!, count: Int(size))
+		// Tables with no PK return 0 for size and NULL for changeset
+		let data = size > 0 ? Data(bytes: changeset!, count: Int(size)) : Data()
 		return Changeset(data: data)
 	}
 }
@@ -144,7 +145,7 @@ public struct Changeset {
 			throw SQLiteError("Error inverting changeset", code: rc)
 		}
 
-		let inverted_data = Data(bytes: changeset!, count: Int(size))
+		let inverted_data = size > 0 ? Data(bytes: changeset!, count: Int(size)) : Data()
 		return Changeset(data: inverted_data)
 	}
 
@@ -173,7 +174,7 @@ public struct Changeset {
 			throw SQLiteError("Error appending changeset", code: rc)
 		}
 
-		let concat_data = Data(bytes: changeset!, count: Int(size))
+		let concat_data = size > 0 ? Data(bytes: changeset!, count: Int(size)) : Data()
 		return Changeset(data: concat_data)
 	}
 
@@ -449,7 +450,7 @@ public final class Changegroup {
 			throw SQLiteError("Error creating changeset for changegroup", code: rc)
 		}
 
-		let data = Data(bytes: changeset!, count: Int(size))
+		let data = size > 0 ? Data(bytes: changeset!, count: Int(size)) : Data()
 		return Changeset(data: data)
 	}
 }
@@ -476,7 +477,7 @@ public typealias ChangesetTableFilter = (_ table: String) -> Bool
 public enum ChangesetConflictHandlerResult {
 	/// The change that caused the conflict is not applied
 	case omit
-	/// The conflicting row is
+	/// The conflicting row is replaced
 	case replace
 	/// Any changes applied are rolled back and the changeset application is aborted
 	case abort
@@ -606,7 +607,7 @@ extension Database {
 
 		// Rebaser is experimental
 		if rebaser != nil {
-			let data = Data(bytes: rebaser!, count: Int(size))
+			let data = size > 0 ? Data(bytes: rebaser!, count: Int(size)) : Data()
 			/*return */_ = Rebaser(data: data)
 		}
 	}
