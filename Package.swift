@@ -3,6 +3,13 @@
 
 import PackageDescription
 
+// For pre-update hook support:
+//  - Uncomment lines containing `SQLITE_ENABLE_PREUPDATE_HOOK`
+//
+// For session support:
+//  - Uncomment lines containing `SQLITE_ENABLE_PREUPDATE_HOOK`
+//  - Uncomment lines containing `SQLITE_ENABLE_SESSION`
+
 let package = Package(
 	name: "FeistyDB",
 	platforms: [
@@ -27,12 +34,13 @@ let package = Package(
 		.target(
 			name: "FeistyDB",
 			dependencies: ["CSQLite"]
-			// If pre-update hook support is desired uncomment the following lines
 //			, cSettings: [
 //				.define("SQLITE_ENABLE_PREUPDATE_HOOK", to: "1"),
+//				.define("SQLITE_ENABLE_SESSION", to: "1"),
 //			],
 //			swiftSettings: [
-//				.define("SQLITE_ENABLE_PREUPDATE_HOOK")
+//				.define("SQLITE_ENABLE_PREUPDATE_HOOK"),
+//				.define("SQLITE_ENABLE_SESSION"),
 //			]
 		),
 		.target(
@@ -51,8 +59,8 @@ let package = Package(
 				.define("SQLITE_OMIT_SHARED_CACHE", to: "1"),
 				.define("SQLITE_USE_ALLOCA", to: "1"),
 				.define("SQLITE_OMIT_DEPRECATED", to: "1"),
-				// If pre-update hook support is desired uncomment the following line
 //				.define("SQLITE_ENABLE_PREUPDATE_HOOK", to: "1"),
+//				.define("SQLITE_ENABLE_SESSION", to: "1"),
 				.define("SQLITE_ENABLE_FTS5", to: "1"),
 				.define("SQLITE_ENABLE_RTREE", to: "1"),
 				.define("SQLITE_ENABLE_STAT4", to: "1"),
@@ -62,7 +70,12 @@ let package = Package(
 		]),
 		.testTarget(
 			name: "FeistyDBTests",
-			dependencies: ["FeistyDB"]),
+			dependencies: ["FeistyDB"]
+//			, swiftSettings: [
+//				.define("SQLITE_ENABLE_PREUPDATE_HOOK"),
+//				.define("SQLITE_ENABLE_SESSION"),
+//			]
+		),
 		.testTarget(
 			name: "CSQLitePerformanceTests",
 			dependencies: ["CSQLite"]),
