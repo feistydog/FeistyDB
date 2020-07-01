@@ -70,7 +70,12 @@ let package = Package(
 		]),
 		.testTarget(
 			name: "FeistyDBTests",
-			dependencies: ["FeistyDB"]),
+			dependencies: ["FeistyDB"]
+//			, swiftSettings: [
+//				.define("SQLITE_ENABLE_PREUPDATE_HOOK"),
+//				.define("SQLITE_ENABLE_SESSION"),
+//			]
+		),
 		.testTarget(
 			name: "CSQLitePerformanceTests",
 			dependencies: ["CSQLite"]),
