@@ -282,10 +282,10 @@ extension DictionaryTable {
         
         func column(_ index: Int32) -> DatabaseValue {
             switch index {
-                case 1: return .text(row.key)
-                case 2: return .text(row.value)
+                case 0: return .text(row.key)
+                case 1: return .text(row.value)
                 default:
-                    return .text(row.key)
+                    return .null
             }
             
             //            let col = table.columns[Int(index)]

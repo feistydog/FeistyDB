@@ -36,16 +36,20 @@ class FDVirtualTableTests: XCTestCase {
         XCTAssertEqual(NSHomeDirectory(), row[2].stringValue)
     }
 
-    func testProcessEnvTable() {
+    func testProcessEnvTable() throws {
         let db = try! Database()
 
         try! db.addModule("env", type: ProcessEnvTable.self)
         let statement = try! db.prepare(sql: "SELECT key, value FROM env LIMIT 5")
-        let rows = try! statement.columns([0, 1])
         let dict = ProcessInfo.processInfo.environment
 
-        for (r, d) in zip(rows, dict) {
-            Swift.print(#line, r, d)
+        for row in statement {
+            let key :String = try row.value(at: 0)
+            let value :String = try row.value(at: 1)
+            let dv = dict[key]!
+            let eq = dv == value
+            Swift.print(#line, eq, key, value, dv)
+            XCTAssertEqual(value, dv)
         }
     }
     
