@@ -9,6 +9,7 @@
 import XCTest
 @testable import CSQLite
 @testable import FeistyDB
+@testable import FeistyExtensions
 
 class FDBExtensionsTest: XCTestCase {
 

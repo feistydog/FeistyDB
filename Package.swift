@@ -36,6 +36,12 @@ let package = Package(
 				.define("SQLITE_ENABLE_PREUPDATE_HOOK")
 			]
 		),
+        .target(
+            name: "FeistyExtensions",
+            dependencies: ["FeistyDB"]),
+        .target(
+            name: "Examples",
+            dependencies: ["FeistyDB", "FeistyExtensions"]),
 		.target(
 			name: "CSQLite",
 			dependencies: [],
@@ -63,7 +69,7 @@ let package = Package(
 		]),
 		.testTarget(
 			name: "FeistyDBTests",
-			dependencies: ["FeistyDB"]),
+			dependencies: ["FeistyDB", "FeistyExtensions", "Examples"]),
 		.testTarget(
 			name: "CSQLitePerformanceTests",
 			dependencies: ["CSQLite"]),

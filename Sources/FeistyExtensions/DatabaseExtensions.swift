@@ -6,6 +6,7 @@
 //  Copyright © 2020 Jason Jobe. All rights reserved.
 //
 import Foundation
+import FeistyDB
 import CSQLite
 
 struct SQLFormatError: Error {
@@ -22,101 +23,6 @@ struct SQLFormatError: Error {
         SQLFormatError(message: "Unrecognized Option", details: nil)
     }
 }
-
-/*
- #define SQLITE_INTEGER  1
- #define SQLITE_FLOAT    2
- #define SQLITE_BLOB     4
- #define SQLITE_NULL     5
- #ifdef SQLITE_TEXT
- # undef SQLITE_TEXT
- #else
- # define SQLITE_TEXT     3
- #endif
- #define SQLITE3_TEXT     3
- */
-public enum SqliteDataType: Int {
-    case int = 1
-    case float = 2
-    case text = 3
-    case blob = 4
-    case null = 5
-}
-
-public struct Column: Equatable {
-    
-    public static func == (lhs: Column, rhs: Column) -> Bool {
-        lhs.name == rhs.name
-    }
-    
-    public let name: String
-    public var ndx: Int = 0
-    public let sqlType: SqliteDataType
-//    public var defaultValue: DatabaseValue
-    
-    //    var dataType: ColumnConvertible.Type
-    var read: (DatabaseValue) -> Any = { dbv in
-        dbv.anyValue as Any
-    }
-
-    public let pkey: Bool
-    public let hidden: Bool
-    
-    public var declaration: String {
-        "\(name) \(sqlType)\(pkey ? "PRIMARY KEY" : "")\(hidden ? " HIDDEN" : "")"
-    }
-}
-
-public extension Column {
-    static func pkey(_ name: String, _ sqlType: SqliteDataType = .int) -> Column {
-        Column(name: name, sqlType: .int, pkey: true, hidden: false)
-    }
-    static func column(_ name: String, _ stype: SqliteDataType) -> Column {
-        Column(name: name, sqlType: stype, pkey: false, hidden: false)
-    }
-    static func hidden(_ name: String, _ stype: SqliteDataType) -> Column {
-        Column(name: name, sqlType: stype, pkey: false, hidden: true)
-    }
-}
-
-/*
-extension DatabaseValue: ExpressibleByNilLiteral {
-    public init(nilLiteral: ()) {
-        self = .null
-    }
-}
-
-extension DatabaseValue: ExpressibleByIntegerLiteral {
-    public init(integerLiteral value: IntegerLiteralType) {
-        self = .integer(Int64(value))
-    }
-}
-
-extension DatabaseValue: ExpressibleByStringLiteral {
-    public init(stringLiteral value: StringLiteralType) {
-        self = .text(value)
-    }
-}
-
-extension DatabaseValue: ExpressibleByFloatLiteral {
-    public init(floatLiteral value: FloatLiteralType) {
-        self = .float(value)
-    }
-}
-
-extension DatabaseValue: ExpressibleByBooleanLiteral {
-    public init(booleanLiteral value: BooleanLiteralType) {
-        self = .integer(value ? 1 : 0)
-    }
-}
-*/
-
-//public struct Column {
-//    var select: String
-//    var name: String
-////    var dataType: ColumnConvertible.Type
-//    var read: (DatabaseValue) -> Any
-//}
     
 extension DatabaseValue {
     
@@ -151,14 +57,14 @@ extension DatabaseValue {
 
 extension Database {
     
-    public func load(sql: String) throws {
-        var errmsg: UnsafeMutablePointer<Int8>?
-        sqlite3_exec(db, sql, nil, nil, &errmsg)
-        if let errmsg = errmsg {
-            let msg = String(cString: errmsg)
-            throw SQLiteError(msg, code: 0)
-        }
-    }
+//    public func load(sql: String) throws {
+//        var errmsg: UnsafeMutablePointer<Int8>?
+//        sqlite3_exec(db, sql, nil, nil, &errmsg)
+//        if let errmsg = errmsg {
+//            let msg = String(cString: errmsg)
+//            throw SQLiteError(msg, code: 0)
+//        }
+//    }
 
     public func get<A:ColumnConvertible>(_ col: String, from table: String, id: Int, as type: A.Type = A.self) throws -> A? {
         let sql = "SELECT \(format(column:col)) FROM \(table) WHERE id = \(id) LIMIT 1"

@@ -8,6 +8,8 @@
 
 import XCTest
 import FeistyDB
+import FeistyExtensions
+import Examples
 import CSQLite
 
 class FDVirtualTableTests: XCTestCase {
@@ -20,11 +22,6 @@ class FDVirtualTableTests: XCTestCase {
 
     override func tearDownWithError() throws {
     }
-
-//    func testUserDefaults() {
-//        let dict = UserDefaults.standard.dictionaryRepresentation()
-//        Swift.print (dict)
-//    }
     
     func testUserTable() {
         let db = try! Database()
@@ -34,21 +31,23 @@ class FDVirtualTableTests: XCTestCase {
 
         guard let row = try! statement.firstRow() else { XCTFail(); return }
         Swift.print (try! row.anyValues())
-//        XCTAssertEqual((NSFullUserName(), NSUserName(), NSHomeDirectory()),
-//                       (row[0].stringValue, row[1].stringValue, row[2].stringValue)
+        XCTAssertEqual(NSFullUserName(), row[0].stringValue)
+        XCTAssertEqual(NSUserName(), row[1].stringValue)
+        XCTAssertEqual(NSHomeDirectory(), row[2].stringValue)
     }
 
-    func testDictionaryTable() {
+    func testProcessEnvTable() {
         let db = try! Database()
 
-        try! db.addModule("env", type: DictionaryTable.self)
+        try! db.addModule("env", type: ProcessEnvTable.self)
         let statement = try! db.prepare(sql: "SELECT key, value FROM env LIMIT 5")
-//        let rows = try! statement.columns([0, 1]).map { $0.map { $0.stringValue ?? "" } }
         let rows = try! statement.columns([0, 1])
-        Swift.print(#function, rows)
-    //        XCTAssertEqual((NSFullUserName(), NSUserName(), NSHomeDirectory()),
-    //                       (row[0].stringValue, row[1].stringValue, row[2].stringValue)
+        let dict = ProcessInfo.processInfo.environment
+
+        for (r, d) in zip(rows, dict) {
+            Swift.print(#line, r, d)
         }
+    }
     
     func testSeriesVirtualTable_Limit() {
 
@@ -189,9 +188,6 @@ final class SeriesModule: EponymousVirtualTableModule {
         }
     }
 
-//    required init(arguments: [String]) {
-//        Swift.print("init", arguments)
-//    }
     init(database: Database, arguments: [String]) throws {
     }
     
@@ -225,12 +221,10 @@ final class SeriesModule: EponymousVirtualTableModule {
             let ndx = constraint.iColumn
             guard constraint.usable != 0 else { continue }
             let opt = QueryPlanOption(index: ndx)
-//            Swift.print("plan union", opt.info)
             queryPlan = queryPlan.union(opt)
         }
         Swift.print(queryPlan.info)
         for (ndx, col) in queryPlan.elements().enumerated() {
-//            Swift.print("usage", ndx, col.info)
             constraintUsage[col.index - 1].argvIndex = Int32(ndx + 1)
         }
         Swift.print (#line, queryPlan)
@@ -252,7 +246,7 @@ final class SeriesModule: EponymousVirtualTableModule {
             indexInfo.estimatedRows = 2147483647
         }
         // Passed to filter()
-//        indexInfo.idxStr =
+        // indexInfo.idxStr =
         indexInfo.idxNum = queryPlan.rawValue
 
         return .ok
@@ -284,52 +278,6 @@ public extension OptionSet where RawValue: FixedWidthInteger {
 }
 
 
-/////////////////////////////////////
-/*
- #define SQLITE_INTEGER  1
- #define SQLITE_FLOAT    2
- #define SQLITE_BLOB     4
- #define SQLITE_NULL     5
- #ifdef SQLITE_TEXT
- # undef SQLITE_TEXT
- #else
- # define SQLITE_TEXT     3
- #endif
- #define SQLITE3_TEXT     3
- */
-public enum SqliteDataType: Int {
-    case int = 1
-    case float = 2
-    case text = 3
-    case blob = 4
-    case null = 5
-}
-
-public struct Column: Equatable {
-    let name: String
-    var ndx: Int = 0
-    let sqlType: SqliteDataType
-//    var defaultValue: DatabaseValue
-//    var swiftType: DatabaseSerializable.Type
-    let pkey: Bool
-    let hidden: Bool
-    
-    var declaration: String {
-        "\(name) \(sqlType)\(pkey ? "PRIMARY KEY" : "")\(hidden ? " HIDDEN" : "")"
-    }
-}
-
-public extension Column {
-    static func pkey(_ name: String, _ sqlType: SqliteDataType = .int) -> Column {
-        Column(name: name, sqlType: .int, pkey: true, hidden: false)
-    }
-    static func column(_ name: String, _ stype: SqliteDataType) -> Column {
-        Column(name: name, sqlType: stype, pkey: false, hidden: false)
-    }
-    static func hidden(_ name: String, _ stype: SqliteDataType) -> Column {
-        Column(name: name, sqlType: stype, pkey: false, hidden: true)
-    }
-}
 
 open class BaseEponymousTable: EponymousVirtualTableModule {
     
@@ -491,108 +439,15 @@ final class UserTable: EponymousVirtualTableModule {
 }
 
 //////////////////////////////////
-
-final class DictionaryTable: EponymousVirtualTableModule {
+open class ProcessEnvTable: DictionaryTable {
     
-    var dict: [String: String] = ProcessInfo.processInfo.environment
-    
-    required init(database: Database, arguments: [String]) {
-    }
-
-    init(database: Database, arguments: [String], create: Bool) throws {
+    required public init(database: Database, arguments: [String]) {
+        super.init(database: database, arguments: arguments)
+        dict = ProcessInfo.processInfo.environment
     }
     
-    func destroy() throws {
-    }
-
-    lazy var columns: [Column] = {
-           var cols:[Column] = [
-            .column("key", .text),
-            .column("value", .text),
-        ]
-        for ndx in 0..<cols.count {
-               cols[ndx].ndx = ndx
-           }
-           return cols
-       }()
-       
-       lazy var declaration: String = {
-           var str: String = "CREATE TABLE x("
-           for col in columns {
-               Swift.print("\t\(col.declaration)", separator: "", terminator: "", to: &str)
-               if col != columns.last {
-                   Swift.print(",\n", separator: "", terminator: "", to: &str)
-               }
-           }
-           Swift.print("\n)", separator: "", terminator: "", to: &str)
-           return str
-       }()
-
-
-    var options: Database.VirtualTableModuleOptions {
-        [.innocuous]
-    }
-
-    func bestIndex(_ indexInfo: inout sqlite3_index_info) -> VirtualTableModuleBestIndexResult {
-        .ok
-    }
-
-    func openCursor() -> VirtualTableCursor {
-        Cursor(self)
+    public required init(database: Database, arguments: [String], create: Bool) throws {
+        try super.init(database: database, arguments: arguments, create: create)
+        dict = ProcessInfo.processInfo.environment
     }
 }
-
-extension DictionaryTable {
-
-    final class Cursor: VirtualTableCursor {
-        
-        var table: DictionaryTable
-        var _rowid: Int64 = 0
-        lazy var _count: Int = table.dict.count
-        
-        var row: (key: String, value: String) = ("", "")
-        var index: Dictionary<String, String>.Index
-        
-        init (_ table: DictionaryTable) {
-            self.table = table
-            self.index = table.dict.startIndex
-        }
-        
-        func column(_ index: Int32) -> DatabaseValue {
-            switch index {
-            case 1: return .text(row.key)
-            case 2: return .text(row.value)
-            default:
-                return .text(row.key)
-            }
-
-//            let col = table.columns[Int(index)]
-//            switch col.name {
-//            case "key": return .text(row.key)
-//            case "value": return .text(row.value)
-//            default:
-//                return .integer(_rowid)
-//            }
-        }
-
-        func next() {
-            row = table.dict[index]
-            index = table.dict.index(after: index)
-            _rowid += 1
-        }
-
-        func rowid() -> Int64 {
-            _rowid
-        }
-
-        func filter(_ arguments: [DatabaseValue], indexNumber: Int32, indexName: String?) {
-            self.index = table.dict.startIndex
-            _rowid = 0
-        }
-
-        var eof: Bool {
-            _rowid > _count
-        }
-    }
-}
-

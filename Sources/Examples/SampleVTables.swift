@@ -1,13 +1,58 @@
 //
 //  SampleVTables.swift
-//  CSQLite
+//  FeistyDB
 //
 //  Created by Jason Jobe on 6/26/20.
 //
 
 import Foundation
 import FeistyDB
+import FeistyExtensions
 import CSQLite
+
+struct QueryPlanOption: OptionSet {
+    struct Info {
+        var name: String
+        var index: Int
+    }
+    static var info:[Int:Info] = [:]
+    static subscript(_ ndx: Int) -> Info {
+        return info[ndx] ?? Info(name: "<INFO>", index: ndx)
+    }
+    static subscript(_ ndx: Int32) -> Info {
+        return info[Int(ndx)] ?? Info(name: "<INFO>", index: Int(ndx))
+    }
+    
+    let rawValue: Int32
+    
+    init(rawValue: Int32) {
+        self.rawValue = rawValue
+    }
+    
+    init(index: Int32) {
+        self.rawValue = (1 << index)
+    }
+    
+    init(_ name: String? = nil, _ ndx: Int) {
+        self.rawValue = Int32(1 << ndx)
+        if let name = name {
+            QueryPlanOption.info[self.index] = Info(name: name, index: self.index)
+        }
+    }
+    
+    var index: Int { rawValue.trailingZeroBitCount }
+    var count: Int { rawValue.nonzeroBitCount }
+    
+    var info: Info { return Self[index] }
+    
+    static let value    = QueryPlanOption("value", 0)
+    static let start    = QueryPlanOption("start", 1)
+    static let stop     = QueryPlanOption("stop", 2)
+    static let step     = QueryPlanOption("step", 3)
+    static let descending = QueryPlanOption("descending", 4)
+    
+    static var all: QueryPlanOption = [.value, .start, .stop, .step, .descending]
+}
 
 ///////////////////////////////////////////////////////
 /// A port of the `generate_series` sqlite3 module
@@ -119,7 +164,7 @@ final class SeriesModule: EponymousVirtualTableModule {
             //            Swift.print("usage", ndx, col.info)
             constraintUsage[col.index - 1].argvIndex = Int32(ndx + 1)
         }
-        Swift.print (#line, queryPlan)
+//        Swift.print (#line, queryPlan)
         
         if queryPlan.contains(.start) && queryPlan.contains(.stop) {
             // Lower the cost if we also have step
@@ -165,6 +210,111 @@ public extension OptionSet where RawValue: FixedWidthInteger {
                 }
                 return nil
             }
+        }
+    }
+}
+
+open class DictionaryTable: EponymousVirtualTableModule {
+    
+    public var dict: [String: String] = [:]
+    
+    required public init(database: Database, arguments: [String]) {
+    }
+    
+    required public init(database: Database, arguments: [String], create: Bool) throws {
+    }
+    
+    public func destroy() throws {
+    }
+    
+    lazy public var columns: [Column] = {
+        var cols:[Column] = [
+            .column("key", .text),
+            .column("value", .text),
+        ]
+        for ndx in 0..<cols.count {
+            cols[ndx].ndx = ndx
+        }
+        return cols
+    }()
+    
+    lazy public var declaration: String = {
+        var str: String = "CREATE TABLE x("
+        for col in columns {
+            Swift.print("\t\(col.declaration)", separator: "", terminator: "", to: &str)
+            if col != columns.last {
+                Swift.print(",\n", separator: "", terminator: "", to: &str)
+            }
+        }
+        Swift.print("\n)", separator: "", terminator: "", to: &str)
+        return str
+    }()
+    
+    
+    public var options: Database.VirtualTableModuleOptions {
+        [.innocuous]
+    }
+    
+    public func bestIndex(_ indexInfo: inout sqlite3_index_info) -> VirtualTableModuleBestIndexResult {
+        .ok
+    }
+    
+    public func openCursor() -> VirtualTableCursor {
+        Cursor(self)
+    }
+}
+
+extension DictionaryTable {
+    
+    final class Cursor: VirtualTableCursor {
+        
+        var table: DictionaryTable
+        var _rowid: Int64 = 0
+        lazy var _count: Int = table.dict.count
+        
+        var row: (key: String, value: String) = ("", "")
+        var index: Dictionary<String, String>.Index
+        
+        init (_ table: DictionaryTable) {
+            self.table = table
+            self.index = table.dict.startIndex
+        }
+        
+        func column(_ index: Int32) -> DatabaseValue {
+            switch index {
+                case 1: return .text(row.key)
+                case 2: return .text(row.value)
+                default:
+                    return .text(row.key)
+            }
+            
+            //            let col = table.columns[Int(index)]
+            //            switch col.name {
+            //            case "key": return .text(row.key)
+            //            case "value": return .text(row.value)
+            //            default:
+            //                return .integer(_rowid)
+            //            }
+        }
+        
+        func next() {
+            index = table.dict.index(after: index)
+            row = table.dict[index]
+            _rowid += 1
+        }
+        
+        func rowid() -> Int64 {
+            _rowid
+        }
+        
+        func filter(_ arguments: [DatabaseValue], indexNumber: Int32, indexName: String?) {
+            self.index = table.dict.startIndex
+            row = table.dict[index]
+            _rowid = 1
+        }
+        
+        var eof: Bool {
+            _rowid > _count
         }
     }
 }
