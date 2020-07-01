@@ -997,4 +997,48 @@ class FeistyDBTests: XCTestCase {
 	}
 
 	#endif
+
+	#if SQLITE_ENABLE_PREUPDATE_HOOK && SQLITE_ENABLE_SESSION
+
+	func testSession() {
+		let db1 = try! Database()
+		let db2 = try! Database()
+
+		let sql = "CREATE TABLE birds(id integer primary key, kind);"
+
+		try! db1.execute(sql: sql)
+		try! db2.execute(sql: sql)
+
+		let session = try! Session(database: db1, schema: "main")
+		try! session.attach("birds")
+
+		try! db1.prepare(sql: "insert into birds(kind) values ('robin');").execute()
+		try! db1.prepare(sql: "insert into birds(kind) values ('cardinal');").execute()
+		try! db1.prepare(sql: "insert into birds(kind) values ('finch');").execute()
+		try! db1.prepare(sql: "insert into birds(kind) values ('sparrow');").execute()
+		try! db1.prepare(sql: "insert into birds(kind) values ('utahraptor');").execute()
+
+		XCTAssertFalse(session.isEmpty)
+
+		let changes = try! session.changeset()
+
+		try! db2.apply(changes) { conflict in
+			.abort
+		}
+
+		let birds: [String] = try! db2.prepare(sql: "select kind from birds;").column(0)
+		XCTAssert(birds == ["robin","cardinal","finch","sparrow","utahraptor"])
+
+		let inverse = try! changes.inverted()
+
+		try! db2.apply(inverse) { conflict in
+			.abort
+		}
+
+		let count: Int = try! db2.prepare(sql: "select count(*) from birds;").front()
+		XCTAssert(count == 0)
+	}
+
+	#endif
+
 }
