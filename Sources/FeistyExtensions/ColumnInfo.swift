@@ -30,20 +30,44 @@ public enum SqliteDataType: Int {
 }
 
 public struct Column: Equatable {
+    
+    public static func == (lhs: Column, rhs: Column) -> Bool {
+        lhs.name == rhs.name
+    }
+    
     public let name: String
     public var ndx: Int = 0
     public let sqlType: SqliteDataType
+    public let sqlDeclaraton: String = ""
+    
     //    var defaultValue: DatabaseValue
     //    var swiftType: DatabaseSerializable.Type
+    
+    public var _read: ((DatabaseValue) -> Any?)?
+    public var _write: ((Any?) -> DatabaseValue)?
+
+    // Bool Properties - Align at end of struct
     public let isPrimarykey: Bool
     public let hidden: Bool
-    
+
+    public func write(_ value: DatabaseSerializable?) -> DatabaseValue {
+        value?.serialized() ?? .null
+    }
+    public func read<A>(_ dbv: DatabaseValue) -> A? {
+        (_read?(dbv) ?? dbv.anyValue) as? A
+    }
     public func read(_ dbv: DatabaseValue) -> Any? {
-        return dbv.anyValue
+        return (_read?(dbv) ?? dbv.anyValue)
+    }
+
+    public func format(_ value: DatabaseSerializable?) -> String {
+        guard let value = value else { return "" }
+        return "\(value)"
     }
     
     public var declaration: String {
         "\(name) \(sqlType)\(isPrimarykey ? "PRIMARY KEY" : "")\(hidden ? " HIDDEN" : "")"
+        + " \(sqlDeclaraton)"
     }
 }
 
@@ -57,4 +81,8 @@ public extension Column {
     static func hidden(_ name: String, _ stype: SqliteDataType) -> Column {
         Column(name: name, sqlType: stype, isPrimarykey: false, hidden: true)
     }
+    
+    // day, date, datetime, timestamp
+    // image, color
+    // json, tags
 }

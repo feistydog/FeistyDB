@@ -23,7 +23,10 @@ let package = Package(
             targets: ["FeistyDB"]),
         .library(
             name: "FeistyExtensions",
-            targets: ["FeistyDB"]),
+            targets: ["FeistyExtensions"]),
+        .library(
+            name: "FeistyExamples",
+            targets: ["FeistyExamples"]),
 		.library(
 			name: "CSQLite",
 			targets: ["CSQLite"]),
@@ -38,20 +41,20 @@ let package = Package(
 		.target(
 			name: "FeistyDB",
 			dependencies: ["CSQLite"]
-//			, cSettings: [
-//				.define("SQLITE_ENABLE_PREUPDATE_HOOK", to: "1"),
-//				.define("SQLITE_ENABLE_SESSION", to: "1"),
-//			],
-//			swiftSettings: [
-//				.define("SQLITE_ENABLE_PREUPDATE_HOOK"),
-//				.define("SQLITE_ENABLE_SESSION"),
-//			]
+			, cSettings: [
+				.define("SQLITE_ENABLE_PREUPDATE_HOOK", to: "1"),
+				.define("SQLITE_ENABLE_SESSION", to: "1"),
+			],
+			swiftSettings: [
+				.define("SQLITE_ENABLE_PREUPDATE_HOOK"),
+				.define("SQLITE_ENABLE_SESSION"),
+			]
 		),
         .target(
             name: "FeistyExtensions",
             dependencies: ["FeistyDB"]),
         .target(
-            name: "Examples",
+            name: "FeistyExamples",
             dependencies: ["FeistyDB", "FeistyExtensions"]),
 		.target(
 			name: "CSQLite",
@@ -69,8 +72,8 @@ let package = Package(
 				.define("SQLITE_OMIT_SHARED_CACHE", to: "1"),
 				.define("SQLITE_USE_ALLOCA", to: "1"),
 				.define("SQLITE_OMIT_DEPRECATED", to: "1"),
-//				.define("SQLITE_ENABLE_PREUPDATE_HOOK", to: "1"),
-//				.define("SQLITE_ENABLE_SESSION", to: "1"),
+				.define("SQLITE_ENABLE_PREUPDATE_HOOK", to: "1"),
+				.define("SQLITE_ENABLE_SESSION", to: "1"),
 				.define("SQLITE_ENABLE_FTS5", to: "1"),
 				.define("SQLITE_ENABLE_RTREE", to: "1"),
 				.define("SQLITE_ENABLE_STAT4", to: "1"),
@@ -80,11 +83,11 @@ let package = Package(
 		]),
 		.testTarget(
 			name: "FeistyDBTests",
-			dependencies: ["FeistyDB", "FeistyExtensions", "Examples"]
-//			, swiftSettings: [
-//				.define("SQLITE_ENABLE_PREUPDATE_HOOK"),
-//				.define("SQLITE_ENABLE_SESSION"),
-//			]
+			dependencies: ["FeistyDB", "FeistyExtensions", "FeistyExamples"]
+			, swiftSettings: [
+				.define("SQLITE_ENABLE_PREUPDATE_HOOK"),
+				.define("SQLITE_ENABLE_SESSION"),
+			]
 		),
 		.testTarget(
 			name: "CSQLitePerformanceTests",

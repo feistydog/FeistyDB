@@ -9,7 +9,7 @@
 import XCTest
 import FeistyDB
 import FeistyExtensions
-import Examples
+import FeistyExamples
 import CSQLite
 
 class FDVirtualTableTests: XCTestCase {
