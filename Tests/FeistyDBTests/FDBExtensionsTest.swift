@@ -71,6 +71,12 @@ class FDBExtensionsTest: XCTestCase {
             XCTAssert(tags.count == 3)
             XCTAssert(tags[0] == 1)
         }
+
+        try db.results(sql: "select tags from stuff where id = 2") { row in
+            let tags: [Any] = try row.value(at: 0)
+            XCTAssert(tags.count == 3)
+            XCTAssert(tags[0] as! Int == 1)
+        }
     }
 
     func testPerformanceExample() throws {

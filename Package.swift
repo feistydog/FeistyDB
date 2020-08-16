@@ -60,6 +60,7 @@ let package = Package(
 			name: "CSQLite",
 			dependencies: [],
 			cSettings: [
+//				.unsafeFlags(["-Wno-ambiguous-macro"]),
 				.define("SQLITE_DQS", to: "0"),
 				.define("SQLITE_THREADSAFE", to: "0"),
 				.define("SQLITE_DEFAULT_MEMSTATUS", to: "0"),
