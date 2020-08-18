@@ -108,7 +108,7 @@ public protocol VirtualTableModule {
 	func openCursor() throws -> VirtualTableCursor
 }
 
-extension VirtualTableModule {
+public extension VirtualTableModule {
 	var options: Database.VirtualTableModuleOptions {
 		return []
 	}
@@ -132,7 +132,7 @@ public protocol EponymousVirtualTableModule: VirtualTableModule {
 	init(database: Database, arguments: [String]) throws
 }
 
-extension VirtualTableModule where Self: EponymousVirtualTableModule {
+public extension VirtualTableModule where Self: EponymousVirtualTableModule {
 	init(database: Database, arguments: [String], create: Bool) throws {
 		precondition(create == false)
 		// Eponymous-only virtual tables have no state
