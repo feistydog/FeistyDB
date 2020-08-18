@@ -189,11 +189,16 @@ extension Database {
 	///
 	/// - seealso: [Register A Virtual Table Implementation](https://www.sqlite.org/c3ref/create_module.html)
 	/// - seealso: [The Virtual Table Mechanism Of SQLite](https://sqlite.org/vtab.html)
-	public func addModule<T: VirtualTableModule>(_ name: String, type: T.Type) throws where T: AnyObject {
+    public func addModule<T: VirtualTableModule>(_ name: String, type: T.Type, eponymous: Bool = false) throws where T: AnyObject {
 		// Flesh out the struct containing the virtual table functions used by SQLite
-		var module_struct = sqlite3_module(iVersion: 0, xCreate: xCreate, xConnect: xConnect, xBestIndex: xBestIndex, xDisconnect: xDisconnect, xDestroy: xDestroy,
+        var module_struct: sqlite3_module
+        if eponymous {
+            module_struct = sqlite3_module(iVersion: 0, xCreate: xCreate, xConnect: xCreate, xBestIndex: xBestIndex, xDisconnect: xDisconnect, xDestroy: xDestroy,
 		   xOpen: xOpen, xClose: xClose, xFilter: xFilter, xNext: xNext, xEof: xEof, xColumn: xColumn, xRowid: xRowid, xUpdate: nil, xBegin: nil, xSync: nil, xCommit: nil, xRollback: nil, xFindFunction: nil, xRename: nil, xSavepoint: nil, xRelease: nil, xRollbackTo: nil, xShadowName: nil)
-
+        } else {
+            module_struct = sqlite3_module(iVersion: 0, xCreate: xCreate, xConnect: xConnect, xBestIndex: xBestIndex, xDisconnect: xDisconnect, xDestroy: xDestroy,
+                                           xOpen: xOpen, xClose: xClose, xFilter: xFilter, xNext: xNext, xEof: xEof, xColumn: xColumn, xRowid: xRowid, xUpdate: nil, xBegin: nil, xSync: nil, xCommit: nil, xRollback: nil, xFindFunction: nil, xRename: nil, xSavepoint: nil, xRelease: nil, xRollbackTo: nil, xShadowName: nil)
+        }
 		// client_data must live until the xDestroy function is invoked; store it as a +1 object
 		let client_data = VirtualTableModuleClientData(module: &module_struct) { [weak self] args, create -> VirtualTableModule in
 			guard let database = self else {
