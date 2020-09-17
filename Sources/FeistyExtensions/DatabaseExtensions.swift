@@ -188,9 +188,9 @@ extension Array: DatabaseSerializable {
     public static func deserialize(from value: DatabaseValue) throws -> Array<Element> {
         guard case let DatabaseValue.text(str) = value,
               let data = str.data(using: .utf8)
-        else { throw DatabaseError("Cannot deserialize \(value) into Array") }
+        else { throw DatabaseError("Cannot deserialize into Array<\(String(describing: Element.self))>") }
         guard let results = try JSONSerialization.jsonObject(with: data, options: []) as? Self
-        else { throw DatabaseError("Cannot deserialize \(value) into Array") }
+        else { throw DatabaseError("Cannot deserialize into Array<\(String(describing: Element.self))>") }
         return results
     }
 }
