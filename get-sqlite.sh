@@ -1,6 +1,5 @@
 #!/bin/sh
 
-#SQLITE_ARCHIVE=sqlite-src-3320300.zip
 SQLITE_ARCHIVE=sqlite-src-3330000.zip
 SQLITE_DOWNLOAD_URL=https://sqlite.org/2020/$SQLITE_ARCHIVE
 SQLITE_DIR=$(basename "$SQLITE_ARCHIVE" .zip)
