@@ -18,20 +18,38 @@ final public class CalendarModule: BaseTableModule {
         "CREATE TABLE x(date, weekday, day, week, month, year, start HIDDEN, stop HIDDEN, step HIDDEN)"
     }
 
-    var date_fmt: DateFormatter
-    
+    var date_fmt: DateFormatter = DateFormatter()
+    var calendar: Calendar = Calendar(identifier: .gregorian)
+    var _min: Date = .distantPast
+    var _max: Date = .distantFuture
+    var step: Calendar.Frequency = .daily
+
     required init(database: Database, arguments: [String], create: Bool) throws {
-        Swift.print (#function, arguments)
-        date_fmt = DateFormatter()
-        date_fmt.dateFormat = "yyyy-MM-dd"
+//        Swift.print (#function, arguments)
         try super.init(database: database, arguments: arguments, create: create)
+        // args 0..2 -> module_name, db_name, table_name
+        postInit(argv: Array(arguments.dropFirst(3)))
     }
     
     required public init(database: Database, arguments: [String]) throws {
-        Swift.print (#function, arguments)
-        date_fmt = DateFormatter()
-        date_fmt.dateFormat = "yyyy-MM-dd"
+//        Swift.print (#function, arguments)
         try super.init(database: database, arguments: arguments, create: false)
+        // args 0..2 -> module_name, db_name, table_name
+        postInit(argv: Array(arguments.dropFirst(3)))
+    }
+    
+    func postInit(argv: [String]) {
+        date_fmt.dateFormat = "yyyy-MM-dd"
+        if let val = argv[safe: 0] {
+            _min = date_fmt.date(from: val) ?? .distantPast
+        }
+        if let val = argv[safe: 1] {
+            _max = date_fmt.date(from: val) ?? .distantFuture
+        }
+        if let val = argv[safe: 2] {
+            step = Calendar.Frequency.named(val) ?? .daily
+        }
+//        Swift.print (#function, "min:", self._min, "max:", self._max, "step:", self.step)
     }
     
     public override func bestIndex(_ indexInfo: inout sqlite3_index_info) -> VirtualTableModuleBestIndexResult {
@@ -67,29 +85,24 @@ extension FilterInfo {
     }
 }
 
-//extension DatabaseValue {
-//    static func integer(for i: Int) -> DatabaseValue {
-//        DatabaseValue.integer(Int64(i))
-//    }
-//}
-
 extension CalendarModule {
     final class Cursor: BaseTableModule.Cursor<CalendarModule> {
         
         var calendar: Calendar
-        var start: Date
-        var end: Date
+        var _min: Date
+        var _max: Date
         var current: Date?
         var step: Calendar.Frequency = .daily
         var date_fmt: DateFormatter { module.date_fmt }
         
-        public override init(_ table: CalendarModule, filter: FilterInfo?)
+        public override init(_ vtab: CalendarModule, filter: FilterInfo?)
         {
-            self.calendar = Calendar.current
-            self.start = Date()
-            self.end = .distantFuture
-            self.current = start
-            super.init(table, filter: filter)
+            self.calendar = vtab.calendar
+            self._min = vtab._min
+            self._max = vtab._max
+            self.step = vtab.step
+            self.current = _min
+            super.init(vtab, filter: filter)
         }
 
         override func column(_ index: Int32) -> DatabaseValue {
@@ -107,8 +120,8 @@ extension CalendarModule {
                 case .year:     return dbvalue(date, .year)
                     
                 //  HIDDEN
-                case .start:    return .text(date_fmt.string(from: start))
-                case .stop:     return .text(date_fmt.string(from: end))
+                case .start:    return .text(date_fmt.string(from: _min))
+                case .stop:     return .text(date_fmt.string(from: _max))
                 case .step:     return .text(step.name)
              }
         }
@@ -123,46 +136,31 @@ extension CalendarModule {
             guard let filterInfo = filterInfo ?? module.filters[Int(indexNumber)]
             else { return }
             _rowid = 1
-            start = Date()
-            end = .distantFuture
-            step = .daily
             
             // DEBUG
-            Swift.print(
-                filterInfo.describe(with: Column.allCases.map {String(describing:$0)},
-                                    values: arguments))
+//            Swift.print( filterInfo.describe(with: Column.allCases.map {String(describing:$0)},
+//                                    values: arguments))
 
             for farg in filterInfo.argv {
                 switch (Column(rawValue: farg.col_ndx), arguments[Int(farg.arg_ndx)]) {
-                    case (.start, let .text(argv)): start  = date_fmt.date(from: argv) ?? start
-                    case (.stop,  let .text(argv)): end  = date_fmt.date(from: argv) ?? end
+                    case (.start, let .text(argv)): _min  = date_fmt.date(from: argv) ?? _min
+                    case (.stop,  let .text(argv)): _max  = date_fmt.date(from: argv) ?? _max
                     case (.step,  let .text(argv)): step = Calendar.Frequency.named(argv) ?? step
                         
                     case (.date,  let .text(argv)):
                         guard let date = date_fmt.date(from: argv)  else { continue }
-                        switch farg.op_str {
-                            case "=":
-                                start = date
-                                end = date
-                                current = date
-                            case "<", "<=":
-                                end = date
-                            case ">", ">=":
-                                start = date
-                            default:
-                                break
-                        }
+                        (_min, _max) = cmpBounds(farg.op_str, date, in: (_min, _max))
 
                     default:
                         break
                 }
             }
-            current = filterInfo.isDescending ? end : start
+            current = filterInfo.isDescending ? _max : _min
         }
         
         override var eof: Bool {
-            // HARD LIMIT of total days for 100 year span is 36_500
-            if let date = current, date > end || _rowid > 36_500 {
+            // HARD LIMIT of total days for 1000 year span is 360_500
+            if let date = current, date > _max || _rowid > 360_500 {
                 return true
             }
             return false
