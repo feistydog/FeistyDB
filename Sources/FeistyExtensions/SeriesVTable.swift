@@ -86,7 +86,7 @@ extension FilterInfo {
 extension SeriesModule {
     final class Cursor: BaseTableModule.Cursor<SeriesModule> {
         
-        let max_rows = 10_000 // Safety Net b/c default max is TOO BIG
+        let max_rows = 100_000_000 // Safety Net b/c default Int.max is WAY TOO BIG
         var _value: Int64 = 0
         var _min: Int64 = 0
         var _max: Int64 = 0
