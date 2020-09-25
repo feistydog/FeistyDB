@@ -55,6 +55,29 @@ final public class CalendarModule: BaseTableModule {
     public override func bestIndex(_ indexInfo: inout sqlite3_index_info) -> VirtualTableModuleBestIndexResult {
         
         guard let info = FilterInfo(&indexInfo) else { return .constraint }
+        
+        var argc: Int32 = 1
+        
+        // jmj
+        // Inputs
+        let constraintCount = Int(indexInfo.nConstraint)
+        let constraints = UnsafeBufferPointer<sqlite3_index_constraint>(start: indexInfo.aConstraint, count: constraintCount)
+
+        for i in 0 ..< constraintCount {
+            let constraint = constraints[i]
+            let farg = info.argv[i]
+            // Outputs
+            Swift.print (farg, constraint, indexInfo.aConstraintUsage[i])
+            guard constraint.usable != 0 else { continue }
+            guard farg.col_ndx != Column.weekday.rawValue else { continue }
+
+            indexInfo.aConstraintUsage[i].argvIndex = argc
+            // NOTE: Consider omit = 1 if column is HIDDEN
+            // indexInfo.aConstraintUsage[i].omit = 1
+            argc += 1
+        }
+        // jmj end
+        
         if info.contains(Column.start) && info.contains(Column.stop) {
             indexInfo.estimatedCost = 2  - (info.contains(Column.step) ? 1 : 0)
             indexInfo.estimatedRows = 1000
@@ -70,6 +93,7 @@ final public class CalendarModule: BaseTableModule {
         }
 
         indexInfo.idxNum = add(info)
+        Swift.print(info.describe(with: Self.Column.allCases.map { $0.name }))
         return .ok
     }
 

@@ -116,7 +116,7 @@ public class FilterInfo: CustomStringConvertible {
             Swift.print(arg.describe(with: cols, values: values),
                         separator: ",", terminator: " ", to: &str)
         }
-        Swift.print(")", separator: "", terminator: "\n", to: &str)
+        Swift.print(")", separator: "", terminator: "", to: &str)
         return str
     }
     
