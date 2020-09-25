@@ -18,6 +18,17 @@ public func cmpBounds<C: Comparable>(_ op: String, _ val: C,
     }
 }
 
+public func adjustBounds<C: Comparable>(_ op: String, _ val: C,
+                                     in rng: (min: C, max: C)) -> (min: C, max: C)
+{
+    switch op {
+        case "=": return (val, val)
+        case "<", "<=":  return (rng.min, (val < rng.max) ? val : rng.max)
+        case ">", ">=":  return ((val > rng.min ? val : rng.min), rng.max)
+        default: return rng
+    }
+}
+
 public extension Collection {
     /// Returns the element at the specified index if it is within bounds, otherwise nil.
     subscript (safe index: Index) -> Element? {

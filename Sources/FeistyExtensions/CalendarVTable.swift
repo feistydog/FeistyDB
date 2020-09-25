@@ -54,7 +54,7 @@ final public class CalendarModule: BaseTableModule {
     
     public override func bestIndex(_ indexInfo: inout sqlite3_index_info) -> VirtualTableModuleBestIndexResult {
         
-        guard var info = FilterInfo(&indexInfo) else { return .constraint }
+        guard let info = FilterInfo(&indexInfo) else { return .constraint }
         if info.contains(Column.start) && info.contains(Column.stop) {
             indexInfo.estimatedCost = 2  - (info.contains(Column.step) ? 1 : 0)
             indexInfo.estimatedRows = 1000
@@ -69,7 +69,7 @@ final public class CalendarModule: BaseTableModule {
             indexInfo.idxFlags = SQLITE_INDEX_SCAN_UNIQUE
         }
 
-        indexInfo.idxNum = add(&info)
+        indexInfo.idxNum = add(info)
         return .ok
     }
 
@@ -138,14 +138,35 @@ extension CalendarModule {
             _rowid = 1
             
             // DEBUG
-//            Swift.print( filterInfo.describe(with: Column.allCases.map {String(describing:$0)},
-//                                    values: arguments))
-
+            Swift.print (#function, arguments)
+            Swift.print( filterInfo.describe(with: Column.allCases.map {String(describing:$0)}, values: arguments))
+            
+            func date(y: Int64, m: Int, d: Int) -> Date {
+                var dateComponents = DateComponents()
+                dateComponents.year = Int(y)
+                dateComponents.month = m
+                dateComponents.day = d
+                return calendar.date(from: dateComponents)!
+            }
+            
+            // FIXME;
+            // select start, stop, datefmt('E', date), * from cal where year >= 2020 and month = 10 and (weekday = 2 and weekday = 3) limit 10;
+            // DOES NOT CONSTRAIN BY YEAR
             for farg in filterInfo.argv {
                 switch (Column(rawValue: farg.col_ndx), arguments[Int(farg.arg_ndx)]) {
-                    case (.start, let .text(argv)): _min  = date_fmt.date(from: argv) ?? _min
-                    case (.stop,  let .text(argv)): _max  = date_fmt.date(from: argv) ?? _max
-                    case (.step,  let .text(argv)): step = Calendar.Frequency.named(argv) ?? step
+                    case (.start, let .text(argv)):
+                        _min  = date_fmt.date(from: argv) ?? _min
+                    case (.stop, let .text(argv)):
+                        _max  = date_fmt.date(from: argv) ?? _max
+                    case (.step, let .text(argv)):
+                        step = Calendar.Frequency.named(argv) ?? step
+                    
+                    case (.year, let .integer(year)):
+                        let min_date = date(y: year, m: 1, d: 1) // Jan 1
+                        (_min, _max) = adjustBounds(farg.op_str, min_date, in: (_min, _max))
+
+                        let max_date = date(y: year, m: 12, d: 31) // Dec 32
+                        (_min, _max) = adjustBounds(farg.op_str, max_date, in: (_min, _max))
                         
                     case (.date,  let .text(argv)):
                         guard let date = date_fmt.date(from: argv)  else { continue }
@@ -156,6 +177,11 @@ extension CalendarModule {
                 }
             }
             current = filterInfo.isDescending ? _max : _min
+            
+            // DEBUG
+            Swift.print( filterInfo.describe(with: Column.allCases.map { String(describing:$0)}, values: arguments))
+            Swift.print(self._min, self._max)
+
         }
         
         override var eof: Bool {

@@ -52,7 +52,7 @@ public final class SeriesModule: BaseTableModule {
 
     public override func bestIndex(_ indexInfo: inout sqlite3_index_info) -> VirtualTableModuleBestIndexResult {
         
-        guard var info = FilterInfo(&indexInfo) else { return .constraint }
+        guard let info = FilterInfo(&indexInfo) else { return .constraint }
         if info.contains(Column.start) && info.contains(Column.stop) {
             indexInfo.estimatedCost = 2  - (info.contains(Column.step) ? 1 : 0)
             indexInfo.estimatedRows = 1000
@@ -67,7 +67,7 @@ public final class SeriesModule: BaseTableModule {
             indexInfo.idxFlags = SQLITE_INDEX_SCAN_UNIQUE
         }
 
-        indexInfo.idxNum = add(&info)
+        indexInfo.idxNum = add(info)
         return .ok
     }
     
