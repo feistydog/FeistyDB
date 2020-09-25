@@ -74,7 +74,7 @@ final public class CalendarModule: BaseTableModule {
     }
 
     public override func openCursor() -> VirtualTableCursor {
-        return Cursor(self, filter: filters.last)
+        return Cursor(self, filter: filters.first)
     }
 }
 
@@ -138,8 +138,8 @@ extension CalendarModule {
             _rowid = 1
             
             // DEBUG
-            Swift.print (#function, arguments)
-            Swift.print( filterInfo.describe(with: Column.allCases.map {String(describing:$0)}, values: arguments))
+//            Swift.print (#function, indexNumber, arguments)
+            Swift.print(#function, indexNumber, filterInfo.describe(with: Column.allCases.map {String(describing:$0)}, values: arguments))
             
             func date(y: Int64, m: Int, d: Int) -> Date {
                 var dateComponents = DateComponents()
@@ -160,13 +160,23 @@ extension CalendarModule {
                         _max  = date_fmt.date(from: argv) ?? _max
                     case (.step, let .text(argv)):
                         step = Calendar.Frequency.named(argv) ?? step
-                    
-                    case (.year, let .integer(year)):
+              
+                    case (.year, let .integer(year))
+                            where [">=", ">"].contains(farg.op_str):
                         let min_date = date(y: year, m: 1, d: 1) // Jan 1
-                        (_min, _max) = adjustBounds(farg.op_str, min_date, in: (_min, _max))
+                        if min_date > _min { _min = min_date }
+
+                    case (.year, let .integer(year))
+                            where ["<=", "<"].contains(farg.op_str):
+                        let max_date = date(y: year, m: 12, d: 31) // Dec 32
+                        if max_date < _max { _max = max_date }
+
+                    case (.year, let .integer(year)) where farg.op_str == "=":
+                        let min_date = date(y: year, m: 1, d: 1) // Jan 1
+                        if min_date > _min { _min = min_date }
 
                         let max_date = date(y: year, m: 12, d: 31) // Dec 32
-                        (_min, _max) = adjustBounds(farg.op_str, max_date, in: (_min, _max))
+                        if max_date < _max { _max = max_date }
                         
                     case (.date,  let .text(argv)):
                         guard let date = date_fmt.date(from: argv)  else { continue }
