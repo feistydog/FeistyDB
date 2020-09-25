@@ -27,6 +27,12 @@ int feisty_db_sqlite3_db_config_enable_qpsg(sqlite3 *db, int x, int *y);
 int feisty_db_sqlite3_db_config_defensive(sqlite3 *db, int x, int *y);
 /// Equivalent to `sqlite3_db_config(db, SQLITE_DBCONFIG_WRITABLE_SCHEMA, x, y)`
 int feisty_db_sqlite3_db_config_writable_schema(sqlite3 *db, int x, int *y);
+/// Equivalent to `sqlite3_db_config(db, SQLITE_DBCONFIG_LEGACY_ALTER_TABLE, x, y)`
+int feisty_db_sqlite3_db_config_legacy_alter_table(sqlite3 *db, int x, int *y);
+/// Equivalent to `sqlite3_db_config(db, SQLITE_DBCONFIG_DQS_DML, x, y)`
+int feisty_db_sqlite3_db_config_dqs_dml(sqlite3 *db, int x, int *y);
+/// Equivalent to `sqlite3_db_config(db, SQLITE_DBCONFIG_DQS_DDL, x, y)`
+int feisty_db_sqlite3_db_config_dqs_ddl(sqlite3 *db, int x, int *y);
 /// Equivalent to `sqlite3_db_config(db, SQLITE_DBCONFIG_TRUSTED_SCHEMA, x, y)`
 int feisty_db_sqlite3_db_config_trusted_schema(sqlite3 *db, int x, int *y);
 
