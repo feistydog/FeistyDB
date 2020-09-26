@@ -37,7 +37,7 @@ class FDBExtensionsTest: XCTestCase {
         
         try db.results(sql: "select tags from stuff where id = 1") { row in
              let tags: [String:Any] = try row.value(at: 0)
-             Swift.print(tags)
+             Report.print(tags)
              XCTAssert(tags.count == 2)
              XCTAssert(tags["b"] is [Int])
          }

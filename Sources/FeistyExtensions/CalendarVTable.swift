@@ -25,14 +25,14 @@ final public class CalendarModule: BaseTableModule {
     var step: Calendar.Frequency = .daily
 
     required init(database: Database, arguments: [String], create: Bool) throws {
-//        Swift.print (#function, arguments)
+//        report (#function, arguments)
         try super.init(database: database, arguments: arguments, create: create)
         // args 0..2 -> module_name, db_name, table_name
         postInit(argv: Array(arguments.dropFirst(3)))
     }
     
     required public init(database: Database, arguments: [String]) throws {
-//        Swift.print (#function, arguments)
+//        report (#function, arguments)
         try super.init(database: database, arguments: arguments, create: false)
         // args 0..2 -> module_name, db_name, table_name
         postInit(argv: Array(arguments.dropFirst(3)))
@@ -49,33 +49,33 @@ final public class CalendarModule: BaseTableModule {
         if let val = argv[safe: 2] {
             step = Calendar.Frequency.named(val) ?? .daily
         }
-//        Swift.print (#function, "min:", self._min, "max:", self._max, "step:", self.step)
+//        report (#function, "min:", self._min, "max:", self._max, "step:", self.step)
     }
     
     public override func bestIndex(_ indexInfo: inout sqlite3_index_info) -> VirtualTableModuleBestIndexResult {
         
         guard let info = FilterInfo(&indexInfo) else { return .constraint }
         
-        var argc: Int32 = 1
+//        var argc: Int32 = 1
         
         // jmj
         // Inputs
-        let constraintCount = Int(indexInfo.nConstraint)
-        let constraints = UnsafeBufferPointer<sqlite3_index_constraint>(start: indexInfo.aConstraint, count: constraintCount)
-
-        for i in 0 ..< constraintCount {
-            let constraint = constraints[i]
-            let farg = info.argv[i]
-            // Outputs
-            Swift.print (farg, constraint, indexInfo.aConstraintUsage[i])
-            guard constraint.usable != 0 else { continue }
-            guard farg.col_ndx != Column.weekday.rawValue else { continue }
-
-            indexInfo.aConstraintUsage[i].argvIndex = argc
-            // NOTE: Consider omit = 1 if column is HIDDEN
-            // indexInfo.aConstraintUsage[i].omit = 1
-            argc += 1
-        }
+//        let constraintCount = Int(indexInfo.nConstraint)
+//        let constraints = UnsafeBufferPointer<sqlite3_index_constraint>(start: indexInfo.aConstraint, count: constraintCount)
+//
+//        for i in 0 ..< constraintCount {
+//            let constraint = constraints[i]
+//            let farg = info.argv[i]
+//            // Outputs
+//            Report.print (farg, constraint, indexInfo.aConstraintUsage[i])
+//            guard constraint.usable != 0 else { continue }
+//            guard farg.col_ndx != Column.weekday.rawValue else { continue }
+//
+//            indexInfo.aConstraintUsage[i].argvIndex = argc
+//            // NOTE: Consider omit = 1 if column is HIDDEN
+//            // indexInfo.aConstraintUsage[i].omit = 1
+//            argc += 1
+//        }
         // jmj end
         
         if info.contains(Column.start) && info.contains(Column.stop) {
@@ -93,7 +93,7 @@ final public class CalendarModule: BaseTableModule {
         }
 
         indexInfo.idxNum = add(info)
-        Swift.print(info.describe(with: Self.Column.allCases.map { $0.name }))
+        Report.print(info.describe(with: Self.Column.allCases.map { $0.name }))
         return .ok
     }
 
@@ -162,8 +162,7 @@ extension CalendarModule {
             _rowid = 1
             
             // DEBUG
-//            Swift.print (#function, indexNumber, arguments)
-            Swift.print(#function, indexNumber, filterInfo.describe(with: Column.allCases.map {String(describing:$0)}, values: arguments))
+            Report.print(#function, indexNumber, filterInfo.describe(with: Column.allCases.map {String(describing:$0)}, values: arguments))
             
             func date(y: Int64, m: Int, d: Int) -> Date {
                 var dateComponents = DateComponents()
@@ -213,8 +212,8 @@ extension CalendarModule {
             current = filterInfo.isDescending ? _max : _min
             
             // DEBUG
-            Swift.print( filterInfo.describe(with: Column.allCases.map { String(describing:$0)}, values: arguments))
-            Swift.print(self._min, self._max)
+            Report.print( filterInfo.describe(with: Column.allCases.map { String(describing:$0)}, values: arguments))
+            Report.print(self._min, self._max)
 
         }
         

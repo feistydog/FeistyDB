@@ -123,7 +123,7 @@ public extension Recur {
     
     init? (_ str: String) {
         
-        let argv = str.components(separatedBy: Recur.dels)
+        let argv = str.lowercased().components(separatedBy: Recur.dels)
         
         func iv<I:FixedWidthInteger>(_ ndx: Int, or: I) -> I {
             guard let s = argv[safe: ndx] else { return or }

@@ -32,13 +32,13 @@ open class BaseTableModule: VirtualTableModule {
         case value, start, stop, step
     }
     public var filters: [FilterInfo] = []
-    
+
     public required init(database: Database, arguments: [String], create: Bool) throws {
-        Swift.print (#function, arguments)
+        Report.print (#function, arguments)
     }
     
     public required init(database: Database, arguments: [String]) throws {
-        Swift.print (#function, arguments)
+        Report.print (#function, arguments)
     }
     
     open func add(_ filter: FilterInfo) -> Int32 {
@@ -113,20 +113,20 @@ public class FilterInfo: CustomStringConvertible {
     public func describe(with cols: [String], values: [Any] = []) -> String {
         var str = "Filter[\(key)] (" // + String(columnsUsed, radix: 2) + " "
         for arg in argv {
-            Swift.print(arg.describe(with: cols, values: values),
+            Report.print(arg.describe(with: cols, values: values),
                         separator: ",", terminator: " ", to: &str)
         }
-        Swift.print(")", separator: "", terminator: "", to: &str)
+        Report.print(")", separator: "", terminator: "", to: &str)
         return str
     }
     
     public var description: String {
         var str = "Filter[\(key)] (" // + String(columnsUsed, radix: 2) + " "
         for arg in argv {
-            Swift.print(arg.description,
+            Report.print(arg.description,
                         separator: ",", terminator: " ", to: &str)
         }
-        Swift.print(")", separator: "", terminator: "\n", to: &str)
+        Report.print(")", separator: "", terminator: "\n", to: &str)
         return str
     }
 }

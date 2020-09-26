@@ -121,7 +121,7 @@ final class SeriesModule: EponymousVirtualTableModule {
     }
     
     //    required init(arguments: [String]) {
-    //        Swift.print("init", arguments)
+    //        Report.print("init", arguments)
     //    }
     init(database: Database, arguments: [String]) throws {
     }
@@ -156,15 +156,15 @@ final class SeriesModule: EponymousVirtualTableModule {
             let ndx = constraint.iColumn
             guard constraint.usable != 0 else { continue }
             let opt = QueryPlanOption(index: ndx)
-            //            Swift.print("plan union", opt.info)
+            //            Report.print("plan union", opt.info)
             queryPlan = queryPlan.union(opt)
         }
-        Swift.print(queryPlan.info)
+        Report.print(queryPlan.info)
         for (ndx, col) in queryPlan.elements().enumerated() {
-            //            Swift.print("usage", ndx, col.info)
+            //            Report.print("usage", ndx, col.info)
             constraintUsage[col.index - 1].argvIndex = Int32(ndx + 1)
         }
-//        Swift.print (#line, queryPlan)
+//        report (#line, queryPlan)
         
         if queryPlan.contains(.start) && queryPlan.contains(.stop) {
             // Lower the cost if we also have step
@@ -241,12 +241,12 @@ open class DictionaryTable: EponymousVirtualTableModule {
     lazy public var declaration: String = {
         var str: String = "CREATE TABLE x("
         for col in columns {
-            Swift.print("\t\(col.declaration)", separator: "", terminator: "", to: &str)
+            Report.print("\t\(col.declaration)", separator: "", terminator: "", to: &str)
             if col != columns.last {
-                Swift.print(",\n", separator: "", terminator: "", to: &str)
+                Report.print(",\n", separator: "", terminator: "", to: &str)
             }
         }
-        Swift.print("\n)", separator: "", terminator: "", to: &str)
+        Report.print("\n)", separator: "", terminator: "", to: &str)
         return str
     }()
     

@@ -146,7 +146,7 @@ public class DateSeriesModule: EponymousVirtualTableModule {
     }
     
     //    required init(arguments: [String]) {
-    //        Swift.print("init", arguments)
+    //        Report.print("init", arguments)
     //    }
     required public init(database: Database, arguments: [String]) throws {
     }
@@ -181,15 +181,15 @@ public class DateSeriesModule: EponymousVirtualTableModule {
             let ndx = constraint.iColumn
             guard constraint.usable != 0 else { continue }
             let opt = QueryPlanOption(index: ndx)
-            //            Swift.print("plan union", opt.info)
+            //            Report.print("plan union", opt.info)
             queryPlan = queryPlan.union(opt)
         }
-        Swift.print(queryPlan.info)
+        Report.print(queryPlan.info)
         for (ndx, col) in queryPlan.elements().enumerated() {
-            //            Swift.print("usage", ndx, col.info)
+            //            Report.print("usage", ndx, col.info)
             constraintUsage[col.index - 1].argvIndex = Int32(ndx + 1)
         }
-        //        Swift.print (#line, queryPlan)
+        //        report (#line, queryPlan)
         
         if queryPlan.contains(.start) && queryPlan.contains(.stop) {
             // Lower the cost if we also have step

@@ -30,7 +30,7 @@ class FDVirtualTableTests: XCTestCase {
         let statement = try! db.prepare(sql: "SELECT name, login, home FROM user")
 
         guard let row = try! statement.firstRow() else { XCTFail(); return }
-        Swift.print (try! row.anyValues())
+        report (try! row.anyValues())
         XCTAssertEqual(NSFullUserName(), row[0].stringValue)
         XCTAssertEqual(NSUserName(), row[1].stringValue)
         XCTAssertEqual(NSHomeDirectory(), row[2].stringValue)
@@ -48,7 +48,7 @@ class FDVirtualTableTests: XCTestCase {
             let value :String = try row.value(at: 1)
             let dv = dict[key]!
             let eq = dv == value
-            Swift.print(#line, eq, key, value, dv)
+            Report.print(#line, eq, key, value, dv)
             XCTAssertEqual(value, dv)
         }
     }
@@ -227,11 +227,11 @@ final class SeriesModule: EponymousVirtualTableModule {
             let opt = QueryPlanOption(index: ndx)
             queryPlan = queryPlan.union(opt)
         }
-        Swift.print(queryPlan.info)
+        Report.print(queryPlan.info)
         for (ndx, col) in queryPlan.elements().enumerated() {
             constraintUsage[col.index - 1].argvIndex = Int32(ndx + 1)
         }
-        Swift.print (#line, queryPlan)
+        report (#line, queryPlan)
         
         if queryPlan.contains(.start) && queryPlan.contains(.stop) {
             // Lower the cost if we also have step
@@ -299,12 +299,12 @@ open class BaseEponymousTable: EponymousVirtualTableModule {
     lazy public var declaration: String = {
            var str: String = "CREATE TABLE x("
            for col in columns {
-               Swift.print("\t\(col.declaration)", separator: "", terminator: "", to: &str)
+               Report.print("\t\(col.declaration)", separator: "", terminator: "", to: &str)
                if col != columns.last {
-                   Swift.print(",\n", separator: "", terminator: "", to: &str)
+                   Report.print(",\n", separator: "", terminator: "", to: &str)
                }
            }
-           Swift.print("\n)", separator: "", terminator: "", to: &str)
+           Report.print("\n)", separator: "", terminator: "", to: &str)
            return str
        }()
 
@@ -417,12 +417,12 @@ final class UserTable: EponymousVirtualTableModule {
        lazy var declaration: String = {
            var str: String = "CREATE TABLE x("
            for col in columns {
-               Swift.print("\t\(col.declaration)", separator: "", terminator: "", to: &str)
+               Report.print("\t\(col.declaration)", separator: "", terminator: "", to: &str)
                if col != columns.last {
-                   Swift.print(",\n", separator: "", terminator: "", to: &str)
+                   Report.print(",\n", separator: "", terminator: "", to: &str)
                }
            }
-           Swift.print("\n)", separator: "", terminator: "", to: &str)
+           Report.print("\n)", separator: "", terminator: "", to: &str)
            return str
        }()
 

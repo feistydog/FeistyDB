@@ -23,14 +23,14 @@ public final class SeriesModule: BaseTableModule {
     var step: Int64 = 1
     
     required init(database: Database, arguments: [String], create: Bool) throws {
-//        Swift.print (#function, arguments)
+//        report (#function, arguments)
         try super.init(database: database, arguments: arguments, create: create)
         // args 0..2 -> module_name, db_name, table_name
         postInit(argv: Array(arguments.dropFirst(3)))
     }
     
     required public init(database: Database, arguments: [String]) throws {
-//        Swift.print (#function, arguments)
+//        report (#function, arguments)
         try super.init(database: database, arguments: arguments, create: false)
         // args 0..2 -> module_name, db_name, table_name
         postInit(argv: Array(arguments.dropFirst(3)))
@@ -47,7 +47,7 @@ public final class SeriesModule: BaseTableModule {
         if let val = argv[safe: 2] {
             step = Int64(val) ?? 1
         }
-//        Swift.print (#function, "min:", self._min, "max:", self._max, "step:", self.step)
+//        report (#function, "min:", self._min, "max:", self._max, "step:", self.step)
     }
 
     public override func bestIndex(_ indexInfo: inout sqlite3_index_info) -> VirtualTableModuleBestIndexResult {
@@ -127,7 +127,7 @@ extension SeriesModule {
             else { return }
             
             // DEBUG
-//            Swift.print(
+//            Report.print(
 //                filterInfo.describe(with: Column.allCases.map {String(describing:$0)},
 //                                           values: arguments))
             
