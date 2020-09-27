@@ -152,6 +152,51 @@ extension Statement {
 }
 
 extension Statement {
+	/// Binds a BLOB filled with zeroes to the SQL parameter at `index`.
+	///
+	/// The BLOB's contents may be updated using [incremental BLOB I/O](https://sqlite.org/c3ref/blob_open.html).
+	///
+	/// - note: Parameter indexes are 1-based.  The leftmost parameter in a statement has index 1.
+	///
+	/// - requires: `index > 0`
+	/// - requires: `index < parameterCount`
+	/// - requires: `length >= 0`
+	///
+	/// - parameter index: The index of the SQL parameter to bind
+	/// - parameter length: The desired length of the BLOB in bytes
+	///
+	/// - throws: An error if the BLOB couldn't be bound
+	public func bindZeroBLOB(toParameter index: Int, length: Int) throws {
+		let idx = Int32(index)
+		let n = Int32(length)
+		guard sqlite3_bind_zeroblob(stmt, idx, n) == SQLITE_OK else {
+			throw SQLiteError("Error binding zeroblob of length \(n) to parameter \(idx)", takingDescriptionFromStatement: stmt)
+		}
+	}
+
+	/// Binds a BLOB filled with zeroes  to the SQL parameter `name`.
+	///
+	/// The BLOB's contents may be updated using [incremental BLOB I/O](https://sqlite.org/c3ref/blob_open.html).
+	///
+	/// - requires: `length >= 0`
+	///
+	/// - parameter name: The name of the SQL parameter to bind
+	/// - parameter length: The desired length of the BLOB in bytes
+	///
+	/// - throws: An error if the SQL parameter `name` doesn't exist or the BLOB couldn't be bound
+	public func bindZeroBLOB(toParameter name: String, length: Int) throws {
+		let idx = sqlite3_bind_parameter_index(stmt, name)
+		guard idx > 0 else {
+			throw DatabaseError("Unknown parameter \"\(name)\"")
+		}
+		let n = Int32(length)
+		guard sqlite3_bind_zeroblob(stmt, idx, n) == SQLITE_OK else {
+			throw SQLiteError("Error binding zeroblob of length \(n) to parameter \(idx)", takingDescriptionFromStatement: stmt)
+		}
+	}
+}
+
+extension Statement {
 	/// Binds `value` to the SQL parameter at `index`.
 	///
 	/// - note: Parameter indexes are 1-based.  The leftmost parameter in a statement has index 1.
