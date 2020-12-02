@@ -329,6 +329,36 @@ extension Database {
 		}
 	}
 
+	/// Possible transaction states for a database
+	public enum TransactionState {
+		/// No transaction is currently pending
+		case none
+		/// The database is currently in a read transaction
+		case read
+		/// The database is currently in a write transaction
+		case write
+	}
+
+	/// Determines the transaction state of a database
+	///
+	/// - note: If `schema` is `nil` the highest transaction state of any schema is returned.
+	///
+	/// - parameter schema: The name of the database schema to query or `nil`
+	///
+	/// - throws: An error if `schema` is not the name of a known schema
+	public func transactionState(_ schema: String? = nil) throws -> TransactionState {
+		switch sqlite3_txn_state(db, schema) {
+		case SQLITE_TXN_NONE:
+			return .none
+		case SQLITE_TXN_READ:
+			return .read
+		case SQLITE_TXN_WRITE:
+			return .write
+		default:
+			throw SQLiteError("Error getting transaction state for schema \(schema ?? "")", takingDescriptionFromDatabase: db)
+		}
+	}
+
 	/// `true` if this database is in autocommit mode, `false` otherwise
 	///
 	/// - seealso: [Test For Auto-Commit Mode](https://www.sqlite.org/c3ref/get_autocommit.html)
