@@ -11,12 +11,10 @@ import CSQLite
 extension Statement {
 	/// Binds the values in `array` to the SQL parameter at `index` using the sqlite3 Carray extension
 	///
-	/// When using the Carray extension in `FeistyDB` the number of array elements must be explicitly bound:
 	/// ```
 	/// let primes = [ 3, 5, 7 ]
-	/// let statement = try db.prepare(sql: "SELECT * FROM numbers WHERE value IN carray(?1,?2,'int32');")
+	/// let statement = try db.prepare(sql: "SELECT * FROM numbers WHERE value IN carray(?1);")
 	///	try statement.bind(array: primes, toParameter: 1)
-	/// try statement.bind(value: primes.count, toParameter: 2)
 	/// ```
 	///
 	/// - note: Parameter indexes are 1-based.  The leftmost parameter in a statement has index 1.
@@ -36,21 +34,18 @@ extension Statement {
 		let mem = UnsafeMutableBufferPointer<Int32>.allocate(capacity: array.count)
 		_ = mem.initialize(from: array)
 
-		try carray_pointer_type.utf8Start.withMemoryRebound(to: Int8.self, capacity: carray_pointer_type.utf8CodeUnitCount) { type in
-			guard sqlite3_bind_pointer(stmt, idx, mem.baseAddress, type, {
-				$0?.deallocate()
-			}) == SQLITE_OK else {
-				throw SQLiteError("Error binding carray (int32) to parameter \(idx)", takingDescriptionFromStatement: stmt)
-			}
+		guard sqlite3_carray_bind(stmt, idx, mem.baseAddress, Int32(array.count), CARRAY_INT32, {
+			$0?.deallocate()
+		}) == SQLITE_OK else {
+			throw SQLiteError("Error binding carray (CARRAY_INT32) to parameter \(idx)", takingDescriptionFromStatement: stmt)
 		}
 	}
 
 	/// Binds the values in `array` to SQL parameter `name` using the sqlite3 Carray extension
 	///
-	/// When using the Carray extension in `FeistyDB` the number of array elements must be explicitly bound:
 	/// ```
 	/// let primes = [ 3, 5, 7 ]
-	/// let statement = try db.prepare(sql: "SELECT * FROM numbers WHERE value IN carray(:primes,?2,'int32');")
+	/// let statement = try db.prepare(sql: "SELECT * FROM numbers WHERE value IN carray(:primes);")
 	///	try statement.bind(array: primes, toParameter: ":primes")
 	/// try statement.bind(value: primes.count, toParameter: 2)
 	/// ```
@@ -75,12 +70,10 @@ extension Statement {
 extension Statement {
 	/// Binds the values in `array` to the SQL parameter at `index` using the sqlite3 Carray extension
 	///
-	/// When using the Carray extension in `FeistyDB` the number of array elements must be explicitly bound:
 	/// ```
 	/// let primes = [ 87178291199, 99194853094755497 ]
-	/// let statement = try db.prepare(sql: "SELECT * FROM numbers WHERE value IN carray(?1,?2,'int64');")
+	/// let statement = try db.prepare(sql: "SELECT * FROM numbers WHERE value IN carray(?1);")
 	///	try statement.bind(array: primes, toParameter: 1)
-	/// try statement.bind(value: primes.count, toParameter: 2)
 	/// ```
 	///
 	/// - note: Parameter indexes are 1-based.  The leftmost parameter in a statement has index 1.
@@ -100,23 +93,19 @@ extension Statement {
 		let mem = UnsafeMutableBufferPointer<Int64>.allocate(capacity: array.count)
 		_ = mem.initialize(from: array)
 
-		try carray_pointer_type.utf8Start.withMemoryRebound(to: Int8.self, capacity: carray_pointer_type.utf8CodeUnitCount) { type in
-			guard sqlite3_bind_pointer(stmt, idx, mem.baseAddress, type, {
-				$0?.deallocate()
-			}) == SQLITE_OK else {
-				throw SQLiteError("Error binding carray (int64) to parameter \(idx)", takingDescriptionFromStatement: stmt)
-			}
+		guard sqlite3_carray_bind(stmt, idx, mem.baseAddress, Int32(array.count), CARRAY_INT64, {
+			$0?.deallocate()
+		}) == SQLITE_OK else {
+			throw SQLiteError("Error binding carray (CARRAY_INT64) to parameter \(idx)", takingDescriptionFromStatement: stmt)
 		}
 	}
 
 	/// Binds the values in `array` to SQL parameter `name` using the sqlite3 Carray extension
 	///
-	/// When using the Carray extension in `FeistyDB` the number of array elements must be explicitly bound:
 	/// ```
 	/// let primes = [ 87178291199, 99194853094755497 ]
-	/// let statement = try db.prepare(sql: "SELECT * FROM numbers WHERE value IN carray(:primes,?2,'int64');")
+	/// let statement = try db.prepare(sql: "SELECT * FROM numbers WHERE value IN carray(:primes);")
 	///	try statement.bind(array: primes, toParameter: ":primes")
-	/// try statement.bind(value: primes.count, toParameter: 2)
 	/// ```
 	///
 	/// - parameter array: An array of values to bind to the SQL parameter
@@ -139,12 +128,10 @@ extension Statement {
 extension Statement {
 	/// Binds the values in `array` to the SQL parameter at `index` using the sqlite3 Carray extension
 	///
-	/// When using the Carray extension in `FeistyDB` the number of array elements must be explicitly bound:
 	/// ```
 	/// let specials = [ Double.pi, Double.nan, Double.infinity ]
-	/// let statement = try db.prepare(sql: "SELECT * FROM numbers WHERE value IN carray(?1,?2,'double');")
+	/// let statement = try db.prepare(sql: "SELECT * FROM numbers WHERE value IN carray(?1);")
 	///	try statement.bind(array: specials, toParameter: 1)
-	/// try statement.bind(value: specials.count, toParameter: 2)
 	/// ```
 	///
 	/// - note: Parameter indexes are 1-based.  The leftmost parameter in a statement has index 1.
@@ -164,23 +151,19 @@ extension Statement {
 		let mem = UnsafeMutableBufferPointer<Double>.allocate(capacity: array.count)
 		_ = mem.initialize(from: array)
 
-		try carray_pointer_type.utf8Start.withMemoryRebound(to: Int8.self, capacity: carray_pointer_type.utf8CodeUnitCount) { type in
-			guard sqlite3_bind_pointer(stmt, idx, mem.baseAddress, type, {
-				$0?.deallocate()
-			}) == SQLITE_OK else {
-				throw SQLiteError("Error binding carray (double) to parameter \(idx)", takingDescriptionFromStatement: stmt)
-			}
+		guard sqlite3_carray_bind(stmt, idx, mem.baseAddress, Int32(array.count), CARRAY_DOUBLE, {
+			$0?.deallocate()
+		}) == SQLITE_OK else {
+			throw SQLiteError("Error binding carray (CARRAY_DOUBLE) to parameter \(idx)", takingDescriptionFromStatement: stmt)
 		}
 	}
 
 	/// Binds the values in `array` to SQL parameter `name` using the sqlite3 Carray extension
 	///
-	/// When using the Carray extension in `FeistyDB` the number of array elements must be explicitly bound:
 	/// ```
 	/// let specials = [ Double.pi, Double.nan, Double.infinity ]
-	/// let statement = try db.prepare(sql: "SELECT * FROM numbers WHERE value IN carray(:specials,?2,'double');")
+	/// let statement = try db.prepare(sql: "SELECT * FROM numbers WHERE value IN carray(:specials);")
 	///	try statement.bind(array: specials, toParameter: ":specials")
-	/// try statement.bind(value: specials.count, toParameter: 2)
 	/// ```
 	///
 	/// - parameter array: An array of values to bind to the SQL parameter
@@ -203,12 +186,10 @@ extension Statement {
 extension Statement {
 	/// Binds the values in `array` to the SQL parameter at `index` using the sqlite3 Carray extension
 	///
-	/// When using the Carray extension in `FeistyDB` the number of array elements must be explicitly bound:
 	/// ```
 	/// let pets = [ "dog", "dragon", "hedgehog" ]
-	/// let statement = try db.prepare(sql: "SELECT * FROM animals WHERE kind IN carray(?1,?2,'char*');")
+	/// let statement = try db.prepare(sql: "SELECT * FROM animals WHERE kind IN carray(?1);")
 	///	try statement.bind(array: pets, toParameter: 1)
-	/// try statement.bind(value: pets.count, toParameter: 2)
 	/// ```
 	///
 	/// - note: Parameter indexes are 1-based.  The leftmost parameter in a statement has index 1.
@@ -245,23 +226,19 @@ extension Statement {
 			memcpy(pos, s, utf8_offsets[i + 1] - utf8_offsets[i])
 		}
 
-		try carray_pointer_type.utf8Start.withMemoryRebound(to: Int8.self, capacity: carray_pointer_type.utf8CodeUnitCount) { type in
-			guard sqlite3_bind_pointer(stmt, idx, mem, type, {
-				$0?.deallocate()
-			}) == SQLITE_OK else {
-				throw SQLiteError("Error binding carray (char*) to parameter \(idx)", takingDescriptionFromStatement: stmt)
-			}
+		guard sqlite3_carray_bind(stmt, idx, mem, Int32(array.count), CARRAY_TEXT, {
+			$0?.deallocate()
+		}) == SQLITE_OK else {
+			throw SQLiteError("Error binding carray (CARRAY_TEXT) to parameter \(idx)", takingDescriptionFromStatement: stmt)
 		}
 	}
 
 	/// Binds the values in `array` to SQL parameter `name` using the sqlite3 Carray extension
 	///
-	/// When using the Carray extension in `FeistyDB` the number of array elements must be explicitly bound:
 	/// ```
 	/// let pets = [ "dog", "dragon", "hedgehog" ]
-	/// let statement = try db.prepare(sql: "SELECT * FROM animals WHERE kind IN carray(:pets,?2,'char*');")
+	/// let statement = try db.prepare(sql: "SELECT * FROM animals WHERE kind IN carray(:pets);")
 	///	try statement.bind(array: pets, toParameter: ":pets")
-	/// try statement.bind(value: pets.count, toParameter: 2)
 	/// ```
 	///
 	/// - parameter array: An array of values to bind to the SQL parameter
@@ -305,6 +282,3 @@ private func scan<S: Sequence, U>(_ seq: S, _ initial: U, _ combine: (U, S.Eleme
 	}
 	return result
 }
-
-// SQLite pointer types are static strings
-private let carray_pointer_type: StaticString = "carray"

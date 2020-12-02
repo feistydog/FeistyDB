@@ -76,8 +76,9 @@ int feisty_db_init(const char *dummy)
 EOF
 fi
 
-/bin/mv "$SQLITE_DIR/sqlite3.c" "./Sources/CSQLite/"
-/bin/mv "$SQLITE_DIR/sqlite3.h" "./Sources/CSQLite/include/"
-/bin/mv "$SQLITE_DIR/sqlite3ext.h" "./Sources/CSQLite/include/"
+/bin/cp "$SQLITE_DIR/sqlite3.c" "./Sources/CSQLite/"
+/bin/cp "$SQLITE_DIR/sqlite3.h" "./Sources/CSQLite/include/"
+/bin/cp "$SQLITE_DIR/sqlite3ext.h" "./Sources/CSQLite/include/"
+/bin/cp "$SQLITE_DIR/ext/misc/carray.h" "./Sources/CSQLite/include/"
 
 echo "sqlite successfully configured for FeistyDB"
