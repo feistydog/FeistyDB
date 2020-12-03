@@ -174,7 +174,7 @@ extension Statement {
 		}
 	}
 
-	/// Binds a BLOB filled with zeroes  to the SQL parameter `name`.
+	/// Binds a BLOB filled with zeroes to the SQL parameter `name`.
 	///
 	/// The BLOB's contents may be updated using [incremental BLOB I/O](https://sqlite.org/c3ref/blob_open.html).
 	///
