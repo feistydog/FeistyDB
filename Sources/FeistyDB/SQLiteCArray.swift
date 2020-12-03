@@ -14,7 +14,7 @@ extension Statement {
 	/// ```
 	/// let primes = [ 3, 5, 7 ]
 	/// let statement = try db.prepare(sql: "SELECT * FROM numbers WHERE value IN carray(?1);")
-	///	try statement.bind(array: primes, toParameter: 1)
+	/// try statement.bind(array: primes, toParameter: 1)
 	/// ```
 	///
 	/// - note: Parameter indexes are 1-based.  The leftmost parameter in a statement has index 1.
@@ -46,8 +46,7 @@ extension Statement {
 	/// ```
 	/// let primes = [ 3, 5, 7 ]
 	/// let statement = try db.prepare(sql: "SELECT * FROM numbers WHERE value IN carray(:primes);")
-	///	try statement.bind(array: primes, toParameter: ":primes")
-	/// try statement.bind(value: primes.count, toParameter: 2)
+	/// try statement.bind(array: primes, toParameter: ":primes")
 	/// ```
 	///
 	/// - parameter array: An array of values to bind to the SQL parameter
@@ -73,7 +72,7 @@ extension Statement {
 	/// ```
 	/// let primes = [ 87178291199, 99194853094755497 ]
 	/// let statement = try db.prepare(sql: "SELECT * FROM numbers WHERE value IN carray(?1);")
-	///	try statement.bind(array: primes, toParameter: 1)
+	/// try statement.bind(array: primes, toParameter: 1)
 	/// ```
 	///
 	/// - note: Parameter indexes are 1-based.  The leftmost parameter in a statement has index 1.
@@ -105,7 +104,7 @@ extension Statement {
 	/// ```
 	/// let primes = [ 87178291199, 99194853094755497 ]
 	/// let statement = try db.prepare(sql: "SELECT * FROM numbers WHERE value IN carray(:primes);")
-	///	try statement.bind(array: primes, toParameter: ":primes")
+	/// try statement.bind(array: primes, toParameter: ":primes")
 	/// ```
 	///
 	/// - parameter array: An array of values to bind to the SQL parameter
@@ -131,7 +130,7 @@ extension Statement {
 	/// ```
 	/// let specials = [ Double.pi, Double.nan, Double.infinity ]
 	/// let statement = try db.prepare(sql: "SELECT * FROM numbers WHERE value IN carray(?1);")
-	///	try statement.bind(array: specials, toParameter: 1)
+	/// try statement.bind(array: specials, toParameter: 1)
 	/// ```
 	///
 	/// - note: Parameter indexes are 1-based.  The leftmost parameter in a statement has index 1.
@@ -163,7 +162,7 @@ extension Statement {
 	/// ```
 	/// let specials = [ Double.pi, Double.nan, Double.infinity ]
 	/// let statement = try db.prepare(sql: "SELECT * FROM numbers WHERE value IN carray(:specials);")
-	///	try statement.bind(array: specials, toParameter: ":specials")
+	/// try statement.bind(array: specials, toParameter: ":specials")
 	/// ```
 	///
 	/// - parameter array: An array of values to bind to the SQL parameter
@@ -189,7 +188,7 @@ extension Statement {
 	/// ```
 	/// let pets = [ "dog", "dragon", "hedgehog" ]
 	/// let statement = try db.prepare(sql: "SELECT * FROM animals WHERE kind IN carray(?1);")
-	///	try statement.bind(array: pets, toParameter: 1)
+	/// try statement.bind(array: pets, toParameter: 1)
 	/// ```
 	///
 	/// - note: Parameter indexes are 1-based.  The leftmost parameter in a statement has index 1.
@@ -238,7 +237,7 @@ extension Statement {
 	/// ```
 	/// let pets = [ "dog", "dragon", "hedgehog" ]
 	/// let statement = try db.prepare(sql: "SELECT * FROM animals WHERE kind IN carray(:pets);")
-	///	try statement.bind(array: pets, toParameter: ":pets")
+	/// try statement.bind(array: pets, toParameter: ":pets")
 	/// ```
 	///
 	/// - parameter array: An array of values to bind to the SQL parameter
