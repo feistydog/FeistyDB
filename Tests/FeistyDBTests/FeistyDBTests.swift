@@ -589,9 +589,8 @@ class FeistyDBTests: XCTestCase {
 		try! db.prepare(sql: "insert into animals(kind) values ('hedgehog');").execute()
 
 		let pets = [ "dog", "dragon", "hedgehog" ]
-		let statement = try! db.prepare(sql: "SELECT * FROM animals WHERE kind IN carray(?1,?2,'char*');")
+		let statement = try! db.prepare(sql: "SELECT * FROM animals WHERE kind IN carray(?1);")
 		try! statement.bind(array: pets, toParameter: 1)
-		try! statement.bind(value: pets.count, toParameter: 2)
 
 		let results: [String] = statement.map({try! $0.value(at: 0)})
 
