@@ -10,7 +10,6 @@ import CSQLite
 /// An `sqlite3_blob *` object.
 ///
 /// - seealso: [A Handle To An Open BLOB](https://sqlite.org/c3ref/blob.html)
-//public typealias SQLiteSession = UnsafeMutablePointer<sqlite3_session>
 public typealias SQLiteBLOB = OpaquePointer
 
 /// A BLOB supporting incremental I/O.
