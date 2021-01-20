@@ -1,7 +1,7 @@
 #!/bin/sh
 
-SQLITE_ARCHIVE=sqlite-src-3340000.zip
-SQLITE_DOWNLOAD_URL=https://sqlite.org/2020/$SQLITE_ARCHIVE
+SQLITE_ARCHIVE=sqlite-src-3340100.zip
+SQLITE_DOWNLOAD_URL=https://sqlite.org/2021/$SQLITE_ARCHIVE
 SQLITE_DIR=$(basename "$SQLITE_ARCHIVE" .zip)
 
 if ! [ -f "./$SQLITE_ARCHIVE" ]; then
