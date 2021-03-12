@@ -97,7 +97,11 @@ let package = Package(
 				.define("SQLITE_ENABLE_STAT4", to: "1"),
 				.define("SQLITE_ENABLE_SNAPSHOT", to: "1"),
 				.define("SQLITE_ENABLE_JSON1", to: "1"),
+				.define("SQLITE_ENABLE_MATH_FUNCTIONS", to: "1"),
 				.define("SQLITE_EXTRA_INIT", to: "feisty_db_init"),
+		],
+		linkerSettings: [
+			.linkedLibrary("m")
 		]),
 		.testTarget(
 			name: "FeistyDBTests",

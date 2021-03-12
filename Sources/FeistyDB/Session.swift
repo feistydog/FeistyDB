@@ -69,6 +69,13 @@ public final class Session {
 		sqlite3session_isempty(session) != 0
 	}
 
+	/// Returns the total amount of heap memory in bytes currently used by the session.
+	///
+	/// - seealso: [Query for the amount of heap memory used by a session object.](https://www.sqlite.org/session/sqlite3session_memory_used.html)
+	var memoryUsed: Int {
+		Int(sqlite3session_memory_used(session))
+	}
+
 	/// Attaches a table to the session.
 	///
 	/// - parameter table: The name of the table to attach
