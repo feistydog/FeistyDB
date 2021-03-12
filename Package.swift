@@ -101,7 +101,7 @@ let package = Package(
 				.define("SQLITE_EXTRA_INIT", to: "feisty_db_init"),
 		],
 		linkerSettings: [
-			linkedLibrary("m")
+			.linkedLibrary("m")
 		]),
 		.testTarget(
 			name: "FeistyDBTests",
