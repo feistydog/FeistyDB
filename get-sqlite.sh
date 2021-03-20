@@ -70,21 +70,11 @@ EOF
 	cat "$SQLITE_DIR/ext/misc/shathree.c" >> "$SQLITE_DIR/sqlite3.c"
 	cat <<EOF >> "$SQLITE_DIR/sqlite3.c"
 /************** End of shathree.c ********************************************/
-/************** Begin file unionvtab.c ***************************************/
-EOF
-	cat "$SQLITE_DIR/ext/misc/unionvtab.c" >> "$SQLITE_DIR/sqlite3.c"
-	cat <<EOF >> "$SQLITE_DIR/sqlite3.c"
-/************** End of unionvtab.c *******************************************/
 /************** Begin file uuid.c ********************************************/
 EOF
 	cat "$SQLITE_DIR/ext/misc/uuid.c" >> "$SQLITE_DIR/sqlite3.c"
 	cat <<EOF >> "$SQLITE_DIR/sqlite3.c"
 /************** End of uuid.c ************************************************/
-/************** Begin file wholenumber.c *************************************/
-EOF
-	cat "$SQLITE_DIR/ext/misc/wholenumber.c" >> "$SQLITE_DIR/sqlite3.c"
-	cat <<EOF >> "$SQLITE_DIR/sqlite3.c"
-/************** End of wholenumber.c *****************************************/
 
 /*
 ** Automatically make the extensions available to every sqlite connection
@@ -98,9 +88,7 @@ int feisty_db_init(const char *dummy)
 	nErr += sqlite3_auto_extension((void *)sqlite3_ieee_init);
 	nErr += sqlite3_auto_extension((void *)sqlite3_series_init);
 	nErr += sqlite3_auto_extension((void *)sqlite3_shathree_init);
-	nErr += sqlite3_auto_extension((void *)sqlite3_unionvtab_init);
 	nErr += sqlite3_auto_extension((void *)sqlite3_uuid_init);
-	nErr += sqlite3_auto_extension((void *)sqlite3_wholenumber_init);
 
 	return nErr ? SQLITE_ERROR : SQLITE_OK;
 }
