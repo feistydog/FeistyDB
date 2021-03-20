@@ -34,10 +34,7 @@ elif [ $STATUS -eq 1 ]; then
 /************************** FeistyDB additions ****************************/
 
 /*
-** Include the uuid and carray sqlite extensions.
-**
-** To omit the uuid extension define FEISTY_DB_OMIT_UUID.
-** To omit the carray extension define FEISTY_DB_OMIT_CARRAY.
+** Include various sqlite loadable extensions.
 **
 ** To automatically make the extensions available to every sqlite
 ** connection, add "-DSQLITE_EXTRA_INIT=feisty_db_init" to this
@@ -45,29 +42,65 @@ elif [ $STATUS -eq 1 ]; then
 **
 */
 
-#ifndef FEISTY_DB_OMIT_UUID
 EOF
-	cat "$SQLITE_DIR/ext/misc/uuid.c" >> "$SQLITE_DIR/sqlite3.c"
-	cat <<EOF >> "$SQLITE_DIR/sqlite3.c"
-#endif /* FEISTY_DB_OMIT_UUID */
 
-#ifndef FEISTY_DB_OMIT_CARRAY
+	cat <<EOF >> "$SQLITE_DIR/sqlite3.c"
+/************** Begin file carray.c ******************************************/
 EOF
 	cat "$SQLITE_DIR/ext/misc/carray.c" >> "$SQLITE_DIR/sqlite3.c"
 	cat <<EOF >> "$SQLITE_DIR/sqlite3.c"
-#endif /* FEISTY_DB_OMIT_CARRAY */
+/************** End of carray.c **********************************************/
+/************** Begin file decimal.c *****************************************/
+EOF
+	cat "$SQLITE_DIR/ext/misc/decimal.c" >> "$SQLITE_DIR/sqlite3.c"
+	cat <<EOF >> "$SQLITE_DIR/sqlite3.c"
+/************** End of decimal.c *********************************************/
+/************** Begin file ieee754.c *****************************************/
+EOF
+	cat "$SQLITE_DIR/ext/misc/ieee754.c" >> "$SQLITE_DIR/sqlite3.c"
+	cat <<EOF >> "$SQLITE_DIR/sqlite3.c"
+/************** End of ieee754.c *********************************************/
+/************** Begin file series.c ******************************************/
+EOF
+	cat "$SQLITE_DIR/ext/misc/series.c" >> "$SQLITE_DIR/sqlite3.c"
+	cat <<EOF >> "$SQLITE_DIR/sqlite3.c"
+/************** End of series.c **********************************************/
+/************** Begin file shathree.c ****************************************/
+EOF
+	cat "$SQLITE_DIR/ext/misc/shathree.c" >> "$SQLITE_DIR/sqlite3.c"
+	cat <<EOF >> "$SQLITE_DIR/sqlite3.c"
+/************** End of shathree.c ********************************************/
+/************** Begin file unionvtab.c ***************************************/
+EOF
+	cat "$SQLITE_DIR/ext/misc/unionvtab.c" >> "$SQLITE_DIR/sqlite3.c"
+	cat <<EOF >> "$SQLITE_DIR/sqlite3.c"
+/************** End of unionvtab.c *******************************************/
+/************** Begin file uuid.c ********************************************/
+EOF
+	cat "$SQLITE_DIR/ext/misc/uuid.c" >> "$SQLITE_DIR/sqlite3.c"
+	cat <<EOF >> "$SQLITE_DIR/sqlite3.c"
+/************** End of uuid.c ************************************************/
+/************** Begin file wholenumber.c *************************************/
+EOF
+	cat "$SQLITE_DIR/ext/misc/wholenumber.c" >> "$SQLITE_DIR/sqlite3.c"
+	cat <<EOF >> "$SQLITE_DIR/sqlite3.c"
+/************** End of wholenumber.c *****************************************/
 
+/*
+** Automatically make the extensions available to every sqlite connection
+*/
 int feisty_db_init(const char *dummy)
 {
 	int nErr = 0;
 
-#ifndef FEISTY_DB_OMIT_UUID
-	nErr += sqlite3_auto_extension((void *)sqlite3_uuid_init);
-#endif /* FEISTY_DB_OMIT_UUID */
-
-#ifndef FEISTY_DB_OMIT_CARRAY
 	nErr += sqlite3_auto_extension((void *)sqlite3_carray_init);
-#endif /* FEISTY_DB_OMIT_CARRAY */
+	nErr += sqlite3_auto_extension((void *)sqlite3_decimal_init);
+	nErr += sqlite3_auto_extension((void *)sqlite3_ieee_init);
+	nErr += sqlite3_auto_extension((void *)sqlite3_series_init);
+	nErr += sqlite3_auto_extension((void *)sqlite3_shathree_init);
+	nErr += sqlite3_auto_extension((void *)sqlite3_unionvtab_init);
+	nErr += sqlite3_auto_extension((void *)sqlite3_uuid_init);
+	nErr += sqlite3_auto_extension((void *)sqlite3_wholenumber_init);
 
 	return nErr ? SQLITE_ERROR : SQLITE_OK;
 }
