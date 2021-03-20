@@ -27,7 +27,7 @@ Add a package dependency to https://github.com/feistydog/FeistyDB in Xcode.
 
 ### SQLite Build Options
 
-FeistyDB includes a custom version of the SQLite [amalgamation](https://sqlite.org/amalgamation.html) with the [carray](https://www.sqlite.org/carray.html), [decimal](https://sqlite.org/src/file/ext/misc/decimal.c), [ieee](https://sqlite.org/src/file/ext/misc/ieee754.c), [series](https://sqlite.org/src/file/ext/misc/series.c), [shathree](https://sqlite.org/src/file/ext/misc/shathree.c), and [uuid](https://sqlite.org/src/file/ext/misc/uuid.c)) extensions added. The custom amalgamation is built using the [get-sqlite.sh](get-sqlite.sh) script.
+FeistyDB includes a custom version of the SQLite [amalgamation](https://sqlite.org/amalgamation.html) with the [carray](https://www.sqlite.org/carray.html), [decimal](https://sqlite.org/src/file/ext/misc/decimal.c), [ieee](https://sqlite.org/src/file/ext/misc/ieee754.c), [series](https://sqlite.org/src/file/ext/misc/series.c), [shathree](https://sqlite.org/src/file/ext/misc/shathree.c), and [uuid](https://sqlite.org/src/file/ext/misc/uuid.c) extensions added. The custom amalgamation is built using the [get-sqlite.sh](get-sqlite.sh) script.
 
 The build options to SQLite mostly follow the [recommendations](https://www.sqlite.org/compile.html) and are specified in [Package.swift](Package.swift).
 
