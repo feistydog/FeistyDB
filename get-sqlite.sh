@@ -23,6 +23,40 @@ fi
 
 /usr/bin/make -C "./$SQLITE_DIR" sqlite3.c
 
+/usr/bin/fgrep "FeistyDB" "./$SQLITE_DIR/sqlite3.h" > /dev/null
+STATUS=$?
+
+if [ $STATUS -gt 1 ]; then
+	echo "Error: fgrep failed"
+	exit 1
+elif [ $STATUS -eq 1 ]; then
+	cat <<EOF >> "$SQLITE_DIR/sqlite3.h"
+/************************** FeistyDB additions ****************************/
+
+EOF
+
+	cat <<EOF >> "$SQLITE_DIR/sqlite3.h"
+#ifndef _CARRAY_H
+#define _CARRAY_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+/************** Begin file carray.h ******************************************/
+EOF
+	cat "$SQLITE_DIR/ext/misc/carray.h" >> "$SQLITE_DIR/sqlite3.h"
+	cat <<EOF >> "$SQLITE_DIR/sqlite3.h"
+/************** End of carray.h **********************************************/
+#ifdef __cplusplus
+}  /* end of the 'extern "C"' block */
+#endif
+
+#endif /* _CARRAY_H */
+
+/************************** End of FeistyDB additions *********************/
+EOF
+fi
+
 /usr/bin/fgrep "FeistyDB" "./$SQLITE_DIR/sqlite3.c" > /dev/null
 STATUS=$?
 
@@ -100,6 +134,5 @@ fi
 /bin/cp "$SQLITE_DIR/sqlite3.c" "./Sources/CSQLite/"
 /bin/cp "$SQLITE_DIR/sqlite3.h" "./Sources/CSQLite/include/"
 /bin/cp "$SQLITE_DIR/sqlite3ext.h" "./Sources/CSQLite/include/"
-/bin/cp "$SQLITE_DIR/ext/misc/carray.h" "./Sources/CSQLite/include/"
 
 echo "sqlite successfully configured for FeistyDB"
