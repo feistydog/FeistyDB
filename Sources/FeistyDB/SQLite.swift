@@ -112,4 +112,28 @@ public struct SQLite {
 		}
 		return data
 	}
+
+	/// The options defined at compile time.
+	///
+	/// - seealso: [Run-Time Library Compilation Options Diagnostics](https://sqlite.org/c3ref/compileoption_get.html)
+	public static let compileOptions: Set<String> = {
+		var options = Set<String>()
+		var i: Int32 = 0
+		while let option = sqlite3_compileoption_get(i) {
+			options.insert(String(cString: option))
+			i += 1
+		}
+		return options
+	}()
+
+	/// Tests whether `option` was defined at compile time.
+	///
+	/// - parameter option: The option to check
+	///
+	/// - returns: `True` if `option` was defined at compile time, `False` otherwise
+	///
+	/// - seealso: [Run-Time Library Compilation Options Diagnostics](https://sqlite.org/c3ref/compileoption_get.html)
+	public static func compileOptionUsed(_ option: String) -> Bool {
+		return sqlite3_compileoption_used(option) != 0
+	}
 }
