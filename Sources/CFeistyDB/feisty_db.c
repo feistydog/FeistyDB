@@ -4,7 +4,7 @@
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
 
-#include "csqlite_swift_glue.h"
+#include "csqlite_shims.h"
 
 static void feisty_db_initialize(void) __attribute__ ((constructor));
 static void feisty_db_initialize()
