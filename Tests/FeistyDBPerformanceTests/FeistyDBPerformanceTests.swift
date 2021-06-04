@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015 - 2020 Feisty Dog, LLC
+// Copyright (c) 2015 - 2021 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
@@ -8,12 +8,10 @@ import XCTest
 import FeistyDB
 
 class FeistyDBPerformanceTests: XCTestCase {
-	override func setUp() {
+	override class func setUp() {
 		super.setUp()
-	}
-
-	override func tearDown() {
-		super.tearDown()
+		// It's necessary to call sqlite3_initialize() since SQLITE_OMIT_AUTOINIT is defined
+		XCTAssertNoThrow(try SQLite.initialize())
 	}
 
 	func testFeistyDBInsertPerformance() {

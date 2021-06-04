@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015 - 2020 Feisty Dog, LLC
+// Copyright (c) 2015 - 2021 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
@@ -137,13 +137,11 @@ class FeistyDBTests: XCTestCase {
 		return fileURL
 	}
 
-    override func setUp() {
-        super.setUp()
-    }
-    
-    override func tearDown() {
-        super.tearDown()
-    }
+	override class func setUp() {
+		super.setUp()
+		// It's necessary to call sqlite3_initialize() since SQLITE_OMIT_AUTOINIT is defined
+		XCTAssertNoThrow(try SQLite.initialize())
+	}
 
 	func testSQLiteKeywords() {
 		XCTAssertTrue(SQLite.isKeyword("BEGIN"))
@@ -571,6 +569,7 @@ class FeistyDBTests: XCTestCase {
 	}
 
 	func testUUIDExtension() {
+		XCTAssert(csqlite_sqlite3_auto_extension_uuid() == SQLITE_OK)
 		let db = try! Database()
 		let statement = try! db.prepare(sql: "select uuid();")
 		let s: String = try! statement.front()
@@ -579,6 +578,8 @@ class FeistyDBTests: XCTestCase {
 	}
 
 	func testCArrayExtension() {
+		XCTAssert(csqlite_sqlite3_auto_extension_carray() == SQLITE_OK)
+
 		let db = try! Database()
 
 		try! db.execute(sql: "create table animals(kind);")
