@@ -8,12 +8,6 @@ import XCTest
 import FeistyDB
 
 class FeistyDBPerformanceTests: XCTestCase {
-	override class func setUp() {
-		super.setUp()
-		// It's necessary to call sqlite3_initialize() since SQLITE_OMIT_AUTOINIT is defined
-		XCTAssertNoThrow(try SQLite.initialize())
-	}
-
 	func testFeistyDBInsertPerformance() {
 		self.measureMetrics(XCTestCase.defaultPerformanceMetrics, automaticallyStartMeasuring: false) {
 			let db = try! Database()
