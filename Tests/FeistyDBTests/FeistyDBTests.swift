@@ -137,6 +137,12 @@ class FeistyDBTests: XCTestCase {
 		return fileURL
 	}
 
+	override class func setUp() {
+		super.setUp()
+		// Initialize FeistyDB
+		try! FeistyDB.initialize()
+	}
+
 	func testSQLiteKeywords() {
 		XCTAssertTrue(SQLite.isKeyword("BEGIN"))
 		XCTAssertTrue(SQLite.isKeyword("begin"))

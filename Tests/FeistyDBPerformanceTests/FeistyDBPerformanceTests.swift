@@ -8,6 +8,12 @@ import XCTest
 import FeistyDB
 
 class FeistyDBPerformanceTests: XCTestCase {
+	override class func setUp() {
+		super.setUp()
+		// Initialize FeistyDB
+		try! FeistyDB.initialize()
+	}
+
 	func testFeistyDBInsertPerformance() {
 		self.measureMetrics(XCTestCase.defaultPerformanceMetrics, automaticallyStartMeasuring: false) {
 			let db = try! Database()
