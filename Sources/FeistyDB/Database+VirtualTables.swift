@@ -186,7 +186,7 @@ extension Database {
 	/// - parameter name: The name of the virtual table module
 	/// - parameter type: The class implementing the virtual table module
 	///
-	/// - throws:  An error if the virtual table module can't be registered
+	/// - throws: An error if the virtual table module can't be registered
 	///
 	/// - seealso: [Register A Virtual Table Implementation](https://www.sqlite.org/c3ref/create_module.html)
 	/// - seealso: [The Virtual Table Mechanism Of SQLite](https://sqlite.org/vtab.html)
@@ -269,7 +269,7 @@ extension Database {
 	/// - parameter name: The name of the virtual table module
 	/// - parameter type: The class implementing the virtual table module
 	///
-	/// - throws:  An error if the virtual table module can't be registered
+	/// - throws: An error if the virtual table module can't be registered
 	///
 	/// - seealso: [Register A Virtual Table Implementation](https://www.sqlite.org/c3ref/create_module.html)
 	/// - seealso: [The Virtual Table Mechanism Of SQLite](https://sqlite.org/vtab.html)
