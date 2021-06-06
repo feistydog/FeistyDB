@@ -25,15 +25,18 @@ Add a package dependency to https://github.com/feistydog/FeistyDB in Xcode.
 1. Clone the [FeistyDB](https://github.com/feistydog/FeistyDB) repository.
 2. `swift build`.
 
-### SQLite Build Options
+### CSQLite and SQLite Build Options
 
-FeistyDB includes a custom version of the SQLite [amalgamation](https://sqlite.org/amalgamation.html) with the [carray](https://www.sqlite.org/carray.html), [decimal](https://sqlite.org/src/file/ext/misc/decimal.c), [ieee](https://sqlite.org/src/file/ext/misc/ieee754.c), [series](https://sqlite.org/src/file/ext/misc/series.c), [shathree](https://sqlite.org/src/file/ext/misc/shathree.c), and [uuid](https://sqlite.org/src/file/ext/misc/uuid.c) extensions added. The custom amalgamation is built using the [get-sqlite.sh](get-sqlite.sh) script.
+FeistyDB is built atop [CSQLite](https://github.com/sbooth/CSQLite), a Swift package of the SQLite [amalgamation](https://sqlite.org/amalgamation.html) with the [carray](https://www.sqlite.org/carray.html), [decimal](https://sqlite.org/src/file/ext/misc/decimal.c), [ieee](https://sqlite.org/src/file/ext/misc/ieee754.c), [series](https://sqlite.org/src/file/ext/misc/series.c), [shathree](https://sqlite.org/src/file/ext/misc/shathree.c), and [uuid](https://sqlite.org/src/file/ext/misc/uuid.c) extensions and Swift shims added.
 
-The build options to SQLite mostly follow the [recommendations](https://www.sqlite.org/compile.html) and are specified in [Package.swift](Package.swift).
+SQLite build options may be customized by editing [CSQLite/Package.swift](https://github.com/sbooth/CSQLite/blob/main/Package.swift).
 
 ## Quick Start
 
 ```swift
+// Initialize FeistyDB
+try FeistyDB.initialize()
+
 // Create an in-memory database
 let db = try Database()
 
@@ -53,7 +56,7 @@ try db.execute(sql: "SELECT a,b FROM t1;") { row in
 
 ### Segue to Thread Safety
 
-FeistyDB compiles SQLite with thread safety disabled for improved performance. While this increases performance, it also means a `Database` instance may only be accessed from a single thread or dispatch queue at a time.
+FeistyDB uses SQLite with thread safety disabled for improved performance. While this increases performance, it also means a `Database` instance may only be accessed from a single thread or dispatch queue at a time.
 
 Most applications should not create a `Database` directly but instead should use a thread-safe `DatabaseQueue`.
 
