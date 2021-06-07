@@ -29,7 +29,7 @@ Add a package dependency to https://github.com/feistydog/FeistyDB in Xcode.
 
 FeistyDB is built atop [CSQLite](https://github.com/sbooth/CSQLite), a Swift package of the SQLite [amalgamation](https://sqlite.org/amalgamation.html) with the [carray](https://www.sqlite.org/carray.html), [decimal](https://sqlite.org/src/file/ext/misc/decimal.c), [ieee754](https://sqlite.org/src/file/ext/misc/ieee754.c), [series](https://sqlite.org/src/file/ext/misc/series.c), [sha3](https://sqlite.org/src/file/ext/misc/shathree.c), and [uuid](https://sqlite.org/src/file/ext/misc/uuid.c) extensions added.
 
-Unfortunately there is no way using Swift Package Manager to exposure [package features](https://forums.swift.org/t/my-swiftpm-wishlist-aka-proposal-proposals/35292) or build options, in this case the SQLite [pre-update hook](https://sqlite.org/c3ref/preupdate_count.html) and the [session](https://sqlite.org/sessionintro.html) extension. For this reason SQLite build options must be customized by changing to a local CSQLite package dependency and editing [CSQLite/Package.swift](https://github.com/sbooth/CSQLite/blob/main/Package.swift).
+Unfortunately there is no way using Swift Package Manager to expose [package features](https://forums.swift.org/t/my-swiftpm-wishlist-aka-proposal-proposals/35292) or build options, in this case the SQLite [pre-update hook](https://sqlite.org/c3ref/preupdate_count.html) and the [session](https://sqlite.org/sessionintro.html) extension. For this reason SQLite build options must be customized by changing to a local CSQLite package dependency and editing [CSQLite/Package.swift](https://github.com/sbooth/CSQLite/blob/main/Package.swift).
 
 ## Quick Start
 
