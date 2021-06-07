@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015 - 2020 Feisty Dog, LLC
+// Copyright (c) 2015 - 2021 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
@@ -724,11 +724,11 @@ extension Database {
 	public var enforcesForeignKeyConstraints: Bool {
 		get {
 			var enabled: Int32 = 0
-			_ = feisty_db_sqlite3_db_config_enable_fkey(db, -1, &enabled)
+			_ = csqlite_sqlite3_db_config_enable_fkey(db, -1, &enabled)
 			return enabled != 0
 		}
 		set {
-			_ = feisty_db_sqlite3_db_config_enable_fkey(db, newValue ? 1 : 0, nil)
+			_ = csqlite_sqlite3_db_config_enable_fkey(db, newValue ? 1 : 0, nil)
 		}
 	}
 
@@ -737,11 +737,11 @@ extension Database {
 	public var triggersAreEnabled: Bool {
 		get {
 			var enabled: Int32 = 0
-			_ = feisty_db_sqlite3_db_config_enable_trigger(db, -1, &enabled)
+			_ = csqlite_sqlite3_db_config_enable_trigger(db, -1, &enabled)
 			return enabled != 0
 		}
 		set {
-			_ = feisty_db_sqlite3_db_config_enable_trigger(db, newValue ? 1 : 0, nil)
+			_ = csqlite_sqlite3_db_config_enable_trigger(db, newValue ? 1 : 0, nil)
 		}
 	}
 
@@ -750,11 +750,11 @@ extension Database {
 	public var viewsAreEnabled: Bool {
 		get {
 			var enabled: Int32 = 0
-			_ = feisty_db_sqlite3_db_config_enable_view(db, -1, &enabled)
+			_ = csqlite_sqlite3_db_config_enable_view(db, -1, &enabled)
 			return enabled != 0
 		}
 		set {
-			_ = feisty_db_sqlite3_db_config_enable_view(db, newValue ? 1 : 0, nil)
+			_ = csqlite_sqlite3_db_config_enable_view(db, newValue ? 1 : 0, nil)
 		}
 	}
 
@@ -765,11 +765,11 @@ extension Database {
 	public var extensionLoadingIsEnabled: Bool {
 		get {
 			var enabled: Int32 = 0
-			_ = feisty_db_sqlite3_db_config_enable_load_extension(db, -1, &enabled)
+			_ = csqlite_sqlite3_db_config_enable_load_extension(db, -1, &enabled)
 			return enabled != 0
 		}
 		set {
-			_ = feisty_db_sqlite3_db_config_enable_load_extension(db, newValue ? 1 : 0, nil)
+			_ = csqlite_sqlite3_db_config_enable_load_extension(db, newValue ? 1 : 0, nil)
 		}
 	}
 
@@ -777,11 +777,11 @@ extension Database {
 	public var checkpointOnCloseIsDisabled: Bool {
 		get {
 			var enabled: Int32 = 0
-			_ = feisty_db_sqlite3_db_config_no_ckpt_on_close(db, -1, &enabled)
+			_ = csqlite_sqlite3_db_config_no_ckpt_on_close(db, -1, &enabled)
 			return enabled != 0
 		}
 		set {
-			_ = feisty_db_sqlite3_db_config_no_ckpt_on_close(db, newValue ? 1 : 0, nil)
+			_ = csqlite_sqlite3_db_config_no_ckpt_on_close(db, newValue ? 1 : 0, nil)
 		}
 	}
 
@@ -790,11 +790,11 @@ extension Database {
 	public var queryPlannerStabilityGuarantee: Bool {
 		get {
 			var enabled: Int32 = 0
-			_ = feisty_db_sqlite3_db_config_enable_qpsg(db, -1, &enabled)
+			_ = csqlite_sqlite3_db_config_enable_qpsg(db, -1, &enabled)
 			return enabled != 0
 		}
 		set {
-			_ = feisty_db_sqlite3_db_config_enable_qpsg(db, newValue ? 1 : 0, nil)
+			_ = csqlite_sqlite3_db_config_enable_qpsg(db, newValue ? 1 : 0, nil)
 		}
 	}
 
@@ -804,11 +804,11 @@ extension Database {
 	public var defensive: Bool {
 		get {
 			var enabled: Int32 = 0
-			_ = feisty_db_sqlite3_db_config_defensive(db, -1, &enabled)
+			_ = csqlite_sqlite3_db_config_defensive(db, -1, &enabled)
 			return enabled != 0
 		}
 		set {
-			_ = feisty_db_sqlite3_db_config_defensive(db, newValue ? 1 : 0, nil)
+			_ = csqlite_sqlite3_db_config_defensive(db, newValue ? 1 : 0, nil)
 		}
 	}
 
@@ -817,11 +817,11 @@ extension Database {
 	public var writableSchema: Bool {
 		get {
 			var enabled: Int32 = 0
-			_ = feisty_db_sqlite3_db_config_writable_schema(db, -1, &enabled)
+			_ = csqlite_sqlite3_db_config_writable_schema(db, -1, &enabled)
 			return enabled != 0
 		}
 		set {
-			_ = feisty_db_sqlite3_db_config_writable_schema(db, newValue ? 1 : 0, nil)
+			_ = csqlite_sqlite3_db_config_writable_schema(db, newValue ? 1 : 0, nil)
 		}
 	}
 
@@ -831,11 +831,11 @@ extension Database {
 	public var legacyAlterTableBehavior: Bool {
 		get {
 			var enabled: Int32 = 0
-			_ = feisty_db_sqlite3_db_config_legacy_alter_table(db, -1, &enabled)
+			_ = csqlite_sqlite3_db_config_legacy_alter_table(db, -1, &enabled)
 			return enabled != 0
 		}
 		set {
-			_ = feisty_db_sqlite3_db_config_legacy_alter_table(db, newValue ? 1 : 0, nil)
+			_ = csqlite_sqlite3_db_config_legacy_alter_table(db, newValue ? 1 : 0, nil)
 		}
 	}
 
@@ -846,11 +846,11 @@ extension Database {
 	public var doubleQuotedStringsInDMLAreEnabled: Bool {
 		get {
 			var enabled: Int32 = 0
-			_ = feisty_db_sqlite3_db_config_dqs_dml(db, -1, &enabled)
+			_ = csqlite_sqlite3_db_config_dqs_dml(db, -1, &enabled)
 			return enabled != 0
 		}
 		set {
-			_ = feisty_db_sqlite3_db_config_dqs_dml(db, newValue ? 1 : 0, nil)
+			_ = csqlite_sqlite3_db_config_dqs_dml(db, newValue ? 1 : 0, nil)
 		}
 	}
 
@@ -861,11 +861,11 @@ extension Database {
 	public var doubleQuotedStringsInDDLAreEnabled: Bool {
 		get {
 			var enabled: Int32 = 0
-			_ = feisty_db_sqlite3_db_config_dqs_ddl(db, -1, &enabled)
+			_ = csqlite_sqlite3_db_config_dqs_ddl(db, -1, &enabled)
 			return enabled != 0
 		}
 		set {
-			_ = feisty_db_sqlite3_db_config_dqs_ddl(db, newValue ? 1 : 0, nil)
+			_ = csqlite_sqlite3_db_config_dqs_ddl(db, newValue ? 1 : 0, nil)
 		}
 	}
 
@@ -874,11 +874,11 @@ extension Database {
 	public var trustedSchema: Bool {
 		get {
 			var enabled: Int32 = 0
-			_ = feisty_db_sqlite3_db_config_trusted_schema(db, -1, &enabled)
+			_ = csqlite_sqlite3_db_config_trusted_schema(db, -1, &enabled)
 			return enabled != 0
 		}
 		set {
-			_ = feisty_db_sqlite3_db_config_trusted_schema(db, newValue ? 1 : 0, nil)
+			_ = csqlite_sqlite3_db_config_trusted_schema(db, newValue ? 1 : 0, nil)
 		}
 	}
 }
