@@ -12492,12 +12492,6 @@ struct fts5_api {
 /******** End of fts5.h *********/
 /************************** FeistyDB additions ****************************/
 
-#ifndef _CARRAY_H
-#define _CARRAY_H
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 /************** Begin file carray.h ******************************************/
 /*
 ** 2020-11-17
@@ -12550,10 +12544,5 @@ SQLITE_API int sqlite3_carray_bind(
 #endif /* ifndef _CARRAY_H */
 
 /************** End of carray.h **********************************************/
-#ifdef __cplusplus
-}  /* end of the 'extern "C"' block */
-#endif
-
-#endif /* _CARRAY_H */
 
 /************************** End of FeistyDB additions *********************/

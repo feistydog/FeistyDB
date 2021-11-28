@@ -36,22 +36,11 @@ elif [ $STATUS -eq 1 ]; then
 EOF
 
 	cat <<EOF >> "$SQLITE_DIR/sqlite3.h"
-#ifndef _CARRAY_H
-#define _CARRAY_H
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 /************** Begin file carray.h ******************************************/
 EOF
 	cat "$SQLITE_DIR/ext/misc/carray.h" >> "$SQLITE_DIR/sqlite3.h"
 	cat <<EOF >> "$SQLITE_DIR/sqlite3.h"
 /************** End of carray.h **********************************************/
-#ifdef __cplusplus
-}  /* end of the 'extern "C"' block */
-#endif
-
-#endif /* _CARRAY_H */
 
 /************************** End of FeistyDB additions *********************/
 EOF
