@@ -65,7 +65,7 @@ public struct Row {
 	/// - note: Column indexes are 0-based.  The leftmost column in a result row has index 0.
 	///
 	/// - requires: `index >= 0`
-	/// - requires: `index < self.columnCount`
+	/// - requires: `index < columnCount`
 	///
 	/// - parameter index: The index of the desired column
 	///
