@@ -175,7 +175,7 @@ extension Database.RowChangeType {
 		case SQLITE_INSERT: 	self = .insert
 		case SQLITE_DELETE: 	self = .delete
 		case SQLITE_UPDATE: 	self = .update
-		default:				preconditionFailure("Unexpected row change type")
+		default:				fatalError("Unexpected row change type \(op)")
 		}
 	}
 }
@@ -393,7 +393,7 @@ extension Database.PreUpdateChange.ChangeType {
 		case SQLITE_INSERT: 	self = .insert(iKey2)
 		case SQLITE_DELETE: 	self = .delete(iKey1)
 		case SQLITE_UPDATE: 	self = .update(iKey1, iKey2)
-		default:				preconditionFailure("Unexpected row change type")
+		default:				fatalError("Unexpected row change type \(op)")
 		}
 	}
 }

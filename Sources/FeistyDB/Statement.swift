@@ -133,11 +133,11 @@ public final class Statement {
 	/// - note: Column indexes are 0-based.  The leftmost column in a result row has index 0.
 	///
 	/// - requires: `index >= 0`
-	/// - requires: `index < self.columnCount`
+	/// - requires: `index < columnCount`
 	///
 	/// - parameter index: The index of the desired column
 	///
-	/// - throws: An error if `index` is out of bounds
+	/// - throws: An error if `index` is out of bounds or an out-of-memory error occurs
 	///	
 	/// - returns: The name of the column for the specified index
 	public func name(ofColumn index: Int) throws -> String {

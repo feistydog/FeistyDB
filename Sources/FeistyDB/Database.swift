@@ -190,6 +190,31 @@ public final class Database {
 }
 
 extension Database {
+	/// Returns the result or error code associated with the most recent `sqlite3_` API call
+	var errorCode: Int32 {
+		sqlite3_errcode(self.db)
+	}
+
+	/// Returns the result or extended error code associated with the most recent `sqlite3_` API call
+	var extendedErrorCode: Int32 {
+		sqlite3_extended_errcode(self.db)
+	}
+
+	/// Returns the result or error message associated with the most recent `sqlite3_` API call
+	var errorMessage: String {
+		String(cString: sqlite3_errmsg(self.db))
+	}
+}
+
+extension Database {
+	/// Returns `true` if the last `sqlite3_` API call succeeded
+	var success: Bool {
+		let result = errorCode
+		return result == SQLITE_OK || result == SQLITE_ROW || result == SQLITE_DONE
+	}
+}
+
+extension Database {
 	/// Returns a compiled SQL statement.
 	///
 	/// - parameter sql: The SQL statement to compile

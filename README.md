@@ -62,19 +62,19 @@ Most applications should not create a `Database` directly but instead should use
 
 ```swift
 // Create a queue serializing access to an in-memory database
-let dbQ = try DatabaseQueue("myapp.dbQ")
+let dbQueue = try DatabaseQueue("myapp.database-isolation-queue")
 ```
 
 This creates a queue which may be used from multiple threads or dispatch queues safely.  The queue serializes access to the database ensuring only a single operation occurs at a time. Database operations may be performed synchronously or asynchronously.
 
 ```swift
 // Perform a synchronous database access
-try dbQ.sync { db in
+try dbQueue.sync { db in
     // Do something with `db`
 }
 
 // Perform an asynchronous database access
-dbQ.async { db in
+dbQueue.async { db in
     do {
         // Do something with `db`
     } 
@@ -189,7 +189,7 @@ try db.transaction { db in
 Database transactions may also be performed asynchronously using `DatabaseQueue`.
 
 ```swift
-dbQ.asyncTransaction { db in
+dbQueue.asyncTransaction { db in
     // Do something with `db`
     return .commit
 }
