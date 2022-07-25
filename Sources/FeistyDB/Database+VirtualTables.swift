@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Feisty Dog, LLC
+// Copyright (c) 2020 - 2021 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
