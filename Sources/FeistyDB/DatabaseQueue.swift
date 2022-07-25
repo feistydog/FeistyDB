@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015 - 2020 Feisty Dog, LLC
+// Copyright (c) 2015 - 2022 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
@@ -169,5 +169,20 @@ public final class DatabaseQueue {
 				os_log("Error performing database savepoint: %{public}@", type: .info, error.localizedDescription)
 			}
 		}
+	}
+
+	/// Performs an unsafe database operation.
+	///
+	/// - warning: To ensure thread safety all access to `database` within `block` **must** use `queue`.
+	/// - attention: Use of this function should be avoided whenever possible.
+	///
+	/// - parameter block: A closure performing the database operation.
+	/// - parameter database: The `Database` object.
+	///
+	/// - throws: Any error thrown in `block`.
+	///
+	/// - returns: The value returned by `block`.
+	public func withUnsafeDatabase<T>(block: (_ database: Database) throws -> (T)) rethrows -> T {
+		try block(database)
 	}
 }
