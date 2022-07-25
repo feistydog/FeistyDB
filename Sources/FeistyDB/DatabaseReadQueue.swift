@@ -1,9 +1,10 @@
 //
-// Copyright (c) 2018 - 2020 Feisty Dog, LLC
+// Copyright (c) 2018 - 2022 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
 
+import os.log
 import Foundation
 import CSQLite
 
@@ -109,6 +110,34 @@ public final class DatabaseReadQueue {
 			block(self.database)
 		}
 	}
+
+	/// Performs a synchronous read transaction on the database.
+	///
+	/// - parameter block: A closure performing the database operation.
+	///
+	/// - throws: Any error thrown in `block` or an error if the transaction could not be started or rolled back.
+	///
+	/// - note: If `block` throws an error the transaction will be rolled back and the error will be re-thrown.
+	public func readTransaction(_ block: (_ database: Database) throws -> (Void)) throws {
+		try queue.sync {
+			try database.readTransaction(block)
+		}
+	}
+
+	/// Submits an asynchronous read transaction to the database queue.
+	///
+	/// - parameter group: An optional `DispatchGroup` with which to associate `block`
+	/// - parameter qos: The quality of service for `block`
+	/// - parameter block: A closure performing the database operation
+	public func asyncReadTransaction(group: DispatchGroup? = nil, qos: DispatchQoS = .default, _ block: @escaping (_ database: Database) -> (Void)) {
+		queue.async(group: group, qos: qos) {
+			do {
+				try self.database.readTransaction(block)
+			} catch let error {
+				os_log("Error performing database transaction: %{public}@", type: .info, error.localizedDescription)
+			}
+		}
+	}
 }
 
 extension DatabaseReadQueue {
@@ -169,5 +198,26 @@ extension Database {
 			try rollback()
 		}
 		try beginReadTransaction()
+	}
+
+
+	/// Performs a read transaction on the database.
+	///
+	/// - parameter block: A closure performing the database operation.
+	///
+	/// - throws: Any error thrown in `block` or an error if the transaction could not be started or rolled back.
+	///
+	/// - note: If `block` throws an error the transaction will be rolled back and the error will be re-thrown.
+	public func readTransaction(_ block: (_ database: Database) throws -> (Void)) throws {
+		try begin(type: .deferred)
+		do {
+			try block(self)
+			try rollback()
+		} catch let error {
+			if !isInAutocommitMode {
+				try rollback()
+			}
+			throw error
+		}
 	}
 }
