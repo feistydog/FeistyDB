@@ -4,7 +4,6 @@
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
 
-import os.log
 import Foundation
 import CSQLite
 
@@ -28,7 +27,7 @@ import CSQLite
 /// A database queue also supports transactions and savepoints:
 ///
 /// ```swift
-/// dbQueue.transaction { db in
+/// let result = dbQueue.transaction { db in
 ///     // All database operations here are contained within a transaction
 ///     return .commit
 /// }
@@ -91,15 +90,26 @@ public final class DatabaseQueue {
 		}
 	}
 
+	/// A block called with the result of an asynchronous database operation.
+	///
+	/// - parameter result: A `Result` object containing the result of the operation.
+	public typealias CompletionHandler<T> = (_ result: Result<T, Swift.Error>) -> Void
+
 	/// Submits an asynchronous operation to the database queue.
 	///
 	/// - parameter group: An optional `DispatchGroup` with which to associate `block`
 	/// - parameter qos: The quality of service for `block`
 	/// - parameter block: A closure performing the database operation
 	/// - parameter database: A `Database` used for database access within `block`
-	public func async(group: DispatchGroup? = nil, qos: DispatchQoS = .default, block: @escaping (_ database: Database) -> (Void)) {
+	/// - parameter completion: A closure called with the result of the operation.
+	public func async(group: DispatchGroup? = nil, qos: DispatchQoS = .default, block: @escaping (_ database: Database) throws -> Void, completion: @escaping CompletionHandler<Void>) {
 		queue.async(group: group, qos: qos) {
-			block(self.database)
+			do {
+				try block(self.database)
+				completion(.success(()))
+			} catch let error {
+				completion(.failure(error))
+			}
 		}
 	}
 
@@ -107,13 +117,16 @@ public final class DatabaseQueue {
 	///
 	/// - parameter type: The type of transaction to perform
 	/// - parameter block: A closure performing the database operation
+	/// - parameter completion: A closure called with the result of the operation.
 	///
 	/// - throws: Any error thrown in `block` or an error if the transaction could not be started, rolled back, or committed
 	///
+	/// - returns: The result of the transaction.
+	///
 	/// - note: If `block` throws an error the transaction will be rolled back and the error will be re-thrown
 	/// - note: If an error occurs committing the transaction a rollback will be attempted and the error will be re-thrown
-	public func transaction(type: Database.TransactionType = .deferred, _ block: Database.TransactionBlock) throws {
-		try queue.sync {
+	public func transaction(type: Database.TransactionType = .deferred, _ block: Database.TransactionBlock) throws -> Database.TransactionCompletion {
+		return try queue.sync {
 			try database.transaction(type: type, block)
 		}
 	}
@@ -124,16 +137,14 @@ public final class DatabaseQueue {
 	/// - parameter group: An optional `DispatchGroup` with which to associate `block`
 	/// - parameter qos: The quality of service for `block`
 	/// - parameter block: A closure performing the database operation
-	public func asyncTransaction(type: Database.TransactionType = .deferred, group: DispatchGroup? = nil, qos: DispatchQoS = .default, _ block: @escaping Database.TransactionBlock) {
+	/// - parameter completion: A closure called with the result of the transaction.
+	public func asyncTransaction(type: Database.TransactionType = .deferred, group: DispatchGroup? = nil, qos: DispatchQoS = .default, _ block: @escaping Database.TransactionBlock, completion: @escaping CompletionHandler<Database.TransactionCompletion>) {
 		queue.async(group: group, qos: qos) {
 			do {
-				try self.database.transaction(type: type, block)
-			}
-			catch let error as Error {
-				os_log("Error performing database transaction: %{public}@", type: .info, String(describing: error))
-			}
-			catch let error {
-				os_log("Error performing database transaction: %{public}@", type: .info, error.localizedDescription)
+				let result = try self.database.transaction(type: type, block)
+				completion(.success(result))
+			} catch let error {
+				completion(.failure(error))
 			}
 		}
 	}
@@ -144,10 +155,12 @@ public final class DatabaseQueue {
 	///
 	/// - throws: Any error thrown in `block` or an error if the savepoint could not be started, rolled back, or released
 	///
+	/// - returns: The result of the savepoint transaction.
+	///
 	/// - note: If `block` throws an error the savepoint will be rolled back and the error will be re-thrown
 	/// - note: If an error occurs releasing the savepoint a rollback will be attempted and the error will be re-thrown
-	public func savepoint(block: Database.SavepointBlock) throws {
-		try queue.sync {
+	public func savepoint(block: Database.SavepointBlock) throws -> Database.SavepointCompletion {
+		return try queue.sync {
 			try database.savepoint(block: block)
 		}
 	}
@@ -157,16 +170,14 @@ public final class DatabaseQueue {
 	/// - parameter group: An optional `DispatchGroup` with which to associate `block`
 	/// - parameter qos: The quality of service for `block`
 	/// - parameter block: A closure performing the database operation
-	public func asyncSavepoint(group: DispatchGroup? = nil, qos: DispatchQoS = .default, block: @escaping Database.SavepointBlock) {
+	/// - parameter completion: A closure called with the result of the savepoint.
+	public func asyncSavepoint(group: DispatchGroup? = nil, qos: DispatchQoS = .default, block: @escaping Database.SavepointBlock, completion: @escaping CompletionHandler<Database.SavepointCompletion>) {
 		queue.async(group: group, qos: qos) {
 			do {
-				try self.database.savepoint(block: block)
-			}
-			catch let error as Error {
-				os_log("Error performing database savepoint: %{public}@", type: .info, String(describing: error))
-			}
-			catch let error {
-				os_log("Error performing database savepoint: %{public}@", type: .info, error.localizedDescription)
+				let result = try self.database.savepoint(block: block)
+				completion(.success(result))
+			} catch let error {
+				completion(.failure(error))
 			}
 		}
 	}

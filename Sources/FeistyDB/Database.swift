@@ -413,17 +413,21 @@ extension Database {
 	///
 	/// - throws: Any error thrown in `block` or an error if the transaction could not be started, rolled back, or committed
 	///
+	/// - returns: The result of the transaction.
+	///
 	/// - note: If `block` throws an error the transaction will be rolled back and the error will be re-thrown
 	/// - note: If an error occurs committing the transaction a rollback will be attempted and the error will be re-thrown
-	public func transaction(type: Database.TransactionType = .deferred, _ block: TransactionBlock) throws {
+	public func transaction(type: Database.TransactionType = .deferred, _ block: TransactionBlock) throws -> TransactionCompletion {
 		try begin(type: type)
 		do {
 			let action = try block(self)
 			switch action {
 			case .commit:
 				try commit()
+				return .commit
 			case .rollback:
 				try rollback()
+				return .rollback
 			}
 		}
 		catch let error {
@@ -496,9 +500,11 @@ extension Database {
 	///
 	/// - throws: Any error thrown in `block` or an error if the savepoint could not be started, rolled back, or released
 	///
+	/// - returns: The result of the savepoint transaction.
+	///
 	/// - note: If `block` throws an error the savepoint will be rolled back and the error will be re-thrown
 	/// - note: If an error occurs releasing the savepoint a rollback will be attempted and the error will be re-thrown
-	public func savepoint(block: SavepointBlock) throws {
+	public func savepoint(block: SavepointBlock) throws -> SavepointCompletion {
 		let savepointUUID = UUID().uuidString
 		try begin(savepoint: savepointUUID)
 		do {
@@ -506,8 +512,10 @@ extension Database {
 			switch action {
 			case .release:
 				try release(savepoint: savepointUUID)
+				return .release
 			case .rollback:
 				try rollback(to: savepointUUID)
+				return .rollback
 			}
 		}
 		catch let error {
