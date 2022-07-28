@@ -75,12 +75,9 @@ try dbQueue.sync { db in
 
 // Perform an asynchronous database access
 dbQueue.async { db in
-    do {
-        // Do something with `db`
-    } 
-    catch let error {
-        // Handle any errors that occurred
-    }
+    // Do something with `db`
+} completion: { result in
+    // Handle any errors that occurred
 }
 ```
 
@@ -180,10 +177,11 @@ try db.execute(sql: "SELECT * FROM t1;") { row in
 ### Perform a Transaction
 
 ```swift
-try db.transaction { db in
+let result = try db.transaction { db in
     // Do something with `db`
     return .commit
 }
+// Result is either `.commit`. or `.rollback`
 ```
 
 Database transactions may also be performed asynchronously using `DatabaseQueue`.
@@ -192,6 +190,8 @@ Database transactions may also be performed asynchronously using `DatabaseQueue`
 dbQueue.asyncTransaction { db in
     // Do something with `db`
     return .commit
+} completion: { result in
+    // Handle any errors that occurred
 }
 ```
 
