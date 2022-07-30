@@ -125,7 +125,7 @@ public final class DatabaseQueue {
 	///
 	/// - note: If `block` throws an error the transaction will be rolled back and the error will be re-thrown
 	/// - note: If an error occurs committing the transaction a rollback will be attempted and the error will be re-thrown
-	public func transaction(type: Database.TransactionType = .deferred, _ block: Database.TransactionBlock) throws -> Database.TransactionCompletion {
+	@discardableResult public func transaction(type: Database.TransactionType = .deferred, _ block: Database.TransactionBlock) throws -> Database.TransactionCompletion {
 		return try queue.sync {
 			try database.transaction(type: type, block)
 		}
@@ -159,7 +159,7 @@ public final class DatabaseQueue {
 	///
 	/// - note: If `block` throws an error the savepoint will be rolled back and the error will be re-thrown
 	/// - note: If an error occurs releasing the savepoint a rollback will be attempted and the error will be re-thrown
-	public func savepoint(block: Database.SavepointBlock) throws -> Database.SavepointCompletion {
+	@discardableResult public func savepoint(block: Database.SavepointBlock) throws -> Database.SavepointCompletion {
 		return try queue.sync {
 			try database.savepoint(block: block)
 		}
