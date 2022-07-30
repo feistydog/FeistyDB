@@ -168,10 +168,14 @@ public final class Database {
 	///
 	/// - returns: The URL for the file associated with database `name`
 	public func url(forDatabase name: String = "main") throws -> URL {
-		guard let path = sqlite3_db_filename(self.db, name) else {
-			throw DatabaseError("The database \(name) does not exist or is a temporary or in-memory database")
+		guard let path = sqlite3_db_filename(db, name) else {
+			throw DatabaseError("The database \"\(name)\" does not exist")
 		}
-		return URL(fileURLWithPath: String(cString: path))
+		let pathString = String(cString: path)
+		guard !pathString.isEmpty else {
+			throw DatabaseError("The database \"\(name)\" is a temporary or in-memory database")
+		}
+		return URL(fileURLWithPath: pathString)
 	}
 
 	/// Performs a low-level SQLite database operation.
