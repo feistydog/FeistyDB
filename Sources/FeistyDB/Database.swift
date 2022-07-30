@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015 - 2020 Feisty Dog, LLC
+// Copyright (c) 2015 - 2021 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
@@ -168,10 +168,14 @@ public final class Database {
 	///
 	/// - returns: The URL for the file associated with database `name`
 	public func url(forDatabase name: String = "main") throws -> URL {
-		guard let path = sqlite3_db_filename(self.db, name) else {
-			throw DatabaseError("The database \(name) does not exist or is a temporary or in-memory database")
+		guard let path = sqlite3_db_filename(db, name) else {
+			throw DatabaseError("The database \"\(name)\" does not exist")
 		}
-		return URL(fileURLWithPath: String(cString: path))
+		let pathString = String(cString: path)
+		guard !pathString.isEmpty else {
+			throw DatabaseError("The database \"\(name)\" is a temporary or in-memory database")
+		}
+		return URL(fileURLWithPath: pathString)
 	}
 
 	/// Performs a low-level SQLite database operation.
@@ -413,17 +417,21 @@ extension Database {
 	///
 	/// - throws: Any error thrown in `block` or an error if the transaction could not be started, rolled back, or committed
 	///
+	/// - returns: The result of the transaction.
+	///
 	/// - note: If `block` throws an error the transaction will be rolled back and the error will be re-thrown
 	/// - note: If an error occurs committing the transaction a rollback will be attempted and the error will be re-thrown
-	public func transaction(type: Database.TransactionType = .deferred, _ block: TransactionBlock) throws {
+	@discardableResult public func transaction(type: Database.TransactionType = .deferred, _ block: TransactionBlock) throws -> TransactionCompletion {
 		try begin(type: type)
 		do {
 			let action = try block(self)
 			switch action {
 			case .commit:
 				try commit()
+				return .commit
 			case .rollback:
 				try rollback()
+				return .rollback
 			}
 		}
 		catch let error {
@@ -496,9 +504,11 @@ extension Database {
 	///
 	/// - throws: Any error thrown in `block` or an error if the savepoint could not be started, rolled back, or released
 	///
+	/// - returns: The result of the savepoint transaction.
+	///
 	/// - note: If `block` throws an error the savepoint will be rolled back and the error will be re-thrown
 	/// - note: If an error occurs releasing the savepoint a rollback will be attempted and the error will be re-thrown
-	public func savepoint(block: SavepointBlock) throws {
+	@discardableResult public func savepoint(block: SavepointBlock) throws -> SavepointCompletion {
 		let savepointUUID = UUID().uuidString
 		try begin(savepoint: savepointUUID)
 		do {
@@ -506,8 +516,10 @@ extension Database {
 			switch action {
 			case .release:
 				try release(savepoint: savepointUUID)
+				return .release
 			case .rollback:
 				try rollback(to: savepointUUID)
+				return .rollback
 			}
 		}
 		catch let error {
@@ -749,11 +761,11 @@ extension Database {
 	public var enforcesForeignKeyConstraints: Bool {
 		get {
 			var enabled: Int32 = 0
-			_ = feisty_db_sqlite3_db_config_enable_fkey(db, -1, &enabled)
+			_ = csqlite_sqlite3_db_config_enable_fkey(db, -1, &enabled)
 			return enabled != 0
 		}
 		set {
-			_ = feisty_db_sqlite3_db_config_enable_fkey(db, newValue ? 1 : 0, nil)
+			_ = csqlite_sqlite3_db_config_enable_fkey(db, newValue ? 1 : 0, nil)
 		}
 	}
 
@@ -762,11 +774,11 @@ extension Database {
 	public var triggersAreEnabled: Bool {
 		get {
 			var enabled: Int32 = 0
-			_ = feisty_db_sqlite3_db_config_enable_trigger(db, -1, &enabled)
+			_ = csqlite_sqlite3_db_config_enable_trigger(db, -1, &enabled)
 			return enabled != 0
 		}
 		set {
-			_ = feisty_db_sqlite3_db_config_enable_trigger(db, newValue ? 1 : 0, nil)
+			_ = csqlite_sqlite3_db_config_enable_trigger(db, newValue ? 1 : 0, nil)
 		}
 	}
 
@@ -775,11 +787,11 @@ extension Database {
 	public var viewsAreEnabled: Bool {
 		get {
 			var enabled: Int32 = 0
-			_ = feisty_db_sqlite3_db_config_enable_view(db, -1, &enabled)
+			_ = csqlite_sqlite3_db_config_enable_view(db, -1, &enabled)
 			return enabled != 0
 		}
 		set {
-			_ = feisty_db_sqlite3_db_config_enable_view(db, newValue ? 1 : 0, nil)
+			_ = csqlite_sqlite3_db_config_enable_view(db, newValue ? 1 : 0, nil)
 		}
 	}
 
@@ -790,11 +802,11 @@ extension Database {
 	public var extensionLoadingIsEnabled: Bool {
 		get {
 			var enabled: Int32 = 0
-			_ = feisty_db_sqlite3_db_config_enable_load_extension(db, -1, &enabled)
+			_ = csqlite_sqlite3_db_config_enable_load_extension(db, -1, &enabled)
 			return enabled != 0
 		}
 		set {
-			_ = feisty_db_sqlite3_db_config_enable_load_extension(db, newValue ? 1 : 0, nil)
+			_ = csqlite_sqlite3_db_config_enable_load_extension(db, newValue ? 1 : 0, nil)
 		}
 	}
 
@@ -802,11 +814,11 @@ extension Database {
 	public var checkpointOnCloseIsDisabled: Bool {
 		get {
 			var enabled: Int32 = 0
-			_ = feisty_db_sqlite3_db_config_no_ckpt_on_close(db, -1, &enabled)
+			_ = csqlite_sqlite3_db_config_no_ckpt_on_close(db, -1, &enabled)
 			return enabled != 0
 		}
 		set {
-			_ = feisty_db_sqlite3_db_config_no_ckpt_on_close(db, newValue ? 1 : 0, nil)
+			_ = csqlite_sqlite3_db_config_no_ckpt_on_close(db, newValue ? 1 : 0, nil)
 		}
 	}
 
@@ -815,11 +827,11 @@ extension Database {
 	public var queryPlannerStabilityGuarantee: Bool {
 		get {
 			var enabled: Int32 = 0
-			_ = feisty_db_sqlite3_db_config_enable_qpsg(db, -1, &enabled)
+			_ = csqlite_sqlite3_db_config_enable_qpsg(db, -1, &enabled)
 			return enabled != 0
 		}
 		set {
-			_ = feisty_db_sqlite3_db_config_enable_qpsg(db, newValue ? 1 : 0, nil)
+			_ = csqlite_sqlite3_db_config_enable_qpsg(db, newValue ? 1 : 0, nil)
 		}
 	}
 
@@ -829,11 +841,11 @@ extension Database {
 	public var defensive: Bool {
 		get {
 			var enabled: Int32 = 0
-			_ = feisty_db_sqlite3_db_config_defensive(db, -1, &enabled)
+			_ = csqlite_sqlite3_db_config_defensive(db, -1, &enabled)
 			return enabled != 0
 		}
 		set {
-			_ = feisty_db_sqlite3_db_config_defensive(db, newValue ? 1 : 0, nil)
+			_ = csqlite_sqlite3_db_config_defensive(db, newValue ? 1 : 0, nil)
 		}
 	}
 
@@ -842,11 +854,11 @@ extension Database {
 	public var writableSchema: Bool {
 		get {
 			var enabled: Int32 = 0
-			_ = feisty_db_sqlite3_db_config_writable_schema(db, -1, &enabled)
+			_ = csqlite_sqlite3_db_config_writable_schema(db, -1, &enabled)
 			return enabled != 0
 		}
 		set {
-			_ = feisty_db_sqlite3_db_config_writable_schema(db, newValue ? 1 : 0, nil)
+			_ = csqlite_sqlite3_db_config_writable_schema(db, newValue ? 1 : 0, nil)
 		}
 	}
 
@@ -856,11 +868,11 @@ extension Database {
 	public var legacyAlterTableBehavior: Bool {
 		get {
 			var enabled: Int32 = 0
-			_ = feisty_db_sqlite3_db_config_legacy_alter_table(db, -1, &enabled)
+			_ = csqlite_sqlite3_db_config_legacy_alter_table(db, -1, &enabled)
 			return enabled != 0
 		}
 		set {
-			_ = feisty_db_sqlite3_db_config_legacy_alter_table(db, newValue ? 1 : 0, nil)
+			_ = csqlite_sqlite3_db_config_legacy_alter_table(db, newValue ? 1 : 0, nil)
 		}
 	}
 
@@ -871,11 +883,11 @@ extension Database {
 	public var doubleQuotedStringsInDMLAreEnabled: Bool {
 		get {
 			var enabled: Int32 = 0
-			_ = feisty_db_sqlite3_db_config_dqs_dml(db, -1, &enabled)
+			_ = csqlite_sqlite3_db_config_dqs_dml(db, -1, &enabled)
 			return enabled != 0
 		}
 		set {
-			_ = feisty_db_sqlite3_db_config_dqs_dml(db, newValue ? 1 : 0, nil)
+			_ = csqlite_sqlite3_db_config_dqs_dml(db, newValue ? 1 : 0, nil)
 		}
 	}
 
@@ -886,11 +898,11 @@ extension Database {
 	public var doubleQuotedStringsInDDLAreEnabled: Bool {
 		get {
 			var enabled: Int32 = 0
-			_ = feisty_db_sqlite3_db_config_dqs_ddl(db, -1, &enabled)
+			_ = csqlite_sqlite3_db_config_dqs_ddl(db, -1, &enabled)
 			return enabled != 0
 		}
 		set {
-			_ = feisty_db_sqlite3_db_config_dqs_ddl(db, newValue ? 1 : 0, nil)
+			_ = csqlite_sqlite3_db_config_dqs_ddl(db, newValue ? 1 : 0, nil)
 		}
 	}
 
@@ -899,11 +911,11 @@ extension Database {
 	public var trustedSchema: Bool {
 		get {
 			var enabled: Int32 = 0
-			_ = feisty_db_sqlite3_db_config_trusted_schema(db, -1, &enabled)
+			_ = csqlite_sqlite3_db_config_trusted_schema(db, -1, &enabled)
 			return enabled != 0
 		}
 		set {
-			_ = feisty_db_sqlite3_db_config_trusted_schema(db, newValue ? 1 : 0, nil)
+			_ = csqlite_sqlite3_db_config_trusted_schema(db, newValue ? 1 : 0, nil)
 		}
 	}
 }

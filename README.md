@@ -25,15 +25,18 @@ Add a package dependency to https://github.com/feistydog/FeistyDB in Xcode.
 1. Clone the [FeistyDB](https://github.com/feistydog/FeistyDB) repository.
 2. `swift build`.
 
-### SQLite Build Options
+### CSQLite and SQLite Build Options
 
-FeistyDB includes a custom version of the SQLite [amalgamation](https://sqlite.org/amalgamation.html) with the [carray](https://www.sqlite.org/carray.html), [decimal](https://sqlite.org/src/file/ext/misc/decimal.c), [ieee](https://sqlite.org/src/file/ext/misc/ieee754.c), [series](https://sqlite.org/src/file/ext/misc/series.c), [shathree](https://sqlite.org/src/file/ext/misc/shathree.c), and [uuid](https://sqlite.org/src/file/ext/misc/uuid.c) extensions added. The custom amalgamation is built using the [get-sqlite.sh](get-sqlite.sh) script.
+FeistyDB is built atop [CSQLite](https://github.com/sbooth/CSQLite), a Swift package of the SQLite [amalgamation](https://sqlite.org/amalgamation.html) with the [carray](https://www.sqlite.org/carray.html), [decimal](https://sqlite.org/src/file/ext/misc/decimal.c), [ieee754](https://sqlite.org/src/file/ext/misc/ieee754.c), [series](https://sqlite.org/src/file/ext/misc/series.c), [sha3](https://sqlite.org/src/file/ext/misc/shathree.c), and [uuid](https://sqlite.org/src/file/ext/misc/uuid.c) extensions added.
 
-The build options to SQLite mostly follow the [recommendations](https://www.sqlite.org/compile.html) and are specified in [Package.swift](Package.swift).
+Unfortunately there is no way using Swift Package Manager to expose [package features](https://forums.swift.org/t/my-swiftpm-wishlist-aka-proposal-proposals/35292) or build options, in this case the SQLite [pre-update hook](https://sqlite.org/c3ref/preupdate_count.html) and the [session](https://sqlite.org/sessionintro.html) extension. For this reason SQLite build options must be customized by changing to a local CSQLite package dependency and editing [CSQLite/Package.swift](https://github.com/sbooth/CSQLite/blob/main/Package.swift).
 
 ## Quick Start
 
 ```swift
+// Initialize FeistyDB
+try FeistyDB.initialize()
+
 // Create an in-memory database
 let db = try Database()
 
@@ -53,7 +56,7 @@ try db.execute(sql: "SELECT a,b FROM t1;") { row in
 
 ### Segue to Thread Safety
 
-FeistyDB compiles SQLite with thread safety disabled for improved performance. While this increases performance, it also means a `Database` instance may only be accessed from a single thread or dispatch queue at a time.
+FeistyDB uses SQLite with thread safety disabled for improved performance. While this increases performance, it also means a `Database` instance may only be accessed from a single thread or dispatch queue at a time.
 
 Most applications should not create a `Database` directly but instead should use a thread-safe `DatabaseQueue`.
 
@@ -72,12 +75,9 @@ try dbQueue.sync { db in
 
 // Perform an asynchronous database access
 dbQueue.async { db in
-    do {
-        // Do something with `db`
-    } 
-    catch let error {
-        // Handle any errors that occurred
-    }
+    // Do something with `db`
+} completion: { result in
+    // Handle any errors that occurred
 }
 ```
 
@@ -177,10 +177,11 @@ try db.execute(sql: "SELECT * FROM t1;") { row in
 ### Perform a Transaction
 
 ```swift
-try db.transaction { db in
+let result = try db.transaction { db in
     // Do something with `db`
     return .commit
 }
+// Result is either `.commit`. or `.rollback`
 ```
 
 Database transactions may also be performed asynchronously using `DatabaseQueue`.
@@ -189,6 +190,8 @@ Database transactions may also be performed asynchronously using `DatabaseQueue`
 dbQueue.asyncTransaction { db in
     // Do something with `db`
     return .commit
+} completion: { result in
+    // Handle any errors that occurred
 }
 ```
 

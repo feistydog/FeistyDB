@@ -4,7 +4,6 @@
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
 
-import os.log
 import Foundation
 import CSQLite
 
@@ -99,15 +98,26 @@ public final class DatabaseReadQueue {
 		}
 	}
 
+	/// A block called with the result of an asynchronous database operation.
+	///
+	/// - parameter result: A `Result` object containing the result of the operation.
+	public typealias CompletionHandler = (_ result: Result<Void, Swift.Error>) -> Void
+
 	/// Submits an asynchronous read operation to the database queue.
 	///
 	/// - parameter group: An optional `DispatchGroup` with which to associate `block`
 	/// - parameter qos: The quality of service for `block`
 	/// - parameter block: A closure performing the database operation
 	/// - parameter database: A `Database` used for database access within `block`
-	public func async(group: DispatchGroup? = nil, qos: DispatchQoS = .unspecified, block: @escaping (_ database: Database) -> (Void)) {
+	/// - parameter completion: A closure called with the result of the operation.
+	public func async(group: DispatchGroup? = nil, qos: DispatchQoS = .unspecified, block: @escaping (_ database: Database) throws -> Void, completion: @escaping CompletionHandler) {
 		queue.async(group: group, qos: qos) {
-			block(self.database)
+			do {
+				try block(self.database)
+				completion(.success(()))
+			} catch let error {
+				completion(.failure(error))
+			}
 		}
 	}
 
@@ -118,7 +128,7 @@ public final class DatabaseReadQueue {
 	/// - throws: Any error thrown in `block` or an error if the transaction could not be started or rolled back.
 	///
 	/// - note: If `block` throws an error the transaction will be rolled back and the error will be re-thrown.
-	public func readTransaction(_ block: (_ database: Database) throws -> (Void)) throws {
+	public func readTransaction(_ block: (_ database: Database) throws -> Void) throws {
 		try queue.sync {
 			try database.readTransaction(block)
 		}
@@ -129,12 +139,14 @@ public final class DatabaseReadQueue {
 	/// - parameter group: An optional `DispatchGroup` with which to associate `block`
 	/// - parameter qos: The quality of service for `block`
 	/// - parameter block: A closure performing the database operation
-	public func asyncReadTransaction(group: DispatchGroup? = nil, qos: DispatchQoS = .default, _ block: @escaping (_ database: Database) -> (Void)) {
+	/// - parameter completion: A closure called with the result of the read transaction.
+	public func asyncReadTransaction(group: DispatchGroup? = nil, qos: DispatchQoS = .default, _ block: @escaping (_ database: Database) -> Void, completion: @escaping CompletionHandler) {
 		queue.async(group: group, qos: qos) {
 			do {
 				try self.database.readTransaction(block)
+				completion(.success(()))
 			} catch let error {
-				os_log("Error performing database transaction: %{public}@", type: .info, error.localizedDescription)
+				completion(.failure(error))
 			}
 		}
 	}
@@ -208,7 +220,7 @@ extension Database {
 	/// - throws: Any error thrown in `block` or an error if the transaction could not be started or rolled back.
 	///
 	/// - note: If `block` throws an error the transaction will be rolled back and the error will be re-thrown.
-	public func readTransaction(_ block: (_ database: Database) throws -> (Void)) throws {
+	public func readTransaction(_ block: (_ database: Database) throws -> Void) throws {
 		try begin(type: .deferred)
 		do {
 			try block(self)

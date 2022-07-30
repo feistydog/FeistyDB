@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015 - 2020 Feisty Dog, LLC
+// Copyright (c) 2015 - 2021 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
@@ -137,13 +137,11 @@ class FeistyDBTests: XCTestCase {
 		return fileURL
 	}
 
-    override func setUp() {
-        super.setUp()
-    }
-    
-    override func tearDown() {
-        super.tearDown()
-    }
+	override class func setUp() {
+		super.setUp()
+		// Initialize FeistyDB
+		try! FeistyDB.initialize()
+	}
 
 	func testSQLiteKeywords() {
 		XCTAssertTrue(SQLite.isKeyword("BEGIN"))

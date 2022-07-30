@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015 - 2020 Feisty Dog, LLC
+// Copyright (c) 2015 - 2021 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
@@ -181,7 +181,7 @@ extension Database {
 	/// - parameter flags: Flags affecting the function's use by SQLite
 	/// - parameter aggregateFunction: An object defining the aggregate function
 	///
-	/// - throws:  An error if the SQL aggregate function can't be added
+	/// - throws: An error if the SQL aggregate function can't be added
 	///
 	/// - seealso: [Create Or Redefine SQL Functions](https://sqlite.org/c3ref/create_function.html)
 	public func addAggregateFunction(_ name: String, arity: Int = -1, flags: SQLFunctionFlags = [.deterministic, .directOnly], _ function: SQLAggregateFunction) throws {
@@ -271,7 +271,7 @@ extension Database {
 	/// - parameter flags: Flags affecting the function's use by SQLite
 	/// - parameter aggregateWindowFunction: An object defining the aggregate window function
 	///
-	/// - throws:  An error if the SQL aggregate window function can't be added
+	/// - throws: An error if the SQL aggregate window function can't be added
 	///
 	/// - seealso: [User-Defined Aggregate Window Functions](https://sqlite.org/windowfunctions.html#udfwinfunc)
 	public func addAggregateWindowFunction(_ name: String, arity: Int = -1, flags: SQLFunctionFlags = [.deterministic, .directOnly], _ function: SQLAggregateWindowFunction) throws {

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015 - 2020 Feisty Dog, LLC
+// Copyright (c) 2015 - 2021 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
@@ -120,7 +120,7 @@ extension Database {
 	/// - parameter name: The name of the tokenizer
 	/// - parameter type: The class implementing the tokenizer
 	///
-	/// - throws:  An error if the tokenizer can't be added
+	/// - throws: An error if the tokenizer can't be added
 	///
 	/// - seealso: [Custom Tokenizers](https://www.sqlite.org/fts5.html#custom_tokenizers)
 	public func addTokenizer<T: FTS5Tokenizer>(_ name: String, type: T.Type) throws where T: AnyObject {
@@ -237,7 +237,7 @@ extension Database.FTS5TokenizationReason {
 ///
 /// - parameter db: The database connection to query
 ///
-/// - throws:  An error if the `fts5_api` structure couldn't be retrieved
+/// - throws: An error if the `fts5_api` structure couldn't be retrieved
 ///
 /// - returns: A pointer to the global `fts5_api` structure for `db`
 func get_fts5_api(for db: SQLiteDatabaseConnection) throws -> UnsafePointer<fts5_api> {

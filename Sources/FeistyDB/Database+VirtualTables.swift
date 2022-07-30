@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Feisty Dog, LLC
+// Copyright (c) 2020 - 2021 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
@@ -7,6 +7,7 @@
 import os.log
 import Foundation
 import CSQLite
+import CFeistyDB
 
 /// A cursor for an SQLite virtual table
 public protocol VirtualTableCursor {
@@ -185,7 +186,7 @@ extension Database {
 	/// - parameter name: The name of the virtual table module
 	/// - parameter type: The class implementing the virtual table module
 	///
-	/// - throws:  An error if the virtual table module can't be registered
+	/// - throws: An error if the virtual table module can't be registered
 	///
 	/// - seealso: [Register A Virtual Table Implementation](https://www.sqlite.org/c3ref/create_module.html)
 	/// - seealso: [The Virtual Table Mechanism Of SQLite](https://sqlite.org/vtab.html)
@@ -268,7 +269,7 @@ extension Database {
 	/// - parameter name: The name of the virtual table module
 	/// - parameter type: The class implementing the virtual table module
 	///
-	/// - throws:  An error if the virtual table module can't be registered
+	/// - throws: An error if the virtual table module can't be registered
 	///
 	/// - seealso: [Register A Virtual Table Implementation](https://www.sqlite.org/c3ref/create_module.html)
 	/// - seealso: [The Virtual Table Mechanism Of SQLite](https://sqlite.org/vtab.html)
@@ -353,14 +354,14 @@ func xDestroy(_ pVTab: UnsafeMutablePointer<sqlite3_vtab>?) -> Int32 {
 		catch let error as SQLiteError {
 			os_log("Error in destroy(): %{public}@", type: .info, error.description)
 			sqlite3_free(vtab.pointee.base.zErrMsg)
-			vtab.pointee.base.zErrMsg = feisty_db_sqlite3_strdup(error.message)
+			vtab.pointee.base.zErrMsg = csqlite_sqlite3_strdup(error.message)
 			return error.code.code
 		}
 
 		catch let error {
 			os_log("Error in destroy(): %{public}@", type: .info, error.localizedDescription)
 			sqlite3_free(vtab.pointee.base.zErrMsg)
-			vtab.pointee.base.zErrMsg = feisty_db_sqlite3_strdup(error.localizedDescription)
+			vtab.pointee.base.zErrMsg = csqlite_sqlite3_strdup(error.localizedDescription)
 			return SQLITE_ERROR
 		}
 
@@ -390,13 +391,13 @@ func init_vtab(_ db: OpaquePointer?, _ pAux: UnsafeMutableRawPointer?, _ argc: I
 
 	catch let error as SQLiteError {
 		os_log("Error connecting to virtual table module: %{public}@", type: .info, error.description)
-		pzErr.unsafelyUnwrapped.pointee = feisty_db_sqlite3_strdup(error.message)
+		pzErr.unsafelyUnwrapped.pointee = csqlite_sqlite3_strdup(error.message)
 		return error.code.code
 	}
 
 	catch let error {
 		os_log("Error connecting to virtual table module: %{public}@", type: .info, error.localizedDescription)
-		pzErr.unsafelyUnwrapped.pointee = feisty_db_sqlite3_strdup(error.localizedDescription)
+		pzErr.unsafelyUnwrapped.pointee = csqlite_sqlite3_strdup(error.localizedDescription)
 		return SQLITE_ERROR
 	}
 
@@ -406,12 +407,12 @@ func init_vtab(_ db: OpaquePointer?, _ pAux: UnsafeMutableRawPointer?, _ argc: I
 	}
 
 	let options = virtualTable.options
-	feisty_db_sqlite3_vtab_config_constraint_support(db, options.contains(.constraintSupport) ? 1 : 0)
+	csqlite_sqlite3_vtab_config_constraint_support(db, options.contains(.constraintSupport) ? 1 : 0)
 	if options.contains(.innocuous) {
-		feisty_db_sqlite3_vtab_config_innocuous(db)
+		csqlite_sqlite3_vtab_config_innocuous(db)
 	}
 	if options.contains(.directOnly) {
-		feisty_db_sqlite3_vtab_config_directonly(db)
+		csqlite_sqlite3_vtab_config_directonly(db)
 	}
 
 	let vtab = sqlite3_malloc(Int32(MemoryLayout<feisty_db_sqlite3_vtab>.size))
@@ -454,14 +455,14 @@ func xBestIndex(_ pVTab: UnsafeMutablePointer<sqlite3_vtab>?, _ pIdxInfo: Unsafe
 		catch let error as SQLiteError {
 			os_log("Error in bestIndex(): %{public}@", type: .info, error.description)
 			sqlite3_free(vtab.pointee.base.zErrMsg)
-			vtab.pointee.base.zErrMsg = feisty_db_sqlite3_strdup(error.message)
+			vtab.pointee.base.zErrMsg = csqlite_sqlite3_strdup(error.message)
 			return error.code.code
 		}
 
 		catch let error {
 			os_log("Error in bestIndex(): %{public}@", type: .info, error.localizedDescription)
 			sqlite3_free(vtab.pointee.base.zErrMsg)
-			vtab.pointee.base.zErrMsg = feisty_db_sqlite3_strdup(error.localizedDescription)
+			vtab.pointee.base.zErrMsg = csqlite_sqlite3_strdup(error.localizedDescription)
 			return SQLITE_ERROR
 		}
 	}
@@ -479,14 +480,14 @@ func xOpen(_ pVTab: UnsafeMutablePointer<sqlite3_vtab>?, _ ppCursor: UnsafeMutab
 		catch let error as SQLiteError {
 			os_log("Error in openCursor(): %{public}@", type: .info, error.description)
 			sqlite3_free(vtab.pointee.base.zErrMsg)
-			vtab.pointee.base.zErrMsg = feisty_db_sqlite3_strdup(error.message)
+			vtab.pointee.base.zErrMsg = csqlite_sqlite3_strdup(error.message)
 			return error.code.code
 		}
 
 		catch let error {
 			os_log("Error in openCursor(): %{public}@", type: .info, error.localizedDescription)
 			sqlite3_free(vtab.pointee.base.zErrMsg)
-			vtab.pointee.base.zErrMsg = feisty_db_sqlite3_strdup(error.localizedDescription)
+			vtab.pointee.base.zErrMsg = csqlite_sqlite3_strdup(error.localizedDescription)
 			return SQLITE_ERROR
 		}
 
@@ -536,14 +537,14 @@ func xFilter(_ pCursor: UnsafeMutablePointer<sqlite3_vtab_cursor>?, _ idxNum: In
 		catch let error as SQLiteError {
 			os_log("Error in filter(): %{public}@", type: .info, error.description)
 			sqlite3_free(curs.pointee.base.pVtab.pointee.zErrMsg)
-			curs.pointee.base.pVtab.pointee.zErrMsg = feisty_db_sqlite3_strdup(error.message)
+			curs.pointee.base.pVtab.pointee.zErrMsg = csqlite_sqlite3_strdup(error.message)
 			return error.code.code
 		}
 
 		catch let error {
 			os_log("Error in filter(): %{public}@", type: .info, error.localizedDescription)
 			sqlite3_free(curs.pointee.base.pVtab.pointee.zErrMsg)
-			curs.pointee.base.pVtab.pointee.zErrMsg = feisty_db_sqlite3_strdup(error.localizedDescription)
+			curs.pointee.base.pVtab.pointee.zErrMsg = csqlite_sqlite3_strdup(error.localizedDescription)
 			return SQLITE_ERROR
 		}
 	}
@@ -560,14 +561,14 @@ func xNext(_ pCursor: UnsafeMutablePointer<sqlite3_vtab_cursor>?) -> Int32 {
 		catch let error as SQLiteError {
 			os_log("Error in next(): %{public}@", type: .info, error.description)
 			sqlite3_free(curs.pointee.base.pVtab.pointee.zErrMsg)
-			curs.pointee.base.pVtab.pointee.zErrMsg = feisty_db_sqlite3_strdup(error.message)
+			curs.pointee.base.pVtab.pointee.zErrMsg = csqlite_sqlite3_strdup(error.message)
 			return error.code.code
 		}
 
 		catch let error {
 			os_log("Error in next(): %{public}@", type: .info, error.localizedDescription)
 			sqlite3_free(curs.pointee.base.pVtab.pointee.zErrMsg)
-			curs.pointee.base.pVtab.pointee.zErrMsg = feisty_db_sqlite3_strdup(error.localizedDescription)
+			curs.pointee.base.pVtab.pointee.zErrMsg = csqlite_sqlite3_strdup(error.localizedDescription)
 			return SQLITE_ERROR
 		}
 	}
@@ -592,14 +593,14 @@ func xColumn(_ pCursor: UnsafeMutablePointer<sqlite3_vtab_cursor>?, _ pCtx: Opaq
 		catch let error as SQLiteError {
 			os_log("Error in column(%i): %{public}@", type: .info, i, error.description)
 			sqlite3_free(curs.pointee.base.pVtab.pointee.zErrMsg)
-			curs.pointee.base.pVtab.pointee.zErrMsg = feisty_db_sqlite3_strdup(error.message)
+			curs.pointee.base.pVtab.pointee.zErrMsg = csqlite_sqlite3_strdup(error.message)
 			return error.code.code
 		}
 
 		catch let error {
 			os_log("Error in column(%i): %{public}@", type: .info, i, error.localizedDescription)
 			sqlite3_free(curs.pointee.base.pVtab.pointee.zErrMsg)
-			curs.pointee.base.pVtab.pointee.zErrMsg = feisty_db_sqlite3_strdup(error.localizedDescription)
+			curs.pointee.base.pVtab.pointee.zErrMsg = csqlite_sqlite3_strdup(error.localizedDescription)
 			return SQLITE_ERROR
 		}
 	}
@@ -617,14 +618,14 @@ func xRowid(_ pCursor: UnsafeMutablePointer<sqlite3_vtab_cursor>?, _ pRowid: Uns
 		catch let error as SQLiteError {
 			os_log("Error in rowid(): %{public}@", type: .info, error.description)
 			sqlite3_free(curs.pointee.base.pVtab.pointee.zErrMsg)
-			curs.pointee.base.pVtab.pointee.zErrMsg = feisty_db_sqlite3_strdup(error.message)
+			curs.pointee.base.pVtab.pointee.zErrMsg = csqlite_sqlite3_strdup(error.message)
 			return error.code.code
 		}
 
 		catch let error {
 			os_log("Error in rowid(): %{public}@", type: .info, error.localizedDescription)
 			sqlite3_free(curs.pointee.base.pVtab.pointee.zErrMsg)
-			curs.pointee.base.pVtab.pointee.zErrMsg = feisty_db_sqlite3_strdup(error.localizedDescription)
+			curs.pointee.base.pVtab.pointee.zErrMsg = csqlite_sqlite3_strdup(error.localizedDescription)
 			return SQLITE_ERROR
 		}
 	}

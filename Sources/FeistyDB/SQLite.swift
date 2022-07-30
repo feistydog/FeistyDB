@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2018 - 2020 Feisty Dog, LLC
+// Copyright (c) 2018 - 2021 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
@@ -28,7 +28,7 @@ public struct SQLite {
 	///
 	/// - note: This function is automatically invoked by SQLite and is not normally called directly
 	///
-	/// - throws:  An error if SQLite initialization fails
+	/// - throws: An error if SQLite initialization fails
 	public static func initialize() throws {
 		let rc = sqlite3_initialize()
 		guard rc == SQLITE_OK else {
@@ -42,7 +42,7 @@ public struct SQLite {
 	///
 	/// - note: This function is automatically invoked by SQLite and is not normally called directly
 	///
-	/// - throws:  An error if SQLite shutdown fails
+	/// - throws: An error if SQLite shutdown fails
 	public static func shutdown() throws {
 		let rc = sqlite3_shutdown()
 		guard rc == SQLITE_OK else {
