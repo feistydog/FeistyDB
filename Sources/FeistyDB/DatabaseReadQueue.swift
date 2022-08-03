@@ -101,7 +101,7 @@ public final class DatabaseReadQueue {
 	/// A block called with the result of an asynchronous database operation.
 	///
 	/// - parameter result: A `Result` object containing the result of the operation.
-	public typealias CompletionHandler = (_ result: Result<Void, Swift.Error>) -> Void
+	public typealias CompletionHandler<T> = (_ result: Result<T, Swift.Error>) -> Void
 
 	/// Submits an asynchronous read operation to the database queue.
 	///
@@ -110,11 +110,11 @@ public final class DatabaseReadQueue {
 	/// - parameter block: A closure performing the database operation
 	/// - parameter database: A `Database` used for database access within `block`
 	/// - parameter completion: A closure called with the result of the operation.
-	public func async(group: DispatchGroup? = nil, qos: DispatchQoS = .unspecified, block: @escaping (_ database: Database) throws -> Void, completion: @escaping CompletionHandler) {
+	public func async<T>(group: DispatchGroup? = nil, qos: DispatchQoS = .unspecified, block: @escaping (_ database: Database) throws -> T, completion: @escaping CompletionHandler<T>) {
 		queue.async(group: group, qos: qos) {
 			do {
-				try block(self.database)
-				completion(.success(()))
+				let result = try block(self.database)
+				completion(.success(result))
 			} catch let error {
 				completion(.failure(error))
 			}
@@ -140,7 +140,7 @@ public final class DatabaseReadQueue {
 	/// - parameter qos: The quality of service for `block`
 	/// - parameter block: A closure performing the database operation
 	/// - parameter completion: A closure called with the result of the read transaction.
-	public func asyncReadTransaction(group: DispatchGroup? = nil, qos: DispatchQoS = .default, _ block: @escaping (_ database: Database) -> Void, completion: @escaping CompletionHandler) {
+	public func asyncReadTransaction(group: DispatchGroup? = nil, qos: DispatchQoS = .default, _ block: @escaping (_ database: Database) -> Void, completion: @escaping CompletionHandler<Void>) {
 		queue.async(group: group, qos: qos) {
 			do {
 				try self.database.readTransaction(block)
