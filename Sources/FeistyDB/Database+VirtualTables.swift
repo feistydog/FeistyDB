@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 - 2021 Feisty Dog, LLC
+// Copyright (c) 2020 - 2023 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
@@ -153,7 +153,7 @@ extension Database {
 		/// Creates client data for a module
 		init(module: inout sqlite3_module, _ construct: @escaping (_ arguments: [String], _ create: Bool) throws -> VirtualTableModule) {
 			let module_ptr = UnsafeMutablePointer<sqlite3_module>.allocate(capacity: 1)
-			module_ptr.assign(from: &module, count: 1)
+			module_ptr.update(from: &module, count: 1)
 			self.module = module_ptr
 			self.construct = construct
 		}
