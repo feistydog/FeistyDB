@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015 - 2021 Feisty Dog, LLC
+// Copyright (c) 2015 - 2023 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
@@ -233,6 +233,9 @@ extension Database.FTS5TokenizationReason {
 	}
 }
 
+// sqlite3_bind_pointer(S,I,P,T,D) requires that T be a static string
+let fts_5_api_ptr_static_string = StaticString(stringLiteral: "fts5_api_ptr")
+
 /// Returns a pointer to the `fts5_api` structure for `db`.
 ///
 /// - parameter db: The database connection to query
@@ -252,7 +255,7 @@ func get_fts5_api(for db: SQLiteDatabaseConnection) throws -> UnsafePointer<fts5
 	}
 
 	var api_ptr: UnsafePointer<fts5_api>?
-	guard sqlite3_bind_pointer(stmt, 1, &api_ptr, "fts5_api_ptr", nil) == SQLITE_OK else {
+	guard sqlite3_bind_pointer(stmt, 1, &api_ptr, fts_5_api_ptr_static_string.utf8Start, nil) == SQLITE_OK else {
 		throw SQLiteError("Error binding FTS5 API pointer", takingDescriptionFromStatement: stmt!)
 	}
 
