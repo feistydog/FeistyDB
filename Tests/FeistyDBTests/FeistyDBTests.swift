@@ -440,6 +440,12 @@ class FeistyDBTests: XCTestCase {
 		try! db.removeFunction("integer_sum", arity: 1)
 		XCTAssertThrowsError(try db.prepare(sql: "select integer_sum(a) OVER (ORDER BY a ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING) from t1;"))	}
 
+	func testFTS5() {
+		let db = try! Database()
+		try! db.execute(sql: "CREATE VIRTUAL TABLE email USING fts5(sender, title, body);")
+		try! db.execute(sql: "SELECT * FROM email WHERE email MATCH 'fts5';")
+	}
+
 	func testCustomTokenizer() {
 
 		/// A word tokenizer using CFStringTokenizer
