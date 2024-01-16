@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015 - 2021 Feisty Dog, LLC
+// Copyright (c) 2015 - 2024 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
@@ -32,11 +32,13 @@ extension Database {
 		/// The function may only be invoked from top-level SQL, and cannot be used in views or triggers
 		/// nor in schema structures such as `CHECK` constraints, `DEFAULT` clauses, expression indexes, partial indexes, or generated columns
 		public static let directOnly = SQLFunctionFlags(rawValue: 1 << 1)
-		/// Indicates to SQLite that a function may call `sqlite3_value_subtype() `to inspect the sub-types of its arguments
+		/// Indicates to SQLite that a function may call `sqlite3_value_subtype()` to inspect the sub-types of its arguments
 		public static let subtype = SQLFunctionFlags(rawValue: 1 << 2)
 		/// The function is unlikely to cause problems even if misused.
 		/// An innocuous function should have no side effects and should not depend on any values other than its input parameters.
 		public static let innocuous = SQLFunctionFlags(rawValue: 1 << 3)
+		/// Indicates to SQLite that a function may call `sqlite3_result_subtype()` to to cause a sub-type to be associated with its result.
+		public static let resultSubtype = SQLFunctionFlags(rawValue: 1 << 4)
 	}
 }
 
@@ -56,6 +58,9 @@ extension Database.SQLFunctionFlags {
 		}
 		if contains(.innocuous) {
 			flags |= SQLITE_INNOCUOUS
+		}
+		if contains(.resultSubtype) {
+			flags |= SQLITE_RESULT_SUBTYPE
 		}
 
 		return flags
