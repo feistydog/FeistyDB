@@ -1,4 +1,4 @@
-// swift-tools-version:5.8
+// swift-tools-version:5.6
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -12,14 +12,14 @@ import PackageDescription
 
 let package = Package(
 	name: "FeistyDB",
-	platforms: [
-		.macOS(.v10_13),
-	],
 	products: [
 		// Products define the executables and libraries produced by a package, and make them visible to other packages.
 		.library(
 			name: "FeistyDB",
-			targets: ["CFeistyDB", "FeistyDB"]),
+			targets: [
+				"CFeistyDB",
+				"FeistyDB",
+			]),
 	],
 	dependencies: [
 		// Dependencies declare other packages that this package depends on.
@@ -31,11 +31,15 @@ let package = Package(
 		// Targets can depend on other targets in this package, and on products in packages which this package depends on.
 		.target(
 			name: "CFeistyDB",
-			dependencies: ["CSQLite"]
+			dependencies: [
+				.product(name: "CSQLite", package: "CSQLite"),
+			]
 		),
 		.target(
 			name: "FeistyDB",
-			dependencies: ["CFeistyDB"]
+			dependencies: [
+				"CFeistyDB",
+			]
 //			swiftSettings: [
 //				.define("SQLITE_ENABLE_PREUPDATE_HOOK"),
 //				.define("SQLITE_ENABLE_SESSION"),
@@ -43,7 +47,9 @@ let package = Package(
 		),
 		.testTarget(
 			name: "FeistyDBTests",
-			dependencies: ["FeistyDB"]
+			dependencies: [
+				"FeistyDB",
+			]
 //			, swiftSettings: [
 //				.define("SQLITE_ENABLE_PREUPDATE_HOOK"),
 //				.define("SQLITE_ENABLE_SESSION"),
@@ -51,7 +57,9 @@ let package = Package(
 		),
 		.testTarget(
 			name: "FeistyDBPerformanceTests",
-			dependencies: ["FeistyDB"]),
+			dependencies: [
+				"FeistyDB",
+			]),
 	],
 	cLanguageStandard: .gnu11
 )
