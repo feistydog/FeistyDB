@@ -273,7 +273,7 @@ extension Row {
 	///
 	/// - returns: A dictionary of the row's values
 	public func values() -> [String: DatabaseValue] {
-		var values = [String: DatabaseValue]()
+		var values = [String: DatabaseValue](minimumCapacity: Int(columnCount))
 		let stmt = statement.stmt
 		for (name, index) in statement.columnNamesAndIndexes {
 			values[name] = DatabaseValue(stmt, column: Int32(index))
