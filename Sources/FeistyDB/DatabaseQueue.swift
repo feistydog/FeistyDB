@@ -113,6 +113,21 @@ public final class DatabaseQueue {
 		}
 	}
 
+	/// Performs a synchronous operation on the database.
+	///
+	/// - parameter block: A closure performing the database operation
+	/// - parameter database: A `Database` used for database access within `block`
+	///
+	/// - throws: Any error thrown in `block`
+	///
+	/// - returns: The value returned by `block`
+	@available(macOS 10.14, iOS 12.0, tvOS 12.0, watchOS 5.0, *)
+	public func asyncAndWait<T>(block: (_ database: Database) throws -> (T)) rethrows -> T {
+		return try queue.asyncAndWait {
+			return try block(self.database)
+		}
+	}
+
 	/// Performs a synchronous transaction on the database.
 	///
 	/// - parameter type: The type of transaction to perform
