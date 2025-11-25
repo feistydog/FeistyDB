@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Feisty Dog, LLC
+// Copyright (c) 2021 - 2025 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
@@ -17,10 +17,6 @@ public struct FeistyDB {
 		var rc = sqlite3_initialize()
 		guard rc == SQLITE_OK else {
 			throw SQLiteError("Error initializing sqlite3", code: rc)
-		}
-		rc = csqlite_sqlite3_auto_extension_carray()
-		guard rc == SQLITE_OK else {
-			throw SQLiteError("Error initializing carray extension", code: rc)
 		}
 		rc = csqlite_sqlite3_auto_extension_decimal()
 		guard rc == SQLITE_OK else {

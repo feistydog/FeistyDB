@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015 - 2020 Feisty Dog, LLC
+// Copyright (c) 2015 - 2025 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
@@ -92,6 +92,12 @@ public enum SQLiteResult {
 		case retry
 		/// SQLITE_ERROR_SNAPSHOT
 		case snapshot
+		/// SQLITE_ERROR_RESERVESIZE
+		case reserveSize
+		/// SQLITE_ERROR_KEY
+		case key
+		/// SQLITE_ERROR_UNABLE
+		case unable
 	}
 
 	/// SQLITE_ABORT_* extended result codes
@@ -200,6 +206,14 @@ public enum SQLiteResult {
 		case rollbackAtomic
 		/// SQLITE_IOERR_ROLLBACK_DATA
 		case data
+		/// SQLITE_IOERR_CORRUPTFS
+		case corruptFS
+		/// SQLITE_IOERR_IN_PAGE
+		case inPage
+		/// SQLITE_IOERR_BADKEY
+		case badkey
+		/// SQLITE_IOERR_CODEC
+		case codec
 	}
 
 	/// SQLITE_CORRUPT_* extended result codes
@@ -252,6 +266,8 @@ public enum SQLiteResult {
 		case rowid
 		/// SQLITE_CONSTRAINT_PINNED
 		case pinned
+		/// SQLITE_CONSTRAINT_DATATYPE
+		case datatype
 	}
 
 	/// SQLITE_AUTH_* extended result codes
@@ -266,6 +282,8 @@ public enum SQLiteResult {
 		case recoverWAL
 		/// SQLITE_NOTICE_RECOVER_ROLLBACK
 		case recoverRollback
+		/// SQLITE_NOTICE_RBU
+		case rbu
 	}
 
 	/// SQLITE_WARNING_* extended result codes
@@ -520,6 +538,10 @@ extension SQLiteResult {
 				case .commitAtomic:			return SQLITE_IOERR | (30 << 8)
 				case .rollbackAtomic:		return SQLITE_IOERR | (31 << 8)
 				case .data:					return SQLITE_IOERR | (32 << 8)
+				case .corruptFS: 			return SQLITE_IOERR | (33 << 8)
+				case .inPage: 				return SQLITE_IOERR | (34 << 8)
+				case .badkey: 				return SQLITE_IOERR | (35 << 8)
+				case .codec: 				return SQLITE_IOERR | (36 << 8)
 				}
 			}
 			return SQLITE_IOERR
@@ -570,6 +592,7 @@ extension SQLiteResult {
 				case .vtab:					return SQLITE_CONSTRAINT | (9 << 8)
 				case .rowid:				return SQLITE_CONSTRAINT | (10 << 8)
 				case .pinned:				return SQLITE_CONSTRAINT | (11 << 8)
+				case .datatype: 			return SQLITE_CONSTRAINT | (12 << 8)
 				}
 			}
 			return SQLITE_CONSTRAINT
@@ -597,6 +620,7 @@ extension SQLiteResult {
 				switch extended {
 				case .recoverWAL:			return SQLITE_NOTICE | (1 << 8)
 				case .recoverRollback:		return SQLITE_NOTICE | (2 << 8)
+				case .rbu:					return SQLITE_NOTICE | (3 << 8)
 				}
 			}
 			return SQLITE_NOTICE
