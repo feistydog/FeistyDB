@@ -1,20 +1,11 @@
 //
-// Copyright (c) 2015 - 2020 Feisty Dog, LLC
+// Copyright (c) 2015 - 2026 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
 
 import Foundation
 import CSQLite
-
-/// An error supplying a message and description.
-public protocol Error: Swift.Error {
-	/// A brief message describing the error
-	var message: String { get }
-
-	/// A more detailed description of the error's cause
-	var details: String? { get }
-}
 
 /// An error supplying a message and description.
 public struct DatabaseError: Error {
