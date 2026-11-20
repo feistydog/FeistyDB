@@ -359,7 +359,7 @@ extension Database {
 	}
 
 	/// Possible transaction states for a database
-	public enum TransactionState {
+	public enum TransactionState: Sendable {
 		/// No transaction is currently pending
 		case none
 		/// The database is currently in a read transaction
@@ -533,7 +533,7 @@ extension Database {
 	/// Possible write-ahead log (WAL) checkpoint types.
 	///
 	/// - seealso: [Write-Ahead Logging](https://www.sqlite.org/wal.html)
-	public enum WALCheckpointType {
+	public enum WALCheckpointType: Sendable {
 		/// Checkpoint as many frames as possible without waiting for any database readers or writers to finish
 		case passive
 		/// Blocks until there is no writer and all readers are reading from the most recent database snapshot then checkpoints all frames
@@ -690,7 +690,7 @@ extension Database {
 	/// Available database status parameters.
 	///
 	/// - seealso: [Status Parameters for database connections](https://www.sqlite.org/c3ref/c_dbstatus_options.html)
-	public enum	StatusParameter {
+	public enum	StatusParameter: Sendable {
 		/// The number of lookaside memory slots currently checked out
 		case lookasideUsed
 		/// The approximate number of bytes of heap memory used by all pager caches

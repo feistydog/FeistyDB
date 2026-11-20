@@ -48,7 +48,7 @@ public protocol VirtualTableCursor {
 }
 
 /// Possible results for the `VirtualTableModule.bestIndex()` function
-public enum VirtualTableModuleBestIndexResult {
+public enum VirtualTableModuleBestIndexResult: Sendable {
 	/// Success
 	case ok
 	/// No usable query plan exists
