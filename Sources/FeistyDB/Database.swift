@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015 - 2021 Feisty Dog, LLC
+// Copyright (c) 2015 - 2026 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
@@ -104,25 +104,25 @@ public final class Database {
 	public init(rawSQLiteDatabase db: SQLiteDatabaseConnection) {
 		self.db = db
 
-		#if false
-			sqlite3_trace_v2(db, UInt32(SQLITE_TRACE_PROFILE), { (T, C, P, X) -> Int32 in
-				if T == UInt32(SQLITE_TRACE_PROFILE) {
-					// P = sqlite3_stmt
-					// X = int64_t*
+#if false
+		sqlite3_trace_v2(db, UInt32(SQLITE_TRACE_PROFILE), { (T, C, P, X) -> Int32 in
+			if T == UInt32(SQLITE_TRACE_PROFILE) {
+				// P = sqlite3_stmt
+				// X = int64_t*
 
-					let stmt = SQLitePreparedStatement(P)
-					let sql = String(cString: sqlite3_sql(stmt))
+				let stmt = SQLitePreparedStatement(P)
+				let sql = String(cString: sqlite3_sql(stmt))
 
-					if let nanos = X?.assumingMemoryBound(to: Int64.self).pointee {
-						let seconds = Double(nanos) / Double(NSEC_PER_SEC)
-						print("\"\(sql)\" took \(seconds) sec")
-					}
-
+				if let nanos = X?.assumingMemoryBound(to: Int64.self).pointee {
+					let seconds = Double(nanos) / Double(NSEC_PER_SEC)
+					print("\"\(sql)\" took \(seconds) sec")
 				}
 
-				return 0
-			}, nil)
-		#endif
+			}
+
+			return 0
+		}, nil)
+#endif
 	}
 
 	deinit {
@@ -309,7 +309,7 @@ extension Database {
 	/// Possible database transaction types.
 	///
 	/// - seealso: [Transactions in SQLite](https://sqlite.org/lang_transaction.html)
-	public enum TransactionType {
+	public enum TransactionType: Sendable {
 		/// A deferred transaction
 		case deferred
 		/// An immediate transaction

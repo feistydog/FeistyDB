@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015 - 2020 Feisty Dog, LLC
+// Copyright (c) 2015 - 2026 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
@@ -8,7 +8,7 @@ import Foundation
 import CSQLite
 
 /// An error supplying a message, SQLite error code, and description.
-public struct SQLiteError: Error {
+public struct SQLiteError: Error, Sendable {
 	/// A brief message describing the error
 	public let message: String
 

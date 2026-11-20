@@ -1,4 +1,4 @@
-// swift-tools-version:5.6
+// swift-tools-version:6.0
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -33,6 +33,9 @@ let package = Package(
 			name: "CFeistyDB",
 			dependencies: [
 				.product(name: "CSQLite", package: "CSQLite"),
+			],
+			swiftSettings: [
+				.swiftLanguageMode(.v6),
 			]
 		),
 		.target(

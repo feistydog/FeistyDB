@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2018 - 2022 Feisty Dog, LLC
+// Copyright (c) 2018 - 2026 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
@@ -23,7 +23,7 @@ import CSQLite
 ///
 /// The interface is similar to `DispatchQueue` and a dispatch queue is used
 /// internally for work item management.
-public final class DatabaseReadQueue {
+public final class DatabaseReadQueue: @unchecked Sendable {
 	/// The underlying database
 	let database: Database
 	/// The dispatch queue used to serialize access to the underlying database connection
@@ -50,7 +50,7 @@ public final class DatabaseReadQueue {
 	/// - parameter label: The label to attach to the queue
 	/// - parameter qos: The quality of service class for the work performed by the database queue
 	/// - parameter target: The target dispatch queue on which to execute blocks
-	public init(database: Database, label: String, qos: DispatchQoS = .default, target: DispatchQueue? = nil) {
+	public init(database: sending Database, label: String, qos: DispatchQoS = .default, target: DispatchQueue? = nil) {
 		self.database = database
 		self.queue = DispatchQueue(label: label, qos: qos, target: target)
 	}
@@ -92,7 +92,7 @@ public final class DatabaseReadQueue {
 	/// - throws: Any error thrown in `block`
 	///
 	/// - returns: The value returned by `block`
-	public func sync<T>(block: (_ database: Database) throws -> (T)) rethrows -> T {
+	public func sync<T: Sendable>(block: (_ database: Database) throws -> (T)) rethrows -> T {
 		return try queue.sync {
 			return try block(self.database)
 		}
@@ -101,7 +101,7 @@ public final class DatabaseReadQueue {
 	/// A block called with the result of an asynchronous database operation.
 	///
 	/// - parameter result: A `Result` object containing the result of the operation.
-	public typealias CompletionHandler<T> = (_ result: Result<T, Swift.Error>) -> Void
+	public typealias CompletionHandler<T> = @Sendable (_ result: Result<T, Swift.Error>) -> Void
 
 	/// Submits an asynchronous read operation to the database queue.
 	///
@@ -110,7 +110,7 @@ public final class DatabaseReadQueue {
 	/// - parameter block: A closure performing the database operation
 	/// - parameter database: A `Database` used for database access within `block`
 	/// - parameter completion: A closure called with the result of the operation.
-	public func async<T>(group: DispatchGroup? = nil, qos: DispatchQoS = .unspecified, block: @escaping (_ database: Database) throws -> T, completion: @escaping CompletionHandler<T>) {
+	public func async<T: Sendable>(group: DispatchGroup? = nil, qos: DispatchQoS = .default, block: @escaping @Sendable (_ database: Database) throws -> T, completion: @escaping CompletionHandler<T>) {
 		queue.async(group: group, qos: qos) {
 			do {
 				let result = try block(self.database)
@@ -140,7 +140,7 @@ public final class DatabaseReadQueue {
 	/// - parameter qos: The quality of service for `block`
 	/// - parameter block: A closure performing the database operation
 	/// - parameter completion: A closure called with the result of the read transaction.
-	public func asyncReadTransaction(group: DispatchGroup? = nil, qos: DispatchQoS = .default, _ block: @escaping (_ database: Database) -> Void, completion: @escaping CompletionHandler<Void>) {
+	public func asyncReadTransaction(group: DispatchGroup? = nil, qos: DispatchQoS = .default, _ block: @escaping @Sendable (_ database: Database) -> Void, completion: @escaping CompletionHandler<Void>) {
 		queue.async(group: group, qos: qos) {
 			do {
 				try self.database.readTransaction(block)
