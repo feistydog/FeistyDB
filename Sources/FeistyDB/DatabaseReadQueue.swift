@@ -121,6 +121,26 @@ public final class DatabaseReadQueue: @unchecked Sendable {
 		}
 	}
 
+	/// Performs a synchronous read operation on the database.
+	///
+	/// - parameter block: A closure performing the database operation
+	/// - parameter database: A `Database` used for database access within `block`
+	///
+	/// - throws: Any error thrown in `block`
+	///
+	/// - returns: The value returned by `block`
+	@available(macOS 10.14, iOS 12.0, tvOS 12.0, watchOS 5.0, *)
+	public func asyncAndWait<T>(block: (_ database: Database) throws -> (T)) rethrows -> T {
+		return try queue.asyncAndWait {
+			return try block(self.database)
+		}
+	}
+
+	/// A series of database read actions grouped into a transaction
+	///
+	/// - parameter database: A `Database` used for database access within the block
+	public typealias AsyncReadTransactionBlock = @Sendable (_ database: Database) throws -> Void
+
 	/// Performs a synchronous read transaction on the database.
 	///
 	/// - parameter block: A closure performing the database operation.
@@ -128,7 +148,7 @@ public final class DatabaseReadQueue: @unchecked Sendable {
 	/// - throws: Any error thrown in `block` or an error if the transaction could not be started or rolled back.
 	///
 	/// - note: If `block` throws an error the transaction will be rolled back and the error will be re-thrown.
-	public func readTransaction(_ block: (_ database: Database) throws -> Void) throws {
+	public func readTransaction(_ block: Database.ReadTransactionBlock) throws {
 		try queue.sync {
 			try database.readTransaction(block)
 		}
@@ -140,7 +160,7 @@ public final class DatabaseReadQueue: @unchecked Sendable {
 	/// - parameter qos: The quality of service for `block`
 	/// - parameter block: A closure performing the database operation
 	/// - parameter completion: A closure called with the result of the read transaction.
-	public func asyncReadTransaction(group: DispatchGroup? = nil, qos: DispatchQoS = .default, _ block: @escaping @Sendable (_ database: Database) -> Void, completion: @escaping CompletionHandler<Void>) {
+	public func asyncReadTransaction(group: DispatchGroup? = nil, qos: DispatchQoS = .default, _ block: @escaping AsyncReadTransactionBlock, completion: @escaping CompletionHandler<Void>) {
 		queue.async(group: group, qos: qos) {
 			do {
 				try self.database.readTransaction(block)
@@ -212,6 +232,10 @@ extension Database {
 		try beginReadTransaction()
 	}
 
+	/// A series of database read actions grouped into a read transaction
+	///
+	/// - parameter database: A `Database` used for database access within the block
+	public typealias ReadTransactionBlock = (_ database: Database) throws -> Void
 
 	/// Performs a read transaction on the database.
 	///
@@ -220,7 +244,7 @@ extension Database {
 	/// - throws: Any error thrown in `block` or an error if the transaction could not be started or rolled back.
 	///
 	/// - note: If `block` throws an error the transaction will be rolled back and the error will be re-thrown.
-	public func readTransaction(_ block: (_ database: Database) throws -> Void) throws {
+	public func readTransaction(_ block: ReadTransactionBlock) throws {
 		try begin(type: .deferred)
 		do {
 			try block(self)
@@ -231,5 +255,36 @@ extension Database {
 			}
 			throw error
 		}
+	}
+}
+
+@available(macOS 10.15.0, iOS 13.0.0, tvOS 13.0.0, watchOS 6.0.0, *)
+extension DatabaseReadQueue {
+	/// Performs an asynchronous database operation.
+	///
+	/// - parameter block: A closure performing the database operation
+	///
+	/// - throws: Any error thrown in `block`.
+	///
+	/// - returns: The value returned by `block`.
+	public func perform<T: Sendable>(_ block: @escaping @Sendable (Database) throws -> T) async throws -> T {
+		try await withTaskCancellationHandler {
+			try await withCheckedThrowingContinuation { continuation in
+				queue.async { continuation.resume(with: Result { try block(self.database) }) }
+			}
+		} onCancel: {
+			// sqlite3_interrupt is documented as safe to call from any thread
+			self.database.interrupt()
+		}
+	}
+
+	/// Performs an asynchronous transaction on the database.
+	///
+	/// - parameter type: The type of transaction to perform
+	/// - parameter block: A closure performing the database operation
+	///
+	/// - throws: Any error thrown in `block`.
+	public func readTransaction(_ block: @escaping AsyncReadTransactionBlock) async throws -> Void {
+		try await perform { try $0.readTransaction(block) }
 	}
 }
