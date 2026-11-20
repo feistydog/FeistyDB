@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Feisty Dog, LLC
+// Copyright (c) 2020 - 2026 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
@@ -339,7 +339,7 @@ public final class ChangesetIterator {
 	/// Flags affecting changeset iteration
 	///
 	/// - seealso: [Flags for sqlite3changeset_start_v2](https://www.sqlite.org/session/c_changesetstart_invert.html)
-	public struct Options: OptionSet {
+	public struct Options: OptionSet, Sendable {
 		public let rawValue: Int32
 
 		public init(rawValue: Int32) {
@@ -516,7 +516,7 @@ public typealias ChangesetConflictHandler = (_ conflict: ChangesetConflictHandle
 /// Flags affecting application of changesets
 ///
 /// - seealso: [Flags for sqlite3changeset_apply_v2](https://www.sqlite.org/session/c_changesetapply_invert.html)
-public struct ChangesetApplyOptions: OptionSet {
+public struct ChangesetApplyOptions: OptionSet, Sendable {
 	public let rawValue: Int32
 
 	public init(rawValue: Int32) {
