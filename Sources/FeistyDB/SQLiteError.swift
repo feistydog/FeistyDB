@@ -8,7 +8,7 @@ import Foundation
 import CSQLite
 
 /// An error supplying a message, SQLite error code, and description.
-public struct SQLiteError: Error, Sendable {
+public struct SQLiteError: Error {
 	/// A brief message describing the error
 	public let message: String
 
