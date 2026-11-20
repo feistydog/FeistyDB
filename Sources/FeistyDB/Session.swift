@@ -129,7 +129,7 @@ typealias SQLiteChangeset = UnsafeMutableRawPointer
 /// A changeset
 ///
 /// - seealso: [Generate A Changeset From A Session Object](https://www.sqlite.org/session/sqlite3session_changeset.html)
-public struct Changeset {
+public struct Changeset: Sendable {
 	/// The raw changeset data
 	public let data: Data
 
