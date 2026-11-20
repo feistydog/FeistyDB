@@ -101,7 +101,7 @@ public final class DatabaseReadQueue {
 	/// A block called with the result of an asynchronous database operation.
 	///
 	/// - parameter result: A `Result` object containing the result of the operation.
-	public typealias CompletionHandler<T> = (_ result: Result<T, Swift.Error>) -> Void
+	public typealias CompletionHandler<T> = (_ result: Result<T, Error>) -> Void
 
 	/// Submits an asynchronous read operation to the database queue.
 	///

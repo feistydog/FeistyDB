@@ -8,15 +8,6 @@ import Foundation
 import CSQLite
 
 /// An error supplying a message and description.
-public protocol Error: Swift.Error {
-	/// A brief message describing the error
-	var message: String { get }
-
-	/// A more detailed description of the error's cause
-	var details: String? { get }
-}
-
-/// An error supplying a message and description.
 public struct DatabaseError: Error {
 	/// A brief message describing the error
 	public let message: String
