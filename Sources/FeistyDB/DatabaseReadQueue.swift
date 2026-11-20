@@ -270,7 +270,7 @@ extension DatabaseReadQueue {
 	public func perform<T: Sendable>(block: @escaping @Sendable (Database) throws -> T) async throws -> T {
 		try await withTaskCancellationHandler {
 			try await withCheckedThrowingContinuation { continuation in
-				queue.async { continuation.resume(with: Result { try block(self.database) }) }
+				queue.async(qos: Task.currentPriority.dispatchQoS) { continuation.resume(with: Result { try block(self.database) }) }
 			}
 		} onCancel: {
 			// sqlite3_interrupt is documented as safe to call from any thread

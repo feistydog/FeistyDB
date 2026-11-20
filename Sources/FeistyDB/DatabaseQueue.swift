@@ -228,6 +228,24 @@ public final class DatabaseQueue: @unchecked Sendable {
 }
 
 @available(macOS 10.15.0, iOS 13.0.0, tvOS 13.0.0, watchOS 6.0.0, *)
+extension TaskPriority {
+	var dispatchQoS: DispatchQoS {
+		switch self {
+		case .high:
+			return .userInitiated
+		case .medium:
+			return .default
+		case .low:
+			return .utility
+		case .background:
+			return .background
+		default:
+			return .default
+		}
+	}
+}
+
+@available(macOS 10.15.0, iOS 13.0.0, tvOS 13.0.0, watchOS 6.0.0, *)
 extension DatabaseQueue {
 	/// Performs an asynchronous database operation.
 	///
@@ -239,7 +257,7 @@ extension DatabaseQueue {
 	public func perform<T: Sendable>(block: @escaping @Sendable (Database) throws -> T) async throws -> T {
 		try await withTaskCancellationHandler {
 			try await withCheckedThrowingContinuation { continuation in
-				queue.async { continuation.resume(with: Result { try block(self.database) }) }
+				queue.async(qos: Task.currentPriority.dispatchQoS) { continuation.resume(with: Result { try block(self.database) }) }
 			}
 		} onCancel: {
 			// sqlite3_interrupt is documented as safe to call from any thread
