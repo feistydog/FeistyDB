@@ -84,6 +84,11 @@ public final class DatabaseReadQueue: @unchecked Sendable {
 		}
 	}
 
+	/// A block called with a database instance.
+	///
+	/// - parameter database: A `Database` used for database access within the block
+	public typealias DatabaseBlock<T> = @Sendable (_ database: Database) throws -> T
+
 	/// Performs a synchronous read operation on the database.
 	///
 	/// - parameter block: A closure performing the database operation
@@ -92,7 +97,7 @@ public final class DatabaseReadQueue: @unchecked Sendable {
 	/// - throws: Any error thrown in `block`
 	///
 	/// - returns: The value returned by `block`
-	public func sync<T: Sendable>(block: (_ database: Database) throws -> (T)) rethrows -> T {
+	public func sync<T: Sendable>(block: DatabaseBlock<T>) rethrows -> T {
 		return try queue.sync {
 			return try block(self.database)
 		}
@@ -110,7 +115,7 @@ public final class DatabaseReadQueue: @unchecked Sendable {
 	/// - parameter block: A closure performing the database operation
 	/// - parameter database: A `Database` used for database access within `block`
 	/// - parameter completion: A closure called with the result of the operation.
-	public func async<T: Sendable>(group: DispatchGroup? = nil, qos: DispatchQoS = .default, block: @escaping @Sendable (_ database: Database) throws -> T, completion: @escaping CompletionHandler<T>) {
+	public func async<T: Sendable>(group: DispatchGroup? = nil, qos: DispatchQoS = .default, block: @escaping DatabaseBlock<T>, completion: @escaping CompletionHandler<T>) {
 		queue.async(group: group, qos: qos) {
 			do {
 				let result = try block(self.database)
@@ -130,7 +135,7 @@ public final class DatabaseReadQueue: @unchecked Sendable {
 	///
 	/// - returns: The value returned by `block`
 	@available(macOS 10.14, iOS 12.0, tvOS 12.0, watchOS 5.0, *)
-	public func asyncAndWait<T: Sendable>(block: (_ database: Database) throws -> (T)) rethrows -> T {
+	public func asyncAndWait<T: Sendable>(block: DatabaseBlock<T>) rethrows -> T {
 		return try queue.asyncAndWait {
 			return try block(self.database)
 		}
@@ -139,7 +144,7 @@ public final class DatabaseReadQueue: @unchecked Sendable {
 	/// A series of database read actions grouped into a transaction
 	///
 	/// - parameter database: A `Database` used for database access within the block
-	public typealias AsyncReadTransactionBlock = @Sendable (_ database: Database) throws -> Void
+	public typealias ReadTransactionBlock = @Sendable (_ database: Database) throws -> Void
 
 	/// Performs a synchronous read transaction on the database.
 	///
@@ -148,7 +153,7 @@ public final class DatabaseReadQueue: @unchecked Sendable {
 	/// - throws: Any error thrown in `block` or an error if the transaction could not be started or rolled back.
 	///
 	/// - note: If `block` throws an error the transaction will be rolled back and the error will be re-thrown.
-	public func readTransaction(_ block: Database.ReadTransactionBlock) throws {
+	public func readTransaction(_ block: ReadTransactionBlock) throws {
 		try queue.sync {
 			try database.readTransaction(block)
 		}
@@ -160,7 +165,7 @@ public final class DatabaseReadQueue: @unchecked Sendable {
 	/// - parameter qos: The quality of service for `block`
 	/// - parameter block: A closure performing the database operation
 	/// - parameter completion: A closure called with the result of the read transaction.
-	public func asyncReadTransaction(group: DispatchGroup? = nil, qos: DispatchQoS = .default, _ block: @escaping AsyncReadTransactionBlock, completion: @escaping CompletionHandler<Void>) {
+	public func asyncReadTransaction(group: DispatchGroup? = nil, qos: DispatchQoS = .default, _ block: @escaping ReadTransactionBlock, completion: @escaping CompletionHandler<Void>) {
 		queue.async(group: group, qos: qos) {
 			do {
 				try self.database.readTransaction(block)
@@ -267,7 +272,7 @@ extension DatabaseReadQueue {
 	/// - throws: Any error thrown in `block`.
 	///
 	/// - returns: The value returned by `block`.
-	public func perform<T: Sendable>(block: @escaping @Sendable (Database) throws -> T) async throws -> T {
+	public func perform<T: Sendable>(block: @escaping DatabaseBlock<T>) async throws -> T {
 		try await withCheckedThrowingContinuation { continuation in
 			queue.async(qos: Task.currentPriority.dispatchQoS) {
 				continuation.resume(with: Result { try block(self.database) })
@@ -281,7 +286,7 @@ extension DatabaseReadQueue {
 	/// - parameter block: A closure performing the database operation
 	///
 	/// - throws: Any error thrown in `block`.
-	public func performReadTransaction(block: @escaping AsyncReadTransactionBlock) async throws -> Void {
+	public func performReadTransaction(block: @escaping ReadTransactionBlock) async throws -> Void {
 		try await perform { try $0.readTransaction(block) }
 	}
 }
