@@ -226,3 +226,47 @@ public final class DatabaseQueue: @unchecked Sendable {
 		try block(database)
 	}
 }
+
+@available(macOS 10.15.0, iOS 13.0.0, tvOS 13.0.0, watchOS 6.0.0, *)
+extension DatabaseQueue {
+	/// Performs an asynchronous database operation.
+	///
+	/// - parameter block: A closure performing the database operation
+	///
+	/// - throws: Any error thrown in `block`.
+	///
+	/// - returns: The value returned by `block`.
+	public func perform<T: Sendable>(_ block: @escaping @Sendable (Database) throws -> T) async throws -> T {
+		try await withTaskCancellationHandler {
+			try await withCheckedThrowingContinuation { continuation in
+				queue.async { continuation.resume(with: Result { try block(self.database) }) }
+			}
+		} onCancel: {
+			// sqlite3_interrupt is documented as safe to call from any thread
+			self.database.interrupt()
+		}
+	}
+
+	/// Performs an asynchronous transaction on the database.
+	///
+	/// - parameter type: The type of transaction to perform
+	/// - parameter block: A closure performing the database operation
+	///
+	/// - throws: Any error thrown in `block`.
+	///
+	/// - returns: The result of the transaction.
+	public func transaction(type: Database.TransactionType = .deferred, _ block: @escaping AsyncTransactionBlock) async throws -> Database.TransactionCompletion {
+		try await perform { try $0.transaction(type: type, block) }
+	}
+
+	/// Performs an asynchronous savepoint transaction on the database.
+	///
+	/// - parameter block: A closure performing the database operation
+	///
+	/// - throws: Any error thrown in `block`.
+	///
+	/// - returns: The result of the savepoint.
+	public func savepoint(_ block: @escaping AsyncSavepointBlock) async throws -> Database.SavepointCompletion {
+		try await perform { try $0.savepoint(block: block) }
+	}
+}

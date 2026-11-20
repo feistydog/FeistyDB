@@ -396,7 +396,7 @@ extension Database {
 	}
 
 	/// Possible ways to complete a transaction
-	public enum TransactionCompletion {
+	public enum TransactionCompletion: Sendable {
 		/// The transaction should be committed
 		case commit
 		/// The transaction should be rolled back
@@ -484,7 +484,7 @@ extension Database {
 	}
 
 	/// Possible ways to complete a savepoint
-	public enum SavepointCompletion {
+	public enum SavepointCompletion: Sendable {
 		/// The savepoint should be released
 		case release
 		/// The savepoint should be rolled back
