@@ -255,7 +255,7 @@ extension DatabaseQueue {
 	/// - throws: Any error thrown in `block`.
 	///
 	/// - returns: The result of the transaction.
-	public func transaction(type: Database.TransactionType = .deferred, _ block: @escaping AsyncTransactionBlock) async throws -> Database.TransactionCompletion {
+	public func performTransaction(type: Database.TransactionType = .deferred, _ block: @escaping AsyncTransactionBlock) async throws -> Database.TransactionCompletion {
 		try await perform { try $0.transaction(type: type, block) }
 	}
 
@@ -266,7 +266,7 @@ extension DatabaseQueue {
 	/// - throws: Any error thrown in `block`.
 	///
 	/// - returns: The result of the savepoint.
-	public func savepoint(_ block: @escaping AsyncSavepointBlock) async throws -> Database.SavepointCompletion {
+	public func performSavepoint(_ block: @escaping AsyncSavepointBlock) async throws -> Database.SavepointCompletion {
 		try await perform { try $0.savepoint(block: block) }
 	}
 }

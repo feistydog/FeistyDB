@@ -284,7 +284,7 @@ extension DatabaseReadQueue {
 	/// - parameter block: A closure performing the database operation
 	///
 	/// - throws: Any error thrown in `block`.
-	public func readTransaction(_ block: @escaping AsyncReadTransactionBlock) async throws -> Void {
+	public func performReadTransaction(_ block: @escaping AsyncReadTransactionBlock) async throws -> Void {
 		try await perform { try $0.readTransaction(block) }
 	}
 }
