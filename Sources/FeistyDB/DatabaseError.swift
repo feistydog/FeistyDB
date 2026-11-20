@@ -17,7 +17,7 @@ public protocol Error: Swift.Error {
 }
 
 /// An error supplying a message and description.
-public struct DatabaseError: Error {
+public struct DatabaseError {
 	/// A brief message describing the error
 	public let message: String
 
