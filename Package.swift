@@ -33,20 +33,18 @@ let package = Package(
 			name: "CFeistyDB",
 			dependencies: [
 				.product(name: "CSQLite", package: "CSQLite"),
-			],
-			swiftSettings: [
-				.swiftLanguageMode(.v6),
 			]
 		),
 		.target(
 			name: "FeistyDB",
 			dependencies: [
 				"CFeistyDB",
-			]
-//			swiftSettings: [
+			],
+			swiftSettings: [
+				.swiftLanguageMode(.v6),
 //				.define("SQLITE_ENABLE_PREUPDATE_HOOK"),
 //				.define("SQLITE_ENABLE_SESSION"),
-//			]
+			]
 		),
 		.testTarget(
 			name: "FeistyDBTests",
