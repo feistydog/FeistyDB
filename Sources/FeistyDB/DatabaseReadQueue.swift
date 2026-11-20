@@ -267,7 +267,7 @@ extension DatabaseReadQueue {
 	/// - throws: Any error thrown in `block`.
 	///
 	/// - returns: The value returned by `block`.
-	public func perform<T: Sendable>(_ block: @escaping @Sendable (Database) throws -> T) async throws -> T {
+	public func perform<T: Sendable>(block: @escaping @Sendable (Database) throws -> T) async throws -> T {
 		try await withTaskCancellationHandler {
 			try await withCheckedThrowingContinuation { continuation in
 				queue.async { continuation.resume(with: Result { try block(self.database) }) }
@@ -284,7 +284,7 @@ extension DatabaseReadQueue {
 	/// - parameter block: A closure performing the database operation
 	///
 	/// - throws: Any error thrown in `block`.
-	public func performReadTransaction(_ block: @escaping AsyncReadTransactionBlock) async throws -> Void {
+	public func performReadTransaction(block: @escaping AsyncReadTransactionBlock) async throws -> Void {
 		try await perform { try $0.readTransaction(block) }
 	}
 }

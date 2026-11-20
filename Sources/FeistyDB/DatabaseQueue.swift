@@ -236,7 +236,7 @@ extension DatabaseQueue {
 	/// - throws: Any error thrown in `block`.
 	///
 	/// - returns: The value returned by `block`.
-	public func perform<T: Sendable>(_ block: @escaping @Sendable (Database) throws -> T) async throws -> T {
+	public func perform<T: Sendable>(block: @escaping @Sendable (Database) throws -> T) async throws -> T {
 		try await withTaskCancellationHandler {
 			try await withCheckedThrowingContinuation { continuation in
 				queue.async { continuation.resume(with: Result { try block(self.database) }) }
@@ -266,7 +266,7 @@ extension DatabaseQueue {
 	/// - throws: Any error thrown in `block`.
 	///
 	/// - returns: The result of the savepoint.
-	@discardableResult public func performSavepoint(_ block: @escaping AsyncSavepointBlock) async throws -> Database.SavepointCompletion {
+	@discardableResult public func performSavepoint(block: @escaping AsyncSavepointBlock) async throws -> Database.SavepointCompletion {
 		try await perform { try $0.savepoint(block: block) }
 	}
 }
