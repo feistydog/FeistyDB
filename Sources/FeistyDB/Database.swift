@@ -104,7 +104,7 @@ public final class Database {
 	public init(rawSQLiteDatabase db: SQLiteDatabaseConnection) {
 		self.db = db
 
-#if false
+		#if false
 			sqlite3_trace_v2(db, UInt32(SQLITE_TRACE_PROFILE), { (T, C, P, X) -> Int32 in
 				if T == UInt32(SQLITE_TRACE_PROFILE) {
 					// P = sqlite3_stmt
@@ -122,7 +122,7 @@ public final class Database {
 
 				return 0
 			}, nil)
-#endif
+		#endif
 	}
 
 	deinit {
