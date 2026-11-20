@@ -690,7 +690,7 @@ extension Database {
 	/// Available database status parameters.
 	///
 	/// - seealso: [Status Parameters for database connections](https://www.sqlite.org/c3ref/c_dbstatus_options.html)
-	public enum	StatusParameter: Sendable {
+	public enum StatusParameter: Sendable {
 		/// The number of lookaside memory slots currently checked out
 		case lookasideUsed
 		/// The approximate number of bytes of heap memory used by all pager caches

@@ -264,7 +264,7 @@ extension Database {
 		/// Possible types of pre-update changes with associated rowids.
 		///
 		/// - seealso: [The pre-update hook.](https://sqlite.org/c3ref/preupdate_count.html)
-		public enum	ChangeType: Sendable {
+		public enum ChangeType: Sendable {
 			/// A row was inserted
 			case insert(Int64)
 			/// A row was deleted
