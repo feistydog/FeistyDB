@@ -229,6 +229,7 @@ public final class DatabaseQueue: @unchecked Sendable {
 
 @available(macOS 10.15.0, iOS 13.0.0, tvOS 13.0.0, watchOS 6.0.0, *)
 extension TaskPriority {
+	/// Returns the approximate equivalent dispatch quality-of-service for `self`
 	var dispatchQoS: DispatchQoS {
 		switch self {
 		case .high:
