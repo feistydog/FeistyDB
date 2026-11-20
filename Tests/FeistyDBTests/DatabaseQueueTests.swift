@@ -10,6 +10,7 @@ import XCTest
 /// Compile-time check that `T` conforms to `Sendable`
 private func requireSendable<T: Sendable>(_: T.Type) {}
 
+@available(macOS 12.0, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
 final class DatabaseQueueTests: XCTestCase {
 	/// Returns a URL for a unique database file that is removed (with its WAL and SHM files) after the test
 	func temporaryDatabaseURL() -> URL {
