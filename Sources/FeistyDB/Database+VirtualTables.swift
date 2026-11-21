@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 - 2023 Feisty Dog, LLC
+// Copyright (c) 2020 - 2026 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
@@ -48,7 +48,7 @@ public protocol VirtualTableCursor {
 }
 
 /// Possible results for the `VirtualTableModule.bestIndex()` function
-public enum VirtualTableModuleBestIndexResult {
+public enum VirtualTableModuleBestIndexResult: Sendable {
 	/// Success
 	case ok
 	/// No usable query plan exists
@@ -166,7 +166,7 @@ extension Database {
 	/// Virtual table module options
 	///
 	/// - seealso: [Virtual Table Configuration Options](https://sqlite.org/c3ref/c_vtab_constraint_support.html)
-	public struct VirtualTableModuleOptions: OptionSet {
+	public struct VirtualTableModuleOptions: OptionSet, Sendable {
 		public let rawValue: Int
 
 		public init(rawValue: Int) {

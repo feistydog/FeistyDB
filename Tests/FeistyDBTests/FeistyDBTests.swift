@@ -922,9 +922,6 @@ class FeistyDBTests: XCTestCase {
 		XCTAssertEqual(results.sorted(), [1,2,3,4,5])
 	}
 
-	func testDatabaseQueue() {
-	}
-
 	#if SQLITE_ENABLE_PREUPDATE_HOOK
 
 	func testPreUpdateHook() {

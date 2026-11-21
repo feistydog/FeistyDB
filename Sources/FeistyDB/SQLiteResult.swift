@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015 - 2025 Feisty Dog, LLC
+// Copyright (c) 2015 - 2026 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
@@ -10,7 +10,7 @@ import CSQLite
 /// A result code from SQLite
 ///
 /// - seealso: [Result and Error Codes](https://www.sqlite.org/rescode.html)
-public enum SQLiteResult {
+public enum SQLiteResult: Sendable {
 	/// Successful result
 	case ok(OKExtendedResult? = nil)
 	/// Generic error
@@ -77,7 +77,7 @@ public enum SQLiteResult {
 	// Extended result codes
 
 	/// SQLITE_OK_* extended result codes
-	public enum OKExtendedResult {
+	public enum OKExtendedResult: Sendable {
 		/// SQLITE_OK_LOAD_PERMANENTLY
 		case loadPermanently
 		/// SQLITE_OK_LOAD_SYMLINK
@@ -85,7 +85,7 @@ public enum SQLiteResult {
 	}
 
 	/// SQLITE_ERROR_* extended result codes
-	public enum ErrorExtendedResult {
+	public enum ErrorExtendedResult: Sendable {
 		/// SQLITE_ERROR_MISSING_COLLSEQ
 		case missingCollSeq
 		/// SQLITE_ERROR_RETRY
@@ -101,13 +101,13 @@ public enum SQLiteResult {
 	}
 
 	/// SQLITE_ABORT_* extended result codes
-	public enum AbortExtendedResult {
+	public enum AbortExtendedResult: Sendable {
 		/// SQLITE_ABORT_ROLLBACK
 		case rollback
 	}
 
 	/// SQLITE_BUSY_* extended result codes
-	public enum BusyExtendedResult {
+	public enum BusyExtendedResult: Sendable {
 		/// SQLITE_BUSY_RECOVERY
 		case recovery
 		/// SQLITE_BUSY_SNAPSHOT
@@ -117,7 +117,7 @@ public enum SQLiteResult {
 	}
 
 	/// SQLITE_LOCKED_* extended result codes
-	public enum LockedExtendedResult {
+	public enum LockedExtendedResult: Sendable {
 		/// SQLITE_LOCKED_SHAREDCACHE
 		case sharedCache
 		/// SQLITE_LOCKED_VTAB
@@ -125,7 +125,7 @@ public enum SQLiteResult {
 	}
 
 	/// SQLITE_READONLY_* extended result codes
-	public enum ReadOnlyExtendedResult {
+	public enum ReadOnlyExtendedResult: Sendable {
 		/// SQLITE_READONLY_RECOVERY
 		case recovery
 		/// SQLITE_READONLY_CANTLOCK
@@ -141,7 +141,7 @@ public enum SQLiteResult {
 	}
 
 	/// SQLITE_IOERR_* extended result codes
-	public enum IOErrExtendedResult {
+	public enum IOErrExtendedResult: Sendable {
 		/// SQLITE_IOERR_READ
 		case read
 		/// SQLITE_IOERR_SHORT_READ
@@ -217,7 +217,7 @@ public enum SQLiteResult {
 	}
 
 	/// SQLITE_CORRUPT_* extended result codes
-	public enum CorruptExtendedResult {
+	public enum CorruptExtendedResult: Sendable {
 		/// SQLITE_CORRUPT_VTAB
 		case vtab
 		/// SQLITE_CORRUPT_SEQUENCE
@@ -227,7 +227,7 @@ public enum SQLiteResult {
 	}
 
 	/// SQLITE_CANTOPEN_* extended result codes
-	public enum CantOpenExtendedResult {
+	public enum CantOpenExtendedResult: Sendable {
 		/// SQLITE_CANTOPEN_NOTEMPDIR
 		case noTempDir
 		/// SQLITE_CANTOPEN_ISDIR
@@ -243,7 +243,7 @@ public enum SQLiteResult {
 	}
 
 	/// SQLITE_CONSTRAINT_* extended result codes
-	public enum ConstraintExtendedResult {
+	public enum ConstraintExtendedResult: Sendable {
 		/// SQLITE_CONSTRAINT_CHECK
 		case check
 		/// SQLITE_CONSTRAINT_COMMITHOOK
@@ -271,13 +271,13 @@ public enum SQLiteResult {
 	}
 
 	/// SQLITE_AUTH_* extended result codes
-	public enum AuthExtendedResult {
+	public enum AuthExtendedResult: Sendable {
 		/// SQLITE_AUTH_USER
 		case user
 	}
 
 	/// SQLITE_NOTICE_* extended result codes
-	public enum NoticeExtendedResult {
+	public enum NoticeExtendedResult: Sendable {
 		/// SQLITE_NOTICE_RECOVER_WAL
 		case recoverWAL
 		/// SQLITE_NOTICE_RECOVER_ROLLBACK
@@ -287,7 +287,7 @@ public enum SQLiteResult {
 	}
 
 	/// SQLITE_WARNING_* extended result codes
-	public enum WarningExtendedResult {
+	public enum WarningExtendedResult: Sendable {
 		/// SQLITE_WARNING_AUTOINDEX
 		case autoindex
 	}
