@@ -4,6 +4,7 @@
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
 
+import Dispatch
 import Foundation
 import CSQLite
 
