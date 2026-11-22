@@ -51,6 +51,15 @@ final class DatabaseQueueTests: XCTestCase {
 		XCTAssertEqual(item.value, 42)
 	}
 
+	func testPerformReturnsNonSendable() async throws {
+		let dbQueue = try DatabaseQueue(label: "test")
+		let item = try await dbQueue.perform { db in
+			let value: Int = try db.prepare(sql: "select 42;").front()
+			return Item(value: value)
+		}
+		XCTAssertEqual(item.value, 42)
+	}
+
 	/// Many concurrent `perform` calls must be serialized: each block's insert and
 	/// `lastInsertRowid` read happen without another block running in between.
 	func testConcurrentPerform() async throws {
