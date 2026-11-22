@@ -41,7 +41,6 @@ let package = Package(
 				"CFeistyDB",
 			],
 			swiftSettings: [
-				.swiftLanguageMode(.v6),
 //				.define("SQLITE_ENABLE_PREUPDATE_HOOK"),
 //				.define("SQLITE_ENABLE_SESSION"),
 			]
@@ -50,17 +49,19 @@ let package = Package(
 			name: "FeistyDBTests",
 			dependencies: [
 				"FeistyDB",
-			]
-//			, swiftSettings: [
+			], swiftSettings: [
 //				.define("SQLITE_ENABLE_PREUPDATE_HOOK"),
 //				.define("SQLITE_ENABLE_SESSION"),
-//			]
+			]
 		),
 		.testTarget(
 			name: "FeistyDBPerformanceTests",
 			dependencies: [
 				"FeistyDB",
 			]),
+	],
+	swiftLanguageModes: [
+		.v6,
 	],
 	cLanguageStandard: .gnu11
 )
