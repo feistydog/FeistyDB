@@ -80,7 +80,7 @@ public final class DatabaseQueue: @unchecked Sendable {
 	/// A block called with a database instance.
 	///
 	/// - parameter database: A `Database` used for database access within the block
-	public typealias DatabaseBlock<T> = @Sendable (_ database: Database) throws -> T
+	public typealias DatabaseBlock<T> = @Sendable (_ database: Database) throws -> sending T
 
 	/// Performs a synchronous operation on the database.
 	///
@@ -90,7 +90,7 @@ public final class DatabaseQueue: @unchecked Sendable {
 	/// - throws: Any error thrown in `block`
 	///
 	/// - returns: The value returned by `block`
-	public func sync<T: Sendable>(block: DatabaseBlock<T>) rethrows -> T {
+	public func sync<T>(block: DatabaseBlock<T>) rethrows -> sending T {
 		return try queue.sync {
 			return try block(self.database)
 		}
@@ -128,7 +128,7 @@ public final class DatabaseQueue: @unchecked Sendable {
 	///
 	/// - returns: The value returned by `block`
 	@available(macOS 10.14, iOS 12.0, tvOS 12.0, watchOS 5.0, *)
-	public func asyncAndWait<T: Sendable>(block: DatabaseBlock<T>) rethrows -> T {
+	public func asyncAndWait<T>(block: DatabaseBlock<T>) rethrows -> sending T {
 		return try queue.asyncAndWait {
 			return try block(self.database)
 		}
@@ -261,10 +261,14 @@ extension DatabaseQueue {
 	/// - throws: Any error thrown in `block`.
 	///
 	/// - returns: The value returned by `block`.
-	public func perform<T: Sendable>(block: @escaping DatabaseBlock<T>) async throws -> T {
+	public func perform<T>(block: @escaping DatabaseBlock<T>) async throws -> sending T {
 		try await withCheckedThrowingContinuation { continuation in
 			queue.async(qos: Task.currentPriority.dispatchQoS) {
-				continuation.resume(with: Result { try block(self.database) })
+				do {
+					continuation.resume(returning: try block(self.database))
+				} catch {
+					continuation.resume(throwing: error)
+				}
 			}
 		}
 	}
