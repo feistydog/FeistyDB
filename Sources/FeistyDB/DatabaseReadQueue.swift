@@ -99,8 +99,8 @@ public final class DatabaseReadQueue: @unchecked Sendable {
 	///
 	/// - returns: The value returned by `block`
 	public func sync<T>(block: DatabaseBlock<T>) rethrows -> sending T {
-		return try queue.sync {
-			return try block(self.database)
+		try queue.sync {
+			try block(self.database)
 		}
 	}
 
@@ -137,8 +137,8 @@ public final class DatabaseReadQueue: @unchecked Sendable {
 	/// - returns: The value returned by `block`
 	@available(macOS 10.14, iOS 12.0, tvOS 12.0, watchOS 5.0, *)
 	public func asyncAndWait<T>(block: DatabaseBlock<T>) rethrows -> sending T {
-		return try queue.asyncAndWait {
-			return try block(self.database)
+		try queue.asyncAndWait {
+			try block(self.database)
 		}
 	}
 

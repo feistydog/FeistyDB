@@ -91,8 +91,8 @@ public final class DatabaseQueue: @unchecked Sendable {
 	///
 	/// - returns: The value returned by `block`
 	public func sync<T>(block: DatabaseBlock<T>) rethrows -> sending T {
-		return try queue.sync {
-			return try block(self.database)
+		try queue.sync {
+			try block(self.database)
 		}
 	}
 
@@ -129,8 +129,8 @@ public final class DatabaseQueue: @unchecked Sendable {
 	/// - returns: The value returned by `block`
 	@available(macOS 10.14, iOS 12.0, tvOS 12.0, watchOS 5.0, *)
 	public func asyncAndWait<T>(block: DatabaseBlock<T>) rethrows -> sending T {
-		return try queue.asyncAndWait {
-			return try block(self.database)
+		try queue.asyncAndWait {
+			try block(self.database)
 		}
 	}
 
@@ -154,7 +154,7 @@ public final class DatabaseQueue: @unchecked Sendable {
 	/// - note: If `block` throws an error the transaction will be rolled back and the error will be re-thrown
 	/// - note: If an error occurs committing the transaction a rollback will be attempted and the error will be re-thrown
 	@discardableResult public func transaction(type: Database.TransactionType = .deferred, _ block: TransactionBlock) throws -> Database.TransactionCompletion {
-		return try queue.sync {
+		try queue.sync {
 			try database.transaction(type: type, block)
 		}
 	}
@@ -195,7 +195,7 @@ public final class DatabaseQueue: @unchecked Sendable {
 	/// - note: If `block` throws an error the savepoint will be rolled back and the error will be re-thrown
 	/// - note: If an error occurs releasing the savepoint a rollback will be attempted and the error will be re-thrown
 	@discardableResult public func savepoint(block: SavepointBlock) throws -> Database.SavepointCompletion {
-		return try queue.sync {
+		try queue.sync {
 			try database.savepoint(block: block)
 		}
 	}
