@@ -4,6 +4,7 @@
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
 
+import Dispatch
 import Foundation
 import CSQLite
 
@@ -32,7 +33,7 @@ import CSQLite
 ///     return .commit
 /// }
 /// ```
-public final class DatabaseQueue {
+public final class DatabaseQueue: @unchecked Sendable {
 	/// The underlying database
 	let database: Database
 	/// The dispatch queue used to serialize access to the underlying database connection
@@ -71,10 +72,15 @@ public final class DatabaseQueue {
 	/// - parameter label: The label to attach to the queue
 	/// - parameter qos: The quality of service class for the work performed by the database queue
 	/// - parameter target: The target dispatch queue on which to execute blocks
-	public init(database: Database, label: String, qos: DispatchQoS = .default, target: DispatchQueue? = nil) {
+	public init(database: sending Database, label: String, qos: DispatchQoS = .default, target: DispatchQueue? = nil) {
 		self.database = database
 		self.queue = DispatchQueue(label: label, qos: qos, target: target)
 	}
+
+	/// A block called with a database instance.
+	///
+	/// - parameter database: A `Database` used for database access within the block
+	public typealias DatabaseBlock<T> = @Sendable (_ database: Database) throws -> sending T
 
 	/// Performs a synchronous operation on the database.
 	///
@@ -84,16 +90,16 @@ public final class DatabaseQueue {
 	/// - throws: Any error thrown in `block`
 	///
 	/// - returns: The value returned by `block`
-	public func sync<T>(block: (_ database: Database) throws -> (T)) rethrows -> T {
-		return try queue.sync {
-			return try block(self.database)
+	public func sync<T>(block: DatabaseBlock<T>) rethrows -> sending T {
+		try queue.sync {
+			try block(self.database)
 		}
 	}
 
 	/// A block called with the result of an asynchronous database operation.
 	///
 	/// - parameter result: A `Result` object containing the result of the operation.
-	public typealias CompletionHandler<T> = (_ result: Result<T, Error>) -> Void
+	public typealias CompletionHandler<T> = @Sendable (_ result: Result<T, Error>) -> Void
 
 	/// Submits an asynchronous operation to the database queue.
 	///
@@ -102,7 +108,7 @@ public final class DatabaseQueue {
 	/// - parameter block: A closure performing the database operation
 	/// - parameter database: A `Database` used for database access within `block`
 	/// - parameter completion: A closure called with the result of the operation.
-	public func async<T>(group: DispatchGroup? = nil, qos: DispatchQoS = .default, block: @escaping (_ database: Database) throws -> T, completion: @escaping CompletionHandler<T>) {
+	public func async<T: Sendable>(group: DispatchGroup? = nil, qos: DispatchQoS = .default, block: @escaping DatabaseBlock<T>, completion: @escaping CompletionHandler<T>) {
 		queue.async(group: group, qos: qos) {
 			do {
 				let result = try block(self.database)
@@ -122,11 +128,18 @@ public final class DatabaseQueue {
 	///
 	/// - returns: The value returned by `block`
 	@available(macOS 10.14, iOS 12.0, tvOS 12.0, watchOS 5.0, *)
-	public func asyncAndWait<T>(block: (_ database: Database) throws -> (T)) rethrows -> T {
-		return try queue.asyncAndWait {
-			return try block(self.database)
+	public func asyncAndWait<T>(block: DatabaseBlock<T>) rethrows -> sending T {
+		try queue.asyncAndWait {
+			try block(self.database)
 		}
 	}
+
+	/// A series of database actions grouped into a transaction
+	///
+	/// - parameter database: A `Database` used for database access within the block
+	///
+	/// - returns: `.commit` if the transaction should be committed or `.rollback` if the transaction should be rolled back
+	public typealias TransactionBlock = @Sendable (_ database: Database) throws -> Database.TransactionCompletion
 
 	/// Performs a synchronous transaction on the database.
 	///
@@ -140,8 +153,8 @@ public final class DatabaseQueue {
 	///
 	/// - note: If `block` throws an error the transaction will be rolled back and the error will be re-thrown
 	/// - note: If an error occurs committing the transaction a rollback will be attempted and the error will be re-thrown
-	@discardableResult public func transaction(type: Database.TransactionType = .deferred, _ block: Database.TransactionBlock) throws -> Database.TransactionCompletion {
-		return try queue.sync {
+	@discardableResult public func transaction(type: Database.TransactionType = .deferred, _ block: TransactionBlock) throws -> Database.TransactionCompletion {
+		try queue.sync {
 			try database.transaction(type: type, block)
 		}
 	}
@@ -153,7 +166,7 @@ public final class DatabaseQueue {
 	/// - parameter qos: The quality of service for `block`
 	/// - parameter block: A closure performing the database operation
 	/// - parameter completion: A closure called with the result of the transaction.
-	public func asyncTransaction(type: Database.TransactionType = .deferred, group: DispatchGroup? = nil, qos: DispatchQoS = .default, _ block: @escaping Database.TransactionBlock, completion: @escaping CompletionHandler<Database.TransactionCompletion>) {
+	public func asyncTransaction(type: Database.TransactionType = .deferred, group: DispatchGroup? = nil, qos: DispatchQoS = .default, _ block: @escaping TransactionBlock, completion: @escaping CompletionHandler<Database.TransactionCompletion>) {
 		queue.async(group: group, qos: qos) {
 			do {
 				let result = try self.database.transaction(type: type, block)
@@ -163,6 +176,13 @@ public final class DatabaseQueue {
 			}
 		}
 	}
+
+	/// A series of database actions grouped into a savepoint transaction
+	///
+	/// - parameter database: A `Database` used for database access within the block
+	///
+	/// - returns: `.release` if the savepoint should be released or `.rollback` if the savepoint should be rolled back
+	public typealias SavepointBlock = @Sendable (_ database: Database) throws -> Database.SavepointCompletion
 
 	/// Performs a synchronous savepoint transaction on the database.
 	///
@@ -174,8 +194,8 @@ public final class DatabaseQueue {
 	///
 	/// - note: If `block` throws an error the savepoint will be rolled back and the error will be re-thrown
 	/// - note: If an error occurs releasing the savepoint a rollback will be attempted and the error will be re-thrown
-	@discardableResult public func savepoint(block: Database.SavepointBlock) throws -> Database.SavepointCompletion {
-		return try queue.sync {
+	@discardableResult public func savepoint(block: SavepointBlock) throws -> Database.SavepointCompletion {
+		try queue.sync {
 			try database.savepoint(block: block)
 		}
 	}
@@ -186,7 +206,7 @@ public final class DatabaseQueue {
 	/// - parameter qos: The quality of service for `block`
 	/// - parameter block: A closure performing the database operation
 	/// - parameter completion: A closure called with the result of the savepoint.
-	public func asyncSavepoint(group: DispatchGroup? = nil, qos: DispatchQoS = .default, block: @escaping Database.SavepointBlock, completion: @escaping CompletionHandler<Database.SavepointCompletion>) {
+	public func asyncSavepoint(group: DispatchGroup? = nil, qos: DispatchQoS = .default, block: @escaping SavepointBlock, completion: @escaping CompletionHandler<Database.SavepointCompletion>) {
 		queue.async(group: group, qos: qos) {
 			do {
 				let result = try self.database.savepoint(block: block)
@@ -210,5 +230,69 @@ public final class DatabaseQueue {
 	/// - returns: The value returned by `block`.
 	public func withUnsafeDatabase<T>(block: (_ database: Database) throws -> (T)) rethrows -> T {
 		try block(database)
+	}
+}
+
+@available(macOS 10.15.0, iOS 13.0.0, tvOS 13.0.0, watchOS 6.0.0, *)
+extension TaskPriority {
+	/// Returns the approximate equivalent dispatch quality-of-service for `self`
+	var dispatchQoS: DispatchQoS {
+		switch self {
+		case .high:
+			return .userInitiated
+		case .medium:
+			return .default
+		case .low:
+			return .utility
+		case .background:
+			return .background
+		default:
+			return .default
+		}
+	}
+}
+
+@available(macOS 10.15.0, iOS 13.0.0, tvOS 13.0.0, watchOS 6.0.0, *)
+extension DatabaseQueue {
+	/// Performs an asynchronous database operation.
+	///
+	/// - parameter block: A closure performing the database operation
+	///
+	/// - throws: Any error thrown in `block`.
+	///
+	/// - returns: The value returned by `block`.
+	public func perform<T>(block: @escaping DatabaseBlock<T>) async throws -> sending T {
+		try await withCheckedThrowingContinuation { continuation in
+			queue.async(qos: Task.currentPriority.dispatchQoS) {
+				do {
+					continuation.resume(returning: try block(self.database))
+				} catch {
+					continuation.resume(throwing: error)
+				}
+			}
+		}
+	}
+
+	/// Performs an asynchronous transaction on the database.
+	///
+	/// - parameter type: The type of transaction to perform
+	/// - parameter block: A closure performing the database operation
+	///
+	/// - throws: Any error thrown in `block`.
+	///
+	/// - returns: The result of the transaction.
+	@discardableResult public func performTransaction(type: Database.TransactionType = .deferred, _ block: @escaping TransactionBlock) async throws -> Database.TransactionCompletion {
+		try await perform { try $0.transaction(type: type, block) }
+	}
+
+	/// Performs an asynchronous savepoint transaction on the database.
+	///
+	/// - parameter block: A closure performing the database operation
+	///
+	/// - throws: Any error thrown in `block`.
+	///
+	/// - returns: The result of the savepoint.
+	@discardableResult public func performSavepoint(block: @escaping SavepointBlock) async throws -> Database.SavepointCompletion {
+		try await perform { try $0.savepoint(block: block) }
 	}
 }

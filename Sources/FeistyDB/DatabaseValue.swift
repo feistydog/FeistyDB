@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015 - 2020 Feisty Dog, LLC
+// Copyright (c) 2015 - 2026 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
@@ -11,7 +11,7 @@ import CSQLite
 /// A native data type that may be stored in an SQLite database.
 ///
 /// - seealso: [Datatypes In SQLite Version 3](https://sqlite.org/datatype3.html)
-public enum DatabaseValue {
+public enum DatabaseValue: Sendable {
 	/// An integer value.
 	case integer(Int64)
 	/// A floating-point value.

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015 - 2023 Feisty Dog, LLC
+// Copyright (c) 2015 - 2026 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
@@ -60,7 +60,7 @@ extension Database {
 	}
 
 	/// The reasons FTS5 will request tokenization
-	public enum FTS5TokenizationReason {
+	public enum FTS5TokenizationReason: Sendable {
 		/// A document is being inserted into or removed from the FTS table
 		case document
 		/// A `MATCH` query is being executed against the FTS index

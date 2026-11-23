@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015 - 2024 Feisty Dog, LLC
+// Copyright (c) 2015 - 2026 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
@@ -20,7 +20,7 @@ extension Database {
 	/// Custom SQL function flags
 	///
 	/// - seealso: [Function Flags](https://www.sqlite.org/c3ref/c_deterministic.html)
-	public struct SQLFunctionFlags: OptionSet {
+	public struct SQLFunctionFlags: OptionSet, Sendable {
 		public let rawValue: Int
 
 		public init(rawValue: Int) {

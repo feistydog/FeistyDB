@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015 - 2020 Feisty Dog, LLC
+// Copyright (c) 2015 - 2026 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
@@ -285,7 +285,7 @@ extension Statement {
 	/// Available statement counters.
 	///
 	/// - seealso: [Status Parameters for prepared statements](https://www.sqlite.org/c3ref/c_stmtstatus_counter.html)
-	public enum	Counter {
+	public enum Counter: Sendable {
 		/// The number of times that SQLite has stepped forward in a table as part of a full table scan
 		case fullscanStep
 		/// The number of sort operations that have occurred

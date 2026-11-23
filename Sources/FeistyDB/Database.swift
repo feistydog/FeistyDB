@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015 - 2021 Feisty Dog, LLC
+// Copyright (c) 2015 - 2026 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
@@ -309,7 +309,7 @@ extension Database {
 	/// Possible database transaction types.
 	///
 	/// - seealso: [Transactions in SQLite](https://sqlite.org/lang_transaction.html)
-	public enum TransactionType {
+	public enum TransactionType: Sendable {
 		/// A deferred transaction
 		case deferred
 		/// An immediate transaction
@@ -359,7 +359,7 @@ extension Database {
 	}
 
 	/// Possible transaction states for a database
-	public enum TransactionState {
+	public enum TransactionState: Sendable {
 		/// No transaction is currently pending
 		case none
 		/// The database is currently in a read transaction
@@ -396,7 +396,7 @@ extension Database {
 	}
 
 	/// Possible ways to complete a transaction
-	public enum TransactionCompletion {
+	public enum TransactionCompletion: Sendable {
 		/// The transaction should be committed
 		case commit
 		/// The transaction should be rolled back
@@ -484,7 +484,7 @@ extension Database {
 	}
 
 	/// Possible ways to complete a savepoint
-	public enum SavepointCompletion {
+	public enum SavepointCompletion: Sendable {
 		/// The savepoint should be released
 		case release
 		/// The savepoint should be rolled back
@@ -533,7 +533,7 @@ extension Database {
 	/// Possible write-ahead log (WAL) checkpoint types.
 	///
 	/// - seealso: [Write-Ahead Logging](https://www.sqlite.org/wal.html)
-	public enum WALCheckpointType {
+	public enum WALCheckpointType: Sendable {
 		/// Checkpoint as many frames as possible without waiting for any database readers or writers to finish
 		case passive
 		/// Blocks until there is no writer and all readers are reading from the most recent database snapshot then checkpoints all frames
@@ -690,7 +690,7 @@ extension Database {
 	/// Available database status parameters.
 	///
 	/// - seealso: [Status Parameters for database connections](https://www.sqlite.org/c3ref/c_dbstatus_options.html)
-	public enum	StatusParameter {
+	public enum StatusParameter: Sendable {
 		/// The number of lookaside memory slots currently checked out
 		case lookasideUsed
 		/// The approximate number of bytes of heap memory used by all pager caches

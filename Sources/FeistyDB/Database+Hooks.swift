@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015 - 2020 Feisty Dog, LLC
+// Copyright (c) 2015 - 2026 Feisty Dog, LLC
 //
 // See https://github.com/feistydog/FeistyDB/blob/master/LICENSE.txt for license information
 //
@@ -114,7 +114,7 @@ extension Database {
 
 extension Database {
 	/// Possible types of database row changes.
-	public enum	RowChangeType {
+	public enum RowChangeType: Sendable {
 		/// A row was inserted
 		case insert
 		/// A row was deleted
@@ -264,7 +264,7 @@ extension Database {
 		/// Possible types of pre-update changes with associated rowids.
 		///
 		/// - seealso: [The pre-update hook.](https://sqlite.org/c3ref/preupdate_count.html)
-		public enum	ChangeType {
+		public enum ChangeType: Sendable {
 			/// A row was inserted
 			case insert(Int64)
 			/// A row was deleted

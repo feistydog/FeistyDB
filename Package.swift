@@ -1,4 +1,4 @@
-// swift-tools-version:5.6
+// swift-tools-version:6.0
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -39,27 +39,29 @@ let package = Package(
 			name: "FeistyDB",
 			dependencies: [
 				"CFeistyDB",
-			]
-//			swiftSettings: [
+			],
+			swiftSettings: [
 //				.define("SQLITE_ENABLE_PREUPDATE_HOOK"),
 //				.define("SQLITE_ENABLE_SESSION"),
-//			]
+			]
 		),
 		.testTarget(
 			name: "FeistyDBTests",
 			dependencies: [
 				"FeistyDB",
-			]
-//			, swiftSettings: [
+			], swiftSettings: [
 //				.define("SQLITE_ENABLE_PREUPDATE_HOOK"),
 //				.define("SQLITE_ENABLE_SESSION"),
-//			]
+			]
 		),
 		.testTarget(
 			name: "FeistyDBPerformanceTests",
 			dependencies: [
 				"FeistyDB",
 			]),
+	],
+	swiftLanguageModes: [
+		.v6,
 	],
 	cLanguageStandard: .gnu11
 )
